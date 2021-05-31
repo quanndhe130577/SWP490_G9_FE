@@ -1,0 +1,70 @@
+{
+  "name": "SWP490_G9_FE",
+  "version": "2.0.6",
+  "description": "Fish Trader & Weight Recorder Support System",
+  "author": "SWP490_G9",
+  "homepage": "",
+  "copyright": "Fish Trader & Weight Recorder Support System",
+  "license": "MIT",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://dvtam99@github.com/quanndhe130577/SWP490_G9_FE.git"
+  },
+  "dependencies": {
+    "@ant-design/colors": "^6.0.0",
+    "@ant-design/compatible": "^1.0.8",
+    "@ant-design/icons": "4.0.0",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "antd": "^4.12.3",
+    "i18next": "^20.3.1",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-loadable": "^5.5.0",
+    "react-moment": "^1.1.1",
+    "react-redux": "^7.2.4",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.3",
+    "react-toastify": "^7.0.4",
+    "reactstrap": "^8.9.0",
+    "redux": "^4.1.0",
+    "sweetalert2": "^11.0.16",
+    "web-vitals": "^1.0.1"
+  },
+  "devDependencies": {
+    "babel-jest": "^24.9.0",
+    "node-sass-chokidar": "^1.5.0",
+    "npm-run-all": "^4.1.3",
+    "react-scripts": "^3.4.3",
+    "webpack": "^4.44.2"
+  },
+  "scripts": {
+    "build-css": "node-sass-chokidar --include-path ./node_modules ./src/scss -o ./src/scss",
+    "watch-css": "npm run build-css && node-sass-chokidar --include-path ./node_modules ./src/scss -o ./src/scss --watch --recursive",
+    "start-js": "react-scripts start",
+    "start": "react-scripts start",
+    "build-js": "react-scripts build",
+    "build1": "npm-run-all build-css build-js",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "build": "react-scripts build && cra-append-sw --skip-compile ./public/custom-sw.js"
+  },
+  "bugs": {
+    "url": "https://github.com/coreui/coreui-free-react-admin-template/issues"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
