@@ -1,17 +1,17 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
-import { Layout } from 'antd'
+import { Layout } from "antd";
 
-const { Footer } = Layout
+const { Footer } = Layout;
 
 class DefaultFooter extends Component {
-    render() {
-        return (
-            <Footer style={{ textAlign: 'center' }}>
-                Ant Design ©2018 Created by Ant UED
-            </Footer>
-        )
-    }
+  render() {
+    return (
+      <Footer style={{ textAlign: "center" }}>
+        Ant Design ©2018 Created by Ant UED
+      </Footer>
+    );
+  }
 }
 
-export default DefaultFooter
+export default DefaultFooter;

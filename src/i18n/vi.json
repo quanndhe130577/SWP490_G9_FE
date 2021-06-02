@@ -2,5 +2,9 @@
     "login": "ĐĂNG NHẬP",
     "username": "Tên đăng nhập",
     "password": "Mật khẩu",
+    "Username": "Tên đăng nhập",
+    "Password": "Mật khẩu",
+    "Login":"Đăng nhập",
+    "Register":"Đăng ký",
     "noData": "Không có dữ liệu"
 }
