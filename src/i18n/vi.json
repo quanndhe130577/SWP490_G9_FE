@@ -6,5 +6,6 @@
     "Password": "Mật khẩu",
     "Login":"Đăng nhập",
     "Register":"Đăng ký",
-    "noData": "Không có dữ liệu"
+    "noData": "Không có dữ liệu",
+    "Loading":"Đang tải"
 }

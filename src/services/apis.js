@@ -4,9 +4,9 @@ var apis = {};
 
 var path = {
   //login
-  login: "/user/loginWithPwd",
+  // login: "/user/loginWithPwd",
+  login: "/api/test/login",
   logout: "/api/user/logout",
-
 };
 
 Object.keys(path).forEach(function (key) {

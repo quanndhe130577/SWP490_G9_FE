@@ -6,15 +6,15 @@ function Loading() {
 }
 
 const Dashboard = Loadable({
-  loader: () => import("./Views/Dashboard"),
+  loader: () => import("./views/Dashboard/index"),
   loading: Loading,
 });
 const WR = Loadable({
-  loader: () => import("./Views/User/WeightRecoder/WR"),
+  loader: () => import("./views/User/WeightRecoder/WR"),
   loading: Loading,
 });
 const Test = Loadable({
-  loader: () => import("./Views/User/Traders/Test"),
+  loader: () => import("./views/User/Traders/Test"),
   loading: Loading,
 });
 const routes = [
@@ -24,7 +24,7 @@ const routes = [
     component: Dashboard,
   },
   {
-    path: "/wr",
+    path: "/home",
     name: "WR",
     component: WR,
   },

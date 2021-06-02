@@ -1,5 +1,6 @@
 {
   "login": "LOGIN",
   "username": "Username",
-  "password": "Password"
+  "password": "Password",
+  "Loading":"Loading"
 }

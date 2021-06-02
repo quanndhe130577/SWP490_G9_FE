@@ -1,21 +1,21 @@
-import Local from './local';
-import Config from './config';
-import helper from './helper';
-import i18next from 'i18next';
-import Swal from 'sweetalert2';
+import Local from "./local";
+import Config from "./config";
+import helper from "./helper";
+import i18next from "i18next";
+import Swal from "sweetalert2";
 
-import DeviceDetector from "device-detector-js";
-const deviceDetector = new DeviceDetector();
+// import DeviceDetector from "device-detector-js";
+// const deviceDetector = new DeviceDetector();
 
 let request = {};
-request.upload = async (url, formData, method = 'PUT') => {
-  url = `${Config.host}${url}`
+request.upload = async (url, formData, method = "PUT") => {
+  url = `${Config.host}${url}`;
   let option = {
     method: method,
     body: formData,
     headers: {
-      'Authorization': `Bearer ${Local.get('session') || 'customer'}`,=
-    }
+      Authorization: `Bearer ${Local.get("session") || "customer"}`,
+    },
   };
   if (Config.debug) console.log(`[POST]`, url, option);
   let res = await fetch(url, option);
@@ -26,20 +26,20 @@ request.upload = async (url, formData, method = 'PUT') => {
   }
   if (Config.debug) console.log(`[RESPONSE]`, url, rs);
   return rs;
-}
-request.request = async (url, data, headers, method = 'POST') => {
+};
+request.request = async (url, data, headers, method = "POST") => {
   url = `${Config.host}${url}`;
   let option = {
     method, // or 'PUT'
     body: JSON.stringify(data), // data can be `string` or {object}!
     headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': `Bearer ${Local.get('session') || 'customer'}`,
-      'device': JSON.stringify(deviceDetector.parse(navigator.userAgent)),
-    }
+      // "Content-Type": "application/json; charset=UTF-8",
+      // Authorization: `Bearer ${Local.get("session") || "customer"}`,
+      // device: JSON.stringify(deviceDetector.parse(navigator.userAgent)),
+    },
   };
   option.headers = Object.assign({}, option.headers, headers);
-  if (method === 'GET') delete option.body;
+  if (method === "GET") delete option.body;
 
   if (Config.debug) console.log(`[${method}]`, url, option);
 
@@ -75,42 +75,42 @@ request.request = async (url, data, headers, method = 'POST') => {
       //   break;
       case 403:
         Swal.fire({
-          title: i18next.t('forbidden'),
+          title: i18next.t("forbidden"),
           text: "You don't have permission",
-          icon: 'error',
-          confirmButtonText: 'OK'
-        })
+          icon: "error",
+          confirmButtonText: "OK",
+        });
         break;
       case 500:
-        helper.toast('error', rs.errorMsg || i18next.t('internalServerError'))
+        helper.toast("error", rs.errorMsg || i18next.t("internalServerError"));
         break;
       case 200:
         if (rs && rs.errorCode === 0) {
           return rs;
         } else {
-
-          helper.toast('error', rs.errorMsg || i18next.t('internalServerError'))
+          helper.toast(
+            "error",
+            rs.errorMsg || i18next.t("internalServerError")
+          );
           break;
         }
       case 404:
-        helper.toast('error', rs.errorMsg || i18next.t('dataNotFound'))
+        helper.toast("error", rs.errorMsg || i18next.t("dataNotFound"));
         break;
       case 400:
         if (rs.code && rs.code == "E_MISSING_OR_INVALID_PARAMS") {
-          helper.toast('error', 'Invalid parameters')
+          helper.toast("error", "Invalid parameters");
         } else {
-          helper.toast('error', rs.errorMsg || i18next.t('badRequest'))
+          helper.toast("error", rs.errorMsg || i18next.t("badRequest"));
         }
         break;
       default:
         throw rs;
     }
-
   } catch (err) {
-    helper.toast('error', i18next.t('internalServerError'))
-    console.log('res', res, err);
+    helper.toast("error", i18next.t("internalServerError"));
+    console.log("res", res, err);
     throw err;
   }
-
-}
+};
 export default request;

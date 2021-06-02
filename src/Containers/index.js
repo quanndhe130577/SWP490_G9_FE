@@ -1,2 +1,2 @@
-import DefaultLayout from "./DefaultLayout";
+import DefaultLayout from "./DefaultLayout/DefaultLayout";
 export { DefaultLayout };

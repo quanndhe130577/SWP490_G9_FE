@@ -12,9 +12,9 @@ const Login = () => {
   const handleChange = () => {};
   const handleSubmit = () => {};
   return (
-    <div className="jumbotron">
-      <div className="container  d-flex justify-content-center">
-        <div className="col-sm-6 col-md-6  ">
+    <div className="jumbotron ">
+      <div className="container border con-login">
+        <div className="col-sm-6 col-md-6 ">
           <div className="">
             <h2>Register</h2>
             <form name="form" onSubmit={handleSubmit}>

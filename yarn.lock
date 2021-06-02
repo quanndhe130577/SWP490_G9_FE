@@ -4575,6 +4575,11 @@ detect-port-alt@1.1.6:
     address "^1.0.1"
     debug "^2.6.0"
 
+device-detector-js@^2.2.9:
+  version "2.2.9"
+  resolved "https://registry.yarnpkg.com/device-detector-js/-/device-detector-js-2.2.9.tgz#e113eb465af1ef1deae3aea22c9ef9943931b5c8"
+  integrity sha512-nLXq2xP3kyu27I0F7gapQXKJuMCH8ebhK4MwptsRuYgtF5s6m21w6XJMDiuP4Bt+sg3VhkX1YBAxgZSARd7LSg==
+
 diff-sequences@^26.6.2:
   version "26.6.2"
   resolved "https://registry.yarnpkg.com/diff-sequences/-/diff-sequences-26.6.2.tgz#48ba99157de1923412eed41db6b6d4aa9ca7c0b1"
