@@ -16,3 +16,8 @@
 .pull-right {
   float: right;
 }
+.logo {
+  color: #fff;
+  font-weight: bolder;
+  font-size: large;
+}

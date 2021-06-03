@@ -4,7 +4,7 @@ import i18n from "i18next";
 import Widgets from "../../schema/Widgets";
 import apis from "../../services/apis";
 import helper from "../../services/helper";
-const Login = () => {
+const Login = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [submitted, setsubmitted] = useState(false);
@@ -24,6 +24,7 @@ const Login = () => {
       helper.toast("error", "Lỗi hệ thống");
       console.log(error);
     } finally {
+      props.history.push("home");
       setLoggingIn(false);
     }
   };

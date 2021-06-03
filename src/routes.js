@@ -6,7 +6,7 @@ function Loading() {
 }
 
 const Dashboard = Loadable({
-  loader: () => import("./views/Dashboard/index"),
+  loader: () => import("./views/Home/index"),
   loading: Loading,
 });
 const WR = Loadable({
@@ -19,12 +19,12 @@ const Test = Loadable({
 });
 const routes = [
   {
-    path: "/dashboard",
+    path: "/home",
     name: "Dashboard",
     component: Dashboard,
   },
   {
-    path: "/home",
+    path: "/wr",
     name: "WR",
     component: WR,
   },

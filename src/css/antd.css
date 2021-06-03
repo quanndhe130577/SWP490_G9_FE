@@ -9,5 +9,15 @@
   background: #fff;
 }
 .ant-layout-header {
-  padding: 0px !important;
+  padding: 0 1em !important;
+}
+.ant-layout-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+}
+.ant-layout-content {
+  /* padding: 64px 0; */
+  /* min-height: calc(100vh - 128px) !important; */
+  min-height: 100vh;
 }

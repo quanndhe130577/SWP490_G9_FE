@@ -7,9 +7,13 @@ import { connect } from "react-redux";
 import local from "../../services/local";
 import i18n from "i18next";
 import { Layout, Menu } from "antd";
-import { UserOutlined, SettingOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  VideoCameraOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
 import "../../css/antd.css";
-const { Header, Content } = Layout;
+const { Header, Content, Sider } = Layout;
 const propTypes = {
   children: PropTypes.node,
 };
@@ -35,37 +39,49 @@ class DefaultHeader extends Component {
     // console.log(isShowModalLogout);
 
     return (
-      <Header style={{ position: "fixed", zIndex: 1, width: "100%" }}>
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          // defaultSelectedKeys={["2"]}
+      <>
+        {/* <Header
+          className="site-layout-sub-header-background"
+          style={{ padding: 0 }}
+        /> */}
+        <Sider
+          style={{ paddingTop: 64 }}
+          breakpoint="lg"
+          collapsedWidth="0"
+          onBreakpoint={(broken) => {
+            console.log(broken);
+          }}
+          onCollapse={(collapsed, type) => {
+            console.log(collapsed, type);
+          }}
         >
-          <Menu.Item key="1">
-            <Link to="dashboard">{i18n.t("home")}</Link>
-          </Menu.Item>
-          <Menu.Item key="2">nav 2</Menu.Item>
-          <Menu.Item key="3">nav 3</Menu.Item>
-          <SubMenu
-            key="SubMenu"
-            icon={<SettingOutlined />}
-            title="Navigation Three - Submenu"
+          <Menu
+            theme="dark"
+            mode="inline"
+            // defaultSelectedKeys={["4"]}
           >
-            <Menu.ItemGroup title="Item 1">
-              <Menu.Item key="setting:1">Option 1</Menu.Item>
-              <Menu.Item key="setting:2">Option 2</Menu.Item>
-            </Menu.ItemGroup>
-            <Menu.ItemGroup title="Item 2">
-              <Menu.Item key="setting:3">Option 3</Menu.Item>
-              <Menu.Item key="setting:4">Option 4</Menu.Item>
-            </Menu.ItemGroup>
-          </SubMenu>
-          <Menu.Item key="5">nav 2</Menu.Item>
-          <Menu.Item key="as" className="pull-right">
-            <UserOutlined />
-          </Menu.Item>
-        </Menu>
-      </Header>
+            <Menu.Item key="1" icon={<UserOutlined />}>
+              nav 1
+            </Menu.Item>
+            <Menu.Item key="2" icon={<VideoCameraOutlined />}>
+              nav 2
+            </Menu.Item>
+            <Menu.Item key="3" icon={<UploadOutlined />}>
+              nav 3
+            </Menu.Item>
+            <Menu.Item key="4" icon={<UserOutlined />}>
+              nav 4
+            </Menu.Item>
+          </Menu>
+        </Sider>
+        <Header
+          style={{ position: "fixed", zIndex: 1, width: "100%" }}
+          className="site-layout-sub-header-background"
+          // style={{ padding: 0 }}
+        >
+          <div className="logo">Logo</div>
+        </Header>
+      </>
     );
   }
 }
