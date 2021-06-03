@@ -33,7 +33,7 @@ request.request = async (url, data, headers, method = "POST") => {
     method, // or 'PUT'
     body: JSON.stringify(data), // data can be `string` or {object}!
     headers: {
-      // "Content-Type": "application/json; charset=UTF-8",
+       "Content-Type": "application/json, charset=UTF-8",
       // Authorization: `Bearer ${Local.get("session") || "customer"}`,
       // device: JSON.stringify(deviceDetector.parse(navigator.userAgent)),
     },

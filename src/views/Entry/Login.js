@@ -16,7 +16,7 @@ const Login = (props) => {
       // alert(username + password);
       setLoggingIn(true);
       let rs = await apis.login({
-        phonenumber: "0966848122",
+        phonenumber: "0966848112",
         password: "12345678",
       });
       console.log(rs);

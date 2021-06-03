@@ -1,7 +1,7 @@
 let config = {
   // config host for be
-  // host: "http://localhost:1338",
-  host: "http://2c3274100d8a.ngrok.io",
+  // host: "http://localhost:44310",
+  host: "http://03862f9f1ab3.ngrok.io",
   debug: true,
 };
 export default config;
