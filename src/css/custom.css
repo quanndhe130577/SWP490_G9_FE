@@ -1,0 +1,23 @@
+/* @import "./antd.css"; */
+.jumbotron {
+  min-height: 100vh;
+  background-color: white;
+}
+.border {
+  border: 3px solid rgb(83, 83, 83);
+  border-radius: 5px;
+}
+.con-login {
+  display: flex;
+  justify-content: center;
+  background-color: #e9ecef;
+  padding: 2em 0em;
+}
+.pull-right {
+  float: right;
+}
+.logo {
+  color: #fff;
+  font-weight: bolder;
+  font-size: large;
+}
