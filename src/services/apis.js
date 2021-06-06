@@ -5,7 +5,7 @@ var apis = {};
 var path = {
   //login
   // login: "/user/loginWithPwd",
-  login: "/api/test/login",
+  login: "/api/login",
   logout: "/api/user/logout",
   register: "/api/register",
 };

@@ -67,7 +67,7 @@ const Login = (props) => {
                 submitted={submitted}
               />
               <div className="form-group">
-                <button className="btn btn-primary" onClick={handleSubmit()}>
+                <button className="btn btn-primary" onClick={handleSubmit}>
                   {loggingIn ? (
                     <>
                       <span
