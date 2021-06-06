@@ -3,6 +3,9 @@
   min-height: 100vh;
   /* background-color: rgb(116, 114, 114); */
   background-color: white;
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }
 .border {
   border: 3px solid rgb(83, 83, 83);
@@ -25,4 +28,14 @@
 }
 .default-layout {
   margin: 0.5em;
+}
+.image-login {
+  width: 50%;
+  height: auto;
+}
+@media only screen and (max-width: 768px) {
+  .image-login {
+    width: 100%;
+    height: auto;
+  }
 }

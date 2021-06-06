@@ -8,11 +8,12 @@ var path = {
   login: "/api/login",
   logout: "/api/user/logout",
   register: "/api/register",
+  getAllRole: "/api/role/get-all"
 };
 
 Object.keys(path).forEach(function (key) {
-  apis[key] = async function (data) {
-    let result = await request.request(path[key], data);
+  apis[key] = async function (data, method = "POST") {
+    let result = await request.request(path[key], data, {}, method);
     return result;
   };
 }, this);

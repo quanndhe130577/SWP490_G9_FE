@@ -6,8 +6,10 @@ import { useDispatch } from 'react-redux';
 import apis from "../../services/apis";
 import helper from "../../services/helper";
 import local from "../../services/local"
+// import logo from "assets/image/bannerVn.png"
+
 const Login = (props) => {
-  const [phonenumber, setphonenumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [submitted, setsubmitted] = useState(false);
   const [loggingIn, setLoggingIn] = useState(false);
@@ -17,16 +19,16 @@ const Login = (props) => {
     try {
       setLoggingIn(true);
       let rs = await apis.login({
-        phonenumber, password
+        phoneNumber, password
       });
       console.log(rs);
       if (rs && rs.statusCode === 200) {
         local.set('session', rs.data.token);
-        local.set('userInfo', JSON.stringify(rs.data.userInfo));
+        local.set('user', JSON.stringify(rs.data));
         dispatch({
           type: 'SET_USER_INFO',
           token: rs.data.token,
-          userInfo: rs.data.userInfo
+          user: rs.data.user
 
         })
 
@@ -43,46 +45,53 @@ const Login = (props) => {
   };
 
   return (
-    <div className="jumbotron ">
-      <div className="container border con-login">
-        <div className="col-sm-6 col-md-6 ">
-          <div className="">
-            <h2>{i18n.t("Login")}</h2>
-            <div  >
-              <Widgets.Text
-                required={true}
-                label={i18n.t("phonenumber")}
-                value={phonenumber}
-                onChange={(e) => setphonenumber(e.target.value)}
-                submitted={submitted}
-              />
+    <div className="jumbotron">
+      <div className=" ">
+        <div className=" ">
+          <div className="col-sm-12 col-md-12 " style={{ textAlign: 'center' }} >
+            <img src="assets/image/bannerVn.png"
+              className="image-login" />
+          </div>
 
-              <Widgets.Text
-                type="password"
-                required={true}
-                label={i18n.t("Password")}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                submitted={submitted}
-              />
-              <div className="form-group">
-                <button className="btn btn-primary" onClick={handleSubmit}>
-                  {loggingIn ? (
-                    <>
-                      <span
-                        class="spinner-border spinner-border-sm"
-                        role="status"
-                        aria-hidden="true"
-                      ></span>
-                      {i18n.t("loading")}...
+          <div className="con-login  border container">
+            <div className="col-sm-6 col-md-6 ">
+              <h2>{i18n.t("Login")}</h2>
+              <div  >
+                <Widgets.Text
+                  required={true}
+                  label={i18n.t("phoneNumber")}
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  submitted={submitted}
+                />
+
+                <Widgets.Text
+                  type="password"
+                  required={true}
+                  label={i18n.t("Password")}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  submitted={submitted}
+                />
+                <div className="form-group">
+                  <button className="btn btn-primary" onClick={handleSubmit}>
+                    {loggingIn ? (
+                      <>
+                        <span
+                          class="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        {i18n.t("loading")}...
                     </>
-                  ) : (
-                    <span>{i18n.t("Login")}</span>
-                  )}
-                </button>
-                <Link to="/register" className="btn btn-link">
-                  {i18n.t("Register")}
-                </Link>
+                    ) : (
+                      <span>{i18n.t("Login")}</span>
+                    )}
+                  </button>
+                  <Link to="/register" className="btn btn-link">
+                    {i18n.t("Register")}
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

@@ -68,6 +68,6 @@ class DefaultLayout extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { userInfo: state.userInfo.userInfo, token: state.userInfo.token };
+  return { user: state.user.user, token: state.user.token };
 };
 export default connect(mapStateToProps)(DefaultLayout);

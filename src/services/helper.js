@@ -40,4 +40,13 @@ const Toast = (type, content) => {
     )
 }
 
+helper.renameKey = (obj, old_key, new_key) => {
+    if (obj[old_key])
+        if (old_key !== new_key) {
+            Object.defineProperty(obj, new_key,
+                Object.getOwnPropertyDescriptor(obj, old_key));
+            delete obj[old_key];
+        }
+}
+
 export default helper;

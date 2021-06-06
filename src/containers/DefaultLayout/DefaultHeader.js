@@ -93,6 +93,6 @@ DefaultHeader.propTypes = propTypes;
 DefaultHeader.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => {
-  return { userInfo: state.userInfo };
+  return { user: state.user };
 };
 export default connect(mapStateToProps)(DefaultHeader);

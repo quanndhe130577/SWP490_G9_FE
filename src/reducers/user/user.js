@@ -1,6 +1,6 @@
 const initialState = {
     token: "",
-    userInfo: {}
+    user: {}
 }
 
 export default function (state = initialState, action) {
@@ -9,7 +9,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 token: action.token,
-                userInfo: action.userInfo
+                user: action.user
 
             };
         case 'SET_DATA':
