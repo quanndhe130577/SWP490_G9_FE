@@ -76,14 +76,14 @@ request.request = async (url, data, headers, method = "POST") => {
       //   break;
       case 403:
         Swal.fire({
-          title: i18next.t("forbidden"),
+          title: i18next.t(rs.message || "forbidden"),
           text: "You don't have permission",
           icon: "error",
           confirmButtonText: "OK",
         });
         break;
       case 500:
-        helper.toast("error", rs.errorMsg || i18next.t("internalServerError"));
+        helper.toast("error", i18next.t(rs.message || "internalServerError"));
         break;
       case 200:
 
@@ -92,25 +92,25 @@ request.request = async (url, data, headers, method = "POST") => {
         } else {
           helper.toast(
             "error",
-            rs.errorMsg || i18next.t("internalServerError")
+            i18next.t(rs.message || "internalServerError")
           );
           break;
         }
       case 404:
-        helper.toast("error", rs.errorMsg || i18next.t("dataNotFound"));
+        helper.toast("error", i18next.t(rs.message || "dataNotFound"));
         break;
       case 400:
         if (rs.code && rs.code == "E_MISSING_OR_INVALID_PARAMS") {
-          helper.toast("error", "Invalid parameters");
+          helper.toast("error", rs.message || "Invalid parameters");
         } else {
-          helper.toast("error", rs.errorMsg || i18next.t("badRequest"));
+          helper.toast("error", i18next.t(rs.message || "badRequest"));
         }
         break;
       default:
         throw rs;
     }
   } catch (err) {
-    helper.toast("error", i18next.t("internalServerError"));
+    helper.toast("error", i18next.t(rs.message || "internalServerError"));
     console.log("res", res, err);
     throw err;
   }

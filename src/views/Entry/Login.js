@@ -15,7 +15,6 @@ const Login = (props) => {
 
   const handleSubmit = async () => {
     try {
-      // e.preventDefault();
       setLoggingIn(true);
       let rs = await apis.login({
         phonenumber, password
