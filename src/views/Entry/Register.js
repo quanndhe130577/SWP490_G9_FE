@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Widgets from "../../schema/Widgets";
 import i18n from "i18next";
+import apis from "../../services/apis";
 
 const Login = () => {
   const [user, setUser] = useState({});
@@ -9,8 +10,26 @@ const Login = () => {
   const [submitted, setsubmitted] = useState(false);
   const [registering, setRegistering] = useState(false);
 
-  const handleChange = () => {};
-  const handleSubmit = () => {};
+  const handleChange = (value, pro) => {
+    setUser(prevState => ({
+      ...prevState,
+      [pro]: value
+    }))
+  };
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      debugger
+      let rs = await apis.register(user)
+      if (rs && rs.statusCode === 200) {
+
+        debugger
+      }
+
+    } catch (error) {
+
+    }
+  };
   return (
     <div className="jumbotron ">
       <div className="container border con-login">
@@ -30,12 +49,18 @@ const Login = () => {
                 onChange={(e) => handleChange(e.target.value, "lastName")}
                 submitted={submitted}
               />
+              <Widgets.Text
+                label={i18n.t("identifyCode")}
+                value={user.identifyCode}
+                onChange={(e) => handleChange(e.target.value, "identifyCode")}
+                submitted={submitted}
+              />
 
               <Widgets.Text
                 required={true}
-                label={i18n.t("Username")}
-                value={user.username}
-                onChange={(e) => handleChange(e.target.value, "username")}
+                label={i18n.t("phoneNumber")}
+                value={user.phoneNumber}
+                onChange={(e) => handleChange(e.target.value, "phoneNumber")}
                 submitted={submitted}
               />
 

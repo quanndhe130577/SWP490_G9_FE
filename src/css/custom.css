@@ -1,7 +1,8 @@
 /* @import "./antd.css"; */
 .jumbotron {
   min-height: 100vh;
-  background-color: white;
+  background-color: rgb(116, 114, 114);
+  /* background-color: white; */
 }
 .border {
   border: 3px solid rgb(83, 83, 83);
@@ -10,8 +11,9 @@
 .con-login {
   display: flex;
   justify-content: center;
-  background-color: #e9ecef;
+  /* background-color: #e9ecef; */
   padding: 2em 0em;
+  background-color: rgb(116, 114, 114);
 }
 .pull-right {
   float: right;
@@ -20,4 +22,7 @@
   color: #fff;
   font-weight: bolder;
   font-size: large;
+}
+.default-layout {
+  margin: 0.5em;
 }

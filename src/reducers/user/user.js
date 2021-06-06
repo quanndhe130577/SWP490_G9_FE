@@ -1,7 +1,6 @@
 const initialState = {
-    data: {},
-    languages: [],
-    configs: {}
+    token: "",
+    userInfo: {}
 }
 
 export default function (state = initialState, action) {
@@ -9,7 +8,9 @@ export default function (state = initialState, action) {
         case 'SET_USER_INFO':
             return {
                 ...state,
-                data: action.data
+                token: action.token,
+                userInfo: action.userInfo
+
             };
         case 'SET_DATA':
             return {

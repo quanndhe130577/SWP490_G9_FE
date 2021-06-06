@@ -18,6 +18,6 @@
 }
 .ant-layout-content {
   /* padding: 64px 0; */
-  /* min-height: calc(100vh - 128px) !important; */
-  min-height: 100vh;
+  min-height: calc(100vh - 126px);
+  /* min-height: 100vh; */
 }

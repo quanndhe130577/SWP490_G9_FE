@@ -9,6 +9,7 @@ import DefaultFooter from "./DefaultFooter";
 import DefaultHeader from "./DefaultHeader";
 // import { UserOutlined, VideoCameraOutlined } from '@ant-design/icons'
 import { Layout, Breadcrumb } from "antd";
+import local from "../../services/local"
 
 const { Header, Content, Sider } = Layout;
 
@@ -17,41 +18,48 @@ class DefaultLayout extends Component {
     super(props);
     this.state = {
       loading: false,
-      nav: [],
-      skip: 0,
+
     };
+  }
+  async componentDidMount() {
+    try {
+      var session = await local.get('session');
+      if (!session) {
+        this.props.history.replace('/login');
+      }
+    } catch (err) {
+      console.log('loi roi , err here', err)
+      this.props.history.replace('/login');
+    }
   }
 
   render() {
-    if (this.state.loading) return <p>{i18next.t("PROCESSING")}</p>;
+    if (this.state.loading)
+      return <p>{i18next.t("PROCESSING")}</p>;
     return (
       <Layout>
         <DefaultHeader />
         <Content className="site-layout" style={{ marginTop: 64 }}>
-          <Breadcrumb style={{ margin: "16px 0" }}>
-            <Container>
-              <Switch>
-                {routes.map((route, idx) => {
-                  return route.component ? (
-                    <Route
-                      key={idx}
-                      path={route.path}
-                      exact={route.exact}
-                      name={route.name}
-                      render={(props) => <route.component {...props} />}
-                    />
-                  ) : null;
-                })}
-                <Redirect from="/" to="/login" />
-              </Switch>
-            </Container>
-          </Breadcrumb>
-          {/* <div
-            className="site-layout-background"
-            style={{ padding: 24, minHeight: 380 }}
-          >
-            Content
-          </div> */}
+
+
+          <div className="default-layout">
+            <Switch>
+              {routes.map((route, idx) => {
+                return route.component ? (
+                  <Route
+                    key={idx}
+                    path={route.path}
+                    exact={route.exact}
+                    name={route.name}
+                    render={(props) => <route.component {...props} />}
+                  />
+                ) : null;
+              })}
+              <Redirect from="/" to="/login" />
+            </Switch>
+          </div>
+
+
         </Content>
         <DefaultFooter />
       </Layout>
@@ -60,6 +68,6 @@ class DefaultLayout extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { userInfo: state.userInfo };
+  return { userInfo: state.userInfo.userInfo, token: state.userInfo.token };
 };
 export default connect(mapStateToProps)(DefaultLayout);

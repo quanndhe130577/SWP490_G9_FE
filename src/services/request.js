@@ -33,7 +33,7 @@ request.request = async (url, data, headers, method = "POST") => {
     method, // or 'PUT'
     body: JSON.stringify(data), // data can be `string` or {object}!
     headers: {
-      // "Content-Type": "application/json; charset=UTF-8",
+      "Content-Type": "application/json; charset=UTF-8",
       // Authorization: `Bearer ${Local.get("session") || "customer"}`,
       // device: JSON.stringify(deviceDetector.parse(navigator.userAgent)),
     },
@@ -47,6 +47,7 @@ request.request = async (url, data, headers, method = "POST") => {
   try {
     let rs = await res.json();
     if (Config.debug) console.log(`[RESPONSE]`, url, rs);
+
     switch (res.status) {
       // case 401:
       //   return Swal.fire({
@@ -85,7 +86,8 @@ request.request = async (url, data, headers, method = "POST") => {
         helper.toast("error", rs.errorMsg || i18next.t("internalServerError"));
         break;
       case 200:
-        if (rs && rs.errorCode === 0) {
+
+        if (rs && rs.statusCode === 200) {
           return rs;
         } else {
           helper.toast(

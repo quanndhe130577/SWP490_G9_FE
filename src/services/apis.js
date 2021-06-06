@@ -7,6 +7,7 @@ var path = {
   // login: "/user/loginWithPwd",
   login: "/api/test/login",
   logout: "/api/user/logout",
+  register: "/api/register",
 };
 
 Object.keys(path).forEach(function (key) {
