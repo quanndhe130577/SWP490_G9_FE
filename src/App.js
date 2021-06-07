@@ -8,7 +8,7 @@ import { DefaultLayout } from "./containers";
 // Pages
 import Login from "./views/Entry/Login";
 import Register from "./views/Entry/Register";
-import ChangeUserInfo from "./views/Entry/ChangeUserInfo";
+import ChangeUserInfo from "./views/Entry/ChangeUserInfo/ChangeUserInfo";
 
 class App extends Component {
   render() {
@@ -22,7 +22,11 @@ class App extends Component {
             name="Register Page"
             component={Register}
           />
-          <Route path="/changeUserInfo" name="ChangeUserInfo" component={ChangeUserInfo} />
+          <Route
+            path="/changeUserInfo/:action"
+            name="ChangeUserInfo"
+            component={ChangeUserInfo}
+          />
           <Route path="/" name="Home" component={DefaultLayout} />
         </Switch>
       </HashRouter>
