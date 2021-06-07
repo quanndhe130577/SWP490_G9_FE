@@ -23,6 +23,8 @@
     "i18next": "^20.3.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
+    "react-avatar-edit": "^1.0.0",
+    "react-datepicker": "^4.1.1",
     "react-dom": "^17.0.2",
     "react-loadable": "^5.5.0",
     "react-moment": "^1.1.1",
