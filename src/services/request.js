@@ -47,7 +47,6 @@ request.request = async (url, data, headers, method = "POST") => {
   try {
     let rs = await res.json();
     if (Config.debug) console.log(`[RESPONSE]`, url, rs);
-
     switch (res.status) {
       // case 401:
       //   return Swal.fire({
@@ -86,31 +85,27 @@ request.request = async (url, data, headers, method = "POST") => {
         helper.toast("error", i18next.t(rs.message || "internalServerError"));
         break;
       case 200:
-
         if (rs && rs.statusCode === 200) {
           return rs;
         } else {
-          helper.toast(
-            "error",
-            i18next.t(rs.message || "internalServerError")
-          );
+          helper.toast("error", i18next.t(rs.message || "internalServerError"));
           break;
         }
       case 404:
         helper.toast("error", i18next.t(rs.message || "dataNotFound"));
         break;
       case 400:
-        if (rs.code && rs.code == "E_MISSING_OR_INVALID_PARAMS") {
-          helper.toast("error", rs.message || "Invalid parameters");
-        } else {
-          helper.toast("error", i18next.t(rs.message || "badRequest"));
-        }
+        // if (rs.code && rs.code == "E_MISSING_OR_INVALID_PARAMS") {
+        //   helper.toast("error", rs.message || "Invalid parameters");
+        // } else {
+        helper.toast("error", i18next.t(rs.message || "badRequest"));
+        // }
         break;
       default:
         throw rs;
     }
   } catch (err) {
-    helper.toast("error", i18next.t(rs.message || "internalServerError"));
+    helper.toast("error", i18next.t("internalServerError"));
     console.log("res", res, err);
     throw err;
   }

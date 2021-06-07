@@ -1,4 +1,7 @@
 /* @import "./antd.css"; */
+html {
+  /* color: #6c757d !important; */
+}
 .jumbotron {
   min-height: 100vh;
   /* background-color: rgb(116, 114, 114); */
@@ -38,4 +41,19 @@
     width: 100%;
     height: auto;
   }
+}
+.div-login {
+  border-radius: 10px;
+  border: 3px solid rgb(36, 121, 169);
+  padding-top: 40px;
+}
+.image {
+  width: 100%;
+  height: auto;
+}
+.bold {
+  font-weight: bold;
+}
+.block {
+  display: block;
 }

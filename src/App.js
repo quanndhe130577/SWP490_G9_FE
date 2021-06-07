@@ -7,7 +7,7 @@ import "antd/dist/antd.css";
 import { DefaultLayout } from "./containers";
 // Pages
 import Login from "./views/Entry/Login";
-import Register from "./views/Entry/Register";
+import Register from "./views/Entry/Register/Register";
 import ChangeUserInfo from "./views/Entry/ChangeUserInfo/ChangeUserInfo";
 
 class App extends Component {

@@ -8,5 +8,14 @@
     "Register":"Đăng ký",
     "noData": "Không có dữ liệu",
     "Loading":"Đang tải",
-    "phoneNumber":"Số điện thoại"
+    "phoneNumber":"Số điện thoại",
+    "or": "hoặc",
+    "registerAccount":"Đăng ký tài khoản",
+    "cancel":"Hủy",
+    "next":"Tiếp theo",
+    "firstName":"Họ",
+    "lastName":"Tên",
+    "identifyCode":"CCCD/CMND",
+    "youAre":"Bạn là?",
+    "pleaseChoose":"Vui lòng chọn"
 }
