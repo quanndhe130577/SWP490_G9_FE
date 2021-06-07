@@ -23,7 +23,7 @@ export default class Step1 extends Component {
         </Col>
         <Col md="6">
           <label>
-            bạn ko nhận được mã?<span> gửi lại</span>
+            Bạn ko nhận được mã?<span> gửi lại</span>
           </label>
         </Col>
       </Row>

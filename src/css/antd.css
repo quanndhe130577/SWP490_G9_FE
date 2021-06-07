@@ -10,6 +10,7 @@
 }
 .ant-layout-header {
   padding: 0 1em !important;
+  padding-left: 35px !important;
 }
 .ant-layout-footer {
   position: fixed;
@@ -20,4 +21,8 @@
   /* padding: 64px 0; */
   min-height: calc(100vh - 126px);
   /* min-height: 100vh; */
+}
+.ant-layout-sider-zero-width-trigger {
+  top: 8px !important;
+  z-index: 2 !important;
 }

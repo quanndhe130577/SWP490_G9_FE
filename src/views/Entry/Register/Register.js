@@ -139,7 +139,7 @@ const Login = () => {
                 </>
               )}
 
-              <div className="form-group">
+              <div className="form-group d-flex">
                 {step === 1 && (
                   <button
                     className="btn btn-info mr-1"

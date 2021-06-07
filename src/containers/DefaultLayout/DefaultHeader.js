@@ -11,7 +11,7 @@ import {
   UserOutlined,
   VideoCameraOutlined,
   UploadOutlined,
-  SettingOutlined
+  SettingOutlined,
 } from "@ant-design/icons";
 import "../../css/antd.css";
 const { Header, Content, Sider } = Layout;
@@ -41,7 +41,6 @@ class DefaultHeader extends Component {
 
     return (
       <>
-
         <Sider
           style={{ paddingTop: 64 }}
           breakpoint="lg"
@@ -53,18 +52,17 @@ class DefaultHeader extends Component {
             console.log(collapsed, type);
           }}
         >
-          <Menu
-            theme="dark"
-            mode="inline"
-          >
-            <SubMenu key="SubMenu" icon={<SettingOutlined />} title="quản lí nhân viên">
-
+          <Menu theme="dark" mode="inline">
+            <SubMenu
+              key="SubMenu"
+              icon={<SettingOutlined />}
+              title="quản lí nhân viên"
+            >
               <Menu.Item key="setting:1">thêm nhân viên</Menu.Item>
               <Menu.Item key="setting:2">Option 2</Menu.Item>
 
               <Menu.Item key="setting:3">Option 3</Menu.Item>
               <Menu.Item key="setting:4">Option 4</Menu.Item>
-
             </SubMenu>
             <Menu.Item key="2" icon={<VideoCameraOutlined />}>
               nav 2
@@ -80,9 +78,10 @@ class DefaultHeader extends Component {
         <Header
           style={{ position: "fixed", zIndex: 1, width: "100%" }}
           className="site-layout-sub-header-background"
-
         >
-          <div className="logo">Logo</div>
+          <div className="logo">
+            <img src="assets/image/favicon.png" style={{ width: 50 }} />
+          </div>
         </Header>
       </>
     );

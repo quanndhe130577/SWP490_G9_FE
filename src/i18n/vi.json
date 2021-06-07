@@ -17,5 +17,6 @@
     "lastName":"Tên",
     "identifyCode":"CCCD/CMND",
     "youAre":"Bạn là?",
-    "pleaseChoose":"Vui lòng chọn"
+    "pleaseChoose":"Vui lòng chọn",
+    "previous":"Quay lại"
 }
