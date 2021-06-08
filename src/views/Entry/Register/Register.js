@@ -76,7 +76,7 @@ const Login = () => {
       <div className="container border con-login">
         <div className="col-sm-6 col-md-6 ">
           <div className="">
-            <h2>{textHeaders()}</h2>
+            <h2 style={{ textAlign: "center" }}>{textHeaders()}</h2>
             <div name="form">
               {step === 0 && (
                 <Step0
@@ -87,8 +87,6 @@ const Login = () => {
               {step === 1 && (
                 <Step1
                   phoneNumber={user.phoneNumber}
-                  // value={user.OTP}
-                  // onChange={(e) => handleChange(e.target.value, "phoneNumber")}
                 />
               )}
 
@@ -100,46 +98,11 @@ const Login = () => {
                     submitted={submitted}
                     items={roles}
                   />
-                  {/* <Widgets.Text
-                    label={i18n.t("First Name")}
-                    value={user.firstName}
-                    onChange={(e) => handleChange(e.target.value, "firstName")}
-                    submitted={submitted}
-                  />
-                  <Widgets.Text
-                    label={i18n.t("Last Name")}
-                    value={user.lastName}
-                    onChange={(e) => handleChange(e.target.value, "lastName")}
-                    submitted={submitted}
-                  />
-                  <Widgets.Text
-                    label={i18n.t("identifyCode")}
-                    value={user.identifyCode}
-                    onChange={(e) =>
-                      handleChange(e.target.value, "identifyCode")
-                    }
-                    submitted={submitted}
-                  />
-                  <Widgets.Select
-                    label={i18n.t("role")}
-                    value={user.roleNormalizedName}
-                    onChange={(e) => handleChange(e, "RoleNormalizedName")}
-                    submitted={submitted}
-                    items={roles}
-                  />
 
-                  <Widgets.Text
-                    type="password"
-                    required={true}
-                    label={i18n.t("Password")}
-                    value={user.password}
-                    onChange={(e) => handleChange(e.target.value, "password")}
-                    submitted={submitted}
-                  /> */}
                 </>
               )}
 
-              <div className="form-group d-flex">
+              <div className="form-group d-flex justify-content-center">
                 {step === 1 && (
                   <button
                     className="btn btn-info mr-1"

@@ -15,10 +15,10 @@ export default class Step1 extends Component {
         <Col md="12">
           <Widgets.Text
             required={true}
-            label={i18n.t("OTP")}
+            // label={i18n.t("OTP")}
             value={value || "123456"}
             onChange={onChange}
-            // submitted={submitted}
+          // submitted={submitted}
           />
         </Col>
         <Col md="6">

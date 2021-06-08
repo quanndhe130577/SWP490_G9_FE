@@ -5,9 +5,12 @@ class Select extends Component {
     render() {
         const { value, label, required, isDisable, submitted, onChange, items } = this.props
         return (<div className={"form-group" + (submitted && !value ? " has-error" : "")}>
-            <label>
-                {label} {required ? <span>*</span> : ""}
-            </label>
+            {label &&
+                <label className="bold">
+                    {label} {required ? <span>*</span> : ""}
+                </label>
+            }
+
             <Input
                 type='select'
                 value={value}

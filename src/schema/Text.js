@@ -12,9 +12,11 @@ export default function Text({
 }) {
   return (
     <div className={"form-group" + (submitted && !value ? " has-error" : "")}>
-      <label className="bold">
-        {label} {required ? <span>*</span> : ""}
-      </label>
+      {label &&
+        <label className="bold">
+          {label} {required ? <span>*</span> : ""}
+        </label>}
+
       <input
         disabled={isDisable}
         type={type}

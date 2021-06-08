@@ -54,7 +54,7 @@ const Login = (props) => {
 
           <div className="con-login  border container">
             <div className="col-sm-4 col-md-4 ">
-              <h2>{i18n.t("Login")}</h2>
+              <h2 style={{ textAlign: "center" }}> {i18n.t("Login")}</h2>
               <div>
                 <Widgets.Text
                   required={true}
@@ -72,7 +72,7 @@ const Login = (props) => {
                   onChange={(e) => setPassword(e.target.value)}
                   submitted={submitted}
                 />
-                <div className="form-group d-flex">
+                <div className="form-group d-flex justify-content-center">
                   <button className="btn btn-info" onClick={handleSubmit}>
                     {loggingIn ? (
                       <>
