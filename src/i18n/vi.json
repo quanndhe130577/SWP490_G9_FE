@@ -18,5 +18,12 @@
     "identifyCode":"CCCD/CMND",
     "youAre":"Bạn là?",
     "pleaseChoose":"Vui lòng chọn",
-    "previous":"Quay lại"
+    "previous":"Quay lại",
+    "buyer":"Người mua",
+    "typeOfFish":"Loại cá",
+    "sellPrice":"Giá bán",
+    "seller":"Người bán",
+    "qtyOfFish":"Số lượng",
+    "basket":"Rổ"
+
 }

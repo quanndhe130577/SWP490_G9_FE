@@ -13,8 +13,8 @@ const WR = Loadable({
   loader: () => import("./views/User/WeightRecoder/WR"),
   loading: Loading,
 });
-const Test = Loadable({
-  loader: () => import("./views/User/Traders/Test"),
+const BuyFish = Loadable({
+  loader: () => import("./views/User/Traders/BuyFish/BuyFish"),
   loading: Loading,
 });
 const routes = [
@@ -29,9 +29,9 @@ const routes = [
     component: WR,
   },
   {
-    path: "/test",
-    name: "Test",
-    component: Test,
+    path: "/buyF",
+    name: "BuyFish",
+    component: BuyFish,
   },
 ];
 

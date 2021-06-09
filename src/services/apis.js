@@ -9,6 +9,7 @@ var path = {
   getAllRole: "/api/role/get-all",
   getOtp: "/api/otp/register",
   checkOtp: "/api/check-register-otp",
+  updateUser: "/api/update",
 };
 
 Object.keys(path).forEach(function (key) {

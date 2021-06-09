@@ -1,6 +1,6 @@
 let local = {};
 local.get = (key) => {
-    let t = localStorage.getItem(key);
+    let t = sessionStorage.getItem(key);
     try {
         return JSON.parse(t);
     } catch (err) {
@@ -9,9 +9,9 @@ local.get = (key) => {
 
 }
 local.set = (key, val) => {
-    localStorage.setItem(key, val);
+    sessionStorage.setItem(key, val);
 }
 local.clear = () => {
-    localStorage.clear();
+    sessionStorage.clear();
 }
 export default local;
