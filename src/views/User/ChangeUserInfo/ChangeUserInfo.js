@@ -3,6 +3,7 @@ import { HashRouter, Route, Switch, NavLink } from "react-router-dom";
 import NormalInfo from "./Components/NormalInfo";
 import ChangePhoneNumber from "./Components/ChangePhoneNumber";
 import ChangePassword from "./Components/ChangePassword";
+
 import "./ChangeUserInfo.css";
 
 class ChangeUserInfo extends Component {
@@ -24,13 +25,10 @@ class ChangeUserInfo extends Component {
       [name]: value,
     });
   };
-  submit(e) {
-    e.preventDefault();
-  }
 
   render() {
     return (
-      <div className="container mt-3">
+      <div className="mt-3">
         <div className="row">
           <div className="col-md-4 mb-3">
             <div className="list-group">

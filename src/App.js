@@ -22,11 +22,6 @@ class App extends Component {
             name="Register Page"
             component={Register}
           />
-          <Route
-            path="/changeUserInfo/:action"
-            name="ChangeUserInfo"
-            component={ChangeUserInfo}
-          />
           <Route path="/" name="Home" component={DefaultLayout} />
         </Switch>
       </HashRouter>

@@ -17,6 +17,10 @@ const Test = Loadable({
   loader: () => import("./views/User/Traders/Test"),
   loading: Loading,
 });
+const ChangeUserInfo = Loadable({
+  loader: () => import("./views/User/ChangeUserInfo/ChangeUserInfo"),
+  loading: Loading,
+});
 const routes = [
   {
     path: "/home",
@@ -32,6 +36,11 @@ const routes = [
     path: "/test",
     name: "Test",
     component: Test,
+  },
+  {
+    path: "/ChangeUserInfo/:action",
+    name: "ChangeUserInfo",
+    component: ChangeUserInfo,
   },
 ];
 

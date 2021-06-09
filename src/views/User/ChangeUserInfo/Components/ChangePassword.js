@@ -1,4 +1,9 @@
 import React, { Component } from "react";
+import cookie from "react-cookies";
+import axios from "axios";
+import helper from "../../../../services/helper";
+import local from "../../../../services/local";
+import Config from "../../../../services/config";
 
 class ChangePassword extends Component {
   constructor(props) {
@@ -7,8 +12,10 @@ class ChangePassword extends Component {
       comfirm: false,
       password: "",
       newPassword: "",
+      rePassword: "",
       otp: "",
     };
+    this.submit = this.submit.bind(this);
   }
   handleChange = (event) => {
     const target = event.target;
@@ -17,10 +24,25 @@ class ChangePassword extends Component {
       [name]: value,
     });
   };
-  submit = (e) => {
+  async submit(e) {
     e.preventDefault();
-    this.setState({ comfirm: true });
-  };
+    // this.setState({ comfirm: true });
+    let token = await cookie.load("token");
+    let rs = await axios.put(
+      `${Config.host}/api/change-password/${local.get("user").userID}`,
+      {
+        currentPassword: this.state.password,
+        newpassword: this.state.newPassword,
+        confirmPassword: this.state.rePassword,
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    if (rs.data.statusCode) {
+      helper.toast("success", "Cập nhật thành công");
+    }
+  }
 
   render() {
     return (
@@ -70,6 +92,8 @@ class ChangePassword extends Component {
               <input
                 type="password"
                 className="form-control col-md-8"
+                name="rePassword"
+                onChange={this.handleChange}
                 placeholder="Nhập lại mật khẩu mới"
                 required
               />
