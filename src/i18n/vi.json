@@ -23,7 +23,8 @@
     "typeOfFish":"Loại cá",
     "sellPrice":"Giá bán",
     "seller":"Người bán",
-    "qtyOfFish":"Số lượng",
-    "basket":"Rổ"
+    "qtyOfFish(Kg)":"Số lượng (Kg)",
+    "basket":"Rổ",
+    "pondOwner":"Chủ ao"
 
 }

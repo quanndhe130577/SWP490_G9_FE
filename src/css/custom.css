@@ -4,6 +4,7 @@ html {
 }
 button {
   cursor: pointer;
+  min-width: 100px !important;
 }
 .jumbotron {
   min-height: 100vh;
@@ -20,7 +21,7 @@ button {
 .con-login {
   display: flex;
   justify-content: center;
-  background-color: #e9ecef;
+  background-color: #eaf2f8;
   padding: 2em 0em;
   /* background-color: rgb(116, 114, 114); */
 }

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link, Pu } from "react-router-dom";
-import Widgets from "../../../schema/Widgets";
 import i18n from "i18next";
 import apis from "../../../services/apis";
 import Step0 from "./Step0";
@@ -16,11 +14,12 @@ const Login = (props) => {
     Avatar: null,
   });
   const [step, setStep] = useState(0);
-  const [submitted, setsubmitted] = useState(false);
-  const [registering, setRegistering] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  // const [registering, setRegistering] = useState(false);
   const [roles, setRoles] = useState([]);
 
   const handleChange = (value, pro) => {
+    if (submitted) setSubmitted(false);
     setUser((prevState) => ({
       ...prevState,
       [pro]: value,
@@ -28,6 +27,7 @@ const Login = (props) => {
   };
   const handleSubmit = async () => {
     try {
+      setSubmitted(true);
       if (!user.phoneNumber) {
         return helper.toast("error", i18n.t("Vui lòng điền số điện thoại"));
       } else if (step === 0) {
@@ -51,7 +51,7 @@ const Login = (props) => {
     }
   };
 
-  useEffect(async () => {
+  const fetchAllRole = async () => {
     // get all role
     let rs = await apis.getAllRole({}, "GET");
     if (rs && rs.statusCode === 200 && rs.data) {
@@ -63,6 +63,9 @@ const Login = (props) => {
       });
       setRoles(noAdmin);
     }
+  };
+  useEffect(() => {
+    fetchAllRole();
   }, []);
   const textHeaders = () => {
     let msg = "registerAccount";
@@ -74,21 +77,19 @@ const Login = (props) => {
     return i18n.t(msg);
   };
   return (
-    // <div className="jumbotron ">
-    //   <div className="container border con-login">
-    //     <div className="col-sm-6 col-md-6 ">
-    //       <div className="">
-    //         <h2 style={{ textAlign: "center" }}>{textHeaders()}</h2>
-
     <div className="jumbotron">
       <div className="div-login pt-0">
         <div className=" ">
           <div className="col-sm-12 col-md-12 " style={{ textAlign: "center" }}>
-            <img src="assets/image/bannerVn.png" className="image-login" />
+            <img
+              src="assets/image/bannerVn.png"
+              alt="banner"
+              className="image-login"
+            />
           </div>
 
           <div className="con-login  border container">
-            <div className="col-sm-4 col-md-4 ">
+            <div className="col-sm-6 col-md-6 ">
               <h2 style={{ textAlign: "center" }}> {textHeaders()}</h2>
               <div name="form">
                 {step === 0 && (
@@ -113,7 +114,7 @@ const Login = (props) => {
                 <div className="form-group d-flex justify-content-center">
                   {step === 1 && (
                     <button
-                      className="btn btn-info mr-1"
+                      className="btn btn-info mr-2"
                       onClick={() => setStep(0)}
                     >
                       {i18n.t("previous")}
@@ -121,7 +122,7 @@ const Login = (props) => {
                   )}
 
                   <button
-                    className="btn btn-info block mr-1"
+                    className="btn btn-info block mr-2"
                     onClick={handleSubmit}
                   >
                     {step === 0 || step === 1

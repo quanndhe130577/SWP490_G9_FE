@@ -2,11 +2,10 @@ import React, { Component } from "react";
 import { Avatar } from "antd";
 
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import local from "../../services/local";
-import i18n from "i18next";
+import apis from "../../services/apis";
 import { Layout, Menu } from "antd";
 import {
   UserOutlined,
@@ -15,7 +14,7 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import "../../css/antd.css";
-const { Header, Content, Sider } = Layout;
+const { Header, Sider } = Layout;
 const propTypes = {
   children: PropTypes.node,
 };
@@ -30,7 +29,7 @@ class DefaultHeader extends Component {
 
   onLogoutClick() {
     window.location.href = "";
-    api.logout();
+    apis.logout();
     local.clear();
   }
 

@@ -28,7 +28,7 @@ export default class Step1 extends Component {
         <Widgets.Select
           label={i18n.t("youAre")}
           value={user.roleNormalizedName}
-          onChange={(e) => handleChange(e, "RoleNormalizedName")}
+          onChange={(e) => handleChange(e, "roleNormalizedName")}
           submitted={submitted}
           items={items}
         />

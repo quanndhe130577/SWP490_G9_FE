@@ -12,13 +12,14 @@ import cookie from "react-cookies";
 const Login = (props) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
-  const [submitted, setsubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const [loggingIn, setLoggingIn] = useState(false);
   const dispatch = useDispatch();
 
   const handleSubmit = async () => {
     try {
       setLoggingIn(true);
+      setSubmitted(true)
       let rs = await apis.login({
         phoneNumber,
         password,
@@ -45,7 +46,9 @@ const Login = (props) => {
       setLoggingIn(false);
     }
   };
-
+  const updateSubmitted = () => {
+    if (submitted) setSubmitted(true)
+  }
   return (
     <div className="jumbotron">
       <div className="div-login">
@@ -62,7 +65,10 @@ const Login = (props) => {
                   required={true}
                   label={i18n.t("phoneNumber")}
                   value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e)}
+                  onChange={(e) => {
+                    setPhoneNumber(e);
+                    updateSubmitted()
+                  }}
                   submitted={submitted}
                 />
 
@@ -71,7 +77,10 @@ const Login = (props) => {
                   required={true}
                   label={i18n.t("Password")}
                   value={password}
-                  onChange={(e) => setPassword(e)}
+                  onChange={(e) => {
+                    setPassword(e)
+                    updateSubmitted()
+                  }}
                   submitted={submitted}
                 />
                 <div className="form-group d-flex justify-content-center">
@@ -89,7 +98,7 @@ const Login = (props) => {
                       <span>{i18n.t("Login")}</span>
                     )}
                   </button>
-                  <div className="ml-2">
+                  <div className="ml-3">
                     <label>{i18n.t("or")}</label>
                     <Link to="/register" className="btn btn-link">
                       {i18n.t("Register")}
