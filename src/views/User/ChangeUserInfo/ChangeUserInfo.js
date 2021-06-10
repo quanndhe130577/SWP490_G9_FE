@@ -27,29 +27,26 @@ class ChangeUserInfo extends Component {
     });
   };
 
-  render() {
-    const renderTitle = () => {
-      return (
-        <div className="d-flex">
-          <h3 className="mr-5">Đổi thông tin người dùng</h3>
-          {/* <Moment format="DD/MM/YYYY" className="mt-2">
-            {new Date()}
-          </Moment> */}
-        </div>
-      );
-    };
+  renderTitle = () => {
     return (
-      <Card title={renderTitle()}>
+      <div className="d-flex">
+        <h3 className="mr-5">Đổi thông tin người dùng</h3>
+      </div>
+    );
+  };
+  render() {
+    return (
+      <Card title={this.renderTitle()}>
         <div style={{ minHeight: "50em" }}>
           <Tabs defaultActiveKey="1" centered>
             <Tabs.TabPane tab="Đổi thông tin cơ bản" key="1">
-              <NormalInfo></NormalInfo>
+              <NormalInfo />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Đổi số điện thoại" key="2">
-              <ChangePhoneNumber></ChangePhoneNumber>
+              <ChangePhoneNumber />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Đổi mật khẩu" key="3">
-              <ChangePassword></ChangePassword>
+              <ChangePassword />
             </Tabs.TabPane>
           </Tabs>
           {/* <div className="row">
