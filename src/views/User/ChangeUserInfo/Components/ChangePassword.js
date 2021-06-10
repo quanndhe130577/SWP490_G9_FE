@@ -4,6 +4,7 @@ import axios from "axios";
 import helper from "../../../../services/helper";
 import local from "../../../../services/local";
 import Config from "../../../../services/config";
+import Widgets from "../../../../schema/Widgets";
 
 class ChangePassword extends Component {
   constructor(props) {
@@ -20,6 +21,11 @@ class ChangePassword extends Component {
   handleChange = (event) => {
     const target = event.target;
     const { name, value } = target;
+    this.setState({
+      [name]: value,
+    });
+  };
+  handleChange2 = (value, name) => {
     this.setState({
       [name]: value,
     });
@@ -49,7 +55,7 @@ class ChangePassword extends Component {
       <form className="container" onSubmit={this.submit}>
         {this.state.comfirm ? (
           <div className="row mb-2">
-            <label className="form-label text-muted col-md-4">Mã OTP</label>
+            {/* <label className="form-label text-muted col-md-4">Mã OTP</label>
             <input
               type="text"
               className="form-control col-md-8"
@@ -57,12 +63,18 @@ class ChangePassword extends Component {
               onChange={this.handleChange}
               placeholder="Mã OTP"
               required
+            /> */}
+            <Widgets.Text
+              type="text"
+              required={true}
+              label={"Mã OTP"}
+              onChange={(e) => this.handleChange2(e, "otp")}
             />
           </div>
         ) : (
-          <>
-            <div className="row mb-2">
-              <label className="form-label text-muted col-md-4">Mật khẩu</label>
+          <div className="row justify-content-center">
+            <div className="col-md-8 mb-2">
+              {/* <label className="form-label text-muted col-md-4">Mật khẩu</label>
               <input
                 type="password"
                 className="form-control col-md-8"
@@ -70,10 +82,16 @@ class ChangePassword extends Component {
                 onChange={this.handleChange}
                 placeholder="Mật khẩu"
                 required
+              /> */}
+              <Widgets.Text
+                type="password"
+                required={true}
+                label={"Mật khẩu"}
+                onChange={(e) => this.handleChange2(e, "password")}
               />
             </div>
-            <div className="row mb-2">
-              <label className="form-label text-muted col-md-4">
+            <div className="col-md-8 mb-2">
+              {/* <label className="form-label text-muted col-md-4">
                 Mật khẩu mới
               </label>
               <input
@@ -83,10 +101,16 @@ class ChangePassword extends Component {
                 onChange={this.handleChange}
                 placeholder="Mật khẩu mới"
                 required
+              /> */}
+              <Widgets.Text
+                type="password"
+                required={true}
+                label={"Mật khẩu mới"}
+                onChange={(e) => this.handleChange2(e, "newPassword")}
               />
             </div>
-            <div className="row mb-2">
-              <label className="form-label text-muted col-md-4">
+            <div className="col-md-8 mb-2">
+              {/* <label className="form-label text-muted col-md-4">
                 Nhập lại mật khẩu mới
               </label>
               <input
@@ -96,13 +120,19 @@ class ChangePassword extends Component {
                 onChange={this.handleChange}
                 placeholder="Nhập lại mật khẩu mới"
                 required
+              /> */}
+              <Widgets.Text
+                type="password"
+                required={true}
+                label={"Mật khẩu mới"}
+                onChange={(e) => this.handleChange2(e, "rePassword")}
               />
             </div>
-          </>
+          </div>
         )}
 
         <div className="col-md-12 mb-2 row justify-content-center">
-          <button className="btn btn-success col-6" type="submit">
+          <button className="btn btn-info col-6" type="submit">
             Lưu
           </button>
         </div>

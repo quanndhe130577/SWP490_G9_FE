@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Avatar from "react-avatar-edit";
 import axios from "axios";
@@ -7,6 +6,7 @@ import helper from "../../../../services/helper";
 import local from "../../../../services/local";
 import Config from "../../../../services/config";
 import cookie from "react-cookies";
+import Widgets from "../../../../schema/Widgets";
 
 class NormalInfo extends Component {
   constructor(props) {
@@ -28,7 +28,8 @@ class NormalInfo extends Component {
       .get(`${Config.host}/api/getUserInfo/${user.userID}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      .then((rs) =>
+      .then((rs) => {
+        console.log(rs);
         this.setState({
           firstname: rs.data.data.firstName,
           lastname: rs.data.data.lastname,
@@ -38,8 +39,8 @@ class NormalInfo extends Component {
             rs.data.data.avatar == null
               ? "https://via.placeholder.com/150"
               : rs.data.data.avatar,
-        })
-      )
+        });
+      })
       .catch((rs) => helper.toast("warning", "System error"));
   }
   handleChange = (event) => {
@@ -49,8 +50,14 @@ class NormalInfo extends Component {
       [name]: value,
     });
   };
+  handleChange2 = (value, name) => {
+    this.setState({
+      [name]: value,
+    });
+  };
   async submit(e) {
     e.preventDefault();
+    console.log(this.state);
     let token = await cookie.load("token");
     let rs = await axios.put(
       `${Config.host}/api/update/${local.get("user").userID}`,
@@ -73,11 +80,11 @@ class NormalInfo extends Component {
   }
 
   render() {
+    let minDate = new Date(-8640000000000000);
     return (
-      <>
+      <div className="container h-100 mb-5">
         <form className="row" onSubmit={this.submit}>
           <div className="col-md-4 mb-2">
-            <label className="form-label text-muted">Ảnh đại diện</label>
             <div className="img-fluid w-100 d-flex justify-content-center">
               <img
                 src={this.state.avatar}
@@ -90,7 +97,7 @@ class NormalInfo extends Component {
           </div>
           <div className="col-md-8 row">
             <div className="col-md-6 mb-2">
-              <label className="form-label text-muted">Họ</label>
+              {/* <label className="form-label text-muted">Họ</label>
               <input
                 type="text"
                 className="form-control"
@@ -99,10 +106,16 @@ class NormalInfo extends Component {
                 onChange={this.handleChange}
                 placeholder="Họ"
                 required
+              /> */}
+              <Widgets.Text
+                required={true}
+                label={"Họ"}
+                value={this.state.firstname}
+                onChange={(e) => this.handleChange2(e, "firstname")}
               />
             </div>
             <div className="col-md-6 mb-2">
-              <label className="form-label text-muted">Tên</label>
+              {/* <label className="form-label text-muted">Tên</label>
               <input
                 type="text"
                 className="form-control"
@@ -111,10 +124,16 @@ class NormalInfo extends Component {
                 onChange={this.handleChange}
                 placeholder="Tên"
                 required
+              /> */}
+              <Widgets.Text
+                required={true}
+                label={"Tên"}
+                value={this.state.lastname}
+                onChange={(e) => this.handleChange2(e, "lastname")}
               />
             </div>
-            <div className="col-md-6 mb-2 d-flex flex-column">
-              <label className="form-label text-muted">Ngày sinh</label>
+            <div className="col-md-6 mb-2">
+              {/* <label className="form-label text-muted">Ngày sinh</label>
               <DatePicker
                 className="form-control"
                 dateFormat="dd/MM/yyyy"
@@ -130,10 +149,18 @@ class NormalInfo extends Component {
                 showYearDropdown
                 dropdownMode="select"
                 required
+              /> */}
+              <Widgets.DateTimePicker
+                required={true}
+                label={"Ngày sinh"}
+                value={this.state.dob}
+                // maxDate={new Date()}
+                // minDate={minDate}
+                onChange={(data) => this.setState({ dob: data })}
               />
             </div>
             <div className="col-md-6 mb-2">
-              <label className="form-label text-muted">CCCD/CMND</label>
+              {/* <label className="form-label text-muted">CCCD/CMND</label>
               <input
                 type="text"
                 className="form-control"
@@ -142,6 +169,12 @@ class NormalInfo extends Component {
                 name="identifyCode"
                 onChange={this.handleChange}
                 required
+              /> */}
+              <Widgets.Text
+                required={true}
+                label={"CCCD/CMND"}
+                value={this.state.identifyCode}
+                onChange={(e) => this.handleChange2(e, "identifyCode")}
               />
             </div>
           </div>
@@ -153,7 +186,7 @@ class NormalInfo extends Component {
           </div>
         </form>
         <div
-          class="modal fade"
+          className="modal fade"
           id="exampleModal"
           tabindex="-1"
           aria-labelledby="exampleModalLabel"
@@ -206,7 +239,7 @@ class NormalInfo extends Component {
             </div>
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }

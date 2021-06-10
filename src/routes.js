@@ -38,7 +38,7 @@ const routes = [
     component: BuyFish,
   },
   {
-    path: "/ChangeUserInfo/:action",
+    path: "/ChangeUserInfo/",
     name: "ChangeUserInfo",
     component: ChangeUserInfo,
   },
