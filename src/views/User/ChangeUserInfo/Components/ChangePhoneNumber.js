@@ -97,7 +97,7 @@ class ChangePhoneNumber extends Component {
 
   render() {
     return (
-      <form className="container" onSubmit={this.submit}>
+      <form className="container py-5 div-login" onSubmit={this.submit}>
         {this.state.comfirm ? (
           <div className="row justify-content-center">
             <div className="col-md-8 mb-2 row justify-content-center">

@@ -81,7 +81,7 @@ class NormalInfo extends Component {
 
   render() {
     return (
-      <div className="container h-100 mb-5">
+      <div className="container py-5 div-login div-login">
         <form className="row" onSubmit={this.submit}>
           <div className="col-md-4 mb-2">
             <div className="img-fluid w-100 d-flex justify-content-center">
@@ -96,16 +96,6 @@ class NormalInfo extends Component {
           </div>
           <div className="col-md-8 row">
             <div className="col-md-6 mb-2">
-              {/* <label className="form-label text-muted">Họ</label>
-              <input
-                type="text"
-                className="form-control"
-                name="firstname"
-                value={this.state.firstname}
-                onChange={this.handleChange}
-                placeholder="Họ"
-                required
-              /> */}
               <Widgets.Text
                 required={true}
                 label={"Họ"}
@@ -114,16 +104,6 @@ class NormalInfo extends Component {
               />
             </div>
             <div className="col-md-6 mb-2">
-              {/* <label className="form-label text-muted">Tên</label>
-              <input
-                type="text"
-                className="form-control"
-                value={this.state.lastname}
-                name="lastname"
-                onChange={this.handleChange}
-                placeholder="Tên"
-                required
-              /> */}
               <Widgets.Text
                 required={true}
                 label={"Tên"}
@@ -132,23 +112,6 @@ class NormalInfo extends Component {
               />
             </div>
             <div className="col-md-6 mb-2">
-              {/* <label className="form-label text-muted">Ngày sinh</label>
-              <DatePicker
-                className="form-control"
-                dateFormat="dd/MM/yyyy"
-                maxDate={new Date()}
-                isClearable
-                selected={this.state.dob}
-                onChange={(value) => {
-                  this.setState({ dob: value });
-                }}
-                placeholderText="Ngày sinh"
-                peekNextMonth
-                showMonthDropdown
-                showYearDropdown
-                dropdownMode="select"
-                required
-              /> */}
               <Widgets.DateTimePicker
                 required={true}
                 label={"Ngày sinh"}
@@ -159,16 +122,6 @@ class NormalInfo extends Component {
               />
             </div>
             <div className="col-md-6 mb-2">
-              {/* <label className="form-label text-muted">CCCD/CMND</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="CCCD/CMND"
-                value={this.state.identifyCode}
-                name="identifyCode"
-                onChange={this.handleChange}
-                required
-              /> */}
               <Widgets.Text
                 required={true}
                 label={"CCCD/CMND"}
