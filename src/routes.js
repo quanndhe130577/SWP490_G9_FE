@@ -17,6 +17,10 @@ const BuyFish = Loadable({
   loader: () => import("./views/User/Traders/BuyFish/BuyFish"),
   loading: Loading,
 });
+const ChangeUserInfo = Loadable({
+  loader: () => import("./views/User/ChangeUserInfo/ChangeUserInfo"),
+  loading: Loading,
+});
 const routes = [
   {
     path: "/home",
@@ -32,6 +36,11 @@ const routes = [
     path: "/buyF",
     name: "BuyFish",
     component: BuyFish,
+  },
+  {
+    path: "/ChangeUserInfo/",
+    name: "ChangeUserInfo",
+    component: ChangeUserInfo,
   },
 ];
 

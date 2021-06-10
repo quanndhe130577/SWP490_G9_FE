@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import { HashRouter, Route, Switch, NavLink } from "react-router-dom";
+// import Moment from "react-moment";
 import NormalInfo from "./Components/NormalInfo";
 import ChangePhoneNumber from "./Components/ChangePhoneNumber";
 import ChangePassword from "./Components/ChangePassword";
+import { Tabs, Card } from "antd";
+
 import "./ChangeUserInfo.css";
 
 class ChangeUserInfo extends Component {
@@ -24,15 +26,34 @@ class ChangeUserInfo extends Component {
       [name]: value,
     });
   };
-  submit(e) {
-    e.preventDefault();
-  }
 
   render() {
+    const renderTitle = () => {
+      return (
+        <div className="d-flex">
+          <h3 className="mr-5">Đổi thông tin người dùng</h3>
+          {/* <Moment format="DD/MM/YYYY" className="mt-2">
+            {new Date()}
+          </Moment> */}
+        </div>
+      );
+    };
     return (
-      <div className="container mt-3">
-        <div className="row">
-          <div className="col-md-4 mb-3">
+      <Card title={renderTitle()}>
+        <div style={{ minHeight: "50em" }}>
+          <Tabs defaultActiveKey="1" centered>
+            <Tabs.TabPane tab="Đổi thông tin cơ bản" key="1">
+              <NormalInfo></NormalInfo>
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Đổi số điện thoại" key="2">
+              <ChangePhoneNumber></ChangePhoneNumber>
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Đổi mật khẩu" key="3">
+              <ChangePassword></ChangePassword>
+            </Tabs.TabPane>
+          </Tabs>
+          {/* <div className="row">
+          <div className="col-md-2 mb-3">
             <div className="list-group">
               <NavLink
                 exact
@@ -57,7 +78,7 @@ class ChangeUserInfo extends Component {
               </NavLink>
             </div>
           </div>
-          <div className="col-md-8">
+          <div className="col-md-10">
             <HashRouter>
               <Switch>
                 <Route
@@ -75,8 +96,9 @@ class ChangeUserInfo extends Component {
               </Switch>
             </HashRouter>
           </div>
+        </div> */}
         </div>
-      </div>
+      </Card>
     );
   }
 }

@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import apis from "../../services/apis";
 import helper from "../../services/helper";
 import local from "../../services/local";
+import cookie from "react-cookies";
 // import logo from "assets/image/bannerVn.png"
 
 const Login = (props) => {
@@ -18,7 +19,7 @@ const Login = (props) => {
   const handleSubmit = async () => {
     try {
       setLoggingIn(true);
-      setSubmitted(true)
+      setSubmitted(true);
       let rs = await apis.login({
         phoneNumber,
         password,
@@ -26,6 +27,7 @@ const Login = (props) => {
       if (rs && rs.statusCode === 200) {
         local.set("session", rs.data.token);
         local.set("user", JSON.stringify(rs.data.user));
+        cookie.save("token", rs.data.token, { maxAge: 864000 });
         dispatch({
           type: "SET_USER_INFO",
           token: rs.data.token,
@@ -45,14 +47,18 @@ const Login = (props) => {
     }
   };
   const updateSubmitted = () => {
-    if (submitted) setSubmitted(true)
-  }
+    if (submitted) setSubmitted(true);
+  };
   return (
     <div className="jumbotron">
       <div className="div-login">
         <div className=" ">
           <div className="col-sm-12 col-md-12 " style={{ textAlign: "center" }}>
-            <img src="assets/image/bannerVn.png" className="image-login" />
+            <img
+              src="assets/image/bannerVn.png"
+              alt="baner"
+              className="image-login"
+            />
           </div>
 
           <div className="con-login  border container">
@@ -65,7 +71,7 @@ const Login = (props) => {
                   value={phoneNumber}
                   onChange={(e) => {
                     setPhoneNumber(e);
-                    updateSubmitted()
+                    updateSubmitted();
                   }}
                   submitted={submitted}
                 />
@@ -76,8 +82,8 @@ const Login = (props) => {
                   label={i18n.t("Password")}
                   value={password}
                   onChange={(e) => {
-                    setPassword(e)
-                    updateSubmitted()
+                    setPassword(e);
+                    updateSubmitted();
                   }}
                   submitted={submitted}
                 />
@@ -86,7 +92,7 @@ const Login = (props) => {
                     {loggingIn ? (
                       <>
                         <span
-                          class="spinner-border spinner-border-sm"
+                          className="spinner-border spinner-border-sm"
                           role="status"
                           aria-hidden="true"
                         ></span>

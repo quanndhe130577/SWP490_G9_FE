@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Avatar } from "antd";
+import { Link } from "react-router-dom";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -33,8 +35,7 @@ class DefaultHeader extends Component {
   }
 
   render() {
-    // let { isShowModalLogout } = this.state;
-
+    let { isShowModalLogout } = this.state;
     // const { children, ...attributes } = this.props;
     // console.log(isShowModalLogout);
 
@@ -76,10 +77,43 @@ class DefaultHeader extends Component {
         </Sider>
         <Header
           style={{ position: "fixed", zIndex: 1, width: "100%" }}
-          className="site-layout-sub-header-background"
+          className="site-layout-sub-header-background d-flex justify-content-between"
         >
           <div className="logo">
-            <img src="assets/image/favicon.png" style={{ width: 50 }} />
+            <Link to="/home">
+              <img src="assets/image/favicon.png" style={{ width: 50 }} />
+            </Link>
+          </div>
+
+          <div class="dropdown">
+            <Avatar
+              className="dropdown-toggle"
+              size={45}
+              icon={
+                local.get("user") == null ? (
+                  <UserOutlined />
+                ) : (
+                  <img src={local.get("user").avatar} alt="Preview" />
+                )
+              }
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            />
+            {/* <button class="btn btn-secondary dropdown-toggle" type="button">
+              Dropdown button
+            </button> */}
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <div class="list-group">
+                <Link className="list-group-item" to="/changeUserInfo">
+                  Đổi thông tin
+                </Link>
+                <Link className="list-group-item" to="/changeUserInfo">
+                  Đăng xuất
+                </Link>
+              </div>
+            </div>
           </div>
         </Header>
       </>
