@@ -19,7 +19,7 @@ const Login = (props) => {
   const handleSubmit = async () => {
     try {
       setLoggingIn(true);
-      setSubmitted(true)
+      setSubmitted(true);
       let rs = await apis.login({
         phoneNumber,
         password,
@@ -47,14 +47,18 @@ const Login = (props) => {
     }
   };
   const updateSubmitted = () => {
-    if (submitted) setSubmitted(true)
-  }
+    if (submitted) setSubmitted(true);
+  };
   return (
     <div className="jumbotron">
       <div className="div-login">
         <div className=" ">
           <div className="col-sm-12 col-md-12 " style={{ textAlign: "center" }}>
-            <img src="assets/image/bannerVn.png" className="image-login" />
+            <img
+              src="assets/image/bannerVn.png"
+              alt="baner"
+              className="image-login"
+            />
           </div>
 
           <div className="con-login  border container">
@@ -67,7 +71,7 @@ const Login = (props) => {
                   value={phoneNumber}
                   onChange={(e) => {
                     setPhoneNumber(e);
-                    updateSubmitted()
+                    updateSubmitted();
                   }}
                   submitted={submitted}
                 />
@@ -78,8 +82,8 @@ const Login = (props) => {
                   label={i18n.t("Password")}
                   value={password}
                   onChange={(e) => {
-                    setPassword(e)
-                    updateSubmitted()
+                    setPassword(e);
+                    updateSubmitted();
                   }}
                   submitted={submitted}
                 />

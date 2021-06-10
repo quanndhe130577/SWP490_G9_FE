@@ -15,6 +15,7 @@ const BuyFish = () => {
   };
   const handleChange = () => {
     setIsShowBuy(true);
+    setTotalBuy({});
   };
   const renderTitle = () => {
     return (

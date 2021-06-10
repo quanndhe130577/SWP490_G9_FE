@@ -1,47 +1,42 @@
 import React, { Component } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { Container } from "reactstrap";
 import { connect } from "react-redux";
 import routes from "../../routes";
-import _ from "lodash";
+// import _ from "lodash";
 import i18next from "i18next";
 import DefaultFooter from "./DefaultFooter";
 import DefaultHeader from "./DefaultHeader";
 // import { UserOutlined, VideoCameraOutlined } from '@ant-design/icons'
-import { Layout, Breadcrumb } from "antd";
-import local from "../../services/local"
+import { Layout } from "antd";
+import local from "../../services/local";
 
-const { Header, Content, Sider } = Layout;
+const { Content } = Layout;
 
 class DefaultLayout extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
-
     };
   }
   async componentDidMount() {
     try {
-      var session = await local.get('session');
+      var session = await local.get("session");
       if (!session) {
-        this.props.history.replace('/login');
+        this.props.history.replace("/login");
       }
     } catch (err) {
-      console.log('loi roi , err here', err)
-      this.props.history.replace('/login');
+      console.log("loi roi , err here", err);
+      this.props.history.replace("/login");
     }
   }
 
   render() {
-    if (this.state.loading)
-      return <p>{i18next.t("PROCESSING")}</p>;
+    if (this.state.loading) return <p>{i18next.t("PROCESSING")}</p>;
     return (
       <Layout>
         <DefaultHeader />
         <Content className="site-layout" style={{ marginTop: 64 }}>
-
-
           <div className="default-layout">
             <Switch>
               {routes.map((route, idx) => {
@@ -58,8 +53,6 @@ class DefaultLayout extends Component {
               <Redirect from="/" to="/login" />
             </Switch>
           </div>
-
-
         </Content>
         <DefaultFooter />
       </Layout>
