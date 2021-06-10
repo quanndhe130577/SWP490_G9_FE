@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Avatar } from "antd";
+import { Link } from "react-router-dom";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";

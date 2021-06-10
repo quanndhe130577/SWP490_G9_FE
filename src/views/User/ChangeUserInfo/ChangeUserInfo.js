@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { HashRouter, Route, Switch, NavLink } from "react-router-dom";
+// import Moment from "react-moment";
 import NormalInfo from "./Components/NormalInfo";
 import ChangePhoneNumber from "./Components/ChangePhoneNumber";
 import ChangePassword from "./Components/ChangePassword";
-import { Tabs } from "antd";
+import { Tabs, Card } from "antd";
 
 import "./ChangeUserInfo.css";
 
@@ -28,20 +28,31 @@ class ChangeUserInfo extends Component {
   };
 
   render() {
+    const renderTitle = () => {
+      return (
+        <div className="d-flex">
+          <h3 className="mr-5">Đổi thông tin người dùng</h3>
+          {/* <Moment format="DD/MM/YYYY" className="mt-2">
+            {new Date()}
+          </Moment> */}
+        </div>
+      );
+    };
     return (
-      <div className="mt-3 ">
-        <Tabs defaultActiveKey="1">
-          <Tabs.TabPane tab="Đổi thông tin cơ bản" key="1">
-            <NormalInfo></NormalInfo>
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Đổi số điện thoại" key="2">
-            <ChangePhoneNumber></ChangePhoneNumber>
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Đổi mật khẩu" key="3">
-            <ChangePassword></ChangePassword>
-          </Tabs.TabPane>
-        </Tabs>
-        {/* <div className="row">
+      <Card title={renderTitle()}>
+        <div style={{ minHeight: "50em" }}>
+          <Tabs defaultActiveKey="1" centered>
+            <Tabs.TabPane tab="Đổi thông tin cơ bản" key="1">
+              <NormalInfo></NormalInfo>
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Đổi số điện thoại" key="2">
+              <ChangePhoneNumber></ChangePhoneNumber>
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Đổi mật khẩu" key="3">
+              <ChangePassword></ChangePassword>
+            </Tabs.TabPane>
+          </Tabs>
+          {/* <div className="row">
           <div className="col-md-2 mb-3">
             <div className="list-group">
               <NavLink
@@ -86,7 +97,8 @@ class ChangeUserInfo extends Component {
             </HashRouter>
           </div>
         </div> */}
-      </div>
+        </div>
+      </Card>
     );
   }
 }

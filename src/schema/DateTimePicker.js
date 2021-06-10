@@ -44,7 +44,7 @@ export default function DateTimePicker({
         dateFormat="dd/MM/yyyy"
         // maxDate={maxDate}
         // minDate={minDate}
-        isClearable
+        // isClearable
         selected={value}
         onChange={(data) => {
           if (onChange) {

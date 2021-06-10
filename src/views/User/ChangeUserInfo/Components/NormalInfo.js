@@ -80,7 +80,6 @@ class NormalInfo extends Component {
   }
 
   render() {
-    let minDate = new Date(-8640000000000000);
     return (
       <div className="container h-100 mb-5">
         <form className="row" onSubmit={this.submit}>
@@ -177,12 +176,11 @@ class NormalInfo extends Component {
                 onChange={(e) => this.handleChange2(e, "identifyCode")}
               />
             </div>
-          </div>
-
-          <div className="col-md-12 mb-2 row justify-content-center">
-            <button className="btn btn-info col-4" type="submit">
-              Lưu
-            </button>
+            <div className="col-md-12">
+              <button className="btn btn-info" type="submit">
+                Lưu
+              </button>
+            </div>
           </div>
         </form>
         <div

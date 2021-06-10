@@ -181,8 +181,8 @@ class ChangePhoneNumber extends Component {
           </div>
         )}
 
-        <div className="col-md-12 mb-2 row justify-content-center">
-          <button className="btn btn-info col-6" type="submit">
+        <div className="col-md-12 mb-2">
+          <button className="btn btn-info" type="submit">
             Lưu
           </button>
         </div>

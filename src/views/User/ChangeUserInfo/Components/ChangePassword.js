@@ -124,15 +124,15 @@ class ChangePassword extends Component {
               <Widgets.Text
                 type="password"
                 required={true}
-                label={"Mật khẩu mới"}
+                label={"Nhập lại mật khẩu mới"}
                 onChange={(e) => this.handleChange2(e, "rePassword")}
               />
             </div>
           </div>
         )}
 
-        <div className="col-md-12 mb-2 row justify-content-center">
-          <button className="btn btn-info col-6" type="submit">
+        <div className="col-md-12 mb-2">
+          <button className="btn btn-info" type="submit">
             Lưu
           </button>
         </div>
