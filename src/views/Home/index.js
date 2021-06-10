@@ -13,7 +13,7 @@ const Dashboard = () => {
       <Button
         color="info"
         onClick={() => {
-          history.push("buy");
+          history.push("buyF");
           // helper.useHistory("buy");
         }}
       >

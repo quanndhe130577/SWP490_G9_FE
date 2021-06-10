@@ -56,9 +56,9 @@ helper.renameKey = (obj, old_key, new_key) => {
     }
 };
 
-helper.useHistory = (path) => {
-  let history = useHistory();
-  history.push(path);
-};
+// helper.useHistory = (path) => {
+//   let history = useHistory();
+//   history.push(path);
+// };
 
 export default helper;

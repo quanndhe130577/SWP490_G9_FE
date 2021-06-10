@@ -3,35 +3,55 @@ import { Row, Col, Card, Table, Tag, Space } from "antd";
 import { Button } from "reactstrap";
 import i18n from "i18next";
 import ModalBuy from "./ModalBuy";
+import Moment from "react-moment";
+import Widgets from "../../../../schema/Widgets";
 
 const BuyFish = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isShowBuy, setIsShowBuy] = useState(false);
+  const [totalBuy, setTotalBuy] = useState({});
 
   const showModal = () => {
-    setIsModalVisible(true);
+    setIsShowBuy(true);
   };
-  const handleOk = () => {
-    setIsModalVisible(false);
+  const handleChange = () => {
+    setIsShowBuy(true);
+  };
+  const renderTitle = () => {
+    return (
+      <div className="d-flex">
+        <h3 className="mr-5">{i18n.t("Mua hàng")}</h3>
+        <Moment format="DD/MM/YYYY" className="mt-2">
+          {new Date()}
+        </Moment>
+      </div>
+    );
   };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
   return (
-    <Card title={i18n.t("Mua hàng")}>
-      {isModalVisible && (
-        <ModalBuy
-          isModalVisible={isModalVisible}
-          handleOk={handleOk}
-          handleCancel={handleCancel}
-        />
+    <Card title={renderTitle()}>
+      {isShowBuy && (
+        <ModalBuy isShowBuy={isShowBuy} setIsShowBuy={setIsShowBuy} />
       )}
 
       <Row className="mb-2">
         <Col span="24" className="">
-          <Button color="info" onClick={showModal} className="float-right">
-            {i18n.t("Thêm Mã")}
-          </Button>
+          <div className="float-left">
+            <Widgets.Select
+              required={true}
+              label={i18n.t("pondOwner")}
+              value={totalBuy.pondOwner}
+              onChange={(e) => handleChange(e, "roleNormalizedName")}
+              items={pondOwners}
+            />
+          </div>
+          <div className="float-right">
+            <Button color="info" onClick={showModal} className="mr-2">
+              {i18n.t("Giá cá hôm nay2")}
+            </Button>
+            <Button color="info" onClick={showModal} className=" mr-2">
+              {i18n.t("Thêm Mã")}
+            </Button>
+          </div>
         </Col>
       </Row>
 
@@ -47,9 +67,9 @@ const BuyFish = () => {
 export default BuyFish;
 const columns = [
   {
-    title: "Name (all screens)",
-    dataIndex: "name",
-    key: "name",
+    title: "STT",
+    dataIndex: "key",
+    key: "key",
     render: (text) => <a>{text}</a>,
   },
   {
@@ -119,3 +139,4 @@ const data = [
     tags: ["cool", "teacher"],
   },
 ];
+const pondOwners = [{ value: 1, label: "Chủ Ao 1" }];

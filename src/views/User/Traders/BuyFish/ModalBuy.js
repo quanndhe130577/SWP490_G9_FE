@@ -1,12 +1,19 @@
 import React, { useState } from "react";
-import { Modal, Button } from "antd";
+import { Modal } from "antd";
 import { Row, Col } from "reactstrap";
 import i18n from "i18next";
 import "antd/dist/antd.css";
 import Widgets from "../../../../schema/Widgets";
 
-const ModalBuy = ({ isModalVisible, handleCancel, handleOk }) => {
+const ModalBuy = ({ isShowBuy, setIsShowBuy }) => {
   const [transaction, setTransaction] = useState({});
+
+  const handleOk = () => {
+    setIsShowBuy(false);
+  };
+  const handleCancel = () => {
+    setIsShowBuy(false);
+  };
   const handleChangeTran = (name, value) => {
     setTransaction((prevState) => ({
       ...prevState,
@@ -16,7 +23,7 @@ const ModalBuy = ({ isModalVisible, handleCancel, handleOk }) => {
   return (
     <Modal
       title={i18n.t("Thêm Mã")}
-      visible={isModalVisible}
+      visible={isShowBuy}
       onOk={handleOk}
       onCancel={handleCancel}
     >
@@ -40,9 +47,17 @@ const ModalBuy = ({ isModalVisible, handleCancel, handleOk }) => {
         <Col md="6" xs="12">
           <Widgets.Text
             required={true}
-            label={i18n.t("qtyOfFish")}
+            label={i18n.t("qtyOfFish(Kg)")}
             value={transaction.type}
             onChange={(e) => handleChangeTran("qtyOfFish", e)}
+          />
+        </Col>
+        <Col md="6" xs="12">
+          <Widgets.Text
+            required={true}
+            label={i18n.t("basket")}
+            value={transaction.basket}
+            onChange={(e) => handleChangeTran("basket", e)}
           />
         </Col>
         <Col md="6" xs="12">
@@ -83,4 +98,4 @@ const ModalBuy = ({ isModalVisible, handleCancel, handleOk }) => {
 };
 
 export default ModalBuy;
-const style = { background: "#0092ff", padding: "8px", margin: "5px" };
+// const style = { background: "#0092ff", padding: "8px", margin: "5px" };
