@@ -7,10 +7,10 @@ export default class Step1 extends Component {
     let { value, onChange } = this.props;
     return (
       <Row>
-        <Col md="2"></Col>
+        {/* <Col md="2"></Col>
         <Col md="8" style={{ textAlign: "center" }} className="mb-4">
           <img src="assets/image/bannerVn.png" className="image" />
-        </Col>
+        </Col> */}
         <Col md="12">
           <Widgets.Text
             required={true}

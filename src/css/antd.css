@@ -23,6 +23,10 @@
   /* min-height: 100vh; */
 }
 .ant-layout-sider-zero-width-trigger {
-  top: 8px !important;
+  top: 5px !important;
   z-index: 2 !important;
+  position: fixed;
+}
+.default-layout {
+  padding-bottom: 4em;
 }

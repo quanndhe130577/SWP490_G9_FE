@@ -10,19 +10,19 @@ export default class Step1 extends Component {
         <Widgets.Text
           label={i18n.t("firstName")}
           value={user.firstName}
-          onChange={(e) => handleChange(e.target.value, "firstName")}
+          onChange={(e) => handleChange(e, "firstName")}
           submitted={submitted}
         />
         <Widgets.Text
           label={i18n.t("lastName")}
           value={user.lastName}
-          onChange={(e) => handleChange(e.target.value, "lastName")}
+          onChange={(e) => handleChange(e, "lastName")}
           submitted={submitted}
         />
         <Widgets.Text
           label={i18n.t("identifyCode")}
           value={user.identifyCode}
-          onChange={(e) => handleChange(e.target.value, "identifyCode")}
+          onChange={(e) => handleChange(e, "identifyCode")}
           submitted={submitted}
         />
         <Widgets.Select
@@ -38,7 +38,7 @@ export default class Step1 extends Component {
           required={true}
           label={i18n.t("Password")}
           value={user.password}
-          onChange={(e) => handleChange(e.target.value, "password")}
+          onChange={(e) => handleChange(e, "password")}
           submitted={submitted}
         />
       </>

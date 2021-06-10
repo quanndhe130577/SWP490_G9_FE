@@ -12,17 +12,22 @@ export default function Text({
 }) {
   return (
     <div className={"form-group" + (submitted && !value ? " has-error" : "")}>
-      {label &&
+      {label && (
         <label className="bold">
           {label} {required ? <span>*</span> : ""}
-        </label>}
+        </label>
+      )}
 
       <input
         disabled={isDisable}
         type={type}
         className="form-control"
         value={value}
-        onChange={onChange}
+        onChange={(e) => {
+          if (onChange) {
+            onChange(e.target.value);
+          }
+        }}
         required={required}
       />
       {submitted && !value && (

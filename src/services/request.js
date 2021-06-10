@@ -1,4 +1,4 @@
-import Local from "./local";
+import local from "./local";
 import Config from "./config";
 import helper from "./helper";
 import i18next from "i18next";
@@ -8,33 +8,33 @@ import Swal from "sweetalert2";
 // const deviceDetector = new DeviceDetector();
 
 let request = {};
-request.upload = async (url, formData, method = "PUT") => {
-  url = `${Config.host}${url}`;
-  let option = {
-    method: method,
-    body: formData,
-    headers: {
-      Authorization: `Bearer ${Local.get("session") || "customer"}`,
-    },
-  };
-  if (Config.debug) console.log(`[POST]`, url, option);
-  let res = await fetch(url, option);
-  let rs = await res.json();
-  if (res.status !== 200) {
-    console.log(res);
-    throw rs;
-  }
-  if (Config.debug) console.log(`[RESPONSE]`, url, rs);
-  return rs;
-};
+// request.upload = async (url, formData, method = "PUT") => {
+//   url = `${Config.host}${url}`;
+//   let option = {
+//     method: method,
+//     body: formData,
+//     headers: {
+//       Authorization: `Bearer ${local.get("session") || "customer"}`,
+//     },
+//   };
+//   if (Config.debug) console.log(`[POST]`, url, option);
+//   let res = await fetch(url, option);
+//   let rs = await res.json();
+//   if (res.status !== 200) {
+//     console.log(res);
+//     throw rs;
+//   }
+//   if (Config.debug) console.log(`[RESPONSE]`, url, rs);
+//   return rs;
+// };
 request.request = async (url, data, headers, method = "POST") => {
   url = `${Config.host}${url}`;
   let option = {
-    method, // or 'PUT'
+    method,
     body: JSON.stringify(data), // data can be `string` or {object}!
     headers: {
       "Content-Type": "application/json; charset=UTF-8",
-      // Authorization: `Bearer ${Local.get("session") || "customer"}`,
+      // Authorization: `Bearer ${local.get("session") || "customer"}`,
       // device: JSON.stringify(deviceDetector.parse(navigator.userAgent)),
     },
   };
@@ -48,31 +48,31 @@ request.request = async (url, data, headers, method = "POST") => {
     let rs = await res.json();
     if (Config.debug) console.log(`[RESPONSE]`, url, rs);
     switch (res.status) {
-      // case 401:
-      //   return Swal.fire({
-      //     title: 'Session Expired!',
-      //     html: "Your session is expired. Do you want to extend the session?",
-      //     icon: 'warning',
-      //     timer: 15000,
-      //     timerProgressBar: true,
-      //     showCancelButton: true,
-      //     cancelButtonText: 'Logout',
-      //     cancelButtonColor: '#d33',
-      //     confirmButtonColor: '#3085d6',
-      //     confirmButtonText: 'Continue session',
-      //   }).then(async result => {
-      //     if (result.value) {
-      //       let rs = await api.refreshToken({ token: Local.get('session') })
-      //       if (rs && rs.errorCode === 0) {
-      //         Local.set('session', rs.data);
-      //         window.history.go()
-      //       }
-      //     } else {
-      //       Local.clear();
-      //       window.location.href = '/';
-      //     }
-      //   })
-      //   break;
+      case 401:
+        // return Swal.fire({
+        //   title: 'Session Expired!',
+        //   html: "Your session is expired. Do you want to extend the session?",
+        //   icon: 'warning',
+        //   timer: 15000,
+        //   timerProgressBar: true,
+        //   showCancelButton: true,
+        //   cancelButtonText: 'Logout',
+        //   cancelButtonColor: '#d33',
+        //   confirmButtonColor: '#3085d6',
+        //   confirmButtonText: 'Continue session',
+        // }).then(async result => {
+        //   if (result.value) {
+        //     let rs = await api.refreshToken({ token: local.get('session') })
+        //     if (rs && rs.errorCode === 0) {
+        //       local.set('session', rs.data);
+        //       window.history.go()
+        //     }
+        //   } else {
+        local.clear();
+        window.location.href = '/';
+        //   }
+        // })
+        break;
       case 403:
         Swal.fire({
           title: i18next.t(rs.message || "forbidden"),

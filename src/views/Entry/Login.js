@@ -62,7 +62,7 @@ const Login = (props) => {
                   required={true}
                   label={i18n.t("phoneNumber")}
                   value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  onChange={(e) => setPhoneNumber(e)}
                   submitted={submitted}
                 />
 
@@ -71,7 +71,7 @@ const Login = (props) => {
                   required={true}
                   label={i18n.t("Password")}
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => setPassword(e)}
                   submitted={submitted}
                 />
                 <div className="form-group d-flex justify-content-center">
