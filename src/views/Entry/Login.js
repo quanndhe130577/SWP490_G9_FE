@@ -52,7 +52,7 @@ const Login = (props) => {
   return (
     <div className="jumbotron">
       <div className="div-login">
-        <div className=" ">
+        <form className=" ">
           <div className="col-sm-12 col-md-12 " style={{ textAlign: "center" }}>
             <img
               src="assets/image/bannerVn.png"
@@ -112,7 +112,7 @@ const Login = (props) => {
               </div>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
