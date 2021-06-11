@@ -5,6 +5,7 @@ import i18n from "i18next";
 import Widgets from "../../../../schema/Widgets";
 import data from "../../../../data";
 import local from "../../../../services/local";
+import helper from "../../../../services/helper";
 
 const ChoosePond = ({
   isShowChoosePond,
@@ -18,8 +19,18 @@ const ChoosePond = ({
     setShowChoosePond(false);
   };
   const handleCancel = () => {
-    onChange(currentPO, "pondOwner");
-    setShowChoosePond(false);
+    let check = validate(currentPO, "pondOwner");
+    if (!check) {
+      onChange(currentPO, "pondOwner");
+      setShowChoosePond(false);
+    } else {
+      helper.toast("error", i18n.t(check));
+    }
+  };
+  const validate = (val, prop) => {
+    if (prop === "pondOwner" && !val) {
+      return "fillPondOwner";
+    }
   };
   const onChange = (val, prop) => {
     if (prop === "pondOwner") {

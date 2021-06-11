@@ -26,6 +26,8 @@
     "qtyOfFish(Kg)":"Số lượng (Kg)",
     "basket":"Rổ",
     "pondOwner":"Chủ ao",
-    "choosePond":"Chọn ao"
+    "choosePond":"Chọn ao",
+    "fillPondOwner":"Vui lòng chọn chủ ao",
+    "drum":"Lồ"
 
 }

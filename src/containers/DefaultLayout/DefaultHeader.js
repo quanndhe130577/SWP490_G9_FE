@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import local from "../../services/local";
-import apis from "../../services/apis";
 import { Layout, Menu, Dropdown } from "antd";
 import {
   LogoutOutlined,
@@ -29,12 +28,6 @@ class DefaultHeader extends Component {
     this.state = {};
   }
 
-  onLogoutClick() {
-    window.location.href = "";
-    apis.logout();
-    local.clear();
-  }
-
   render() {
     const menu = (
       <Menu>
@@ -46,9 +39,6 @@ class DefaultHeader extends Component {
         </Menu.Item>
       </Menu>
     );
-    // let { isShowModalLogout } = this.state;
-    // const { children, ...attributes } = this.props;
-    // console.log(isShowModalLogout);
 
     return (
       <>

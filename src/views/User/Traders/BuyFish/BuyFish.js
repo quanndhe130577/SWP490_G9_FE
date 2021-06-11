@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Card, Table, Tag, Space } from "antd";
-import { Button } from "reactstrap";
+import { Card, Table, Tag, Space } from "antd";
+import { Button, Row, Col } from "reactstrap";
 import i18n from "i18next";
 import ModalBuy from "./ModalBuy";
 import ChoosePond from "./ChoosePond";
 import Moment from "react-moment";
-import Widgets from "../../../../schema/Widgets";
+// import Widgets from "../../../../schema/Widgets";
 import local from "../../../../services/local";
-
+import dataDf from "../../../../data";
 const BuyFish = () => {
   const columns = [
     {
@@ -67,15 +67,20 @@ const BuyFish = () => {
   const showModal = () => {
     setIsShowBuy(true);
   };
-  const handleChange = () => {
-    setIsShowBuy(true);
-    setTotalBuy({});
-  };
+  // const handleChange = () => {
+  //   setIsShowBuy(true);
+  //   setTotalBuy({});
+  // };
   const handleTotalBuy = (value, prop) => {
     setTotalBuy((pre) => ({
       ...pre,
       [prop]: value,
     }));
+  };
+  const findPO = () => {
+    return (
+      dataDf.pondOwner.find((word) => word.value === totalBuy.currentPO) || {}
+    );
   };
   useEffect(() => {
     let currentPO = local.get("currentPO");
@@ -83,16 +88,22 @@ const BuyFish = () => {
   }, []);
   const renderTitle = () => {
     return (
-      <div className="d-flex">
-        <h3 className="mr-5">{i18n.t("Mua hàng")}</h3>
-        <Moment format="DD/MM/YYYY" className="mt-2">
-          {new Date()}
-        </Moment>
-        <label>
-          <b>{i18n.t("pondOwner")}:</b>
-          {totalBuy.currentPO}
-        </label>
-      </div>
+      <Row>
+        <Col md="3">
+          <h3 className="mr-5">{i18n.t("Mua hàng")}</h3>
+        </Col>
+        <Col md="2">
+          <Moment format="DD/MM/YYYY" className="mt-2">
+            {new Date()}
+          </Moment>
+        </Col>
+        <Col md="2">
+          <label>
+            <b>{i18n.t("pondOwner")}:</b>
+            {findPO().label || ""}
+          </label>
+        </Col>
+      </Row>
     );
   };
 
@@ -101,27 +112,27 @@ const BuyFish = () => {
       {isShowBuy && (
         <ModalBuy isShowBuy={isShowBuy} setIsShowBuy={setIsShowBuy} />
       )}
-      {/* {isShowChoosePond && ( */}
-      <ChoosePond
-        isShowChoosePond={isShowChoosePond}
-        setShowChoosePond={setShowChoosePond}
-        handleTotalBuy={handleTotalBuy}
-        pondOwner={totalBuy.pondOwner || ""}
-        currentPO={totalBuy.currentPO}
-      />
-      {/* )} */}
+      {isShowChoosePond && (
+        <ChoosePond
+          isShowChoosePond={isShowChoosePond}
+          setShowChoosePond={setShowChoosePond}
+          handleTotalBuy={handleTotalBuy}
+          pondOwner={totalBuy.pondOwner || ""}
+          currentPO={totalBuy.currentPO}
+        />
+      )}
 
       <Row className="mb-2">
         <Col span="24" className="">
-          <div className="float-left">
+          {/* <div className="float-left">
             <Widgets.Select
               required={true}
               label={i18n.t("pondOwner")}
               value={totalBuy.pondOwner}
               onChange={(e) => handleChange(e, "roleNormalizedName")}
-              items={pondOwners}
+              items={dataDf.pondOwner}
             />
-          </div>
+          </div> */}
           <div className="float-right">
             <Button
               color="info"
@@ -138,7 +149,7 @@ const BuyFish = () => {
       </Row>
 
       <Row>
-        <Col span="24" style={{ overflowX: "auto" }}>
+        <Col style={{ overflowX: "auto" }}>
           <Table columns={columns} dataSource={data} />
         </Col>
       </Row>
@@ -171,4 +182,3 @@ const data = [
     tags: ["cool", "teacher"],
   },
 ];
-const pondOwners = [{ value: 1, label: "Chủ Ao 1" }];
