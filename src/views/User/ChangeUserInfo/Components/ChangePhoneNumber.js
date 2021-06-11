@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import cookie from "react-cookies";
 import axios from "axios";
 import helper from "../../../../services/helper";
 import local from "../../../../services/local";
@@ -43,8 +42,8 @@ class ChangePhoneNumber extends Component {
   };
   async submit(e) {
     e.preventDefault();
-    let token = await cookie.load("token");
-    if (this.state.confirm) {
+    let token = local.get("session");
+    if (this.state.comfirm) {
       console.log({
         newPhoneNumber: this.state.newPhoneNumber,
         OTPID: this.state.otp,
@@ -151,7 +150,7 @@ class ChangePhoneNumber extends Component {
         )}
 
         <div className="col-md-12 mb-2 row justify-content-center">
-          <button className="btn btn-info col-2" type="submit">
+          <button className="btn btn-info px-5" type="submit">
             Lưu
           </button>
         </div>

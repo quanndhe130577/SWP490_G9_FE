@@ -5,8 +5,8 @@ import axios from "axios";
 import helper from "../../../../services/helper";
 import local from "../../../../services/local";
 import Config from "../../../../services/config";
-import cookie from "react-cookies";
 import Widgets from "../../../../schema/Widgets";
+import { LoadingOutlined } from "@ant-design/icons";
 
 class NormalInfo extends Component {
   constructor(props) {
@@ -18,18 +18,18 @@ class NormalInfo extends Component {
       identifyCode: null,
       avatar: "https://via.placeholder.com/150",
       preview: null,
+      isRender: true,
     };
     this.submit = this.submit.bind(this);
   }
   componentDidMount() {
     let user = local.get("user");
-    let token = cookie.load("token");
+    let token = local.get("session");
     axios
       .get(`${Config.host}/api/getUserInfo/${user.userID}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((rs) => {
-        console.log(rs);
         this.setState({
           firstname: rs.data.data.firstName,
           lastname: rs.data.data.lastname,
@@ -39,6 +39,7 @@ class NormalInfo extends Component {
             rs.data.data.avatar == null
               ? "https://via.placeholder.com/150"
               : rs.data.data.avatar,
+          isRender: false,
         });
       })
       .catch((rs) => helper.toast("warning", "System error"));
@@ -57,8 +58,7 @@ class NormalInfo extends Component {
   };
   async submit(e) {
     e.preventDefault();
-    console.log(this.state);
-    let token = await cookie.load("token");
+    let token = local.get("session");
     let rs = await axios.put(
       `${Config.host}/api/update/${local.get("user").userID}`,
       {
@@ -80,8 +80,15 @@ class NormalInfo extends Component {
   }
 
   render() {
+    if (this.state.isRender) {
+      return (
+        <div className=" d-flex justify-content-center">
+          <LoadingOutlined />
+        </div>
+      );
+    }
     return (
-      <div className="container py-5 div-login div-login">
+      <div className="container py-5 div-login">
         <form className="row" onSubmit={this.submit}>
           <div className="col-md-4 mb-2">
             <div className="img-fluid w-100 d-flex justify-content-center">
@@ -118,7 +125,10 @@ class NormalInfo extends Component {
                 value={this.state.dob}
                 // maxDate={new Date()}
                 // minDate={minDate}
-                onChange={(data) => this.setState({ dob: data })}
+                onChange={(data) => {
+                  this.setState({ dob: new Date(data) });
+                  console.log(data);
+                }}
               />
             </div>
             <div className="col-md-6 mb-2">
@@ -130,7 +140,7 @@ class NormalInfo extends Component {
               />
             </div>
             <div className="col-md-12">
-              <button className="btn btn-info" type="submit">
+              <button className="btn btn-info px-5" type="submit">
                 Lưu
               </button>
             </div>
@@ -161,7 +171,7 @@ class NormalInfo extends Component {
               <div class="modal-body">
                 <div className="container">
                   <label className="form-label text-muted"></label>
-                  <div className="container">
+                  <div className="container d-flex justify-content-center">
                     <Avatar
                       width={300}
                       height={240}

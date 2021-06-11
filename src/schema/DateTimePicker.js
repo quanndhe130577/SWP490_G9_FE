@@ -1,23 +1,24 @@
 import React from "react";
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
+import { DatePicker } from "antd";
+import moment from "moment";
 
 export default function DateTimePicker({
   value,
   label,
-  // maxDate,
-  // minDate,
   error,
   isDisable = false,
   onChange,
-  type = "text",
   required = false,
   submitted,
 }) {
-  console.log(value);
+  let dateFormat = "MM/DD/yyyy";
+  // console.log(value.toLocaleDateString().trim());
+  console.log(moment(value.toLocaleDateString().trim(), dateFormat));
   return (
     <div
       className={
-        "form-group  d-flex flex-column" +
+        "form-group d-flex flex-column" +
         (submitted && !value ? " has-error" : "")
       }
     >
@@ -27,19 +28,17 @@ export default function DateTimePicker({
         </label>
       )}
 
-      {/* <input
-        disabled={isDisable}
-        type={type}
+      <DatePicker
         className="form-control"
-        value={value}
-        onChange={(e) => {
+        defaultValue={moment(value.toLocaleDateString().trim(), dateFormat)}
+        format={dateFormat}
+        onChange={(date, dateString) => {
           if (onChange) {
-            onChange(e.target.value);
+            onChange(date);
           }
         }}
-        required={required}
-      /> */}
-      <DatePicker
+      />
+      {/* <DatePicker
         className="form-control"
         dateFormat="dd/MM/yyyy"
         // maxDate={maxDate}
@@ -73,7 +72,7 @@ export default function DateTimePicker({
             },
           },
         ]}
-      />
+      /> */}
       {submitted && !value && (
         <div className="help-block">{label} is required</div>
       )}
