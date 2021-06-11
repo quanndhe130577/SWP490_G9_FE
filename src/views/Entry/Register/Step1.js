@@ -18,12 +18,13 @@ export default class Step1 extends Component {
             // label={i18n.t("OTP")}
             value={value || "123456"}
             onChange={onChange}
-          // submitted={submitted}
+            // submitted={submitted}
           />
         </Col>
         <Col md="6">
           <label>
-            Bạn ko nhận được mã?<span> gửi lại</span>
+            {i18n.t("Bạn ko nhận được mã?")}
+            <span> gửi lại</span>
           </label>
         </Col>
       </Row>

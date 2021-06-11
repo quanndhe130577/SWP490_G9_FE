@@ -56,11 +56,9 @@ class DefaultHeader extends Component {
           style={{ paddingTop: 64 }}
           breakpoint="lg"
           collapsedWidth="0"
-          onBreakpoint={(broken) => {
-            // console.log(broken);
-          }}
+          onBreakpoint={(broken) => {}}
           onCollapse={(collapsed, type) => {
-            console.log(collapsed, type);
+            // console.log(collapsed, type);
           }}
         >
           <Menu theme="dark" mode="inline">
@@ -92,7 +90,11 @@ class DefaultHeader extends Component {
         >
           <div className="logo">
             <Link to="/home">
-              <img src="assets/image/favicon.png" style={{ width: 50 }} />
+              <img
+                src="assets/image/favicon.png"
+                alt="logo"
+                style={{ width: 50 }}
+              />
             </Link>
           </div>
 

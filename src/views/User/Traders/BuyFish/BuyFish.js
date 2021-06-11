@@ -7,6 +7,57 @@ import Moment from "react-moment";
 import Widgets from "../../../../schema/Widgets";
 
 const BuyFish = () => {
+  const columns = [
+    {
+      title: "STT",
+      dataIndex: "key",
+      key: "key",
+      render: (text) => <label>{text}</label>,
+    },
+    {
+      title: "Age (medium screen or bigger)",
+      dataIndex: "age",
+      key: "age",
+      // responsive: ["md"],
+    },
+    {
+      title: "Address (large screen or bigger)",
+      dataIndex: "address",
+      key: "address",
+      // responsive: ["lg"],
+    },
+    {
+      title: "Tags",
+      key: "tags",
+      dataIndex: "tags",
+      render: (tags) => (
+        <>
+          {tags.map((tag) => {
+            let color = tag.length > 5 ? "geekblue" : "green";
+            if (tag === "loser") {
+              color = "volcano";
+            }
+            return (
+              <Tag color={color} key={tag}>
+                {tag.toUpperCase()}
+              </Tag>
+            );
+          })}
+        </>
+      ),
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (text, record) => (
+        <Space size="middle">
+          <label>Invite {record.name}</label>
+          <label>Delete</label>
+        </Space>
+      ),
+    },
+  ];
+
   const [isShowBuy, setIsShowBuy] = useState(false);
   const [totalBuy, setTotalBuy] = useState({});
 
@@ -66,56 +117,6 @@ const BuyFish = () => {
 };
 
 export default BuyFish;
-const columns = [
-  {
-    title: "STT",
-    dataIndex: "key",
-    key: "key",
-    render: (text) => <a>{text}</a>,
-  },
-  {
-    title: "Age (medium screen or bigger)",
-    dataIndex: "age",
-    key: "age",
-    // responsive: ["md"],
-  },
-  {
-    title: "Address (large screen or bigger)",
-    dataIndex: "address",
-    key: "address",
-    // responsive: ["lg"],
-  },
-  {
-    title: "Tags",
-    key: "tags",
-    dataIndex: "tags",
-    render: (tags) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? "geekblue" : "green";
-          if (tag === "loser") {
-            color = "volcano";
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (text, record) => (
-      <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
-      </Space>
-    ),
-  },
-];
 
 const data = [
   {

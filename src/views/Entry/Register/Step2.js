@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col } from "reactstrap";
+// import { Row, Col } from "reactstrap";
 import Widgets from "../../../schema/Widgets";
 import i18n from "i18next";
 export default class Step1 extends Component {

@@ -57,7 +57,7 @@ const Login = (props) => {
     if (rs && rs.statusCode === 200 && rs.data) {
       // delete admin role
       let noAdmin = rs.data.filter((el) => el.normalizedName !== "ADMIN");
-      noAdmin.map((el) => {
+      noAdmin.forEach((el) => {
         helper.renameKey(el, "displayName", "label");
         helper.renameKey(el, "normalizedName", "value");
       });

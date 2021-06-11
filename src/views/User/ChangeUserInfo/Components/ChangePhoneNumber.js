@@ -9,8 +9,8 @@ class ChangePhoneNumber extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      comfirm: false,
-      newPhonenumber: "",
+      confirm: false,
+      newPhoneNumber: "",
       password: "",
       rePassword: "",
       otpId: 0,
@@ -32,8 +32,8 @@ class ChangePhoneNumber extends Component {
   };
   reset = () => {
     this.setState({
-      comfirm: false,
-      newPhonenumber: "",
+      confirm: false,
+      newPhoneNumber: "",
       password: "",
       rePassword: "",
       otpId: 0,
@@ -45,7 +45,7 @@ class ChangePhoneNumber extends Component {
     let token = local.get("session");
     if (this.state.comfirm) {
       console.log({
-        NewPhoneNumber: this.state.newPhonenumber,
+        newPhoneNumber: this.state.newPhoneNumber,
         OTPID: this.state.otp,
         Code: this.state.otpId,
       });
@@ -55,7 +55,7 @@ class ChangePhoneNumber extends Component {
             local.get("user").userID
           }`,
           {
-            NewPhoneNumber: this.state.newPhonenumber,
+            newPhoneNumber: this.state.newPhoneNumber,
             OTPID: parseInt(this.state.otp),
             Code: this.state.otpId.toString(),
           },
@@ -65,7 +65,7 @@ class ChangePhoneNumber extends Component {
         )
         .catch((rs) => helper.toast("warning", "Có lỗi từ phía server"));
       console.log(rs);
-      if (rs.data.statusCode == 200) {
+      if (rs.data.statusCode === 200) {
         helper.toast("success", rs.data.message);
         this.reset();
       } else {
@@ -76,7 +76,7 @@ class ChangePhoneNumber extends Component {
       let rs = await axios.post(
         `${Config.host}/api/otp/change-phone/${local.get("user").userID}`,
         {
-          NewPhoneNumber: this.state.newPhonenumber,
+          newPhoneNumber: this.state.newPhoneNumber,
           CurrentPassword: this.state.password,
           ConfirmPassword: this.state.rePassword,
         },
@@ -84,9 +84,9 @@ class ChangePhoneNumber extends Component {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      if (rs.data.statusCode == 200) {
+      if (rs.data.statusCode === 200) {
         helper.toast("success", "Nhập mã otp bạn vừa nhận được");
-        this.setState({ comfirm: true, otpId: rs.data.data.otpid });
+        this.setState({ confirm: true, otpId: rs.data.data.otpid });
       } else {
         console.log(rs.data);
         helper.toast("warning", rs.data.message);
@@ -97,7 +97,7 @@ class ChangePhoneNumber extends Component {
   render() {
     return (
       <form className="container py-5 div-login" onSubmit={this.submit}>
-        {this.state.comfirm ? (
+        {this.state.confirm ? (
           <div className="row justify-content-center">
             <div className="col-md-8 mb-2 row justify-content-center">
               <div className="col-md-6 mb-2">
@@ -119,8 +119,8 @@ class ChangePhoneNumber extends Component {
                   type="text"
                   required={true}
                   label={"Số điện thoại mới"}
-                  value={this.state.newPhonenumber}
-                  onChange={(e) => this.handleChange2(e, "newPhonenumber")}
+                  value={this.state.newPhoneNumber}
+                  onChange={(e) => this.handleChange2(e, "newPhoneNumber")}
                 />
               </div>
             </div>
