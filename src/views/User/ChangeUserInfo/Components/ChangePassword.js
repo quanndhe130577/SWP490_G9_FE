@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import cookie from "react-cookies";
+// import cookie from "react-cookies";
 import axios from "axios";
 import helper from "../../../../services/helper";
 import local from "../../../../services/local";
@@ -33,7 +33,7 @@ class ChangePassword extends Component {
   async submit(e) {
     e.preventDefault();
     // this.setState({ comfirm: true });
-    let token = await cookie.load("token");
+    let token = local.get("session");
     let rs = await axios.put(
       `${Config.host}/api/change-password/${local.get("user").userID}`,
       {
@@ -100,7 +100,7 @@ class ChangePassword extends Component {
         )}
 
         <div className="col-md-12 mb-2 row justify-content-center">
-          <button className="btn btn-info col-2" type="submit">
+          <button className="btn btn-info px-5" type="submit">
             Lưu
           </button>
         </div>

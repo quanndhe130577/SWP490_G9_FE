@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import apis from "../../services/apis";
 import helper from "../../services/helper";
 import local from "../../services/local";
-import cookie from "react-cookies";
 // import logo from "assets/image/bannerVn.png"
 
 const Login = (props) => {
@@ -27,7 +26,6 @@ const Login = (props) => {
       if (rs && rs.statusCode === 200) {
         local.set("session", rs.data.token);
         local.set("user", JSON.stringify(rs.data.user));
-        cookie.save("token", rs.data.token, { maxAge: 864000 });
         dispatch({
           type: "SET_USER_INFO",
           token: rs.data.token,

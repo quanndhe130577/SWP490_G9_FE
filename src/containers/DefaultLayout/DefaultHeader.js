@@ -7,8 +7,9 @@ import { connect } from "react-redux";
 
 import local from "../../services/local";
 import apis from "../../services/apis";
-import { Layout, Menu } from "antd";
+import { Layout, Menu, Dropdown, Button, Space } from "antd";
 import {
+  LogoutOutlined,
   UserOutlined,
   VideoCameraOutlined,
   UploadOutlined,
@@ -35,6 +36,16 @@ class DefaultHeader extends Component {
   }
 
   render() {
+    const menu = (
+      <Menu>
+        <Menu.Item icon={<SettingOutlined />}>
+          <Link to="/changeUserInfo">Đổi thông tin</Link>
+        </Menu.Item>
+        <Menu.Item icon={<LogoutOutlined />}>
+          <Link to="/logout">Đăng xuất</Link>
+        </Menu.Item>
+      </Menu>
+    );
     let { isShowModalLogout } = this.state;
     // const { children, ...attributes } = this.props;
     // console.log(isShowModalLogout);
@@ -85,9 +96,9 @@ class DefaultHeader extends Component {
             </Link>
           </div>
 
-          <div class="dropdown">
+          <Dropdown overlay={menu} placement="topRight">
             <Avatar
-              className="dropdown-toggle"
+              className="dropdown-toggle mt-2"
               size={45}
               icon={
                 local.get("user") == null ? (
@@ -101,20 +112,7 @@ class DefaultHeader extends Component {
               aria-haspopup="true"
               aria-expanded="false"
             />
-            {/* <button class="btn btn-secondary dropdown-toggle" type="button">
-              Dropdown button
-            </button> */}
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <div class="list-group">
-                <Link className="list-group-item" to="/changeUserInfo">
-                  Đổi thông tin
-                </Link>
-                <Link className="list-group-item" to="/changeUserInfo">
-                  Đăng xuất
-                </Link>
-              </div>
-            </div>
-          </div>
+          </Dropdown>
         </Header>
       </>
     );
