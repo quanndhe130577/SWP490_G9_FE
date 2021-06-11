@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col, Card, Table, Tag, Space } from "antd";
 import { Button } from "reactstrap";
 import i18n from "i18next";
 import ModalBuy from "./ModalBuy";
+import ChoosePond from "./ChoosePond";
 import Moment from "react-moment";
 import Widgets from "../../../../schema/Widgets";
+import local from "../../../../services/local";
 
 const BuyFish = () => {
   const columns = [
@@ -59,6 +61,7 @@ const BuyFish = () => {
   ];
 
   const [isShowBuy, setIsShowBuy] = useState(false);
+  const [isShowChoosePond, setShowChoosePond] = useState(true);
   const [totalBuy, setTotalBuy] = useState({});
 
   const showModal = () => {
@@ -68,6 +71,16 @@ const BuyFish = () => {
     setIsShowBuy(true);
     setTotalBuy({});
   };
+  const handleTotalBuy = (value, prop) => {
+    setTotalBuy((pre) => ({
+      ...pre,
+      [prop]: value,
+    }));
+  };
+  useEffect(() => {
+    let currentPO = local.get("currentPO");
+    handleTotalBuy(currentPO, "currentPO");
+  }, []);
   const renderTitle = () => {
     return (
       <div className="d-flex">
@@ -75,6 +88,10 @@ const BuyFish = () => {
         <Moment format="DD/MM/YYYY" className="mt-2">
           {new Date()}
         </Moment>
+        <label>
+          <b>{i18n.t("pondOwner")}:</b>
+          {totalBuy.currentPO}
+        </label>
       </div>
     );
   };
@@ -84,6 +101,15 @@ const BuyFish = () => {
       {isShowBuy && (
         <ModalBuy isShowBuy={isShowBuy} setIsShowBuy={setIsShowBuy} />
       )}
+      {/* {isShowChoosePond && ( */}
+      <ChoosePond
+        isShowChoosePond={isShowChoosePond}
+        setShowChoosePond={setShowChoosePond}
+        handleTotalBuy={handleTotalBuy}
+        pondOwner={totalBuy.pondOwner || ""}
+        currentPO={totalBuy.currentPO}
+      />
+      {/* )} */}
 
       <Row className="mb-2">
         <Col span="24" className="">
@@ -97,7 +123,11 @@ const BuyFish = () => {
             />
           </div>
           <div className="float-right">
-            <Button color="info" onClick={showModal} className="mr-2">
+            <Button
+              color="info"
+              onClick={() => setShowChoosePond(true)}
+              className="mr-2"
+            >
               {i18n.t("Giá cá hôm nay2")}
             </Button>
             <Button color="info" onClick={showModal} className=" mr-2">

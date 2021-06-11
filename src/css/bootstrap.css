@@ -23,3 +23,6 @@
 .show > .btn-danger.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgb(230 126 34 / 50%);
 }
+.btn {
+  min-width: 100px !important;
+}
