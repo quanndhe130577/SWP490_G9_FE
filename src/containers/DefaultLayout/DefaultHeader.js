@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import { Avatar } from "antd";
 import { Link } from "react-router-dom";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import local from "../../services/local";
-import { Layout, Menu, Dropdown } from "antd";
+import session from "../../services/session";
+import { Layout, Menu, Dropdown, Avatar } from "antd";
 import {
   LogoutOutlined,
   UserOutlined,
@@ -93,10 +92,10 @@ class DefaultHeader extends Component {
               className="dropdown-toggle mt-2"
               size={45}
               icon={
-                local.get("user") == null ? (
+                session.get("user") == null ? (
                   <UserOutlined />
                 ) : (
-                  <img src={local.get("user").avatar} alt="Preview" />
+                  <img src={session.get("user").avatar} alt="Preview" />
                 )
               }
               id="dropdownMenuButton"

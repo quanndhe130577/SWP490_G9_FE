@@ -28,5 +28,12 @@ let data = {
     { value: 1, label: "Rổ tròn", weight: 1 },
     { value: 2, label: "Rổ vuông", weight: 4 },
   ],
+  fishType: [
+    { value: 1, label: "Rô 1", minWeight: 1, maxWeight: 2, price: 30000 },
+    { value: 2, label: "Rô 2", minWeight: 1, maxWeight: 2, price: 20000 },
+    { value: 3, label: "Chép 1", minWeight: 1, maxWeight: 2, price: 40000 },
+    { value: 4, label: "Chép 2", minWeight: 1, maxWeight: 2, price: 35000 },
+    { value: 5, label: "Trắm", minWeight: 1, maxWeight: 2, price: 50000 },
+  ],
 };
 export default data;

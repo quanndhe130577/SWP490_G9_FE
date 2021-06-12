@@ -1,4 +1,4 @@
-import local from "./local";
+import session from "./session";
 import Config from "./config";
 import helper from "./helper";
 import i18next from "i18next";
@@ -14,7 +14,7 @@ let request = {};
 //     method: method,
 //     body: formData,
 //     headers: {
-//       Authorization: `Bearer ${local.get("session") || "customer"}`,
+//       Authorization: `Bearer ${session.get("session") || "customer"}`,
 //     },
 //   };
 //   if (Config.debug) console.log(`[POST]`, url, option);
@@ -34,7 +34,7 @@ request.request = async (url, data, headers, method = "POST") => {
     body: JSON.stringify(data), // data can be `string` or {object}!
     headers: {
       "Content-Type": "application/json; charset=UTF-8",
-      // Authorization: `Bearer ${local.get("session") || "customer"}`,
+      // Authorization: `Bearer ${session.get("session") || "customer"}`,
       // device: JSON.stringify(deviceDetector.parse(navigator.userAgent)),
     },
   };
@@ -62,14 +62,14 @@ request.request = async (url, data, headers, method = "POST") => {
         //   confirmButtonText: 'Continue session',
         // }).then(async result => {
         //   if (result.value) {
-        //     let rs = await api.refreshToken({ token: local.get('session') })
+        //     let rs = await api.refreshToken({ token: session.get('session') })
         //     if (rs && rs.errorCode === 0) {
-        //       local.set('session', rs.data);
+        //       session.set('session', rs.data);
         //       window.history.go()
         //     }
         //   } else {
-        local.clear();
-        window.location.href = '/';
+        session.clear();
+        window.location.href = "/";
         //   }
         // })
         break;

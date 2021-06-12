@@ -5,7 +5,6 @@ import i18n from "i18next";
 import ModalBuy from "./ModalBuy";
 import ChoosePond from "./ChoosePond";
 import Moment from "react-moment";
-// import Widgets from "../../../../schema/Widgets";
 import local from "../../../../services/local";
 import dataDf from "../../../../data";
 const BuyFish = () => {
@@ -63,28 +62,35 @@ const BuyFish = () => {
   const [isShowBuy, setIsShowBuy] = useState(false);
   const [isShowChoosePond, setShowChoosePond] = useState(true);
   const [totalBuy, setTotalBuy] = useState({});
+  const [currentTran, setCurrentTran] = useState({});
 
   const showModal = () => {
     setIsShowBuy(true);
   };
-  // const handleChange = () => {
-  //   setIsShowBuy(true);
-  //   setTotalBuy({});
-  // };
   const handleTotalBuy = (value, prop) => {
     setTotalBuy((pre) => ({
       ...pre,
       [prop]: value,
     }));
   };
+  // const handleCurrentTran = (value, prop) => {
+  //   setCurrentTran((pre) => ({
+  //     ...pre,
+  //     [prop]: value,
+  //   }));
+  // };
   const findPO = () => {
-    return (
-      dataDf.pondOwner.find((word) => word.value === totalBuy.currentPO) || {}
-    );
+    if (currentTran.pondOwner)
+      return (
+        dataDf.pondOwner.find(
+          (el) => el.value === parseInt(currentTran.pondOwner)
+        ) || {}
+      );
+    else return {};
   };
   useEffect(() => {
-    let currentPO = local.get("currentPO");
-    handleTotalBuy(currentPO, "currentPO");
+    let tem = local.get("currentTran") || {};
+    setCurrentTran(tem);
   }, []);
   const renderTitle = () => {
     return (
@@ -110,7 +116,11 @@ const BuyFish = () => {
   return (
     <Card title={renderTitle()}>
       {isShowBuy && (
-        <ModalBuy isShowBuy={isShowBuy} setIsShowBuy={setIsShowBuy} />
+        <ModalBuy
+          isShowBuy={isShowBuy}
+          setIsShowBuy={setIsShowBuy}
+          currentTran={currentTran}
+        />
       )}
       {isShowChoosePond && (
         <ChoosePond
@@ -118,7 +128,8 @@ const BuyFish = () => {
           setShowChoosePond={setShowChoosePond}
           handleTotalBuy={handleTotalBuy}
           pondOwner={totalBuy.pondOwner || ""}
-          currentPO={totalBuy.currentPO}
+          currentTran={currentTran}
+          setCurrentTran={setCurrentTran}
         />
       )}
 

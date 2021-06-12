@@ -8,7 +8,7 @@ import DefaultFooter from "./DefaultFooter";
 import DefaultHeader from "./DefaultHeader";
 // import { UserOutlined, VideoCameraOutlined } from '@ant-design/icons'
 import { Layout } from "antd";
-import local from "../../services/local";
+import session from "../../services/session";
 
 const { Content } = Layout;
 
@@ -21,8 +21,8 @@ class DefaultLayout extends Component {
   }
   async componentDidMount() {
     try {
-      var session = await local.get("session");
-      if (!session) {
+      let sessionN = await session.get("session");
+      if (!sessionN) {
         this.props.history.replace("/login");
       }
     } catch (err) {

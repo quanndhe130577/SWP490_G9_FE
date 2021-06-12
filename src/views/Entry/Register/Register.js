@@ -43,6 +43,7 @@ const Login = (props) => {
         let rs = await apis.register(user);
         if (rs && rs.statusCode === 200) {
           helper.toast("success", i18n.t(rs.message || "systemError"));
+          props.history.push("login");
         }
       }
     } catch (error) {
