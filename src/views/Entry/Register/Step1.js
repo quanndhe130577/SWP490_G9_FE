@@ -16,7 +16,7 @@ export default class Step1 extends Component {
           <Widgets.Text
             required={true}
             // label={i18n.t("OTP")}
-            value={value}
+            value={value || "123456"}
             onChange={onChange}
             // submitted={submitted}
           />
