@@ -14,6 +14,7 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import "../../css/antd.css";
+import i18n from "i18next";
 const { Header, Sider } = Layout;
 const propTypes = {
   children: PropTypes.node,
@@ -63,7 +64,7 @@ class DefaultHeader extends Component {
               <Menu.Item key="setting:4">Option 4</Menu.Item>
             </SubMenu>
             <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-              nav 2
+              <Link to="/pondOwner">{i18n.t("pondOwnerManagement")}</Link>
             </Menu.Item>
             <Menu.Item key="3" icon={<UploadOutlined />}>
               nav 3

@@ -28,7 +28,9 @@ class Select2 extends Component {
             }
           }}
         >
-          <Option value="">{i18next.t("pleaseChoose")}</Option>
+          <Option value="" key="-1">
+            {i18next.t("pleaseChoose")}
+          </Option>
           {items.map((item, index) => (
             <Option value={item.value} key={index}>
               {item.label}

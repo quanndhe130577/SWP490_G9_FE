@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Table, Space } from "antd";
+import { Table } from "antd";
+import i18n from "i18next";
 import data from "../../../../data";
 import Widgets from "../../../../schema/Widgets";
 
@@ -37,10 +38,9 @@ const PriceFishToday = ({ listFish, onChange }) => {
       title: "Hành động",
       key: "action",
       render: (text, record) => (
-        <Space size="middle">
-          <label>Invite {record.name}</label>
-          <label>Delete</label>
-        </Space>
+        <div size="middle">
+          <label>{i18n.t("edit")}</label>
+        </div>
       ),
     },
   ];
@@ -59,7 +59,6 @@ const PriceFishToday = ({ listFish, onChange }) => {
   };
   useEffect(() => {
     findList(listFish);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listFish]);
   return (

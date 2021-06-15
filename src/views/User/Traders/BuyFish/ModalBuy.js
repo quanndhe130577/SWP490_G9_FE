@@ -6,10 +6,23 @@ import "antd/dist/antd.css";
 import Widgets from "../../../../schema/Widgets";
 import data from "../../../../data";
 
-const ModalBuy = ({ isShowBuy, setIsShowBuy, currentTran }) => {
-  const [transaction, setTransaction] = useState({});
+const ModalBuy = ({
+  isShowBuy,
+  setIsShowBuy,
+  currentTotal,
+  transactions,
+  handleTrans,
+  currentTran,
+}) => {
+  const [transaction, setTransaction] = useState(currentTran);
 
   const handleOk = () => {
+    if (handleTrans) {
+      let tem = transaction;
+      tem.sid = transactions.length + 1;
+
+      handleTrans(tem);
+    }
     setIsShowBuy(false);
   };
   const handleCancel = () => {
@@ -43,13 +56,14 @@ const ModalBuy = ({ isShowBuy, setIsShowBuy, currentTran }) => {
             label={i18n.t("typeOfFish")}
             value={transaction.typeOfFish}
             onChange={(e) => handleChangeTran("typeOfFish", e)}
-            items={currentTran.arrFish || []}
+            items={currentTotal.arrFish || []}
           />
         </Col>
         <Col md="6" xs="12">
           <Widgets.Text
             required={true}
             label={i18n.t("qtyOfFish(Kg)")}
+            type="number"
             value={transaction.qtyOfFish}
             onChange={(e) => handleChangeTran("qtyOfFish", e)}
           />

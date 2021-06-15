@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Table, Tag, Space } from "antd";
+import { Card, Table } from "antd";
 import { Button, Row, Col } from "reactstrap";
 import i18n from "i18next";
 import ModalBuy from "./ModalBuy";
@@ -8,61 +8,95 @@ import Moment from "react-moment";
 import local from "../../../../services/local";
 import dataDf from "../../../../data";
 const BuyFish = () => {
-  const columns = [
-    {
-      title: "STT",
-      dataIndex: "key",
-      key: "key",
-      render: (text) => <label>{text}</label>,
-    },
-    {
-      title: "Age (medium screen or bigger)",
-      dataIndex: "age",
-      key: "age",
-      // responsive: ["md"],
-    },
-    {
-      title: "Address (large screen or bigger)",
-      dataIndex: "address",
-      key: "address",
-      // responsive: ["lg"],
-    },
-    {
-      title: "Tags",
-      key: "tags",
-      dataIndex: "tags",
-      render: (tags) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? "geekblue" : "green";
-            if (tag === "loser") {
-              color = "volcano";
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
-    },
-    {
-      title: "Action",
-      key: "action",
-      render: (text, record) => (
-        <Space size="middle">
-          <label>Invite {record.name}</label>
-          <label>Delete</label>
-        </Space>
-      ),
-    },
-  ];
-
   const [isShowBuy, setIsShowBuy] = useState(false);
   const [isShowChoosePond, setShowChoosePond] = useState(true);
   const [totalBuy, setTotalBuy] = useState({});
+  const [currentTotal, setCurrentTotal] = useState({});
+  const [transactions, setTrans] = useState([]);
   const [currentTran, setCurrentTran] = useState({});
+
+  const handelAction = (action, sid) => {
+    if (action === "delete") {
+      let tem = transactions.filter((el) => el.sid !== sid);
+      setTrans(tem);
+    } else {
+      let tem = transactions.find((e) => e.sid === sid);
+      if (tem) {
+        setCurrentTran(tem);
+        setIsShowBuy(true);
+      }
+    }
+  };
+  const findLabel = (obj, key) => {
+    return dataDf[obj].find((el) => el.value === parseInt(key)) || {};
+  };
+  const columns = [
+    {
+      title: "STT",
+      dataIndex: "sid",
+      key: "sid",
+      render: (text) => <label>{text}</label>,
+    },
+    {
+      title: i18n.t("typeOfFish"),
+      dataIndex: "typeOfFish",
+      key: "typeOfFish",
+      render: (drum) => (
+        <div>{drum && <label>{findLabel("fishType", drum).label}</label>}</div>
+      ),
+    },
+    {
+      title: i18n.t("qtyOfFish(Kg)"),
+      dataIndex: "qtyOfFish",
+      key: "qtyOfFish",
+      // responsive: ["lg"],
+    },
+    {
+      title: i18n.t("basket"),
+      dataIndex: "basket",
+      render: (basket) => (
+        <div>
+          {basket && <label>{findLabel("basket", basket).label}</label>}
+        </div>
+      ),
+    },
+    {
+      title: i18n.t("drum"),
+      dataIndex: "drum",
+      key: "drum",
+      render: (drum) => (
+        <div>{drum && <label>{findLabel("drum", drum).label}</label>}</div>
+      ),
+    },
+    {
+      title: i18n.t("truck"),
+      dataIndex: "truck",
+      key: "truck",
+      render: (truck) => (
+        <div>{truck && <label>{findLabel("truck", truck).label}</label>}</div>
+      ),
+    },
+
+    {
+      title: "Action",
+      key: "sid",
+      dataIndex: "sid",
+      render: (sid) => (
+        <div>
+          {sid && (
+            <div>
+              <label onClick={() => handelAction("edit", sid)}>
+                {i18n.t("edit")} {sid}
+              </label>
+              <label onClick={() => handelAction("delete", sid)}>
+                {i18n.t("delete")} {sid}
+              </label>
+            </div>
+          )}
+        </div>
+      ),
+    },
+  ];
 
   const showModal = () => {
     setIsShowBuy(true);
@@ -73,24 +107,23 @@ const BuyFish = () => {
       [prop]: value,
     }));
   };
-  // const handleCurrentTran = (value, prop) => {
-  //   setCurrentTran((pre) => ({
-  //     ...pre,
-  //     [prop]: value,
-  //   }));
-  // };
+  const handleTrans = (value) => {
+    setCurrentTran({});
+    setTrans((pre) => [...pre, value]);
+  };
+
   const findPO = () => {
-    if (currentTran.pondOwner)
+    if (currentTotal.pondOwner)
       return (
         dataDf.pondOwner.find(
-          (el) => el.value === parseInt(currentTran.pondOwner)
+          (el) => el.value === parseInt(currentTotal.pondOwner)
         ) || {}
       );
     else return {};
   };
   useEffect(() => {
-    let tem = local.get("currentTran") || {};
-    setCurrentTran(tem);
+    let tem = local.get("currentTotal") || {};
+    setCurrentTotal(tem);
   }, []);
   const renderTitle = () => {
     return (
@@ -119,6 +152,9 @@ const BuyFish = () => {
         <ModalBuy
           isShowBuy={isShowBuy}
           setIsShowBuy={setIsShowBuy}
+          currentTotal={currentTotal}
+          transactions={transactions}
+          handleTrans={handleTrans}
           currentTran={currentTran}
         />
       )}
@@ -128,8 +164,8 @@ const BuyFish = () => {
           setShowChoosePond={setShowChoosePond}
           handleTotalBuy={handleTotalBuy}
           pondOwner={totalBuy.pondOwner || ""}
-          currentTran={currentTran}
-          setCurrentTran={setCurrentTran}
+          currentTotal={currentTotal}
+          setCurrentTotal={setCurrentTotal}
         />
       )}
 
@@ -150,7 +186,7 @@ const BuyFish = () => {
               onClick={() => setShowChoosePond(true)}
               className="mr-2"
             >
-              {i18n.t("Giá cá hôm nay2")}
+              {i18n.t("Giá cá hôm nay")}
             </Button>
             <Button color="info" onClick={showModal} className=" mr-2">
               {i18n.t("Thêm Mã")}
@@ -161,7 +197,7 @@ const BuyFish = () => {
 
       <Row>
         <Col style={{ overflowX: "auto" }}>
-          <Table columns={columns} dataSource={data} />
+          <Table columns={columns} dataSource={transactions} />
         </Col>
       </Row>
     </Card>
@@ -169,27 +205,3 @@ const BuyFish = () => {
 };
 
 export default BuyFish;
-
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"],
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"],
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sidney No. 1 Lake Park",
-    tags: ["cool", "teacher"],
-  },
-];
