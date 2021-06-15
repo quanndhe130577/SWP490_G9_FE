@@ -8,7 +8,7 @@ import helper from "../../../services/helper";
 
 const Login = (props) => {
   const [user, setUser] = useState({
-    OTP: "123456",
+    code: "123456",
     OTPID: 3,
     DOB: "1999-10-21",
     Avatar: null,
@@ -25,19 +25,27 @@ const Login = (props) => {
       [pro]: value,
     }));
   };
+
   const handleSubmit = async () => {
     try {
       setSubmitted(true);
       if (!user.phoneNumber) {
         return helper.toast("error", i18n.t("Vui lòng điền số điện thoại"));
       } else if (step === 0) {
-        // let param = "/" + user.phoneNumber;
-        // let rs = await apis.getOtp({}, "GET", param);
-        // if (rs && rs.statusCode === 200) {
-        //   helper.toast("success", i18n.t(rs.message || "systemError"));
-        // }
+        //let param = "/" + user.phoneNumber;
+        let rs = await apis.getOtp({}, "GET", user.phoneNumber);
+        if (rs && rs.statusCode === 200) {
+          debugger
+          handleChange(rs.data.otpid, "otpid");
+          helper.toast("success", i18n.t(rs.message || "systemError"));
+        }
         setStep(1);
       } else if (step === 1) {
+
+        let rs = await apis.checkOtp({otpid : user.otpid, code : user.code, phoneNumber: user.phoneNumber}, "POST");
+        if (rs && rs.statusCode === 200) {
+          helper.toast("success", i18n.t(rs.message || "systemError"));
+        }
         setStep(2);
       } else if (step === 2) {
         let rs = await apis.register(user);
@@ -104,7 +112,7 @@ const Login = (props) => {
                     onChange={(e) => handleChange(e, "phoneNumber")}
                   />
                 )}
-                {step === 1 && <Step1 phoneNumber={user.phoneNumber} />}
+                {step === 1 && <Step1 phoneNumber={user.phoneNumber}  onChange={(e) => handleChange(e, "code")} />}
 
                 {step === 2 && (
                   <>

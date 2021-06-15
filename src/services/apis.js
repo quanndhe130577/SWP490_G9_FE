@@ -8,7 +8,7 @@ var path = {
   register: "/api/register",
   getAllRole: "/api/role/get-all",
   getOtp: "/api/otp/register",
-  checkOtp: "/api/check-register-otp",
+  checkOtp: "/api/OTP/check-register",
   updateUser: "/api/update",
   getPondOwnerByTraderId: "/api/pondOwner/getall"//method GET
 };
