@@ -2,74 +2,109 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import i18n from "i18next";
 import Widgets from "../../schema/Widgets";
+import { useDispatch } from "react-redux";
 import apis from "../../services/apis";
 import helper from "../../services/helper";
+import session from "../../services/session";
+
 const Login = (props) => {
-  const [username, setUsername] = useState("");
+  const dispatch = useDispatch();
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
-  const [submitted, setsubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const [loggingIn, setLoggingIn] = useState(false);
 
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      // alert(username + password);
+
       setLoggingIn(true);
+      setSubmitted(true);
       let rs = await apis.login({
-        phonenumber: "0966848112",
-        password: "12345678",
+        phoneNumber,
+        password,
       });
-      console.log(rs);
+      if (rs && rs.statusCode === 200) {
+        session.set("session", rs.data.token);
+        session.set("user", JSON.stringify(rs.data.user));
+        dispatch({
+          type: "SET_USER_INFO",
+          token: rs.data.token,
+          user: rs.data.user,
+        });
+        helper.toast("success", i18n.t("loginSuccess"));
+        props.history.push("home");
+      }
     } catch (error) {
-      helper.toast("error", "Lỗi hệ thống");
+      helper.toast("error", i18n.t("systemError"));
       console.log(error);
     } finally {
-      props.history.push("home");
       setLoggingIn(false);
     }
   };
-
+  const updateSubmitted = () => {
+    if (submitted) setSubmitted(true);
+  };
   return (
-    <div className="jumbotron ">
-      <div className="container border con-login">
-        <div className="col-sm-6 col-md-6 ">
-          <div className="">
-            <h2>{i18n.t("Login")}</h2>
-            <form name="form" onSubmit={handleSubmit}>
-              <Widgets.Text
-                required={true}
-                label={i18n.t("Username")}
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                submitted={submitted}
-              />
+    <div className="jumbotron">
+      <div className="div-login">
+        <div>
+          <div className="col-sm-12 col-md-12 " style={{ textAlign: "center" }}>
+            <img
+              src="assets/image/bannerVn.png"
+              alt="banner"
+              className="image-login"
+            />
+          </div>
 
-              <Widgets.Text
-                type="password"
-                required={true}
-                label={i18n.t("Password")}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                submitted={submitted}
-              />
-              <div className="form-group">
-                <button className="btn btn-primary">
-                  {loggingIn ? (
-                    <>
-                      <span
-                        class="spinner-border spinner-border-sm"
-                        role="status"
-                        aria-hidden="true"
-                      ></span>
-                      {i18n.t("Loading")}...
-                    </>
-                  ) : (
-                    <span>{i18n.t("Login")}</span>
-                  )}
-                </button>
-                <Link to="/register" className="btn btn-link">
-                  {i18n.t("Register")}
-                </Link>
+          <div className="con-login  border container">
+            <form className="col-sm-4 col-md-4 " onSubmit={handleSubmit}>
+              <h2 style={{ textAlign: "center" }}> {i18n.t("Login")}</h2>
+              <div>
+                <Widgets.Text
+                  required={true}
+                  label={i18n.t("phoneNumber")}
+                  value={phoneNumber}
+                  onChange={(e) => {
+                    setPhoneNumber(e);
+                    updateSubmitted();
+                  }}
+                  submitted={submitted}
+                />
+
+                <Widgets.Text
+                  type="password"
+                  required={true}
+                  label={i18n.t("Password")}
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e);
+                    updateSubmitted();
+                  }}
+                  submitted={submitted}
+                />
+                <div className="form-group d-flex justify-content-center">
+                  <button className="btn btn-info">
+                    {loggingIn ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        {i18n.t("loading")}...
+                      </>
+                    ) : (
+                      <span>{i18n.t("Login")}</span>
+                    )}
+                  </button>
+                  <div className="ml-3">
+                    <label>{i18n.t("or")}</label>
+                    <Link to="/register" className="btn btn-link">
+                      {i18n.t("Register")}
+                    </Link>
+                  </div>
+                </div>
               </div>
             </form>
           </div>

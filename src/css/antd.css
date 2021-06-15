@@ -10,6 +10,7 @@
 }
 .ant-layout-header {
   padding: 0 1em !important;
+  padding-left: 35px !important;
 }
 .ant-layout-footer {
   position: fixed;
@@ -18,6 +19,16 @@
 }
 .ant-layout-content {
   /* padding: 64px 0; */
-  /* min-height: calc(100vh - 128px) !important; */
-  min-height: 100vh;
+  min-height: calc(100vh - 126px);
+  /* min-height: 100vh; */
+}
+.ant-layout-sider-zero-width-trigger {
+  top: 5px !important;
+  z-index: 5 !important;
+  position: fixed !important;
+  right: unset !important;
+  font-size: 30px !important;
+}
+.default-layout {
+  padding-bottom: 4em;
 }

@@ -1,19 +1,20 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
-import local from "../../services/local";
-import i18n from "i18next";
-import { Layout, Menu } from "antd";
+import session from "../../services/session";
+import { Layout, Menu, Dropdown, Avatar } from "antd";
 import {
+  LogoutOutlined,
   UserOutlined,
   VideoCameraOutlined,
   UploadOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
 import "../../css/antd.css";
-const { Header, Content, Sider } = Layout;
+const { Header, Sider } = Layout;
 const propTypes = {
   children: PropTypes.node,
 };
@@ -26,43 +27,41 @@ class DefaultHeader extends Component {
     this.state = {};
   }
 
-  onLogoutClick() {
-    window.location.href = "";
-    api.logout();
-    local.clear();
-  }
-
   render() {
-    let { isShowModalLogout } = this.state;
-
-    // const { children, ...attributes } = this.props;
-    // console.log(isShowModalLogout);
+    const menu = (
+      <Menu>
+        <Menu.Item icon={<SettingOutlined />}>
+          <Link to="/changeUserInfo">Đổi thông tin</Link>
+        </Menu.Item>
+        <Menu.Item icon={<LogoutOutlined />}>
+          <Link to="/logout">Đăng xuất</Link>
+        </Menu.Item>
+      </Menu>
+    );
 
     return (
       <>
-        {/* <Header
-          className="site-layout-sub-header-background"
-          style={{ padding: 0 }}
-        /> */}
         <Sider
           style={{ paddingTop: 64 }}
           breakpoint="lg"
           collapsedWidth="0"
-          onBreakpoint={(broken) => {
-            console.log(broken);
-          }}
+          onBreakpoint={(broken) => {}}
           onCollapse={(collapsed, type) => {
-            console.log(collapsed, type);
+            // console.log(collapsed, type);
           }}
         >
-          <Menu
-            theme="dark"
-            mode="inline"
-            // defaultSelectedKeys={["4"]}
-          >
-            <Menu.Item key="1" icon={<UserOutlined />}>
-              nav 1
-            </Menu.Item>
+          <Menu theme="dark" mode="inline">
+            <SubMenu
+              key="SubMenu"
+              icon={<SettingOutlined />}
+              title="quản lí nhân viên"
+            >
+              <Menu.Item key="setting:1">thêm nhân viên</Menu.Item>
+              <Menu.Item key="setting:2">Option 2</Menu.Item>
+
+              <Menu.Item key="setting:3">Option 3</Menu.Item>
+              <Menu.Item key="setting:4">Option 4</Menu.Item>
+            </SubMenu>
             <Menu.Item key="2" icon={<VideoCameraOutlined />}>
               nav 2
             </Menu.Item>
@@ -76,10 +75,35 @@ class DefaultHeader extends Component {
         </Sider>
         <Header
           style={{ position: "fixed", zIndex: 1, width: "100%" }}
-          className="site-layout-sub-header-background"
-          // style={{ padding: 0 }}
+          className="site-layout-sub-header-background d-flex justify-content-between"
         >
-          <div className="logo">Logo</div>
+          <div className="logo">
+            <Link to="/home">
+              <img
+                src="assets/image/favicon.png"
+                alt="logo"
+                style={{ width: 50 }}
+              />
+            </Link>
+          </div>
+
+          <Dropdown overlay={menu} placement="topRight">
+            <Avatar
+              className="dropdown-toggle mt-2"
+              size={45}
+              icon={
+                session.get("user") == null ? (
+                  <UserOutlined />
+                ) : (
+                  <img src={session.get("user").avatar} alt="Preview" />
+                )
+              }
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            />
+          </Dropdown>
         </Header>
       </>
     );
@@ -90,6 +114,6 @@ DefaultHeader.propTypes = propTypes;
 DefaultHeader.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => {
-  return { userInfo: state.userInfo };
+  return { user: state.user };
 };
 export default connect(mapStateToProps)(DefaultHeader);
