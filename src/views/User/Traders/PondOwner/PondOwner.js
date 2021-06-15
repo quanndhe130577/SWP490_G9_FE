@@ -4,6 +4,8 @@ import { Table, Input, Space, Card } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { Row, Col, Button } from "reactstrap";
 import i18n from "i18next";
+import apis from "../../../../services/apis"
+import session from "../../../../services/session"
 
 const data = [];
 for (let i = 0; i < 100; i++) {
@@ -29,6 +31,25 @@ export default class PondOwner extends Component {
       //   ],
     };
   }
+
+  componentDidMount() {
+    this.fetchPondOwner()
+  }
+
+  async fetchPondOwner() {
+    try {
+      let user = await session.get("user");
+      debugger
+      let rs = await apis.getPondOwnerByTraderId({}, "GET", user.userID)
+      if (rs && rs.statusCode === 200) {
+        // helper.toast("success", i18n.t(rs.message || "systemError"));
+        // props.history.push("login");
+      }
+    } catch (error) {
+
+    }
+  }
+
   getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys,
@@ -90,9 +111,9 @@ export default class PondOwner extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -134,7 +155,7 @@ export default class PondOwner extends Component {
         </Col>
 
         <Col md="6">
-          <Button color="info" className="pull-right" onClick={() => {}}>
+          <Button color="info" className="pull-right" onClick={() => { }}>
             {i18n.t("create")}
           </Button>
         </Col>
