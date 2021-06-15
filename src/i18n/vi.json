@@ -30,6 +30,11 @@
     "fillPondOwner":"Vui lòng chọn chủ ao",
     "drum":"Lồ",
     "truck": "Xe",
-    "pleaseSelect":"Vui lòng chọn"
+    "pleaseSelect":"Vui lòng chọn",
+    "chooseFish":"Chọn các loại cá",
+    "edit":"Sửa",
+    "delete":"Xóa",
+    "pondOwnerManagement":"Quản lý chủ ao",
+    "create":"Tạo mới "
 
 }

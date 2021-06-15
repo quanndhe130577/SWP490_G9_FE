@@ -12,6 +12,7 @@ class SelectSearchMulti extends Component {
       isDisable,
       submitted,
       onChange,
+      onBlur,
       items = [],
     } = this.props;
 
@@ -31,6 +32,7 @@ class SelectSearchMulti extends Component {
           defaultValue={value}
           value={value}
           onChange={onChange}
+          onBlur={onBlur}
           disabled={isDisable}
         >
           {items.map((it) => (

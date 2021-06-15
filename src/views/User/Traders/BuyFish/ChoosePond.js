@@ -13,8 +13,8 @@ const ChoosePond = ({
   setShowChoosePond,
   handleTotalBuy,
   pondOwner,
-  currentTran,
-  setCurrentTran,
+  currentTotal,
+  setCurrentTotal,
 }) => {
   const handleOk = () => {
     setShowChoosePond(false);
@@ -22,9 +22,9 @@ const ChoosePond = ({
 
   const handleCancel = () => {
     // if pondOwner null can close modal
-    let check = validate(currentTran, "pondOwner");
+    let check = validate(currentTotal, "pondOwner");
     if (!check) {
-      onChange(currentTran.pondOwner, "pondOwner");
+      onChange(currentTotal.pondOwner, "pondOwner");
       setShowChoosePond(false);
     } else {
       helper.toast("error", i18n.t(check));
@@ -39,19 +39,20 @@ const ChoosePond = ({
   };
 
   const onChange = (val, prop) => {
-    // debugger;
-    let tem = currentTran;
-    if (prop === "pondOwner") {
-      debugger;
-      tem.pondOwner = val + "";
-    } else {
-      tem[prop] = val;
+    if (!(prop === "arrFish" && val.length === 0)) {
+      // debugger;
+      let tem = currentTotal;
+      if (prop === "pondOwner") {
+        tem.pondOwner = val + "";
+      } else {
+        tem[prop] = val;
+      }
+
+      local.set("currentTotal", tem);
+
+      setCurrentTotal(tem);
+      handleTotalBuy(val, prop);
     }
-
-    local.set("currentTran", tem);
-
-    setCurrentTran(tem);
-    handleTotalBuy(val, prop);
   };
   return (
     <Modal
@@ -66,13 +67,13 @@ const ChoosePond = ({
         <Col md="4" xs="12">
           <Widgets.Select
             label={i18n.t("pondOwner")}
-            value={pondOwner || currentTran.pondOwner}
+            value={parseInt(pondOwner || currentTotal.pondOwner)}
             items={data.pondOwner}
             onChange={(vl) => onChange(vl, "pondOwner")}
           />
           <Widgets.SelectSearchMulti
             label={i18n.t("chooseFish")}
-            value={currentTran.listFish}
+            value={currentTotal.listFish}
             items={data.fishType}
             onChange={(vl) => onChange(vl, "listFish")}
           />
@@ -80,7 +81,7 @@ const ChoosePond = ({
         <Col md="8" xs="12">
           <label className="bold">Các loại các trong ao</label>
           <PriceFishToday
-            listFish={currentTran.listFish || []}
+            listFish={currentTotal.listFish || []}
             onChange={(arr) => onChange(arr, "arrFish")}
           />
         </Col>
