@@ -10,7 +10,8 @@ var path = {
   getOtp: "/api/otp/register",
   checkOtp: "/api/check-register-otp",
   updateUser: "/api/update",
-  getPondOwnerByTraderId: "/api/pondOwner/getall"//method GET
+  getPondOwnerByTraderId: "/api/pondOwner/getall", //method GET
+  createPO: "/api/pondOwner/create",
 };
 
 Object.keys(path).forEach(function (key) {

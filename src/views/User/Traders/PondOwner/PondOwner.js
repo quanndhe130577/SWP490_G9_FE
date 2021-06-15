@@ -4,18 +4,19 @@ import { Table, Input, Space, Card } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { Row, Col, Button } from "reactstrap";
 import i18n from "i18next";
-import apis from "../../../../services/apis"
-import session from "../../../../services/session"
+import apis from "../../../../services/apis";
+import session from "../../../../services/session";
+import ModalForm from "./ModalForm";
 
-const data = [];
-for (let i = 0; i < 100; i++) {
-  data.push({
-    key: i,
-    name: `Edward King ${i}`,
-    age: 32,
-    address: `London, Park Lane no. ${i}`,
-  });
-}
+// const data = [];
+// for (let i = 0; i < 100; i++) {
+//   data.push({
+//     key: i,
+//     name: `Edward King ${i}`,
+//     age: 32,
+//     address: `London, Park Lane no. ${i}`,
+//   });
+// }
 export default class PondOwner extends Component {
   constructor(props) {
     super(props);
@@ -23,31 +24,24 @@ export default class PondOwner extends Component {
     this.state = {
       searchText: "",
       searchedColumn: "",
-      //   bottomOptions: [
-      //     { label: "bottomLeft", value: "bottomLeft" },
-      //     { label: "bottomCenter", value: "bottomCenter" },
-      //     { label: "bottomRight", value: "bottomRight" },
-      //     { label: "none", value: "none" },
-      //   ],
+      isShowModal: false,
+      mode: "",
+      data: [],
     };
   }
 
   componentDidMount() {
-    this.fetchPondOwner()
+    this.fetchPondOwner();
   }
 
   async fetchPondOwner() {
     try {
       let user = await session.get("user");
-      debugger
-      let rs = await apis.getPondOwnerByTraderId({}, "GET", user.userID)
+      let rs = await apis.getPondOwnerByTraderId({}, "GET", user.userID);
       if (rs && rs.statusCode === 200) {
-        // helper.toast("success", i18n.t(rs.message || "systemError"));
-        // props.history.push("login");
+        this.setState({ data: rs.data });
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   getColumnSearchProps = (dataIndex) => ({
@@ -111,9 +105,9 @@ export default class PondOwner extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -155,15 +149,36 @@ export default class PondOwner extends Component {
         </Col>
 
         <Col md="6">
-          <Button color="info" className="pull-right" onClick={() => { }}>
+          <Button
+            color="info"
+            className="pull-right"
+            onClick={() => {
+              this.setState({ isShowModal: true, mode: "create" });
+            }}
+          >
+            <i className="fa fa-plus mr-1" />
             {i18n.t("create")}
           </Button>
         </Col>
       </Row>
     );
   };
+  closeModal = (refresh) => {
+    if (refresh) {
+      this.fetchPondOwner();
+    }
+    this.setState({ isShowModal: false, mode: "" });
+  };
+  onClick(modeBtn, pondOwnerID) {
+    let { currentPO, data } = this.state;
 
+    if (modeBtn === "edit") {
+      currentPO = data.find((el) => el.id === pondOwnerID);
+      this.setState({ currentPO, mode: "edit", isShowModal: true });
+    }
+  }
   render() {
+    const { isShowModal, mode, currentPO, data } = this.state;
     const columns = [
       {
         title: "Name",
@@ -175,35 +190,47 @@ export default class PondOwner extends Component {
         sortDirections: ["descend", "ascend"],
       },
       {
-        title: "Age",
-        dataIndex: "age",
-        key: "age",
-        width: "20%",
-        ...this.getColumnSearchProps("age"),
-        sorter: (a, b) => a.age - b.age,
-        sortDirections: ["descend", "ascend"],
-      },
-      {
         title: "Address",
         dataIndex: "address",
         key: "address",
+        width: "20%",
         ...this.getColumnSearchProps("address"),
-        sorter: (a, b) => a.address.length - b.address.length,
+        sorter: (a, b) => a.address - b.address,
+        sortDirections: ["descend", "ascend"],
+      },
+      {
+        title: "Phone",
+        dataIndex: "phoneNumber",
+        key: "phoneNumber",
+        ...this.getColumnSearchProps("phoneNumber"),
+        sorter: (a, b) => a.phone.length - b.phone.length,
         sortDirections: ["descend", "ascend"],
       },
       {
         title: "Action",
-        key: "action",
-        render: (text, record) => (
+        dataIndex: "id",
+        key: "id",
+        render: (id) => (
           <div>
-            <a>update</a>
-            <a>Delete</a>
+            <Button className="mr-2" onClick={() => this.onClick("edit", id)}>
+              update
+            </Button>
+            <Button onClick={() => this.onClick("delete", id)}>Delete</Button>
           </div>
         ),
       },
     ];
     return (
       <Card title={this.renderTitle()}>
+        {isShowModal && mode !== "" && (
+          <ModalForm
+            isShow={isShowModal}
+            mode={mode}
+            closeModal={this.closeModal}
+            currentPO={currentPO || {}}
+            // handleChangePondOwner={handleChangePondOwner}
+          />
+        )}
         <Table
           bordered
           columns={columns}

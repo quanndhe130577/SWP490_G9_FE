@@ -4,9 +4,6 @@ import helper from "./helper";
 import i18next from "i18next";
 import Swal from "sweetalert2";
 
-// import DeviceDetector from "device-detector-js";
-// const deviceDetector = new DeviceDetector();
-
 let request = {};
 // request.upload = async (url, formData, method = "PUT") => {
 //   url = `${Config.host}${url}`;
@@ -35,7 +32,6 @@ request.request = async (url, data, headers, method = "POST") => {
     headers: {
       "Content-Type": "application/json; charset=UTF-8",
       Authorization: `Bearer ${session.get("session") || "customer"}`,
-      // device: JSON.stringify(deviceDetector.parse(navigator.userAgent)),
     },
   };
   option.headers = Object.assign({}, option.headers, headers);
@@ -43,7 +39,6 @@ request.request = async (url, data, headers, method = "POST") => {
   if (Config.debug) console.log(`[${method}]`, url, option);
   let res = await fetch(url, option);
   try {
-
     switch (res.status) {
       case 401:
         helper.toast("error", i18next.t("Unauthorized"));
@@ -93,11 +88,7 @@ request.request = async (url, data, headers, method = "POST") => {
         helper.toast("error", i18next.t("dataNotFound"));
         break;
       case 400:
-        // if (rs.code && rs.code == "E_MISSING_OR_INVALID_PARAMS") {
-        //   helper.toast("error", rs.message || "Invalid parameters");
-        // } else {
         helper.toast("error", i18next.t(rs.message || "badRequest"));
-        // }
         break;
       default:
         throw rs;
