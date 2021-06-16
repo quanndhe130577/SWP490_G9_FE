@@ -9,12 +9,24 @@ const Dashboard = Loadable({
   loader: () => import("./views/Home/index"),
   loading: Loading,
 });
-const WR = Loadable({
-  loader: () => import("./views/User/WeightRecoder/WR"),
+// const TableViewer = Loadable({
+//   loader: () => import("./views/AutoGenerate/TableViewer"),
+//   loading: Loading,
+// });
+const BuyFish = Loadable({
+  loader: () => import("./views/User/Traders/BuyFish/BuyFish"),
   loading: Loading,
 });
-const Test = Loadable({
-  loader: () => import("./views/User/Traders/Test"),
+const ChangeUserInfo = Loadable({
+  loader: () => import("./views/User/ChangeUserInfo/ChangeUserInfo"),
+  loading: Loading,
+});
+const Basket = Loadable({
+  loader: () => import("./views/User/Traders/Basket/Basket"),
+  loading: Loading,
+});
+const PondOwner = Loadable({
+  loader: () => import("./views/User/Traders/PondOwner/PondOwner"),
   loading: Loading,
 });
 const routes = [
@@ -23,15 +35,30 @@ const routes = [
     name: "Dashboard",
     component: Dashboard,
   },
+  // {
+  //   path: "/tableViewer",
+  //   name: "TableViewer",
+  //   component: TableViewer,
+  // },
   {
-    path: "/wr",
-    name: "WR",
-    component: WR,
+    path: "/buyF",
+    name: "BuyFish",
+    component: BuyFish,
   },
   {
-    path: "/test",
-    name: "Test",
-    component: Test,
+    path: "/ChangeUserInfo/",
+    name: "ChangeUserInfo",
+    component: ChangeUserInfo,
+  },
+  {
+    path: "/basket",
+    name: "Basket",
+    component: Basket,
+  },
+  {
+    path: "/pondOwner",
+    name: "PondOwner",
+    component: PondOwner,
   },
 ];
 

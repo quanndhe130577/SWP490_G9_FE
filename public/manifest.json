@@ -1,6 +1,6 @@
 {
-  "short_name": "CoreUI-React",
-  "name": "CoreUI-React sample",
+  "short_name": "T&R",
+  "name": "Fish Trader & Weight Recorder Support System",
   "icons": [
     {
       "src": "./assets/logo.png",
