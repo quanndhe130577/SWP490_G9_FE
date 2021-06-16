@@ -37,6 +37,8 @@
     "pondOwnerManagement":"Quản lý chủ ao",
     "create":"Tạo mới",
     "action":"Hành động",
-    "update":"Cập nhật"
+    "update":"Cập nhật",
+    "yes":"Đồng ý",
+    "confirmDelete":"Xác nhận xóa?"
 
 }

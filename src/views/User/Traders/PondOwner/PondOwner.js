@@ -5,6 +5,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Row, Col, Button } from "reactstrap";
 import i18n from "i18next";
 import apis from "../../../../services/apis";
+import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import ModalForm from "./ModalForm";
 export default class PondOwner extends Component {
@@ -166,6 +167,12 @@ export default class PondOwner extends Component {
     if (modeBtn === "edit") {
       currentPO = data.find((el) => el.id === pondOwnerID);
       this.setState({ currentPO, mode: "edit", isShowModal: true });
+    } else if (modeBtn === "delete") {
+      helper.confirm(i18n.t("confirmDelete")).then((rs) => {
+        if (rs) {
+          alert("asdgsa");
+        }
+      });
     }
   }
   renderBtnAction(id) {

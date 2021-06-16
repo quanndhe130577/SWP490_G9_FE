@@ -2,6 +2,8 @@ import React from "react";
 // import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import i18n from "i18next";
+import Swal from "sweetalert2";
 toast.configure();
 let helper = {};
 
@@ -55,7 +57,23 @@ helper.renameKey = (obj, old_key, new_key) => {
       delete obj[old_key];
     }
 };
-
+helper.confirm = (content) => {
+  return new Promise((resolve, reject) => {
+    Swal.fire({
+      title: content,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#17a2b8",
+      cancelButtonColor: "#e67e22",
+      confirmButtonText: i18n.t("yes"),
+      cancelButtonText: i18n.t("cancel"),
+    }).then((result) => {
+      if (result.value) {
+        resolve(true);
+      }
+    });
+  });
+};
 // helper.useHistory = (path) => {
 //   let history = useHistory();
 //   history.push(path);

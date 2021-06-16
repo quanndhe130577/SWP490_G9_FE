@@ -84,7 +84,7 @@ const Login = (props) => {
                   submitted={submitted}
                 />
                 <div className="form-group d-flex justify-content-center">
-                  <button className="btn btn-info">
+                  <button className="btn btn-info p-1">
                     {loggingIn ? (
                       <>
                         <span
@@ -98,9 +98,9 @@ const Login = (props) => {
                       <span>{i18n.t("Login")}</span>
                     )}
                   </button>
-                  <div className="ml-3">
-                    <label>{i18n.t("or")}</label>
-                    <Link to="/register" className="btn btn-link">
+                  <div className="ml-3 d-flex">
+                    <label className="pb-0">{i18n.t("or")}</label>
+                    <Link to="/register" className="btn btn-link p-1">
                       {i18n.t("Register")}
                     </Link>
                   </div>

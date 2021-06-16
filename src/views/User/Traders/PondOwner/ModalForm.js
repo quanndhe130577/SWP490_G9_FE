@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Row, Col } from "reactstrap";
-import { useSelector } from "react-redux";
 import { Modal } from "antd";
 import Widgets from "../../../../schema/Widgets";
 import i18n from "i18next";
@@ -19,13 +18,17 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
   };
   const handleOk = async () => {
     try {
-      let user = session.get("user");
-      let rs = await apis.createPO({
-        name: pondOwner.name,
-        address: pondOwner.address,
-        phoneNumber: pondOwner.phoneNumber,
-        traderID: user.userID,
-      });
+      let user = session.get("user"),
+        rs;
+      if (mode === "create") {
+        rs = await apis.createPO({
+          name: pondOwner.name,
+          address: pondOwner.address,
+          phoneNumber: pondOwner.phoneNumber,
+          traderID: user.userID,
+        });
+      } else if (mode === "edit") {
+      }
 
       if (rs && rs.statusCode === 200) {
         closeModal(true);

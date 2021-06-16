@@ -73,7 +73,7 @@ request.request = async (url, data, headers, method = "POST") => {
         });
         break;
       case 500:
-        helper.toast("error", i18next.t(rs.message || "internalServerError"));
+        helper.toast("error", i18next.t(res.message || "internalServerError"));
         break;
       case 200:
         let rs = await res.json();
@@ -88,7 +88,7 @@ request.request = async (url, data, headers, method = "POST") => {
         helper.toast("error", i18next.t("dataNotFound"));
         break;
       case 400:
-        helper.toast("error", i18next.t(rs.message || "badRequest"));
+        helper.toast("error", i18next.t(res.message || "badRequest"));
         break;
       default:
         throw rs;
