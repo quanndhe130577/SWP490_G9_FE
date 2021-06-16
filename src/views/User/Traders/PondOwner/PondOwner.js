@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Input, Space, Card } from "antd";
+import { Table, Input, Space, Card, Dropdown, Menu } from "antd";
 // import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
 import { Row, Col, Button } from "reactstrap";
@@ -7,16 +7,6 @@ import i18n from "i18next";
 import apis from "../../../../services/apis";
 import session from "../../../../services/session";
 import ModalForm from "./ModalForm";
-
-// const data = [];
-// for (let i = 0; i < 100; i++) {
-//   data.push({
-//     key: i,
-//     name: `Edward King ${i}`,
-//     age: 32,
-//     address: `London, Park Lane no. ${i}`,
-//   });
-// }
 export default class PondOwner extends Component {
   constructor(props) {
     super(props);
@@ -39,6 +29,7 @@ export default class PondOwner extends Component {
       let user = await session.get("user");
       let rs = await apis.getPondOwnerByTraderId({}, "GET", user.userID);
       if (rs && rs.statusCode === 200) {
+        rs.data.map((el, idx) => (el.idx = idx + 1));
         this.setState({ data: rs.data });
       }
     } catch (error) {}
@@ -122,7 +113,7 @@ export default class PondOwner extends Component {
         //     autoEscape
         //     textToHighlight={text ? text.toString() : ""}
         //   />
-        <div>hl</div>
+        <div>{text}</div>
       ) : (
         text
       ),
@@ -177,14 +168,41 @@ export default class PondOwner extends Component {
       this.setState({ currentPO, mode: "edit", isShowModal: true });
     }
   }
+  renderBtnAction(id) {
+    return (
+      <Menu>
+        <Menu.Item>
+          <Button
+            color="info"
+            className="mr-2"
+            onClick={() => this.onClick("edit", id)}
+          >
+            <i className="fa fa-pencil-square-o mr-1" />
+            {i18n.t("edit")}
+          </Button>
+        </Menu.Item>
+        <Menu.Item>
+          <Button color="danger" onClick={() => this.onClick("delete", id)}>
+            <i className="fa fa-trash-o mr-1" />
+            {i18n.t("delete")}
+          </Button>
+        </Menu.Item>
+      </Menu>
+    );
+  }
   render() {
     const { isShowModal, mode, currentPO, data } = this.state;
     const columns = [
       {
+        title: "STT",
+        dataIndex: "idx",
+        key: "idx",
+        render: (text) => <label>{text}</label>,
+      },
+      {
         title: "Name",
         dataIndex: "name",
         key: "name",
-        width: "30%",
         ...this.getColumnSearchProps("name"),
         sorter: (a, b) => a.name.length - b.name.length,
         sortDirections: ["descend", "ascend"],
@@ -193,7 +211,6 @@ export default class PondOwner extends Component {
         title: "Address",
         dataIndex: "address",
         key: "address",
-        width: "20%",
         ...this.getColumnSearchProps("address"),
         sorter: (a, b) => a.address - b.address,
         sortDirections: ["descend", "ascend"],
@@ -211,12 +228,12 @@ export default class PondOwner extends Component {
         dataIndex: "id",
         key: "id",
         render: (id) => (
-          <div>
-            <Button className="mr-2" onClick={() => this.onClick("edit", id)}>
-              update
+          <Dropdown overlay={this.renderBtnAction(id)}>
+            <Button>
+              <i className="fa fa-cog mr-1" />
+              {i18n.t("action")}
             </Button>
-            <Button onClick={() => this.onClick("delete", id)}>Delete</Button>
-          </div>
+          </Dropdown>
         ),
       },
     ];
@@ -231,13 +248,17 @@ export default class PondOwner extends Component {
             // handleChangePondOwner={handleChangePondOwner}
           />
         )}
-        <Table
-          bordered
-          columns={columns}
-          dataSource={data}
-          //   pagination={{ pageSize: 5 }}
-          scroll={{ y: 450 }}
-        />
+        <Row>
+          <Col style={{ overflowX: "auto" }}>
+            <Table
+              bordered
+              columns={columns}
+              dataSource={data}
+              pagination={{ pageSize: 10 }}
+              scroll={{ y: 600 }}
+            />
+          </Col>
+        </Row>
       </Card>
     );
   }

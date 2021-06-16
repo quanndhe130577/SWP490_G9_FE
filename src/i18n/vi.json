@@ -35,6 +35,8 @@
     "edit":"Sửa",
     "delete":"Xóa",
     "pondOwnerManagement":"Quản lý chủ ao",
-    "create":"Tạo mới "
+    "create":"Tạo mới",
+    "action":"Hành động",
+    "update":"Cập nhật"
 
 }
