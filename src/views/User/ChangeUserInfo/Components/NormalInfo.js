@@ -3,7 +3,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Avatar from "react-avatar-edit";
 import axios from "axios";
 import helper from "../../../../services/helper";
-import local from "../../../../services/local";
+import session from "../../../../services/session";
 import Config from "../../../../services/config";
 import Widgets from "../../../../schema/Widgets";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -23,8 +23,8 @@ class NormalInfo extends Component {
     this.submit = this.submit.bind(this);
   }
   componentDidMount() {
-    let user = local.get("user");
-    let token = local.get("session");
+    let user = session.get("user");
+    let token = session.get("session");
     axios
       .get(`${Config.host}/api/getUserInfo/${user.userID}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -58,7 +58,7 @@ class NormalInfo extends Component {
   };
   async submit(e) {
     e.preventDefault();
-    let token = local.get("session");
+    let token = session.get("session");
     let rs = await axios.put(
       `${Config.host}/api/user/update/${local.get("user").userID}`,
       {

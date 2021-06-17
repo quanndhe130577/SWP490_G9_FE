@@ -1,10 +1,13 @@
 import React, { Component } from "react";
-import { Input } from "reactstrap";
+import { Select } from "antd";
 import i18next from "i18next";
-class Select extends Component {
+const { Option } = Select;
+
+class Select2 extends Component {
   render() {
     const { value, label, required, isDisable, submitted, onChange, items } =
       this.props;
+    let valueTem = items.find((el) => el.value === value || el.id === value);
     return (
       <div className={"form-group" + (submitted && !value ? " has-error" : "")}>
         {label && (
@@ -12,30 +15,31 @@ class Select extends Component {
             {label} {required ? <span>*</span> : ""}
           </label>
         )}
-
-        <Input
-          type="select"
-          value={value}
-          // className="boderLine"
+        <Select
+          // defaultValue={value}
+          value={valueTem && (valueTem.value || valueTem.id)}
+          style={{ width: "100%" }}
           disabled={isDisable}
-          onChange={(evt) => {
-            let val = evt.target.value;
+          onChange={(v) => {
+            let val = v;
             if (val === "") val = null;
             if (onChange) {
               onChange(val);
             }
           }}
         >
-          <option value="">{i18next.t("pleaseChoose")}</option>
+          <Option value="" key="-1">
+            {i18next.t("pleaseChoose")}
+          </Option>
           {items.map((item, index) => (
-            <option value={item.value} key={index}>
-              {item.label}
-            </option>
+            <Option value={item.value || item.id} key={index}>
+              {item.label || item.name}
+            </Option>
           ))}
-        </Input>
+        </Select>
       </div>
     );
   }
 }
 
-export default Select;
+export default Select2;

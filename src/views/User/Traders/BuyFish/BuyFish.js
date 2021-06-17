@@ -1,90 +1,149 @@
 import React, { useState, useEffect } from "react";
-import { Card, Table, Tag, Space } from "antd";
+import { Card, Table } from "antd";
 import { Button, Row, Col } from "reactstrap";
 import i18n from "i18next";
 import ModalBuy from "./ModalBuy";
 import ChoosePond from "./ChoosePond";
 import Moment from "react-moment";
-// import Widgets from "../../../../schema/Widgets";
 import local from "../../../../services/local";
-import dataDf from "../../../../data";
+import session from "../../../../services/session";
+import apis from "../../../../services/apis";
+// import dataDf from "../../../../data";
 const BuyFish = () => {
+  const [isShowBuy, setIsShowBuy] = useState(false);
+  const [isLoading, setLoading] = useState(true);
+  const [isShowChoosePond, setShowChoosePond] = useState(true);
+  const [totalBuy, setTotalBuy] = useState({});
+  const [currentTotal, setCurrentTotal] = useState({});
+  const [transactions, setTrans] = useState([]);
+  const [currentTran, setCurrentTran] = useState({});
+  const [dataDf, setData] = useState({});
+
+  const handelAction = (action, sid) => {
+    if (action === "delete") {
+      let tem = transactions.filter((el) => el.sid !== sid);
+      setTrans(tem);
+    } else {
+      let tem = transactions.find((e) => e.sid === sid);
+      if (tem) {
+        setCurrentTran(tem);
+        setIsShowBuy(true);
+      }
+    }
+  };
+  const findLabel = (obj, key) => {
+    debugger;
+    return dataDf[obj].find((el) => el.id === parseInt(key)) || {};
+  };
   const columns = [
     {
       title: "STT",
-      dataIndex: "key",
-      key: "key",
+      dataIndex: "sid",
+      key: "sid",
       render: (text) => <label>{text}</label>,
     },
     {
-      title: "Age (medium screen or bigger)",
-      dataIndex: "age",
-      key: "age",
-      // responsive: ["md"],
-    },
-    {
-      title: "Address (large screen or bigger)",
-      dataIndex: "address",
-      key: "address",
-      // responsive: ["lg"],
-    },
-    {
-      title: "Tags",
-      key: "tags",
-      dataIndex: "tags",
-      render: (tags) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? "geekblue" : "green";
-            if (tag === "loser") {
-              color = "volcano";
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
+      title: i18n.t("typeOfFish"),
+      dataIndex: "typeOfFish",
+      key: "typeOfFish",
+      render: (drum) => (
+        <div>{drum && <label>{findLabel("fishType", drum).label}</label>}</div>
       ),
     },
     {
+      title: i18n.t("qtyOfFish(Kg)"),
+      dataIndex: "qtyOfFish",
+      key: "qtyOfFish",
+      // responsive: ["lg"],
+    },
+    {
+      title: i18n.t("basket"),
+      dataIndex: "basket",
+      render: (basket) => (
+        <div>
+          {basket && <label>{findLabel("basket", basket).label}</label>}
+        </div>
+      ),
+    },
+    {
+      title: i18n.t("drum"),
+      dataIndex: "drum",
+      key: "drum",
+      render: (drum) => (
+        <div>{drum && <label>{findLabel("drum", drum).label}</label>}</div>
+      ),
+    },
+    {
+      title: i18n.t("truck"),
+      dataIndex: "truck",
+      key: "truck",
+      render: (truck) => (
+        <div>{truck && <label>{findLabel("truck", truck).label}</label>}</div>
+      ),
+    },
+
+    {
       title: "Action",
-      key: "action",
-      render: (text, record) => (
-        <Space size="middle">
-          <label>Invite {record.name}</label>
-          <label>Delete</label>
-        </Space>
+      key: "sid",
+      dataIndex: "sid",
+      render: (sid) => (
+        <div>
+          {sid && (
+            <div>
+              <label onClick={() => handelAction("edit", sid)}>
+                {i18n.t("edit")} {sid}
+              </label>
+              <label onClick={() => handelAction("delete", sid)}>
+                {i18n.t("delete")} {sid}
+              </label>
+            </div>
+          )}
+        </div>
       ),
     },
   ];
 
-  const [isShowBuy, setIsShowBuy] = useState(false);
-  const [isShowChoosePond, setShowChoosePond] = useState(true);
-  const [totalBuy, setTotalBuy] = useState({});
-
   const showModal = () => {
     setIsShowBuy(true);
   };
-  // const handleChange = () => {
-  //   setIsShowBuy(true);
-  //   setTotalBuy({});
-  // };
   const handleTotalBuy = (value, prop) => {
+    debugger;
     setTotalBuy((pre) => ({
       ...pre,
       [prop]: value,
     }));
   };
-  const findPO = () => {
-    return (
-      dataDf.pondOwner.find((word) => word.value === totalBuy.currentPO) || {}
-    );
+  const handleTrans = (value) => {
+    setCurrentTran({});
+    setTrans((pre) => [...pre, value]);
   };
+
+  const findPO = () => {
+    if (currentTotal.pondOwner && dataDf.pondOwner)
+      return (
+        dataDf.pondOwner.find((el) => el.id === currentTotal.pondOwner) || {}
+      );
+    else return {};
+  };
+  async function fetchData() {
+    try {
+      let user = session.get("user");
+      let rs = await apis.getPondOwnerByTraderId({}, "GET", user.userID);
+      if (rs && rs.statusCode === 200) {
+        setData((pre) => ({
+          ...pre,
+          pondOwner: rs.data,
+        }));
+        setLoading(false);
+        // rs.data.map((el, idx) => (el.idx = idx + 1));
+        //  this.setState({ data: rs.data, user, total: rs.data.length });
+      }
+    } catch (error) {}
+  }
   useEffect(() => {
-    let currentPO = local.get("currentPO");
-    handleTotalBuy(currentPO, "currentPO");
+    let tem = local.get("currentTotal") || {};
+    setCurrentTotal(tem);
+    fetchData();
   }, []);
   const renderTitle = () => {
     return (
@@ -100,31 +159,42 @@ const BuyFish = () => {
         <Col md="2">
           <label>
             <b>{i18n.t("pondOwner")}:</b>
-            {findPO().label || ""}
+            {findPO().name || ""}
           </label>
         </Col>
       </Row>
     );
   };
+  if (isLoading) {
+    return <div>loading...</div>;
+  } else
+    return (
+      <Card title={renderTitle()}>
+        {isShowBuy && (
+          <ModalBuy
+            isShowBuy={isShowBuy}
+            setIsShowBuy={setIsShowBuy}
+            currentTotal={currentTotal}
+            transactions={transactions}
+            handleTrans={handleTrans}
+            currentTran={currentTran}
+          />
+        )}
+        {isShowChoosePond && (
+          <ChoosePond
+            isShowChoosePond={isShowChoosePond}
+            setShowChoosePond={setShowChoosePond}
+            handleTotalBuy={handleTotalBuy}
+            pondOwner={totalBuy.pondOwner || ""}
+            currentTotal={currentTotal}
+            setCurrentTotal={setCurrentTotal}
+            dataDf={dataDf}
+          />
+        )}
 
-  return (
-    <Card title={renderTitle()}>
-      {isShowBuy && (
-        <ModalBuy isShowBuy={isShowBuy} setIsShowBuy={setIsShowBuy} />
-      )}
-      {isShowChoosePond && (
-        <ChoosePond
-          isShowChoosePond={isShowChoosePond}
-          setShowChoosePond={setShowChoosePond}
-          handleTotalBuy={handleTotalBuy}
-          pondOwner={totalBuy.pondOwner || ""}
-          currentPO={totalBuy.currentPO}
-        />
-      )}
-
-      <Row className="mb-2">
-        <Col span="24" className="">
-          {/* <div className="float-left">
+        <Row className="mb-2">
+          <Col span="24" className="">
+            {/* <div className="float-left">
             <Widgets.Select
               required={true}
               label={i18n.t("pondOwner")}
@@ -133,52 +203,28 @@ const BuyFish = () => {
               items={dataDf.pondOwner}
             />
           </div> */}
-          <div className="float-right">
-            <Button
-              color="info"
-              onClick={() => setShowChoosePond(true)}
-              className="mr-2"
-            >
-              {i18n.t("Giá cá hôm nay2")}
-            </Button>
-            <Button color="info" onClick={showModal} className=" mr-2">
-              {i18n.t("Thêm Mã")}
-            </Button>
-          </div>
-        </Col>
-      </Row>
+            <div className="float-right">
+              <Button
+                color="info"
+                onClick={() => setShowChoosePond(true)}
+                className="mr-2"
+              >
+                {i18n.t("Giá cá hôm nay")}
+              </Button>
+              <Button color="info" onClick={showModal} className=" mr-2">
+                {i18n.t("Thêm Mã")}
+              </Button>
+            </div>
+          </Col>
+        </Row>
 
-      <Row>
-        <Col style={{ overflowX: "auto" }}>
-          <Table columns={columns} dataSource={data} />
-        </Col>
-      </Row>
-    </Card>
-  );
+        <Row>
+          <Col style={{ overflowX: "auto" }}>
+            <Table columns={columns} dataSource={transactions} />
+          </Col>
+        </Row>
+      </Card>
+    );
 };
 
 export default BuyFish;
-
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"],
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"],
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sidney No. 1 Lake Park",
-    tags: ["cool", "teacher"],
-  },
-];

@@ -43,6 +43,7 @@ const Login = (props) => {
         let rs = await apis.register(user);
         if (rs && rs.statusCode === 200) {
           helper.toast("success", i18n.t(rs.message || "systemError"));
+          props.history.push("login");
         }
       }
     } catch (error) {
@@ -52,16 +53,21 @@ const Login = (props) => {
   };
 
   const fetchAllRole = async () => {
-    // get all role
-    let rs = await apis.getAllRole({}, "GET");
-    if (rs && rs.statusCode === 200 && rs.data) {
-      // delete admin role
-      let noAdmin = rs.data.filter((el) => el.normalizedName !== "ADMIN");
-      noAdmin.forEach((el) => {
-        helper.renameKey(el, "displayName", "label");
-        helper.renameKey(el, "normalizedName", "value");
-      });
-      setRoles(noAdmin);
+    try {
+      // get all role
+      let rs = await apis.getAllRole({}, "GET");
+      if (rs && rs.statusCode === 200 && rs.data) {
+        // delete admin role
+        let noAdmin = rs.data.filter((el) => el.normalizedName !== "ADMIN");
+        noAdmin.forEach((el) => {
+          helper.renameKey(el, "displayName", "label");
+          helper.renameKey(el, "normalizedName", "value");
+        });
+        setRoles(noAdmin);
+      }
+    } catch (error) {
+      helper.toast("error", i18n.t("canGetRoles"));
+      console.log(error);
     }
   };
   useEffect(() => {

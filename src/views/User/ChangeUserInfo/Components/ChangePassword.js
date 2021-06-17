@@ -2,7 +2,7 @@ import React, { Component } from "react";
 // import cookie from "react-cookies";
 import axios from "axios";
 import helper from "../../../../services/helper";
-import local from "../../../../services/local";
+import session from "../../../../services/session";
 import Config from "../../../../services/config";
 import Widgets from "../../../../schema/Widgets";
 
@@ -33,7 +33,7 @@ class ChangePassword extends Component {
   async submit(e) {
     e.preventDefault();
     // this.setState({ comfirm: true });
-    let token = local.get("session");
+    let token = session.get("session");
     let rs = await axios.put(
       `${Config.host}/api/user/change-password/${local.get("user").userID}`,
       {

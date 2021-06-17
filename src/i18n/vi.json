@@ -28,6 +28,26 @@
     "pondOwner":"Chủ ao",
     "choosePond":"Chọn ao",
     "fillPondOwner":"Vui lòng chọn chủ ao",
-    "drum":"Lồ"
+    "drum":"Lồ",
+    "truck": "Xe",
+    "pleaseSelect":"Vui lòng chọn",
+    "chooseFish":"Chọn các loại cá",
+    "edit":"Sửa",
+    "delete":"Xóa",
+    "pondOwnerManagement":"Quản lý chủ ao",
+    "create":"Tạo mới",
+    "action":"Hành động",
+    "update":"Cập nhật",
+    "yes":"Đồng ý",
+    "confirmDelete":"Xác nhận xóa?",
+    "name":"Tên",
+    "address":"Địa chỉ",
+    "phone":"Số điện thoại",
+    "INDEX":"STT",
+    "goodManagement":"Quản lý hàng hoá",
+    "buyGood":"Mua hàng",
+    "logout":"Đăng xuất",
+    "changeInfo":"Đổi thông tin",
+    "urlNotFound":"URL không hợp lệ"
 
 }

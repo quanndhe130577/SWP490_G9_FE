@@ -5,18 +5,19 @@ import Widgets from "../../schema/Widgets";
 import { useDispatch } from "react-redux";
 import apis from "../../services/apis";
 import helper from "../../services/helper";
-import local from "../../services/local";
-// import logo from "assets/image/bannerVn.png"
+import session from "../../services/session";
 
 const Login = (props) => {
+  const dispatch = useDispatch();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loggingIn, setLoggingIn] = useState(false);
-  const dispatch = useDispatch();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
     try {
+      e.preventDefault();
+
       setLoggingIn(true);
       setSubmitted(true);
       let rs = await apis.login({
@@ -24,8 +25,8 @@ const Login = (props) => {
         password,
       });
       if (rs && rs.statusCode === 200) {
-        local.set("session", rs.data.token);
-        local.set("user", JSON.stringify(rs.data.user));
+        session.set("session", rs.data.token);
+        session.set("user", JSON.stringify(rs.data.user));
         dispatch({
           type: "SET_USER_INFO",
           token: rs.data.token,
@@ -34,9 +35,6 @@ const Login = (props) => {
         helper.toast("success", i18n.t("loginSuccess"));
         props.history.push("home");
       }
-      // else {
-      //   helper.toast("error", i18n.t(rs && rs.error || 'systemError'));
-      // }
     } catch (error) {
       helper.toast("error", i18n.t("systemError"));
       console.log(error);
@@ -50,17 +48,17 @@ const Login = (props) => {
   return (
     <div className="jumbotron">
       <div className="div-login">
-        <form className=" ">
+        <div>
           <div className="col-sm-12 col-md-12 " style={{ textAlign: "center" }}>
             <img
               src="assets/image/bannerVn.png"
-              alt="baner"
+              alt="banner"
               className="image-login"
             />
           </div>
 
           <div className="con-login  border container">
-            <div className="col-sm-4 col-md-4 ">
+            <form className="col-sm-4 col-md-4 " onSubmit={handleSubmit}>
               <h2 style={{ textAlign: "center" }}> {i18n.t("Login")}</h2>
               <div>
                 <Widgets.Text
@@ -86,7 +84,7 @@ const Login = (props) => {
                   submitted={submitted}
                 />
                 <div className="form-group d-flex justify-content-center">
-                  <button className="btn btn-info" onClick={handleSubmit}>
+                  <button className="btn btn-info p-1">
                     {loggingIn ? (
                       <>
                         <span
@@ -100,17 +98,17 @@ const Login = (props) => {
                       <span>{i18n.t("Login")}</span>
                     )}
                   </button>
-                  <div className="ml-3">
-                    <label>{i18n.t("or")}</label>
-                    <Link to="/register" className="btn btn-link">
+                  <div className="ml-3 d-flex">
+                    <label className="pb-0">{i18n.t("or")}</label>
+                    <Link to="/register" className="btn btn-link p-1">
                       {i18n.t("Register")}
                     </Link>
                   </div>
                 </div>
               </div>
-            </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

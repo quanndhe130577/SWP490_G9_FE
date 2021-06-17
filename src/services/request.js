@@ -1,11 +1,8 @@
-import local from "./local";
+import session from "./session";
 import Config from "./config";
 import helper from "./helper";
 import i18next from "i18next";
 import Swal from "sweetalert2";
-
-// import DeviceDetector from "device-detector-js";
-// const deviceDetector = new DeviceDetector();
 
 let request = {};
 // request.upload = async (url, formData, method = "PUT") => {
@@ -14,7 +11,7 @@ let request = {};
 //     method: method,
 //     body: formData,
 //     headers: {
-//       Authorization: `Bearer ${local.get("session") || "customer"}`,
+//       Authorization: `Bearer ${session.get("session") || "customer"}`,
 //     },
 //   };
 //   if (Config.debug) console.log(`[POST]`, url, option);
@@ -34,21 +31,17 @@ request.request = async (url, data, headers, method = "POST") => {
     body: JSON.stringify(data), // data can be `string` or {object}!
     headers: {
       "Content-Type": "application/json; charset=UTF-8",
-      // Authorization: `Bearer ${local.get("session") || "customer"}`,
-      // device: JSON.stringify(deviceDetector.parse(navigator.userAgent)),
+      Authorization: `Bearer ${session.get("session") || "customer"}`,
     },
   };
   option.headers = Object.assign({}, option.headers, headers);
   if (method === "GET") delete option.body;
-
   if (Config.debug) console.log(`[${method}]`, url, option);
-
   let res = await fetch(url, option);
   try {
-    let rs = await res.json();
-    if (Config.debug) console.log(`[RESPONSE]`, url, rs);
     switch (res.status) {
       case 401:
+        helper.toast("error", i18next.t("Unauthorized"));
         // return Swal.fire({
         //   title: 'Session Expired!',
         //   html: "Your session is expired. Do you want to extend the session?",
@@ -62,29 +55,29 @@ request.request = async (url, data, headers, method = "POST") => {
         //   confirmButtonText: 'Continue session',
         // }).then(async result => {
         //   if (result.value) {
-        //     let rs = await api.refreshToken({ token: local.get('session') })
+        //     let rs = await api.refreshToken({ token: session.get('session') })
         //     if (rs && rs.errorCode === 0) {
-        //       local.set('session', rs.data);
+        //       session.set('session', rs.data);
         //       window.history.go()
         //     }
         //   } else {
-        local.clear();
-        window.location.href = '/';
-        //   }
-        // })
+        session.clear();
+        window.location.href = "/";
         break;
       case 403:
         Swal.fire({
-          title: i18next.t(rs.message || "forbidden"),
+          title: i18next.t("forbidden"),
           text: "You don't have permission",
           icon: "error",
           confirmButtonText: "OK",
         });
         break;
       case 500:
-        helper.toast("error", i18next.t(rs.message || "internalServerError"));
+        helper.toast("error", i18next.t(res.message || "internalServerError"));
         break;
       case 200:
+        let rs = await res.json();
+        if (Config.debug) console.log(`[RESPONSE]`, url, rs);
         if (rs && rs.statusCode === 200) {
           return rs;
         } else {
@@ -92,14 +85,10 @@ request.request = async (url, data, headers, method = "POST") => {
           break;
         }
       case 404:
-        helper.toast("error", i18next.t(rs.message || "dataNotFound"));
+        helper.toast("error", i18next.t("urlNotFound"));
         break;
       case 400:
-        // if (rs.code && rs.code == "E_MISSING_OR_INVALID_PARAMS") {
-        //   helper.toast("error", rs.message || "Invalid parameters");
-        // } else {
-        helper.toast("error", i18next.t(rs.message || "badRequest"));
-        // }
+        helper.toast("error", i18next.t(res.message || "badRequest"));
         break;
       default:
         throw rs;

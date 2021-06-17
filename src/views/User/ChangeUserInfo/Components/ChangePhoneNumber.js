@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import helper from "../../../../services/helper";
-import local from "../../../../services/local";
+import session from "../../../../services/session";
 import Config from "../../../../services/config";
 import Widgets from "../../../../schema/Widgets";
 
@@ -42,7 +42,7 @@ class ChangePhoneNumber extends Component {
   };
   async submit(e) {
     e.preventDefault();
-    let token = local.get("session");
+    let token = session.get("session");
     if (this.state.comfirm) {
       console.log({
         newPhoneNumber: this.state.newPhoneNumber,
@@ -74,7 +74,7 @@ class ChangePhoneNumber extends Component {
       }
     } else {
       let rs = await axios.post(
-        `${Config.host}/api/otp/change-phone/${local.get("user").userID}`,
+        `${Config.host}/api/otp/change-phone/${session.get("user").userID}`,
         {
           newPhoneNumber: this.state.newPhoneNumber,
           CurrentPassword: this.state.password,
