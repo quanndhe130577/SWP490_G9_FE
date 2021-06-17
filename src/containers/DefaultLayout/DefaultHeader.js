@@ -64,7 +64,7 @@ class DefaultHeader extends Component {
               <Link to="/pondOwner">{i18n.t("pondOwnerManagement")}</Link>
             </Menu.Item>
             <Menu.Item key="3" icon={<UploadOutlined />}>
-              nav 3
+              <Link to="/fishType">{i18n.t("fishType")}</Link>
             </Menu.Item>
             <Menu.Item key="4" icon={<UserOutlined />}>
               nav 4
