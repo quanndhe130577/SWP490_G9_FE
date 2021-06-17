@@ -9,12 +9,13 @@ export default function Text({
   type = "text",
   required = false,
   submitted,
+  onBlur
 }) {
   return (
     <div className={"form-group" + (submitted && !value ? " has-error" : "")}>
       {label && (
-        <label className="bold">
-          {label} {required ? <span>*</span> : ""}
+        <label className="">
+          {label} {required ? <span></span> : ""}
         </label>
       )}
 
@@ -28,11 +29,13 @@ export default function Text({
             onChange(e.target.value);
           }
         }}
-        required={required}
+        //required={required}
+        onBlur={onBlur}
       />
       {submitted && !value && (
         <div className="help-block">{label} is required</div>
-      )}
+      )
+      }
     </div>
   );
 }

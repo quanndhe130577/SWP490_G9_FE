@@ -25,6 +25,17 @@ button {
   padding: 2em 0em;
   /* background-color: rgb(116, 114, 114); */
 }
+
+/** custom form login use ant */
+.custom-login-form {
+  flex-direction: column;
+}
+
+.form-login {
+  /* width: 468px; */
+  margin: 0 auto;
+}
+
 .pull-right {
   float: right;
 }
