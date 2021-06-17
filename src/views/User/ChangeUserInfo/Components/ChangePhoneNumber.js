@@ -51,7 +51,7 @@ class ChangePhoneNumber extends Component {
       });
       let rs = await axios
         .post(
-          `${Config.host}/api/check-change-phone-otp/${
+          `${Config.host}/api/user/check-change-phone-otp/${
             local.get("user").userID
           }`,
           {
