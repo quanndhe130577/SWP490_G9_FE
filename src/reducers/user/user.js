@@ -1,22 +1,22 @@
 const initialState = {
-    data: {},
-    languages: [],
-    configs: {}
-}
+  token: "",
+  user: {},
+};
 
-export default function (state = initialState, action) {
-    switch (action.type) {
-        case 'SET_USER_INFO':
-            return {
-                ...state,
-                data: action.data
-            };
-        case 'SET_DATA':
-            return {
-                ...state,
-                ...action.payload
-            }
-        default:
-            return state;
-    }
+export default function user(state = initialState, action) {
+  switch (action.type) {
+    case "SET_USER_INFO":
+      return {
+        ...state,
+        token: action.token,
+        user: action.user,
+      };
+    case "SET_DATA":
+      return {
+        ...state,
+        ...action.payload,
+      };
+    default:
+      return state;
+  }
 }

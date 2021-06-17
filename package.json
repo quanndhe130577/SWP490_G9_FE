@@ -19,13 +19,17 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "antd": "^4.12.3",
+    "axios": "^0.21.1",
     "device-detector-js": "^2.2.9",
     "i18next": "^20.3.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
+    "react-avatar-edit": "^1.0.0",
+    "react-datepicker": "^4.1.1",
     "react-dom": "^17.0.2",
     "react-loadable": "^5.5.0",
     "react-moment": "^1.1.1",
+    "react-number-format": "^4.6.3",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
     "react-toastify": "^7.0.4",
@@ -42,18 +46,13 @@
     "webpack": "^4.44.2"
   },
   "scripts": {
-    "build-css": "node-sass-chokidar --include-path ./node_modules ./src/scss -o ./src/scss",
-    "watch-css": "npm run build-css && node-sass-chokidar --include-path ./node_modules ./src/scss -o ./src/scss --watch --recursive",
-    "start-js": "react-scripts start",
-    "start": "SET PORT=3010 && react-scripts start",
-    "build-js": "react-scripts build",
-    "build1": "npm-run-all build-css build-js",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "build": "react-scripts build && cra-append-sw --skip-compile ./public/custom-sw.js"
+    "start": "set PORT=3010 && react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-  "bugs": {
-    "url": "https://github.com/coreui/coreui-free-react-admin-template/issues"
+  "eslintConfig": {
+    "extends": "react-app"
   },
   "browserslist": {
     "production": [
