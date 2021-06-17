@@ -7,6 +7,7 @@ import session from "../../../../services/session";
 import Config from "../../../../services/config";
 import Widgets from "../../../../schema/Widgets";
 import { LoadingOutlined } from "@ant-design/icons";
+import request from "../../../../services/request";
 
 class NormalInfo extends Component {
   constructor(props) {
@@ -23,8 +24,10 @@ class NormalInfo extends Component {
     this.submit = this.submit.bind(this);
   }
   componentDidMount() {
-    let user = session.get("user");
-    let token = session.get("session");
+    let user = local.get("user");
+    let token = local.get("session");
+    let rs = request.request(`${Config.host}/api/getUserInfo/${user.userID}`,{},{ Authorization: `Bearer ${token}` },"GET");
+    console.log(rs);
     axios
       .get(`${Config.host}/api/getUserInfo/${user.userID}`, {
         headers: { Authorization: `Bearer ${token}` },

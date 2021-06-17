@@ -9,13 +9,14 @@ var path = {
   getAllRole: "/api/role/get-all",
   getOtp: "/api/otp/register",
   checkOtp: "/api/check-register-otp",
-  updateUser: "/api/update",
   getPondOwnerByTraderId: "/api/pondOwner/getall", //method GET
   createPO: "/api/pondOwner/create",
   updatePO: "/api/pondOwner/update",
   deletePO: "/api/pondOwner/delete",
   getFTByTraderID: "/api/fishtype/getlastall", // method get, FT: fish type
   createFT: "/api/fishtype/create", // method post need param
+  getUserInfo:"/api/getUserInfo/",
+  updateUser: "api/user/update",
 };
 
 Object.keys(path).forEach(function (key) {
