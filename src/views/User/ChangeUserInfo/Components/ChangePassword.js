@@ -35,7 +35,7 @@ class ChangePassword extends Component {
     // this.setState({ comfirm: true });
     let token = session.get("session");
     let rs = await axios.put(
-      `${Config.host}/api/change-password/${session.get("user").userID}`,
+      `${Config.host}/api/user/change-password/${local.get("user").userID}`,
       {
         currentPassword: this.state.password,
         newpassword: this.state.newPassword,

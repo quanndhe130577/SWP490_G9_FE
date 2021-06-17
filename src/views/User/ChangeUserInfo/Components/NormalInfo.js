@@ -60,13 +60,13 @@ class NormalInfo extends Component {
     e.preventDefault();
     let token = session.get("session");
     let rs = await axios.put(
-      `${Config.host}/api/update/${session.get("user").userID}`,
+      `${Config.host}/api/user/update/${local.get("user").userID}`,
       {
         firstname: this.state.firstname,
         lastname: this.state.lastname,
         dob: this.state.dob,
         identifyCode: this.state.identifyCode,
-        avatar: this.state.avatar,
+        avatarBase64: this.state.avatar.split(',')[1],
       },
       {
         headers: { Authorization: `Bearer ${token}` },
