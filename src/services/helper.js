@@ -8,6 +8,9 @@ toast.configure();
 let helper = {};
 
 helper.toast = (type, content, disableAutoClose) => {
+  if (type === "error") {
+    console.log(content);
+  }
   let autoClose = 3000;
   if (disableAutoClose) {
     autoClose = false;

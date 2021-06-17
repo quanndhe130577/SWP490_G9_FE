@@ -3,7 +3,7 @@ import { Modal } from "antd";
 import { Row, Col } from "reactstrap";
 import i18n from "i18next";
 import Widgets from "../../../../schema/Widgets";
-import data from "../../../../data";
+// import data from "../../../../data";
 import local from "../../../../services/local";
 import helper from "../../../../services/helper";
 import PriceFishToday from "./PriceFishToday";
@@ -15,6 +15,7 @@ const ChoosePond = ({
   pondOwner,
   currentTotal,
   setCurrentTotal,
+  dataDf,
 }) => {
   const handleOk = () => {
     setShowChoosePond(false);
@@ -47,7 +48,6 @@ const ChoosePond = ({
       } else {
         tem[prop] = val;
       }
-
       local.set("currentTotal", tem);
 
       setCurrentTotal(tem);
@@ -68,13 +68,13 @@ const ChoosePond = ({
           <Widgets.Select
             label={i18n.t("pondOwner")}
             value={parseInt(pondOwner || currentTotal.pondOwner)}
-            items={data.pondOwner}
+            items={dataDf.pondOwner}
             onChange={(vl) => onChange(vl, "pondOwner")}
           />
           <Widgets.SelectSearchMulti
             label={i18n.t("chooseFish")}
             value={currentTotal.listFish}
-            items={data.fishType}
+            items={dataDf.fishType || []}
             onChange={(vl) => onChange(vl, "listFish")}
           />
         </Col>

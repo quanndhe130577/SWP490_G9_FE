@@ -32,10 +32,10 @@ class DefaultHeader extends Component {
     const menu = (
       <Menu>
         <Menu.Item icon={<SettingOutlined />}>
-          <Link to="/changeUserInfo">Đổi thông tin</Link>
+          <Link to="/changeUserInfo">{i18n.t("changeInfo")}</Link>
         </Menu.Item>
         <Menu.Item icon={<LogoutOutlined />}>
-          <Link to="/logout">Đăng xuất</Link>
+          <Link to="/logout">{i18n.t("logout")}</Link>
         </Menu.Item>
       </Menu>
     );
@@ -47,21 +47,18 @@ class DefaultHeader extends Component {
           breakpoint="lg"
           collapsedWidth="0"
           onBreakpoint={(broken) => {}}
-          onCollapse={(collapsed, type) => {
-            // console.log(collapsed, type);
-          }}
+          onCollapse={(collapsed, type) => {}}
         >
           <Menu theme="dark" mode="inline">
             <SubMenu
               key="SubMenu"
               icon={<SettingOutlined />}
-              title="quản lí nhân viên"
+              title={i18n.t("goodManagement")}
             >
-              <Menu.Item key="setting:1">thêm nhân viên</Menu.Item>
+              <Menu.Item key="setting:1">
+                <Link to="/buyF">{i18n.t("buyGood")}</Link>
+              </Menu.Item>
               <Menu.Item key="setting:2">Option 2</Menu.Item>
-
-              <Menu.Item key="setting:3">Option 3</Menu.Item>
-              <Menu.Item key="setting:4">Option 4</Menu.Item>
             </SubMenu>
             <Menu.Item key="2" icon={<VideoCameraOutlined />}>
               <Link to="/pondOwner">{i18n.t("pondOwnerManagement")}</Link>

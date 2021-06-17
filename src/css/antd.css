@@ -32,3 +32,21 @@
 .default-layout {
   padding-bottom: 4em;
 }
+/* over button */
+.ant-btn-primary {
+  color: #fff !important;
+  background-color: #17a2b8 !important;
+  border-color: #17a2b8 !important;
+}
+.ant-btn-danger {
+  background-color: #e67e22 !important;
+  border-color: #e67e22 !important;
+}
+.ant-btn-primary:hover {
+  background-color: #137d8d !important;
+  border-color: #137d8d(17, 132, 150) !important;
+}
+.ant-btn-danger:hover {
+  background-color: #b96d2a !important;
+  border-color: #b96d2a !important;
+}
