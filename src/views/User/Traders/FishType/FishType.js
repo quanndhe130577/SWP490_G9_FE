@@ -28,7 +28,7 @@ export default class FishType extends Component {
   async fetchFishType() {
     try {
       let user = await session.get("user");
-      let rs = await apis.getFTByTraderID({}, "GET", user.userID);
+      let rs = await apis.getFTByTraderID({}, "GET");
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         this.setState({ data: rs.data, user, total: rs.data.length });
@@ -208,7 +208,7 @@ export default class FishType extends Component {
         render: (text) => <label>{text}</label>,
       },
       {
-        title: i18n.t("fishName"),
+        title: i18n.t("Tên loại cá"),
         dataIndex: "fishName",
         key: "fishName",
         ...this.getColumnSearchProps("fishName"),
@@ -239,14 +239,14 @@ export default class FishType extends Component {
         sorter: (a, b) => a.maxWeight - b.maxWeight,
         sortDirections: ["descend", "ascend"],
       },
-      {
-        title: i18n.t("date"),
-        dataIndex: "date",
-        key: "date",
-        ...this.getColumnSearchProps("date"),
-        sorter: (a, b) => a.date.length - b.date.length,
-        sortDirections: ["descend", "ascend"],
-      },
+      // {
+      //   title: i18n.t("date"),
+      //   dataIndex: "date",
+      //   key: "date",
+      //   ...this.getColumnSearchProps("date"),
+      //   sorter: (a, b) => a.date.length - b.date.length,
+      //   sortDirections: ["descend", "ascend"],
+      // },
       {
         title: i18n.t("price"),
         dataIndex: "price",

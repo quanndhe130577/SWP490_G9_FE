@@ -23,7 +23,6 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
       if (mode === "create") {
         rs = await apis.createFT({
           ...fishType,
-          traderID: user.userID,
         });
       } else if (mode === "edit") {
         rs = await apis.updatePO(fishType);
@@ -84,10 +83,10 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
               onChange={(e) => handleChangeFishType(e, "price")}
             />
           </Col>
-          <Col md="6" xs="12">
+          {/* <Col md="6" xs="12">
             <Widgets.DateTimePicker
               required={true}
-              label={"Ngày sinh"}
+              label={"Ngày t"}
               value={fishType.dob || new Date()}
               // maxDate={new Date()}
               // minDate={minDate}
@@ -96,7 +95,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
                 // console.log(data);
               }}
             />
-          </Col>
+          </Col> */}
         </Row>
       )}
     />
