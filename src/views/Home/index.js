@@ -17,7 +17,7 @@ const Dashboard = () => {
           // helper.useHistory("buy");
         }}
       >
-        {i18n.t("Mua hàng")}
+        {i18n.t("buyGood")}
       </Button>
     </div>
   );

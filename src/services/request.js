@@ -85,7 +85,7 @@ request.request = async (url, data, headers, method = "POST") => {
           break;
         }
       case 404:
-        helper.toast("error", i18next.t("dataNotFound"));
+        helper.toast("error", i18next.t("urlNotFound"));
         break;
       case 400:
         helper.toast("error", i18next.t(res.message || "badRequest"));

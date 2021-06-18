@@ -8,7 +8,7 @@ import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import ModalForm from "./ModalForm";
-export default class PondOwner extends Component {
+export default class Basket extends Component {
   constructor(props) {
     super(props);
 
@@ -22,13 +22,13 @@ export default class PondOwner extends Component {
   }
 
   componentDidMount() {
-    this.fetchPondOwner();
+    this.fetchBasket();
   }
 
-  async fetchPondOwner() {
+  async fetchBasket() {
     try {
       let user = await session.get("user");
-      let rs = await apis.getPondOwnerByTraderId({}, "GET", user.userID);
+      let rs = await apis.getBasketByTraderId({}, "GET", user.userID);
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         this.setState({ data: rs.data, user, total: rs.data.length });
@@ -138,7 +138,7 @@ export default class PondOwner extends Component {
     return (
       <Row>
         <Col md="6" className="d-flex">
-          <h3 className="">{i18n.t("pondOwnerManagement")}</h3>
+          <h3 className="">{i18n.t("BasketManagement")}</h3>
           <label className="hd-total">{total ? "(" + total + ")" : ""}</label>
         </Col>
 
@@ -159,24 +159,24 @@ export default class PondOwner extends Component {
   };
   closeModal = (refresh) => {
     if (refresh) {
-      this.fetchPondOwner();
+      this.fetchBasket();
     }
     this.setState({ isShowModal: false, mode: "", currentPO: {} });
   };
-  onClick(modeBtn, pondOwnerID) {
+  onClick(modeBtn, BasketID) {
     let { currentPO, data } = this.state;
 
     if (modeBtn === "edit") {
-      currentPO = data.find((el) => el.id === pondOwnerID);
+      currentPO = data.find((el) => el.id === BasketID);
       this.setState({ currentPO, mode: "edit", isShowModal: true });
     } else if (modeBtn === "delete") {
       helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
         if (rs) {
           try {
-            let rs = await apis.deletePO({}, "POST", pondOwnerID);
+            let rs = await apis.deletePO({}, "POST", BasketID);
             if (rs && rs.statusCode === 200) {
               helper.toast("success", rs.message || i18n.t("success"));
-              this.fetchPondOwner();
+              this.fetchBasket();
             }
           } catch (error) {
             console.log(error);
@@ -263,7 +263,7 @@ export default class PondOwner extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentPO={currentPO || {}}
-            // handleChangePondOwner={handleChangePondOwner}
+            // handleChangeBasket={handleChangeBasket}
           />
         )}
         <Row>
