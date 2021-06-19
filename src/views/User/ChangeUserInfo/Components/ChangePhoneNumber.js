@@ -4,6 +4,7 @@ import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import Config from "../../../../services/config";
 import Widgets from "../../../../schema/Widgets";
+import local from "../../../../services/local";
 
 class ChangePhoneNumber extends Component {
   constructor(props) {
@@ -51,8 +52,8 @@ class ChangePhoneNumber extends Component {
       });
       let rs = await axios
         .post(
-          `${Config.host}/api/check-change-phone-otp/${
-            session.get("user").userID
+          `${Config.host}/api/user/check-change-phone-otp/${
+            local.get("user").userID
           }`,
           {
             newPhoneNumber: this.state.newPhoneNumber,
