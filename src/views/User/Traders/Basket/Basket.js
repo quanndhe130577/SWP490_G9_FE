@@ -28,8 +28,10 @@ export default class Basket extends Component {
   async fetchBasket() {
     try {
       let user = await session.get("user");
-      let rs = await apis.getBasketByTraderId({}, "GET", user.userID);
+      let rs = await apis.getBasketByTraderId({}, "GET");
+      console.log(rs);
       if (rs && rs.statusCode === 200) {
+        console.log(rs);
         rs.data.map((el, idx) => (el.idx = idx + 1));
         this.setState({ data: rs.data, user, total: rs.data.length });
       }
@@ -219,26 +221,18 @@ export default class Basket extends Component {
       },
       {
         title: i18n.t("name"),
-        dataIndex: "name",
-        key: "name",
-        ...this.getColumnSearchProps("name"),
-        sorter: (a, b) => a.name.length - b.name.length,
+        dataIndex: "type",
+        key: "type",
+        ...this.getColumnSearchProps("type"),
+        sorter: (a, b) => a.type.length - b.type.length,
         sortDirections: ["descend", "ascend"],
       },
       {
-        title: i18n.t("address"),
-        dataIndex: "address",
-        key: "address",
-        ...this.getColumnSearchProps("address"),
-        sorter: (a, b) => a.address - b.address,
-        sortDirections: ["descend", "ascend"],
-      },
-      {
-        title: i18n.t("phone"),
-        dataIndex: "phoneNumber",
-        key: "phoneNumber",
-        ...this.getColumnSearchProps("phoneNumber"),
-        sorter: (a, b) => a.phone.length - b.phone.length,
+        title: i18n.t("weight"),
+        dataIndex: "weight",
+        key: "weight",
+        ...this.getColumnSearchProps("weight"),
+        sorter: (a, b) => a.weight - b.weight,
         sortDirections: ["descend", "ascend"],
       },
       {

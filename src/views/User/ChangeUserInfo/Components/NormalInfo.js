@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import Avatar from "react-avatar-edit";
-import axios from "axios";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
-import Config from "../../../../services/config";
 import Widgets from "../../../../schema/Widgets";
 import { LoadingOutlined } from "@ant-design/icons";
-import request from "../../../../services/request";
+import apis from "../../../../services/apis";
 
 class NormalInfo extends Component {
   constructor(props) {
@@ -22,30 +20,25 @@ class NormalInfo extends Component {
       isRender: true,
     };
     this.submit = this.submit.bind(this);
+    this.getUserInfo = this.getUserInfo.bind(this);
   }
   componentDidMount() {
-    let user = local.get("user");
-    let token = local.get("session");
-    let rs = request.request(`${Config.host}/api/getUserInfo/${user.userID}`,{},{ Authorization: `Bearer ${token}` },"GET");
-    console.log(rs);
-    axios
-      .get(`${Config.host}/api/getUserInfo/${user.userID}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((rs) => {
-        this.setState({
-          firstname: rs.data.data.firstName,
-          lastname: rs.data.data.lastname,
-          dob: new Date(rs.data.data.dob),
-          identifyCode: rs.data.data.identifyCode,
-          avatar:
-            rs.data.data.avatar == null
-              ? "https://via.placeholder.com/150"
-              : rs.data.data.avatar,
-          isRender: false,
-        });
-      })
-      .catch((rs) => helper.toast("warning", "System error"));
+    this.getUserInfo();
+  }
+  async getUserInfo() {
+    let user = session.get("user");
+    let rs = await apis.getUserInfo({}, "GET", user.userID);
+    this.setState({
+      firstname: rs.data.firstName,
+      lastname: rs.data.lastname,
+      dob: new Date(rs.data.dob),
+      identifyCode: rs.data.identifyCode,
+      avatar:
+        rs.data.avatar == null
+          ? "https://via.placeholder.com/150"
+          : rs.data.avatar,
+      isRender: false,
+    });
   }
   handleChange = (event) => {
     const target = event.target;
@@ -61,24 +54,21 @@ class NormalInfo extends Component {
   };
   async submit(e) {
     e.preventDefault();
-    let token = session.get("session");
-    let rs = await axios.put(
-      `${Config.host}/api/user/update/${local.get("user").userID}`,
+    let rs = await apis.updateUser(
       {
         firstname: this.state.firstname,
         lastname: this.state.lastname,
         dob: this.state.dob,
         identifyCode: this.state.identifyCode,
-        avatarBase64: this.state.avatar.split(',')[1],
+        avatarBase64: this.state.avatar.split(",")[1],
       },
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
+      "POST",
+      session.get("user").userID
     );
-    if (rs.data.success) {
-      helper.toast("success", rs.data.message);
+    if (rs.success) {
+      helper.toast("success", rs.message);
     } else {
-      helper.toast("warning", rs.data.message);
+      helper.toast("warning", rs.message);
     }
   }
 
@@ -130,7 +120,6 @@ class NormalInfo extends Component {
                 // minDate={minDate}
                 onChange={(data) => {
                   this.setState({ dob: new Date(data) });
-                  console.log(data);
                 }}
               />
             </div>
@@ -182,9 +171,7 @@ class NormalInfo extends Component {
                       onClose={() =>
                         this.setState({ preview: this.state.avatar })
                       }
-                      onBeforeFileLoad={(elem) => {
-                        console.log(elem.target.files);
-                      }}
+                      onBeforeFileLoad={(elem) => {}}
                       className="update-userInfo-avatar"
                     />
                   </div>

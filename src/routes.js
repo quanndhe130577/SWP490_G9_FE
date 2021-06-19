@@ -33,6 +33,10 @@ const FishType = Loadable({
   loader: () => import("./views/User/Traders/FishType/FishType"),
   loading: Loading,
 });
+const Basket = Loadable({
+  loader: () => import("./views/User/Traders/Basket/Basket"),
+  loading: Loading,
+});
 const routes = [
   {
     path: "/home",
@@ -68,6 +72,11 @@ const routes = [
     path: "/fishType",
     name: "FishType",
     component: FishType,
+  },
+  {
+    path: "/basket",
+    name: "Basket",
+    component: Basket,
   },
 ];
 
