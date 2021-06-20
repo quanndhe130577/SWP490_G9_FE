@@ -32,7 +32,7 @@ const BuyFish = () => {
     }
   };
   const findLabel = (obj, key) => {
-    debugger;
+    // debugger;
     return dataDf[obj].find((el) => el.id === parseInt(key)) || {};
   };
   const columns = [
@@ -107,7 +107,7 @@ const BuyFish = () => {
     setIsShowBuy(true);
   };
   const handleTotalBuy = (value, prop) => {
-    debugger;
+    // debugger;
     setTotalBuy((pre) => ({
       ...pre,
       [prop]: value,

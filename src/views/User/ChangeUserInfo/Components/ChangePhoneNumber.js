@@ -4,6 +4,7 @@ import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import Config from "../../../../services/config";
 import Widgets from "../../../../schema/Widgets";
+import local from "../../../../services/local";
 
 class ChangePhoneNumber extends Component {
   constructor(props) {
