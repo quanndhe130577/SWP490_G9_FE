@@ -14,7 +14,7 @@ export default function DateTimePicker({
 }) {
   let dateFormat = "MM/DD/yyyy";
   // console.log(value.toLocaleDateString().trim());
-  console.log(moment(value.toLocaleDateString().trim(), dateFormat));
+  //console.log(moment(value.toLocaleDateString().trim(), dateFormat));
   return (
     <div
       className={
