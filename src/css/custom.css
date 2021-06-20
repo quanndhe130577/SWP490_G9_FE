@@ -61,3 +61,8 @@ button {
 .block {
   display: block;
 }
+.hd-total {
+  margin-top: 6px;
+  margin-bottom: 0px;
+  margin-left: 5px;
+}

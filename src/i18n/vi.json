@@ -35,6 +35,19 @@
     "edit":"Sửa",
     "delete":"Xóa",
     "pondOwnerManagement":"Quản lý chủ ao",
-    "create":"Tạo mới "
+    "create":"Tạo mới",
+    "action":"Hành động",
+    "update":"Cập nhật",
+    "yes":"Đồng ý",
+    "confirmDelete":"Xác nhận xóa?",
+    "name":"Tên",
+    "address":"Địa chỉ",
+    "phone":"Số điện thoại",
+    "INDEX":"STT",
+    "goodManagement":"Quản lý hàng hoá",
+    "buyGood":"Mua hàng",
+    "logout":"Đăng xuất",
+    "changeInfo":"Đổi thông tin",
+    "urlNotFound":"URL không hợp lệ"
 
 }

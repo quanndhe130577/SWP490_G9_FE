@@ -13,6 +13,7 @@ const ModalBuy = ({
   transactions,
   handleTrans,
   currentTran,
+  dataDF,
 }) => {
   const [transaction, setTransaction] = useState(currentTran);
 
@@ -42,14 +43,6 @@ const ModalBuy = ({
       onCancel={handleCancel}
     >
       <Row>
-        {/* <Col md="6" xs="12">
-          <Widgets.Text
-            required={true}
-            label={i18n.t("buyer")}
-            value={transaction.buyer}
-            onChange={(e) => handleChangeTran("buyer", e)}
-          />
-        </Col> */}
         <Col md="6" xs="12">
           <Widgets.Select
             required={true}
@@ -95,22 +88,6 @@ const ModalBuy = ({
             items={data.truck || []}
           />
         </Col>
-        {/* <Col md="6" xs="12">
-          <Widgets.Text
-            required={true}
-            label={i18n.t("sellPrice")}
-            value={transaction.sellPrice}
-            onChange={(e) => handleChangeTran("sellPrice", e)}
-          />
-        </Col>
-        <Col md="6" xs="12">
-          <Widgets.Text
-            required={true}
-            label={i18n.t("seller")}
-            value={transaction.seller}
-            onChange={(e) => handleChangeTran("seller", e)}
-          />
-        </Col> */}
       </Row>
     </Modal>
   );
