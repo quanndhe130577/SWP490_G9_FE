@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-import { Row, Col } from "reactstrap";
+import React, {useState} from "react";
+import {Row, Col} from "reactstrap";
 import Modal from "../../../../containers/Antd/ModalCustom";
 import Widgets from "../../../../schema/Widgets";
 import i18n from "i18next";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
+import {message} from 'antd';
 
-const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
+const ModalEdit = ({isShow, closeModal, mode, currentPO}) => {
   const [pondOwner, setPO] = useState(currentPO);
 
   const handleChangePondOwner = (val, name) => {
@@ -16,10 +17,22 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
       [name]: val,
     }));
   };
+  const checkValidate = (data) => {
+    const phoneNumberVNRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/
+    if (!phoneNumberVNRegex.test(data.phoneNumber)) {
+      return {isValid: false, message: 'Số điện thoại không đúng'};
+    }
+    return {isValid: true, message: ''};
+  }
   const handleOk = async () => {
     try {
-      let user = session.get("user"),
-        rs;
+      let user = session.get("user"), rs;
+      let valid = checkValidate(pondOwner.phoneNumber);
+      if (!valid.isValid) {
+        message.error(valid.message)
+        return;
+      }
+
       if (mode === "create") {
         rs = await apis.createPO({
           name: pondOwner.name,
