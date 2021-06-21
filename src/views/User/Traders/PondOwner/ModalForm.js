@@ -19,7 +19,7 @@ const ModalEdit = ({isShow, closeModal, mode, currentPO}) => {
   };
   const checkValidate = (data) => {
     const phoneNumberVNRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/
-    if (!phoneNumberVNRegex.test(data.phoneNumber)) {
+    if (!phoneNumberVNRegex.test(data)) {
       return {isValid: false, message: 'Số điện thoại không đúng'};
     }
     return {isValid: true, message: ''};
