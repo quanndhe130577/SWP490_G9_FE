@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { Row, Col } from "reactstrap";
 import Modal from "../../../../containers/Antd/ModalCustom";
 import Widgets from "../../../../schema/Widgets";
@@ -25,7 +25,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
           ...fishType,
         });
       } else if (mode === "edit") {
-        rs = await apis.updatePO(fishType);
+        rs = await apis.updateFT(fishType);
       }
 
       if (rs && rs.statusCode === 200) {
@@ -37,6 +37,9 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
       helper.toast("error", i18n.t("systemError"));
     }
   };
+  useEffect(() => {
+    handleChangeFishType(new Date(), "date"); 
+  },[])
   return (
     <Modal
       title={mode === "edit" ? i18n.t("edit") : i18n.t("create")}
@@ -83,19 +86,20 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
               onChange={(e) => handleChangeFishType(e, "price")}
             />
           </Col>
-          {/* <Col md="6" xs="12">
+          <Col md="6" xs="12">
             <Widgets.DateTimePicker
               required={true}
-              label={"Ngày t"}
-              value={fishType.dob || new Date()}
+              label={"Ngày tạo"}
+              value={fishType.date || new Date()}
               // maxDate={new Date()}
               // minDate={minDate}
               onChange={(data) => {
-                // this.setState({ dob: new Date(data) });
-                // console.log(data);
+                 //this.setState({ date: new Date(data) });
+                 handleChangeFishType(new Date(data), "date");
+                 //console.log(data);
               }}
             />
-          </Col> */}
+          </Col>
         </Row>
       )}
     />

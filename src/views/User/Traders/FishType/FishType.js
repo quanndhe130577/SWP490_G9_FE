@@ -8,6 +8,7 @@ import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import ModalForm from "./ModalForm";
+import Moment from "react-moment";
 export default class FishType extends Component {
   constructor(props) {
     super(props);
@@ -158,12 +159,13 @@ export default class FishType extends Component {
 
     if (modeBtn === "edit") {
       currentFT = data.find((el) => el.id === FishTypeID);
+      currentFT.date = new Date(currentFT.date)
       this.setState({ currentFT, mode: "edit", isShowModal: true });
     } else if (modeBtn === "delete") {
       helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
         if (rs) {
           try {
-            let rs = await apis.deletePO({}, "POST", FishTypeID);
+            let rs = await apis.deleteFT({}, "POST", FishTypeID);
             if (rs && rs.statusCode === 200) {
               helper.toast("success", rs.message || i18n.t("success"));
               this.fetchFishType();
@@ -216,7 +218,7 @@ export default class FishType extends Component {
         sortDirections: ["descend", "ascend"],
       },
       {
-        title: i18n.t("description"),
+        title: i18n.t("Mô tả"),
         dataIndex: "description",
         key: "description",
         ...this.getColumnSearchProps("description"),
@@ -224,7 +226,7 @@ export default class FishType extends Component {
         sortDirections: ["descend", "ascend"],
       },
       {
-        title: i18n.t("minWeight"),
+        title: i18n.t("Cân nặng tối thiểu"),
         dataIndex: "minWeight",
         key: "minWeight",
         ...this.getColumnSearchProps("minWeight"),
@@ -232,23 +234,28 @@ export default class FishType extends Component {
         sortDirections: ["descend", "ascend"],
       },
       {
-        title: i18n.t("maxWeight"),
+        title: i18n.t("Cân nặng tối đa"),
         dataIndex: "maxWeight",
         key: "maxWeight",
         ...this.getColumnSearchProps("maxWeight"),
         sorter: (a, b) => a.maxWeight - b.maxWeight,
         sortDirections: ["descend", "ascend"],
       },
-      // {
-      //   title: i18n.t("date"),
-      //   dataIndex: "date",
-      //   key: "date",
-      //   ...this.getColumnSearchProps("date"),
-      //   sorter: (a, b) => a.date.length - b.date.length,
-      //   sortDirections: ["descend", "ascend"],
-      // },
       {
-        title: i18n.t("price"),
+        title: i18n.t("Ngày tạo"),
+        dataIndex: "date",
+        key: "date",
+        ...this.getColumnSearchProps("date"),
+        sorter: (a, b) => a.date.length - b.date.length,
+        sortDirections: ["descend", "ascend"],
+        render: (date) => (
+          <Moment format="DD/MM/YYYY">
+                {date}
+            </Moment>
+        ),
+      },
+      {
+        title: i18n.t("Giá"),
         dataIndex: "price",
         key: "price",
         ...this.getColumnSearchProps("price"),

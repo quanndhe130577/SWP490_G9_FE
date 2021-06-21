@@ -18,6 +18,8 @@ var path = {
   createFT: "/api/fishtype/create", // method post need param
   getUserInfo: "/api/getUserInfo",
   updateUser: "/api/user/update",
+  updateFT: "/api/fishtype/update",
+  deleteFT: "/api/fishtype/delete"
   getBasketByTraderId: "/api/basket/getall",
   createBasket: "/api/basket/create",
 };
