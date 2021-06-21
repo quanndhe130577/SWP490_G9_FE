@@ -12,7 +12,7 @@ export default function DateTimePicker({
   required = false,
   submitted,
 }) {
-  let dateFormat = "MM/DD/yyyy";
+  let dateFormat = "DD/MM/yyyy";
   // console.log(value.toLocaleDateString().trim());
   //console.log(moment(value.toLocaleDateString().trim(), dateFormat));
   return (
@@ -30,7 +30,8 @@ export default function DateTimePicker({
 
       <DatePicker
         className="form-control"
-        defaultValue={moment(value.toLocaleDateString().trim(), dateFormat)}
+        defaultValue={moment(value, dateFormat)}
+        //defaultValue={value}
         format={dateFormat}
         onChange={(date, dateString) => {
           if (onChange) {
