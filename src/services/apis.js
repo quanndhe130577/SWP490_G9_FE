@@ -8,8 +8,9 @@ var path = {
   register: "/api/register",
   getAllRole: "/api/role/get-all",
   getOtp: "/api/otp/register",
-  checkOtp: "/api/check-register-otp",
+  checkOtp: "/api/OTP/check-register",
   getPondOwnerByTraderId: "/api/pondOwner/getAll", //method GET
+  updateUser: "/api/update",
   createPO: "/api/pondOwner/create",
   updatePO: "/api/pondOwner/update",
   deletePO: "/api/pondOwner/delete",
@@ -17,6 +18,8 @@ var path = {
   createFT: "/api/fishtype/create", // method post need param
   getUserInfo: "/api/getUserInfo",
   updateUser: "/api/user/update",
+  updateFT: "/api/fishtype/update",
+  deleteFT: "/api/fishtype/delete"
   getBasketByTraderId: "/api/basket/getall",
   createBasket: "/api/basket/create",
 };

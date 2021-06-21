@@ -4,6 +4,9 @@ import helper from "./helper";
 import i18next from "i18next";
 import Swal from "sweetalert2";
 
+// import DeviceDetector from "device-detector-js";
+// const deviceDetector = new DeviceDetector();
+
 let request = {};
 // request.upload = async (url, formData, method = "PUT") => {
 //   url = `${Config.host}${url}`;
