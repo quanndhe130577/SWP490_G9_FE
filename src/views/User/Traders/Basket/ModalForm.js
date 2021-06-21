@@ -49,7 +49,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
           <Col md="6" xs="12">
             <Widgets.Text
               label={i18n.t("name")}
-              value={basket.name || ""}
+              value={basket.type || ""}
               onChange={(e) => handleChangePondOwner(e, "name")}
             />
           </Col>
