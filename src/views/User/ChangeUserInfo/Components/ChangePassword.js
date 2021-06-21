@@ -5,6 +5,7 @@ import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import Config from "../../../../services/config";
 import Widgets from "../../../../schema/Widgets";
+import local from "../../../../services/local";
 
 class ChangePassword extends Component {
   constructor(props) {
@@ -35,7 +36,7 @@ class ChangePassword extends Component {
     // this.setState({ comfirm: true });
     let token = session.get("session");
     let rs = await axios.put(
-      `${Config.host}/api/change-password/${session.get("user").userID}`,
+      `${Config.host}/api/user/change-password/${local.get("user").userID}`,
       {
         currentPassword: this.state.password,
         newpassword: this.state.newPassword,

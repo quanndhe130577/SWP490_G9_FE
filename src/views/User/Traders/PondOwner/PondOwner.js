@@ -1,22 +1,13 @@
 import React, { Component } from "react";
-import { Table, Input, Space, Card } from "antd";
+import { Table, Input, Space, Card, Dropdown, Menu } from "antd";
 // import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
 import { Row, Col, Button } from "reactstrap";
 import i18n from "i18next";
 import apis from "../../../../services/apis";
+import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import ModalForm from "./ModalForm";
-
-// const data = [];
-// for (let i = 0; i < 100; i++) {
-//   data.push({
-//     key: i,
-//     name: `Edward King ${i}`,
-//     age: 32,
-//     address: `London, Park Lane no. ${i}`,
-//   });
-// }
 export default class PondOwner extends Component {
   constructor(props) {
     super(props);
@@ -39,7 +30,8 @@ export default class PondOwner extends Component {
       let user = await session.get("user");
       let rs = await apis.getPondOwnerByTraderId({}, "GET", user.userID);
       if (rs && rs.statusCode === 200) {
-        this.setState({ data: rs.data });
+        rs.data.map((el, idx) => (el.idx = idx + 1));
+        this.setState({ data: rs.data, user, total: rs.data.length });
       }
     } catch (error) {}
   }
@@ -122,7 +114,7 @@ export default class PondOwner extends Component {
         //     autoEscape
         //     textToHighlight={text ? text.toString() : ""}
         //   />
-        <div>hl</div>
+        <div>{text}</div>
       ) : (
         text
       ),
@@ -142,10 +134,12 @@ export default class PondOwner extends Component {
   };
 
   renderTitle = () => {
+    let { total } = this.state || 0;
     return (
       <Row>
-        <Col md="6">
-          <h3 className="mr-5">{i18n.t("pondOwnerManagement")}</h3>
+        <Col md="6" className="d-flex">
+          <h3 className="">{i18n.t("pondOwnerManagement")}</h3>
+          <label className="hd-total">{total ? "(" + total + ")" : ""}</label>
         </Col>
 
         <Col md="6">
@@ -167,7 +161,7 @@ export default class PondOwner extends Component {
     if (refresh) {
       this.fetchPondOwner();
     }
-    this.setState({ isShowModal: false, mode: "" });
+    this.setState({ isShowModal: false, mode: "", currentPO: {} });
   };
   onClick(modeBtn, pondOwnerID) {
     let { currentPO, data } = this.state;
@@ -175,31 +169,72 @@ export default class PondOwner extends Component {
     if (modeBtn === "edit") {
       currentPO = data.find((el) => el.id === pondOwnerID);
       this.setState({ currentPO, mode: "edit", isShowModal: true });
+    } else if (modeBtn === "delete") {
+      helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
+        if (rs) {
+          try {
+            let rs = await apis.deletePO({}, "POST", pondOwnerID);
+            if (rs && rs.statusCode === 200) {
+              helper.toast("success", rs.message || i18n.t("success"));
+              this.fetchPondOwner();
+            }
+          } catch (error) {
+            console.log(error);
+            helper.toast("error", i18n.t("systemError"));
+          }
+        }
+      });
     }
+  }
+  renderBtnAction(id) {
+    return (
+      <Menu>
+        <Menu.Item>
+          <Button
+            color="info"
+            className="mr-2"
+            onClick={() => this.onClick("edit", id)}
+          >
+            <i className="fa fa-pencil-square-o mr-1" />
+            {i18n.t("edit")}
+          </Button>
+        </Menu.Item>
+        <Menu.Item>
+          <Button color="danger" onClick={() => this.onClick("delete", id)}>
+            <i className="fa fa-trash-o mr-1" />
+            {i18n.t("delete")}
+          </Button>
+        </Menu.Item>
+      </Menu>
+    );
   }
   render() {
     const { isShowModal, mode, currentPO, data } = this.state;
     const columns = [
       {
-        title: "Name",
+        title: i18n.t("INDEX"),
+        dataIndex: "idx",
+        key: "idx",
+        render: (text) => <label>{text}</label>,
+      },
+      {
+        title: i18n.t("name"),
         dataIndex: "name",
         key: "name",
-        width: "30%",
         ...this.getColumnSearchProps("name"),
         sorter: (a, b) => a.name.length - b.name.length,
         sortDirections: ["descend", "ascend"],
       },
       {
-        title: "Address",
+        title: i18n.t("address"),
         dataIndex: "address",
         key: "address",
-        width: "20%",
         ...this.getColumnSearchProps("address"),
         sorter: (a, b) => a.address - b.address,
         sortDirections: ["descend", "ascend"],
       },
       {
-        title: "Phone",
+        title: i18n.t("phone"),
         dataIndex: "phoneNumber",
         key: "phoneNumber",
         ...this.getColumnSearchProps("phoneNumber"),
@@ -207,16 +242,16 @@ export default class PondOwner extends Component {
         sortDirections: ["descend", "ascend"],
       },
       {
-        title: "Action",
+        title: "",
         dataIndex: "id",
         key: "id",
         render: (id) => (
-          <div>
-            <Button className="mr-2" onClick={() => this.onClick("edit", id)}>
-              update
+          <Dropdown overlay={this.renderBtnAction(id)}>
+            <Button>
+              <i className="fa fa-cog mr-1" />
+              {i18n.t("action")}
             </Button>
-            <Button onClick={() => this.onClick("delete", id)}>Delete</Button>
-          </div>
+          </Dropdown>
         ),
       },
     ];
@@ -231,16 +266,18 @@ export default class PondOwner extends Component {
             // handleChangePondOwner={handleChangePondOwner}
           />
         )}
-        <Table
-          bordered
-          columns={columns}
-          dataSource={data}
-          //   pagination={{ pageSize: 5 }}
-          scroll={{ y: 450 }}
-        />
+        <Row>
+          <Col style={{ overflowX: "auto" }}>
+            <Table
+              bordered
+              columns={columns}
+              dataSource={data}
+              pagination={{ pageSize: 10 }}
+              scroll={{ y: 600 }}
+            />
+          </Col>
+        </Row>
       </Card>
     );
   }
 }
-
-// export default PondOwner;

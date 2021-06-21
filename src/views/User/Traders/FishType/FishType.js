@@ -8,7 +8,7 @@ import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import ModalForm from "./ModalForm";
-export default class Basket extends Component {
+export default class FishType extends Component {
   constructor(props) {
     super(props);
 
@@ -22,16 +22,14 @@ export default class Basket extends Component {
   }
 
   componentDidMount() {
-    this.fetchBasket();
+    this.fetchFishType();
   }
 
-  async fetchBasket() {
+  async fetchFishType() {
     try {
       let user = await session.get("user");
-      let rs = await apis.getBasketByTraderId({}, "GET");
-      console.log(rs);
+      let rs = await apis.getFTByTraderID({}, "GET");
       if (rs && rs.statusCode === 200) {
-        console.log(rs);
         rs.data.map((el, idx) => (el.idx = idx + 1));
         this.setState({ data: rs.data, user, total: rs.data.length });
       }
@@ -109,17 +107,7 @@ export default class Basket extends Component {
       }
     },
     render: (text) =>
-      this.state.searchedColumn === dataIndex ? (
-        //   <Highlighter
-        //     highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
-        //     searchWords={[this.state.searchText]}
-        //     autoEscape
-        //     textToHighlight={text ? text.toString() : ""}
-        //   />
-        <div>{text}</div>
-      ) : (
-        text
-      ),
+      this.state.searchedColumn === dataIndex ? <div>{text}</div> : text,
   });
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -140,7 +128,7 @@ export default class Basket extends Component {
     return (
       <Row>
         <Col md="6" className="d-flex">
-          <h3 className="">{i18n.t("BasketManagement")}</h3>
+          <h3 className="">{i18n.t("FishTypeManagement")}</h3>
           <label className="hd-total">{total ? "(" + total + ")" : ""}</label>
         </Col>
 
@@ -161,24 +149,24 @@ export default class Basket extends Component {
   };
   closeModal = (refresh) => {
     if (refresh) {
-      this.fetchBasket();
+      this.fetchFishType();
     }
-    this.setState({ isShowModal: false, mode: "", currentPO: {} });
+    this.setState({ isShowModal: false, mode: "", currentFT: {} });
   };
-  onClick(modeBtn, BasketID) {
-    let { currentPO, data } = this.state;
+  onClick(modeBtn, FishTypeID) {
+    let { currentFT, data } = this.state;
 
     if (modeBtn === "edit") {
-      currentPO = data.find((el) => el.id === BasketID);
-      this.setState({ currentPO, mode: "edit", isShowModal: true });
+      currentFT = data.find((el) => el.id === FishTypeID);
+      this.setState({ currentFT, mode: "edit", isShowModal: true });
     } else if (modeBtn === "delete") {
       helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
         if (rs) {
           try {
-            let rs = await apis.deletePO({}, "POST", BasketID);
+            let rs = await apis.deletePO({}, "POST", FishTypeID);
             if (rs && rs.statusCode === 200) {
               helper.toast("success", rs.message || i18n.t("success"));
-              this.fetchBasket();
+              this.fetchFishType();
             }
           } catch (error) {
             console.log(error);
@@ -211,7 +199,7 @@ export default class Basket extends Component {
     );
   }
   render() {
-    const { isShowModal, mode, currentPO, data } = this.state;
+    const { isShowModal, mode, currentFT, data } = this.state;
     const columns = [
       {
         title: i18n.t("INDEX"),
@@ -220,19 +208,51 @@ export default class Basket extends Component {
         render: (text) => <label>{text}</label>,
       },
       {
-        title: i18n.t("name"),
-        dataIndex: "type",
-        key: "type",
-        ...this.getColumnSearchProps("type"),
-        sorter: (a, b) => a.type.length - b.type.length,
+        title: i18n.t("Tên loại cá"),
+        dataIndex: "fishName",
+        key: "fishName",
+        ...this.getColumnSearchProps("fishName"),
+        sorter: (a, b) => a.fishName.length - b.fishName.length,
         sortDirections: ["descend", "ascend"],
       },
       {
-        title: i18n.t("weight"),
-        dataIndex: "weight",
-        key: "weight",
-        ...this.getColumnSearchProps("weight"),
-        sorter: (a, b) => a.weight - b.weight,
+        title: i18n.t("description"),
+        dataIndex: "description",
+        key: "description",
+        ...this.getColumnSearchProps("description"),
+        sorter: (a, b) => a.description - b.description,
+        sortDirections: ["descend", "ascend"],
+      },
+      {
+        title: i18n.t("minWeight"),
+        dataIndex: "minWeight",
+        key: "minWeight",
+        ...this.getColumnSearchProps("minWeight"),
+        sorter: (a, b) => a.minWeight - b.minWeight,
+        sortDirections: ["descend", "ascend"],
+      },
+      {
+        title: i18n.t("maxWeight"),
+        dataIndex: "maxWeight",
+        key: "maxWeight",
+        ...this.getColumnSearchProps("maxWeight"),
+        sorter: (a, b) => a.maxWeight - b.maxWeight,
+        sortDirections: ["descend", "ascend"],
+      },
+      // {
+      //   title: i18n.t("date"),
+      //   dataIndex: "date",
+      //   key: "date",
+      //   ...this.getColumnSearchProps("date"),
+      //   sorter: (a, b) => a.date.length - b.date.length,
+      //   sortDirections: ["descend", "ascend"],
+      // },
+      {
+        title: i18n.t("price"),
+        dataIndex: "price",
+        key: "price",
+        ...this.getColumnSearchProps("price"),
+        sorter: (a, b) => a.price - b.price,
         sortDirections: ["descend", "ascend"],
       },
       {
@@ -256,8 +276,8 @@ export default class Basket extends Component {
             isShow={isShowModal}
             mode={mode}
             closeModal={this.closeModal}
-            currentPO={currentPO || {}}
-            // handleChangeBasket={handleChangeBasket}
+            currentFT={currentFT || {}}
+            // handleChangeFishType={handleChangeFishType}
           />
         )}
         <Row>

@@ -21,12 +21,20 @@ const ChangeUserInfo = Loadable({
   loader: () => import("./views/User/ChangeUserInfo/ChangeUserInfo"),
   loading: Loading,
 });
-const Basket = Loadable({
-  loader: () => import("./views/User/Traders/Basket/Basket"),
-  loading: Loading,
-});
+// const Basket = Loadable({
+//   loader: () => import("./views/User/Traders/Basket/Basket"),
+//   loading: Loading,
+// });
 const PondOwner = Loadable({
   loader: () => import("./views/User/Traders/PondOwner/PondOwner"),
+  loading: Loading,
+});
+const FishType = Loadable({
+  loader: () => import("./views/User/Traders/FishType/FishType"),
+  loading: Loading,
+});
+const Basket = Loadable({
+  loader: () => import("./views/User/Traders/Basket/Basket"),
   loading: Loading,
 });
 const routes = [
@@ -50,15 +58,25 @@ const routes = [
     name: "ChangeUserInfo",
     component: ChangeUserInfo,
   },
-  {
-    path: "/basket",
-    name: "Basket",
-    component: Basket,
-  },
+  // {
+  //   path: "/basket",
+  //   name: "Basket",
+  //   component: Basket,
+  // },
   {
     path: "/pondOwner",
     name: "PondOwner",
     component: PondOwner,
+  },
+  {
+    path: "/fishType",
+    name: "FishType",
+    component: FishType,
+  },
+  {
+    path: "/basket",
+    name: "Basket",
+    component: Basket,
   },
 ];
 

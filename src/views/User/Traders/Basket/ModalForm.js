@@ -5,10 +5,9 @@ import Widgets from "../../../../schema/Widgets";
 import i18n from "i18next";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
-import session from "../../../../services/session";
 
 const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
-  const [pondOwner, setPO] = useState(currentPO);
+  const [basket, setPO] = useState(currentPO);
 
   const handleChangePondOwner = (val, name) => {
     setPO((prevState) => ({
@@ -18,17 +17,15 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
   };
   const handleOk = async () => {
     try {
-      let user = session.get("user"),
-        rs;
+      // let user = session.get("user");
+      let rs;
       if (mode === "create") {
-        rs = await apis.createPO({
-          name: pondOwner.name,
-          address: pondOwner.address,
-          phoneNumber: pondOwner.phoneNumber,
-          traderID: user.userID,
+        rs = await apis.createBasket({
+          type: basket.name,
+          weight: basket.weight,
         });
       } else if (mode === "edit") {
-        rs = await apis.updatePO(pondOwner);
+        rs = await apis.updatePO(basket);
       }
 
       if (rs && rs.statusCode === 200) {
@@ -40,6 +37,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
       helper.toast("error", i18n.t("systemError"));
     }
   };
+  console.log(basket);
   return (
     <Modal
       title={mode === "edit" ? i18n.t("edit") : i18n.t("create")}
@@ -51,22 +49,16 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
           <Col md="6" xs="12">
             <Widgets.Text
               label={i18n.t("name")}
-              value={pondOwner.name || ""}
+              value={basket.name || ""}
               onChange={(e) => handleChangePondOwner(e, "name")}
             />
           </Col>
           <Col md="6" xs="12">
             <Widgets.Text
-              label={i18n.t("address")}
-              value={pondOwner.address || ""}
-              onChange={(e) => handleChangePondOwner(e, "address")}
-            />
-          </Col>
-          <Col md="6" xs="12">
-            <Widgets.Text
-              label={i18n.t("phone")}
-              value={pondOwner.phoneNumber || ""}
-              onChange={(e) => handleChangePondOwner(e, "phoneNumber")}
+              label={i18n.t("weight")}
+              type="number"
+              value={basket.weight || ""}
+              onChange={(e) => handleChangePondOwner(e, "weight")}
             />
           </Col>
         </Row>
