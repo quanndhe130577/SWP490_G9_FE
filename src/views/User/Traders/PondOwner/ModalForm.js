@@ -6,7 +6,6 @@ import i18n from "i18next";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
-import {message} from 'antd';
 
 const ModalEdit = ({isShow, closeModal, mode, currentPO}) => {
   const [pondOwner, setPO] = useState(currentPO);
@@ -29,7 +28,7 @@ const ModalEdit = ({isShow, closeModal, mode, currentPO}) => {
       let user = session.get("user"), rs;
       let valid = checkValidate(pondOwner.phoneNumber);
       if (!valid.isValid) {
-        message.error(valid.message)
+        helper.toast("error", valid.message);
         return;
       }
 
