@@ -19,7 +19,7 @@ var path = {
   getUserInfo: "/api/getUserInfo",
   updateUser: "/api/user/update",
   updateFT: "/api/fishtype/update",
-  deleteFT: "/api/fishtype/delete"
+  deleteFT: "/api/fishtype/delete",
   getBasketByTraderId: "/api/basket/getall",
   createBasket: "/api/basket/create",
 };

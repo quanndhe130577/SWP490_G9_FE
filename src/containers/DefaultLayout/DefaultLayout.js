@@ -50,7 +50,7 @@ class DefaultLayout extends Component {
                   />
                 ) : null;
               })}
-              <Redirect from="/" to="/login" />
+              {/* <Redirect to="/login" /> */}
             </Switch>
           </div>
         </Content>
