@@ -17,7 +17,7 @@ const BuyFish = () => {
   const [currentTotal, setCurrentTotal] = useState({});
   const [transactions, setTrans] = useState([]);
   const [currentTran, setCurrentTran] = useState({});
-  const [dataDf, setData] = useState({});
+  const [dataDf, setData] = useState({ basket: [], drum: [], truck: [] });
 
   const handelAction = (action, sid) => {
     if (action === "delete") {
@@ -121,27 +121,49 @@ const BuyFish = () => {
   const findPO = () => {
     if (currentTotal.pondOwner && dataDf.pondOwner)
       return (
-        dataDf.pondOwner.find((el) => el.id === currentTotal.pondOwner) || {}
+        dataDf.pondOwner.find((el) => el.id === parseInt(currentTotal.pondOwner)) || {}
       );
     else return {};
   };
   async function fetchData() {
     try {
       let user = session.get("user");
+      // get pondOwner by trarder ID
       let rs = await apis.getPondOwnerByTraderId({}, "GET", user.userID);
       if (rs && rs.statusCode === 200) {
         setData((pre) => ({
           ...pre,
           pondOwner: rs.data,
         }));
-        setLoading(false);
-        // rs.data.map((el, idx) => (el.idx = idx + 1));
-        //  this.setState({ data: rs.data, user, total: rs.data.length });
+
       }
-    } catch (error) {}
+      //get fish type trader id
+      rs = await apis.getFTByTraderID({}, "GET");
+      if (rs && rs.statusCode === 200) {
+        setData((pre) => ({
+          ...pre,
+          fishType: rs.data,
+        }));
+      }
+      //get truck trader id
+      rs = await apis.getTruckByTrarderID({}, "GET");
+      if (rs && rs.statusCode === 200) {
+        setData((pre) => ({
+          ...pre,
+          truck: rs.data,
+        }));
+      }
+      setLoading(false);
+
+    } catch (error) {
+      console.log(error)
+    }
   }
   useEffect(() => {
     let tem = local.get("currentTotal") || {};
+    if (tem.pondOwner) {
+      tem.pondOwner = parseInt(tem.pondOwner)
+    }
     setCurrentTotal(tem);
     fetchData();
   }, []);
@@ -169,7 +191,7 @@ const BuyFish = () => {
     return <div>loading...</div>;
   } else
     return (
-      <Card title={renderTitle()}>
+      <div>
         {isShowBuy && (
           <ModalBuy
             isShowBuy={isShowBuy}
@@ -178,6 +200,7 @@ const BuyFish = () => {
             transactions={transactions}
             handleTrans={handleTrans}
             currentTran={currentTran}
+            dataDf={dataDf}
           />
         )}
         {isShowChoosePond && (
@@ -191,39 +214,44 @@ const BuyFish = () => {
             dataDf={dataDf}
           />
         )}
+        {!isShowChoosePond &&
+          <Card title={renderTitle()}>
 
-        <Row className="mb-2">
-          <Col span="24" className="">
-            {/* <div className="float-left">
-            <Widgets.Select
-              required={true}
-              label={i18n.t("pondOwner")}
-              value={totalBuy.pondOwner}
-              onChange={(e) => handleChange(e, "roleNormalizedName")}
-              items={dataDf.pondOwner}
-            />
-          </div> */}
-            <div className="float-right">
-              <Button
-                color="info"
-                onClick={() => setShowChoosePond(true)}
-                className="mr-2"
-              >
-                {i18n.t("Giá cá hôm nay")}
-              </Button>
-              <Button color="info" onClick={showModal} className=" mr-2">
-                {i18n.t("Thêm Mã")}
-              </Button>
-            </div>
-          </Col>
-        </Row>
 
-        <Row>
-          <Col style={{ overflowX: "auto" }}>
-            <Table columns={columns} dataSource={transactions} />
-          </Col>
-        </Row>
-      </Card>
+            <Row className="mb-2">
+              <Col span="24" className="">
+                {/* <div className="float-left">
+<Widgets.Select
+required={true}
+label={i18n.t("pondOwner")}
+value={totalBuy.pondOwner}
+onChange={(e) => handleChange(e, "roleNormalizedName")}
+items={dataDf.pondOwner}
+/>
+</div> */}
+                <div className="float-right">
+                  <Button
+                    color="info"
+                    onClick={() => setShowChoosePond(true)}
+                    className="mr-2"
+                  >
+                    {i18n.t("Giá cá hôm nay")}
+                  </Button>
+                  <Button color="info" onClick={showModal} className=" mr-2">
+                    {i18n.t("Thêm Mã")}
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col style={{ overflowX: "auto" }}>
+                <Table columns={columns} dataSource={transactions} />
+              </Col>
+            </Row>
+          </Card>
+        }
+      </div>
     );
 };
 

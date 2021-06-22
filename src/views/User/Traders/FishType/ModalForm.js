@@ -1,11 +1,10 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col } from "reactstrap";
 import Modal from "../../../../containers/Antd/ModalCustom";
 import Widgets from "../../../../schema/Widgets";
 import i18n from "i18next";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
-import session from "../../../../services/session";
 
 const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
   const [fishType, setFT] = useState(currentFT);
@@ -18,8 +17,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
   };
   const handleOk = async () => {
     try {
-      let user = session.get("user"),
-        rs;
+      let rs;
       if (mode === "create") {
         rs = await apis.createFT({
           ...fishType,
@@ -38,8 +36,8 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
     }
   };
   useEffect(() => {
-    handleChangeFishType(new Date(), "date"); 
-  },[])
+    handleChangeFishType(new Date(), "date");
+  }, [])
   return (
     <Modal
       title={mode === "edit" ? i18n.t("edit") : i18n.t("create")}
@@ -94,9 +92,9 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
               // maxDate={new Date()}
               // minDate={minDate}
               onChange={(data) => {
-                 //this.setState({ date: new Date(data) });
-                 handleChangeFishType(new Date(data), "date");
-                 //console.log(data);
+                //this.setState({ date: new Date(data) });
+                handleChangeFishType(new Date(data), "date");
+                //console.log(data);
               }}
             />
           </Col>

@@ -4,7 +4,7 @@ import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import Config from "../../../../services/config";
 import Widgets from "../../../../schema/Widgets";
-import local from "../../../../services/local";
+// import local from "../../../../services/local";
 
 class ChangePhoneNumber extends Component {
   constructor(props) {
@@ -53,7 +53,7 @@ class ChangePhoneNumber extends Component {
       let rs = await axios
         .post(
           `${Config.host}/api/user/check-change-phone-otp/${
-            session.get("user").userID
+          session.get("user").userID
           }`,
           {
             newPhoneNumber: this.state.newPhoneNumber,
@@ -113,42 +113,42 @@ class ChangePhoneNumber extends Component {
             </div>
           </div>
         ) : (
-          <div className="row justify-content-center">
-            <div className="col-md-8 mb-2 row justify-content-center">
-              <div className="col-md-6 mb-2">
-                <Widgets.Text
-                  type="text"
-                  required={true}
-                  label={"Số điện thoại mới"}
-                  value={this.state.newPhoneNumber}
-                  onChange={(e) => this.handleChange2(e, "newPhoneNumber")}
-                />
+            <div className="row justify-content-center">
+              <div className="col-md-8 mb-2 row justify-content-center">
+                <div className="col-md-6 mb-2">
+                  <Widgets.Text
+                    type="text"
+                    required={true}
+                    label={"Số điện thoại mới"}
+                    value={this.state.newPhoneNumber}
+                    onChange={(e) => this.handleChange2(e, "newPhoneNumber")}
+                  />
+                </div>
+              </div>
+              <div className="col-md-8 mb-2 row justify-content-center">
+                <div className="col-md-6 mb-2">
+                  <Widgets.Text
+                    type="password"
+                    required={true}
+                    label={"Mật khẩu"}
+                    value={this.state.password}
+                    onChange={(e) => this.handleChange2(e, "password")}
+                  />
+                </div>
+              </div>
+              <div className="col-md-8 mb-2 row justify-content-center">
+                <div className="col-md-6 mb-2">
+                  <Widgets.Text
+                    type="password"
+                    required={true}
+                    label={"Nhập lại mật khẩu"}
+                    value={this.state.rePassword}
+                    onChange={(e) => this.handleChange2(e, "rePassword")}
+                  />
+                </div>
               </div>
             </div>
-            <div className="col-md-8 mb-2 row justify-content-center">
-              <div className="col-md-6 mb-2">
-                <Widgets.Text
-                  type="password"
-                  required={true}
-                  label={"Mật khẩu"}
-                  value={this.state.password}
-                  onChange={(e) => this.handleChange2(e, "password")}
-                />
-              </div>
-            </div>
-            <div className="col-md-8 mb-2 row justify-content-center">
-              <div className="col-md-6 mb-2">
-                <Widgets.Text
-                  type="password"
-                  required={true}
-                  label={"Nhập lại mật khẩu"}
-                  value={this.state.rePassword}
-                  onChange={(e) => this.handleChange2(e, "rePassword")}
-                />
-              </div>
-            </div>
-          </div>
-        )}
+          )}
 
         <div className="col-md-12 mb-2 row justify-content-center">
           <button className="btn btn-info px-5" type="submit">

@@ -32,20 +32,18 @@ const Login = (props) => {
       if (!user.phoneNumber) {
         return helper.toast("error", i18n.t("Vui lòng điền số điện thoại"));
       } else if (step === 0) {
-        //let param = "/" + user.phoneNumber;
         let rs = await apis.getOtp({}, "GET", user.phoneNumber);
         if (rs && rs.statusCode === 200) {
-          //debugger
+          setStep(1);
           handleChange(rs.data.otpid, "otpid");
           helper.toast("success", i18n.t(rs.message || "systemError"));
         }
-        setStep(1);
       } else if (step === 1) {
-        let rs = await apis.checkOtp({otpid : user.otpid, code : user.code, phoneNumber: user.phoneNumber}, "POST");
+        let rs = await apis.checkOtp({ otpid: user.otpid, code: user.code, phoneNumber: user.phoneNumber }, "POST");
         if (rs && rs.statusCode === 200) {
+          setStep(2);
           helper.toast("success", i18n.t(rs.message || "systemError"));
         }
-        setStep(2);
       } else if (step === 2) {
         let rs = await apis.register(user);
         if (rs && rs.statusCode === 200) {
@@ -89,6 +87,12 @@ const Login = (props) => {
     }
     return i18n.t(msg);
   };
+  const _handleKeyDown = (e) => {
+    console.log(e.key)
+    if (e.key === 'Enter') {
+      handleSubmit()
+    }
+  }
   return (
     <div className="jumbotron">
       <div className="div-login pt-0">
@@ -101,7 +105,10 @@ const Login = (props) => {
             />
           </div>
 
-          <div className="con-login  border container">
+          <div className="con-login  border container"
+
+          >
+
             <div className="col-sm-6 col-md-6 ">
               <h2 style={{ textAlign: "center" }}> {textHeaders()}</h2>
               <div name="form">
@@ -109,9 +116,10 @@ const Login = (props) => {
                   <Step0
                     value={user.phoneNumber}
                     onChange={(e) => handleChange(e, "phoneNumber")}
+                    onKeyDown={_handleKeyDown}
                   />
                 )}
-                {step === 1 && <Step1 phoneNumber={user.phoneNumber}  onChange={(e) => handleChange(e, "code")} />}
+                {step === 1 && <Step1 phoneNumber={user.phoneNumber} onChange={(e) => handleChange(e, "code")} />}
 
                 {step === 2 && (
                   <>

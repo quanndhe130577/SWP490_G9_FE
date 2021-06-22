@@ -9,12 +9,13 @@ export default function Text({
   type = "text",
   required = false,
   submitted,
+  onKeyDown
 }) {
   return (
     <div className={"form-group" + (submitted && !value ? " has-error" : "")}>
       {label && (
         <label className="bold">
-          {label} {required ? <span>*</span> : ""}
+          {label} {required ? <span style={{ color: "red" }}>*</span> : ""}
         </label>
       )}
 
@@ -28,6 +29,7 @@ export default function Text({
             onChange(e.target.value);
           }
         }}
+        onKeyDown={onKeyDown}
         required={required}
       />
       {submitted && !value && (

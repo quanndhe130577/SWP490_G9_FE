@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import Avatar from "react-avatar-edit";
-import axios from "axios";
+// import axios from "axios";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
-import Config from "../../../../services/config";
+// import Config from "../../../../services/config";
 import Widgets from "../../../../schema/Widgets";
 import { LoadingOutlined } from "@ant-design/icons";
 import apis from "../../../../services/apis";
@@ -173,7 +173,7 @@ class NormalInfo extends Component {
                       onClose={() =>
                         this.setState({ preview: this.state.avatar })
                       }
-                      onBeforeFileLoad={(elem) => {}}
+                      onBeforeFileLoad={(elem) => { }}
                       className="update-userInfo-avatar"
                     />
                   </div>

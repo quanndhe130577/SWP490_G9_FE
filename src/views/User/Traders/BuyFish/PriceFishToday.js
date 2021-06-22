@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import i18n from "i18next";
-import data from "../../../../data";
+// import data from "../../../../data";
 import Widgets from "../../../../schema/Widgets";
 
-const PriceFishToday = ({ listFish, onChange }) => {
+const PriceFishToday = ({ listFish, onChange, dataDf }) => {
   const columns = [
     {
       title: "STT",
-      dataIndex: "key",
-      key: "key",
+      dataIndex: "idx",
+      key: "idx",
       render: (text) => <label>{text}</label>,
     },
     {
       title: "Tên cá",
-      dataIndex: "label",
-      key: "label",
+      dataIndex: "fishName",
+      key: "fishName",
     },
     {
       title: "Trọng lượng tối thiểu",
@@ -46,16 +46,21 @@ const PriceFishToday = ({ listFish, onChange }) => {
   ];
   const [dataS, setData] = useState([]);
   const findList = (temArr) => {
-    let arr = [];
+    let arr = [], count = 0;
     temArr.forEach((el) => {
-      let tem = data.fishType.find((ft) => ft.value === parseInt(el));
-      if (tem) arr.push(tem);
+      let tem = dataDf.fishType.find((ft) => ft.id === parseInt(el));
+      if (tem) {
+        tem.idx = ++count
+        arr.push(tem)
+      };
     });
 
     if (onChange) {
       onChange(arr);
+
     }
     setData(arr);
+
   };
   useEffect(() => {
     findList(listFish);

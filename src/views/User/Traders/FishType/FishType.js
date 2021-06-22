@@ -8,7 +8,7 @@ import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import ModalForm from "./ModalForm";
-import Moment from "react-moment";
+// import Moment from "react-moment";
 export default class FishType extends Component {
   constructor(props) {
     super(props);
@@ -34,7 +34,7 @@ export default class FishType extends Component {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         this.setState({ data: rs.data, user, total: rs.data.length });
       }
-    } catch (error) {}
+    } catch (error) { }
   }
 
   getColumnSearchProps = (dataIndex) => ({
@@ -44,63 +44,63 @@ export default class FishType extends Component {
       confirm,
       clearFilters,
     }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={(node) => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() =>
-            this.handleSearch(selectedKeys, confirm, dataIndex)
-          }
-          style={{ marginBottom: 8, display: "block" }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Search
-          </Button>
-          <Button
-            onClick={() => this.handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({ closeDropdown: false });
-              this.setState({
-                searchText: selectedKeys[0],
-                searchedColumn: dataIndex,
-              });
+        <div style={{ padding: 8 }}>
+          <Input
+            ref={(node) => {
+              this.searchInput = node;
             }}
-          >
-            Filter
+            placeholder={`Search ${dataIndex}`}
+            value={selectedKeys[0]}
+            onChange={(e) =>
+              setSelectedKeys(e.target.value ? [e.target.value] : [])
+            }
+            onPressEnter={() =>
+              this.handleSearch(selectedKeys, confirm, dataIndex)
+            }
+            style={{ marginBottom: 8, display: "block" }}
+          />
+          <Space>
+            <Button
+              type="primary"
+              onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+              icon={<SearchOutlined />}
+              size="small"
+              style={{ width: 90 }}
+            >
+              Search
           </Button>
-        </Space>
-      </div>
-    ),
+            <Button
+              onClick={() => this.handleReset(clearFilters)}
+              size="small"
+              style={{ width: 90 }}
+            >
+              Reset
+          </Button>
+            <Button
+              type="link"
+              size="small"
+              onClick={() => {
+                confirm({ closeDropdown: false });
+                this.setState({
+                  searchText: selectedKeys[0],
+                  searchedColumn: dataIndex,
+                });
+              }}
+            >
+              Filter
+          </Button>
+          </Space>
+        </div>
+      ),
     filterIcon: (filtered) => (
       <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -200,6 +200,15 @@ export default class FishType extends Component {
       </Menu>
     );
   }
+  findFT(id) {
+    let tem = this.state.data.find((el) => el.id === id);
+    if (tem)
+      return (
+        <div>
+          <span>{tem.minWeight} - {tem.maxWeight}</span>
+        </div>
+      );
+  }
   render() {
     const { isShowModal, mode, currentFT, data } = this.state;
     const columns = [
@@ -242,20 +251,18 @@ export default class FishType extends Component {
       //   sorter: (a, b) => a.maxWeight - b.maxWeight,
       //   sortDirections: ["descend", "ascend"],
       // },
-      
+
       {
         title: i18n.t("Cân nặng (khoảng)"),
         colSpan: 1,
         dataIndex: "id",
         key: "id",
-        render: (id) => {
-          <span>{id.minWeight} - {id.maxWeight}</span>
-        },
-        ...this.getColumnSearchProps("maxWeight"),
-        sorter: (a, b) => a.maxWeight - b.maxWeight,
+        render: (id) => this.findFT(id),
+        // ...this.getColumnSearchProps("minWeight"),
+        sorter: (a, b) => a.minWeight - b.minWeight,
         sortDirections: ["descend", "ascend"],
       },
-      
+
       // {
       //   title: i18n.t("Ngày tạo"),
       //   dataIndex: "date",
@@ -299,7 +306,7 @@ export default class FishType extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentFT={currentFT || {}}
-            // handleChangeFishType={handleChangeFishType}
+          // handleChangeFishType={handleChangeFishType}
           />
         )}
         <Row>

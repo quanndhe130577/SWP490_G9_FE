@@ -4,7 +4,7 @@ import { Row, Col } from "reactstrap";
 import i18n from "i18next";
 import "antd/dist/antd.css";
 import Widgets from "../../../../schema/Widgets";
-import data from "../../../../data";
+// import data from "../../../../data";
 
 const ModalBuy = ({
   isShowBuy,
@@ -13,7 +13,7 @@ const ModalBuy = ({
   transactions,
   handleTrans,
   currentTran,
-  dataDF,
+  dataDf,
 }) => {
   const [transaction, setTransaction] = useState(currentTran);
 
@@ -67,7 +67,7 @@ const ModalBuy = ({
             label={i18n.t("basket")}
             value={transaction.basket}
             onChange={(e) => handleChangeTran("basket", e)}
-            items={data.basket || []}
+            items={dataDf.basket || []}
           />
         </Col>
         <Col md="6" xs="12">
@@ -76,7 +76,7 @@ const ModalBuy = ({
             label={i18n.t("drum")}
             value={transaction.drum}
             onChange={(e) => handleChangeTran("drum", e)}
-            items={data.drum || []}
+            items={dataDf.drum || []}
           />
         </Col>
         <Col md="6" xs="12">
@@ -85,7 +85,7 @@ const ModalBuy = ({
             label={i18n.t("truck")}
             value={transaction.truck}
             onChange={(e) => handleChangeTran("truck", e)}
-            items={data.truck || []}
+            items={dataDf.truck || []}
           />
         </Col>
       </Row>

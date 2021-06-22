@@ -40,8 +40,8 @@ const ChoosePond = ({
   };
 
   const onChange = (val, prop) => {
+
     if (!(prop === "arrFish" && val.length === 0)) {
-      // debugger;
       let tem = currentTotal;
       if (prop === "pondOwner") {
         tem.pondOwner = val + "";
@@ -54,6 +54,10 @@ const ChoosePond = ({
       handleTotalBuy(val, prop);
     }
   };
+  function addField(arr, newfield, oldField) {
+    arr.map(el => el[newfield] = el[oldField])
+    return arr
+  }
   return (
     <Modal
       title={i18n.t("choosePond")}
@@ -74,7 +78,7 @@ const ChoosePond = ({
           <Widgets.SelectSearchMulti
             label={i18n.t("chooseFish")}
             value={currentTotal.listFish}
-            items={dataDf.fishType || []}
+            items={addField(dataDf.fishType || [], "name", "fishName")}
             onChange={(vl) => onChange(vl, "listFish")}
           />
         </Col>
@@ -83,6 +87,7 @@ const ChoosePond = ({
           <PriceFishToday
             listFish={currentTotal.listFish || []}
             onChange={(arr) => onChange(arr, "arrFish")}
+            dataDf={dataDf}
           />
         </Col>
         <Col md="4" xs="12" />

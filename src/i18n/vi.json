@@ -50,5 +50,6 @@
   "changeInfo": "Đổi thông tin",
   "urlNotFound": "URL không hợp lệ",
   "weight": "Cân nặng",
-  "fishType": "Quản lý loại cá"
+  "fishType": "Quản lý loại cá",
+  "logging": "Đang đăng nhập"
 }
