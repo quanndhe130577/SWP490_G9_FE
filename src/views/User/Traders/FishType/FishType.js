@@ -217,43 +217,58 @@ export default class FishType extends Component {
         sorter: (a, b) => a.fishName.length - b.fishName.length,
         sortDirections: ["descend", "ascend"],
       },
+      // {
+      //   title: i18n.t("Mô tả"),
+      //   dataIndex: "description",
+      //   key: "description",
+      //   ...this.getColumnSearchProps("description"),
+      //   sorter: (a, b) => a.description - b.description,
+      //   sortDirections: ["descend", "ascend"],
+      // },
+
+      // {
+      //   title: i18n.t("Cân nặng tối thiểu"),
+      //   dataIndex: "minWeight",
+      //   key: "minWeight",
+      //   ...this.getColumnSearchProps("minWeight"),
+      //   sorter: (a, b) => a.minWeight - b.minWeight,
+      //   sortDirections: ["descend", "ascend"],
+      // },
+      // {
+      //   title: i18n.t("Cân nặng tối đa"),
+      //   dataIndex: "maxWeight",
+      //   key: "maxWeight",
+      //   ...this.getColumnSearchProps("maxWeight"),
+      //   sorter: (a, b) => a.maxWeight - b.maxWeight,
+      //   sortDirections: ["descend", "ascend"],
+      // },
+      
       {
-        title: i18n.t("Mô tả"),
-        dataIndex: "description",
-        key: "description",
-        ...this.getColumnSearchProps("description"),
-        sorter: (a, b) => a.description - b.description,
-        sortDirections: ["descend", "ascend"],
-      },
-      {
-        title: i18n.t("Cân nặng tối thiểu"),
-        dataIndex: "minWeight",
-        key: "minWeight",
-        ...this.getColumnSearchProps("minWeight"),
-        sorter: (a, b) => a.minWeight - b.minWeight,
-        sortDirections: ["descend", "ascend"],
-      },
-      {
-        title: i18n.t("Cân nặng tối đa"),
-        dataIndex: "maxWeight",
-        key: "maxWeight",
+        title: i18n.t("Cân nặng (khoảng)"),
+        colSpan: 1,
+        dataIndex: "id",
+        key: "id",
+        render: (id) => {
+          <span>{id.minWeight} - {id.maxWeight}</span>
+        },
         ...this.getColumnSearchProps("maxWeight"),
         sorter: (a, b) => a.maxWeight - b.maxWeight,
         sortDirections: ["descend", "ascend"],
       },
-      {
-        title: i18n.t("Ngày tạo"),
-        dataIndex: "date",
-        key: "date",
-        ...this.getColumnSearchProps("date"),
-        sorter: (a, b) => a.date.length - b.date.length,
-        sortDirections: ["descend", "ascend"],
-        render: (date) => (
-          <Moment format="DD/MM/YYYY">
-                {date}
-            </Moment>
-        ),
-      },
+      
+      // {
+      //   title: i18n.t("Ngày tạo"),
+      //   dataIndex: "date",
+      //   key: "date",
+      //   ...this.getColumnSearchProps("date"),
+      //   sorter: (a, b) => a.date.length - b.date.length,
+      //   sortDirections: ["descend", "ascend"],
+      //   render: (date) => (
+      //     <Moment format="DD/MM/YYYY">
+      //           {date}
+      //       </Moment>
+      //   ),
+      // },
       {
         title: i18n.t("Giá"),
         dataIndex: "price",

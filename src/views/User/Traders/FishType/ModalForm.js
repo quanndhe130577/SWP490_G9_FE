@@ -50,14 +50,14 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
         <Row>
           <Col md="6" xs="12">
             <Widgets.Text
-              label={i18n.t("fishName")}
+              label={i18n.t("Tên loại cá")}
               value={fishType.fishName || ""}
               onChange={(e) => handleChangeFishType(e, "fishName")}
             />
           </Col>
           <Col md="6" xs="12">
             <Widgets.Text
-              label={i18n.t("description")}
+              label={i18n.t("Mô tả")}
               value={fishType.description || ""}
               onChange={(e) => handleChangeFishType(e, "description")}
             />
@@ -65,7 +65,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
           <Col md="6" xs="12">
             <Widgets.Text
               type="number"
-              label={i18n.t("minWeight")}
+              label={i18n.t("Cân nặng tối thiểu")}
               value={fishType.minWeight || ""}
               onChange={(e) => handleChangeFishType(e, "minWeight")}
             />
@@ -73,7 +73,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
           <Col md="6" xs="12">
             <Widgets.Text
               type="number"
-              label={i18n.t("maxWeight")}
+              label={i18n.t("Cân nặng tối đa")}
               value={fishType.maxWeight || ""}
               onChange={(e) => handleChangeFishType(e, "maxWeight")}
             />
@@ -81,7 +81,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
           <Col md="6" xs="12">
             <Widgets.Text
               type="number"
-              label={i18n.t("price")}
+              label={i18n.t("Giá")}
               value={fishType.price || ""}
               onChange={(e) => handleChangeFishType(e, "price")}
             />
