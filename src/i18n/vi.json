@@ -51,5 +51,7 @@
   "urlNotFound": "URL không hợp lệ",
   "weight": "Cân nặng",
   "fishType": "Quản lý loại cá",
-  "logging": "Đang đăng nhập"
+  "logging": "Đang đăng nhập",
+  "fillAll*": "Vui lòng điền tất cả các trường có dấu *",
+  "qtyMustLargerThan0": "Khối lượng phải lớn hơn 0"
 }

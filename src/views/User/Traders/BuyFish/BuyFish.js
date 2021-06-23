@@ -32,7 +32,6 @@ const BuyFish = () => {
     }
   };
   const findLabel = (obj, key) => {
-    // debugger;
     return dataDf[obj].find((el) => el.id === parseInt(key)) || {};
   };
   const columns = [
@@ -47,7 +46,7 @@ const BuyFish = () => {
       dataIndex: "typeOfFish",
       key: "typeOfFish",
       render: (drum) => (
-        <div>{drum && <label>{findLabel("fishType", drum).label}</label>}</div>
+        <div>{drum && <label>{findLabel("fishType", drum).fishName}</label>}</div>
       ),
     },
     {
@@ -61,7 +60,7 @@ const BuyFish = () => {
       dataIndex: "basket",
       render: (basket) => (
         <div>
-          {basket && <label>{findLabel("basket", basket).label}</label>}
+          {basket && <label>{findLabel("basket", basket).type}</label>}
         </div>
       ),
     },
@@ -78,12 +77,12 @@ const BuyFish = () => {
       dataIndex: "truck",
       key: "truck",
       render: (truck) => (
-        <div>{truck && <label>{findLabel("truck", truck).label}</label>}</div>
+        <div>{truck && <label>{findLabel("truck", truck).name}</label>}</div>
       ),
     },
 
     {
-      title: "Action",
+      title: i18n.t("action"),
       key: "sid",
       dataIndex: "sid",
       render: (sid) => (
@@ -114,6 +113,7 @@ const BuyFish = () => {
     }));
   };
   const handleTrans = (value) => {
+    debugger
     setCurrentTran({});
     setTrans((pre) => [...pre, value]);
   };
@@ -153,7 +153,18 @@ const BuyFish = () => {
           truck: rs.data,
         }));
       }
+
+      rs = await apis.getBasketByTraderId({}, "GET");
+      if (rs && rs.statusCode === 200) {
+        setData((pre) => ({
+          ...pre,
+          basket: rs.data,
+        }));
+      }
+
       setLoading(false);
+
+
 
     } catch (error) {
       console.log(error)

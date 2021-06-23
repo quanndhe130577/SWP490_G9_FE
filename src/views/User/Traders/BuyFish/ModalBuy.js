@@ -20,6 +20,10 @@ const ModalBuy = ({
 
   const handleOk = () => {
     if (handleTrans) {
+      let validate = validateDate()
+      if (validate) {
+        return helper.toast("error", i18n.t(validate))
+      }
       let tem = transaction;
       tem.sid = transactions.length + 1;
 
@@ -31,25 +35,19 @@ const ModalBuy = ({
     setIsShowBuy(false);
   };
   const handleChangeTran = (name, value) => {
-    let validate = validateDate(name, value)
-    if (validate) {
-      return helper.toast("error", validate)
-    }
     setTransaction((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
-  const validateDate = (name, value) => {
-    switch (name) {
-      case "qtyOfFish":
-        if (value <= 0) {
-          return "qtyMustLargerThan0"
-        }
-        break;
-
-      default:
-        break;
+  const validateDate = () => {
+    let { qtyOfFish, typeOfFish, truck, basket } = transaction;
+    if (!qtyOfFish || !typeOfFish || !truck || !basket) {
+      return "fillAll*"
+    } else {
+      if (qtyOfFish <= 0.1) {
+        return "qtyMustLargerThan0"
+      }
     }
 
   }
@@ -83,7 +81,7 @@ const ModalBuy = ({
           <Widgets.Select
             required={true}
             label={i18n.t("basket")}
-            value={transaction.basket}
+            value={transaction.basket || ""}
             onChange={(e) => handleChangeTran("basket", e)}
             items={dataDf.basket || []}
           />
@@ -100,7 +98,7 @@ const ModalBuy = ({
         {transaction.truck &&
           <Col md="6" xs="12">
             <Widgets.Select
-              required={true}
+              // required={true}
               label={i18n.t("drum")}
               value={transaction.drum || ""}
               onChange={(e) => handleChangeTran("drum", e)}

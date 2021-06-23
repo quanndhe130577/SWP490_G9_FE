@@ -6,7 +6,7 @@ export default function Number({
   error,
   isDisable = false,
   onChange,
-  min = 1,
+  min = "0.5",
   max,
   required = false,
   submitted,
