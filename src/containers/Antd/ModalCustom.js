@@ -19,10 +19,10 @@ const ModalCustom = ({
       onOk={onOk}
       onCancel={onCancel}
       footer={[
-        <Button key="back" type="danger" className="mr-2" onClick={onCancel}>
+        <Button key="back" type="danger" className="mr-2" onClick={onCancel} disabled={loading}>
           {titleBtnCancel}
         </Button>,
-        <Button key="submit" type="primary" loading={loading} onClick={onOk}>
+        <Button key="submit" type="primary" loading={loading} onClick={onOk} disabled={loading}>
           {titleBtnOk}
         </Button>,
       ]}

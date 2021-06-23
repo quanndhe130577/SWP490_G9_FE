@@ -246,7 +246,8 @@ items={dataDf.pondOwner}
 
             <Row>
               <Col style={{ overflowX: "auto" }}>
-                <Table columns={columns} dataSource={transactions} />
+                <Table columns={columns} dataSource={transactions}
+                  loading={isLoading} />
               </Col>
             </Row>
           </Card>

@@ -12,6 +12,7 @@ const Login = (props) => {
     OTPID: 3,
     DOB: "1999-10-21",
     Avatar: null,
+    roleNormalizedName: "TRADER"
   });
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
@@ -27,25 +28,30 @@ const Login = (props) => {
   };
 
   const handleSubmit = async () => {
+    let rs
     try {
       setSubmitted(true);
       if (!user.phoneNumber) {
         return helper.toast("error", i18n.t("Vui lòng điền số điện thoại"));
       } else if (step === 0) {
-        let rs = await apis.getOtp({}, "GET", user.phoneNumber);
+        rs = await apis.getOtp({}, "GET", user.phoneNumber);
         if (rs && rs.statusCode === 200) {
           setStep(1);
           handleChange(rs.data.otpid, "otpid");
           helper.toast("success", i18n.t(rs.message || "systemError"));
         }
+        setStep(1);
+
       } else if (step === 1) {
-        let rs = await apis.checkOtp({ otpid: user.otpid, code: user.code, phoneNumber: user.phoneNumber }, "POST");
+        rs = await apis.checkOtp({ otpid: user.otpid, code: user.code, phoneNumber: user.phoneNumber }, "POST");
         if (rs && rs.statusCode === 200) {
           setStep(2);
           helper.toast("success", i18n.t(rs.message || "systemError"));
         }
+        setStep(2);
+
       } else if (step === 2) {
-        let rs = await apis.register(user);
+        rs = await apis.register(user);
         if (rs && rs.statusCode === 200) {
           helper.toast("success", i18n.t(rs.message || "systemError"));
           props.history.push("login");
@@ -53,7 +59,7 @@ const Login = (props) => {
       }
     } catch (error) {
       console.log(error);
-      helper.toast("error", i18n.t("systemError"));
+      helper.toast("error", i18n.t(rs.Message || "systemError"));
     }
   };
 

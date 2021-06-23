@@ -35,6 +35,10 @@ export default function Text({
       {submitted && !value && (
         <div className="help-block">{label} is required</div>
       )}
+      {submitted && !error && (
+        <div className="help-block">{error}</div>
+      )}
+
     </div>
   );
 }

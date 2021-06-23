@@ -4,6 +4,7 @@ import { Row, Col } from "reactstrap";
 import i18n from "i18next";
 import "antd/dist/antd.css";
 import Widgets from "../../../../schema/Widgets";
+import helper from "../../../../services/helper"
 // import data from "../../../../data";
 
 const ModalBuy = ({
@@ -30,11 +31,28 @@ const ModalBuy = ({
     setIsShowBuy(false);
   };
   const handleChangeTran = (name, value) => {
+    let validate = validateDate(name, value)
+    if (validate) {
+      return helper.toast("error", validate)
+    }
     setTransaction((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
+  const validateDate = (name, value) => {
+    switch (name) {
+      case "qtyOfFish":
+        if (value <= 0) {
+          return "qtyMustLargerThan0"
+        }
+        break;
+
+      default:
+        break;
+    }
+
+  }
   return (
     <Modal
       title={i18n.t("Thêm Mã")}
@@ -47,13 +65,13 @@ const ModalBuy = ({
           <Widgets.Select
             required={true}
             label={i18n.t("typeOfFish")}
-            value={transaction.typeOfFish}
+            value={transaction.typeOfFish || ""}
             onChange={(e) => handleChangeTran("typeOfFish", e)}
             items={currentTotal.arrFish || []}
           />
         </Col>
         <Col md="6" xs="12">
-          <Widgets.Text
+          <Widgets.Number
             required={true}
             label={i18n.t("qtyOfFish(Kg)")}
             type="number"
@@ -73,21 +91,24 @@ const ModalBuy = ({
         <Col md="6" xs="12">
           <Widgets.Select
             required={true}
-            label={i18n.t("drum")}
-            value={transaction.drum}
-            onChange={(e) => handleChangeTran("drum", e)}
-            items={dataDf.drum || []}
-          />
-        </Col>
-        <Col md="6" xs="12">
-          <Widgets.Select
-            required={true}
             label={i18n.t("truck")}
-            value={transaction.truck}
+            value={transaction.truck || ""}
             onChange={(e) => handleChangeTran("truck", e)}
             items={dataDf.truck || []}
           />
         </Col>
+        {transaction.truck &&
+          <Col md="6" xs="12">
+            <Widgets.Select
+              required={true}
+              label={i18n.t("drum")}
+              value={transaction.drum || ""}
+              onChange={(e) => handleChangeTran("drum", e)}
+              items={dataDf.drum || []}
+            />
+          </Col>}
+
+
       </Row>
     </Modal>
   );

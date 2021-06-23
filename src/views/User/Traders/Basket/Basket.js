@@ -18,6 +18,8 @@ export default class Basket extends Component {
       isShowModal: false,
       mode: "",
       data: [],
+      loading: true
+
     };
   }
 
@@ -35,7 +37,13 @@ export default class Basket extends Component {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         this.setState({ data: rs.data, user, total: rs.data.length });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+
+    }
+    finally {
+      this.setState({ loading: false })
+    }
   }
 
   getColumnSearchProps = (dataIndex) => ({
@@ -45,63 +53,63 @@ export default class Basket extends Component {
       confirm,
       clearFilters,
     }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={(node) => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() =>
-            this.handleSearch(selectedKeys, confirm, dataIndex)
-          }
-          style={{ marginBottom: 8, display: "block" }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Search
-          </Button>
-          <Button
-            onClick={() => this.handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({ closeDropdown: false });
-              this.setState({
-                searchText: selectedKeys[0],
-                searchedColumn: dataIndex,
-              });
+        <div style={{ padding: 8 }}>
+          <Input
+            ref={(node) => {
+              this.searchInput = node;
             }}
-          >
-            Filter
+            placeholder={`Search ${dataIndex}`}
+            value={selectedKeys[0]}
+            onChange={(e) =>
+              setSelectedKeys(e.target.value ? [e.target.value] : [])
+            }
+            onPressEnter={() =>
+              this.handleSearch(selectedKeys, confirm, dataIndex)
+            }
+            style={{ marginBottom: 8, display: "block" }}
+          />
+          <Space>
+            <Button
+              type="primary"
+              onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+              icon={<SearchOutlined />}
+              size="small"
+              style={{ width: 90 }}
+            >
+              Search
           </Button>
-        </Space>
-      </div>
-    ),
+            <Button
+              onClick={() => this.handleReset(clearFilters)}
+              size="small"
+              style={{ width: 90 }}
+            >
+              Reset
+          </Button>
+            <Button
+              type="link"
+              size="small"
+              onClick={() => {
+                confirm({ closeDropdown: false });
+                this.setState({
+                  searchText: selectedKeys[0],
+                  searchedColumn: dataIndex,
+                });
+              }}
+            >
+              Filter
+          </Button>
+          </Space>
+        </div>
+      ),
     filterIcon: (filtered) => (
       <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -118,8 +126,8 @@ export default class Basket extends Component {
         //   />
         <div>{text}</div>
       ) : (
-        text
-      ),
+          text
+        ),
   });
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -160,7 +168,7 @@ export default class Basket extends Component {
     );
   };
   closeModal = (refresh) => {
-    if (refresh) {
+    if (refresh === true) {
       this.fetchBasket();
     }
     this.setState({ isShowModal: false, mode: "", currentPO: {} });
@@ -211,7 +219,7 @@ export default class Basket extends Component {
     );
   }
   render() {
-    const { isShowModal, mode, currentPO, data } = this.state;
+    const { isShowModal, mode, currentPO, data, loading } = this.state;
     const columns = [
       {
         title: i18n.t("INDEX"),
@@ -257,7 +265,7 @@ export default class Basket extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentPO={currentPO || {}}
-            // handleChangeBasket={handleChangeBasket}
+          // handleChangeBasket={handleChangeBasket}
           />
         )}
         <Row>
@@ -268,6 +276,7 @@ export default class Basket extends Component {
               dataSource={data}
               pagination={{ pageSize: 10 }}
               scroll={{ y: 600 }}
+              loading={loading}
             />
           </Col>
         </Row>

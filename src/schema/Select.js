@@ -12,12 +12,12 @@ class Select2 extends Component {
       <div className={"form-group" + (submitted && !value ? " has-error" : "")}>
         {label && (
           <label className="bold">
-            {label} {required ? <span>*</span> : ""}
+            {label} {required ? <span style={{ color: "red" }}>*</span> : ""}
           </label>
         )}
         <Select
           // defaultValue={value}
-          value={valueTem && (valueTem.value || valueTem.id)}
+          value={valueTem && (valueTem.value || valueTem.id) || ""}
           style={{ width: "100%" }}
           disabled={isDisable}
           onChange={(v) => {

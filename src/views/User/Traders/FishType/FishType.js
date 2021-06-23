@@ -19,6 +19,7 @@ export default class FishType extends Component {
       isShowModal: false,
       mode: "",
       data: [],
+      loading: true
     };
   }
 
@@ -28,13 +29,19 @@ export default class FishType extends Component {
 
   async fetchFishType() {
     try {
+      this.setState({ loading: true })
       let user = await session.get("user");
       let rs = await apis.getFTByTraderID({}, "GET");
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         this.setState({ data: rs.data, user, total: rs.data.length });
       }
-    } catch (error) { }
+    } catch (error) {
+      console.log(error)
+    }
+    finally {
+      this.setState({ loading: false })
+    }
   }
 
   getColumnSearchProps = (dataIndex) => ({
@@ -149,7 +156,8 @@ export default class FishType extends Component {
     );
   };
   closeModal = (refresh) => {
-    if (refresh) {
+
+    if (refresh === true) {
       this.fetchFishType();
     }
     this.setState({ isShowModal: false, mode: "", currentFT: {} });
@@ -210,7 +218,7 @@ export default class FishType extends Component {
       );
   }
   render() {
-    const { isShowModal, mode, currentFT, data } = this.state;
+    const { isShowModal, mode, currentFT, data, loading } = this.state;
     const columns = [
       {
         title: i18n.t("INDEX"),
@@ -306,6 +314,7 @@ export default class FishType extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentFT={currentFT || {}}
+            loading={loading}
           // handleChangeFishType={handleChangeFishType}
           />
         )}
@@ -317,6 +326,7 @@ export default class FishType extends Component {
               dataSource={data}
               pagination={{ pageSize: 10 }}
               scroll={{ y: 600 }}
+              loading={loading}
             />
           </Col>
         </Row>

@@ -9,6 +9,7 @@ import session from "../../../../services/session";
 
 const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
   const [pondOwner, setPO] = useState(currentPO);
+  const [loading, setLoading] = useState(false)
 
   const handleChangePondOwner = (val, name) => {
     setPO((prevState) => ({
@@ -25,6 +26,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
   }
   const handleOk = async () => {
     try {
+      setLoading(true)
       let user = session.get("user"), rs;
       let valid = checkValidate(pondOwner.phoneNumber);
       if (!valid.isValid) {
@@ -50,6 +52,8 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
     } catch (error) {
       console.log(error);
       helper.toast("error", i18n.t("systemError"));
+    } finally {
+      setLoading(false)
     }
   };
   return (
@@ -58,6 +62,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
       visible={isShow}
       onOk={handleOk}
       onCancel={closeModal}
+      loading={loading}
       component={() => (
         <Row>
           <Col md="6" xs="12">

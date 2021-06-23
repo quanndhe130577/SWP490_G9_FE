@@ -84,7 +84,7 @@ request.request = async (url, data, headers, method = "POST") => {
         if (rs && rs.statusCode === 200) {
           return rs;
         } else {
-          helper.toast("error", i18next.t(rs.message || "internalServerError"));
+          helper.toast("error", i18next.t(rs.Message || "internalServerError"));
           break;
         }
       case 404:
