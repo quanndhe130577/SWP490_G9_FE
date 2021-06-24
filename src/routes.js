@@ -37,6 +37,10 @@ const Basket = Loadable({
   loader: () => import("./views/User/Traders/Basket/Basket"),
   loading: Loading,
 });
+const Truck = Loadable({
+  loader: () => import("./views/User/Traders/Truck/Truck"),
+  loading: Loading,
+});
 const routes = [
   {
     path: "/home",
@@ -77,6 +81,11 @@ const routes = [
     path: "/basket",
     name: "Basket",
     component: Basket,
+  },
+  {
+    path: "/truck",
+    name: "Truck",
+    component: Truck,
   },
 ];
 

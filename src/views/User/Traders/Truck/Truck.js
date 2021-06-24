@@ -8,7 +8,7 @@ import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import ModalForm from "./ModalForm";
-export default class Basket extends Component {
+export default class Truck extends Component {
   constructor(props) {
     super(props);
 
@@ -22,14 +22,13 @@ export default class Basket extends Component {
   }
 
   componentDidMount() {
-    this.fetchBasket();
+    this.fetchTruck();
   }
 
-  async fetchBasket() {
+  async fetchTruck() {
     try {
       let user = await session.get("user");
-      let rs = await apis.getBasketByTraderId({}, "GET");
-      console.log(rs);
+      let rs = await apis.getTruck({}, "GET");
       if (rs && rs.statusCode === 200) {
         console.log(rs);
         rs.data.map((el, idx) => (el.idx = idx + 1));
@@ -140,7 +139,7 @@ export default class Basket extends Component {
     return (
       <Row>
         <Col md="6" className="d-flex">
-          <h3 className="">{i18n.t("BasketManagement")}</h3>
+          <h3 className="">{i18n.t("TruckManagement")}</h3>
           <label className="hd-total">{total ? "(" + total + ")" : ""}</label>
         </Col>
 
@@ -161,24 +160,24 @@ export default class Basket extends Component {
   };
   closeModal = (refresh) => {
     if (refresh) {
-      this.fetchBasket();
+      this.fetchTruck();
     }
     this.setState({ isShowModal: false, mode: "", currentPO: {} });
   };
-  onClick(modeBtn, BasketID) {
+  onClick(modeBtn, truckID) {
     let { currentPO, data } = this.state;
 
     if (modeBtn === "edit") {
-      currentPO = data.find((el) => el.id === BasketID);
+      currentPO = data.find((el) => el.id === truckID);
       this.setState({ currentPO, mode: "edit", isShowModal: true });
     } else if (modeBtn === "delete") {
       helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
         if (rs) {
           try {
-            let rs = await apis.deleteBasket({}, "POST", BasketID);
+            let rs = await apis.deleteTruck({}, "POST", truckID);
             if (rs && rs.statusCode === 200) {
               helper.toast("success", rs.message || i18n.t("success"));
-              this.fetchBasket();
+              this.fetchTruck();
             }
           } catch (error) {
             console.log(error);
@@ -220,19 +219,11 @@ export default class Basket extends Component {
         render: (text) => <label>{text}</label>,
       },
       {
-        title: i18n.t("type"),
-        dataIndex: "type",
-        key: "type",
-        ...this.getColumnSearchProps("type"),
-        sorter: (a, b) => a.type.length - b.type.length,
-        sortDirections: ["descend", "ascend"],
-      },
-      {
-        title: i18n.t("weight"),
-        dataIndex: "weight",
-        key: "weight",
-        ...this.getColumnSearchProps("weight"),
-        sorter: (a, b) => a.weight - b.weight,
+        title: i18n.t("licensePlate"),
+        dataIndex: "licensePlate",
+        key: "licensePlate",
+        ...this.getColumnSearchProps("licensePlate"),
+        sorter: (a, b) => a.licensePlate.length - b.licensePlate.length,
         sortDirections: ["descend", "ascend"],
       },
       {
@@ -257,7 +248,7 @@ export default class Basket extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentPO={currentPO || {}}
-            // handleChangeBasket={handleChangeBasket}
+            // handleChangeTruck={handleChangeTruck}
           />
         )}
         <Row>
