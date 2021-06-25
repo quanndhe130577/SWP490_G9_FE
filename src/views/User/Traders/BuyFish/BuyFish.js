@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Table } from "antd";
+import { Card, Table, Dropdown, Menu } from "antd";
 import { Button, Row, Col } from "reactstrap";
 import i18n from "i18next";
 import ModalBuy from "./ModalBuy";
@@ -19,12 +19,12 @@ const BuyFish = () => {
   const [currentTran, setCurrentTran] = useState({});
   const [dataDf, setData] = useState({ basket: [], drum: [], truck: [] });
 
-  const handelAction = (action, sid) => {
+  const handelAction = (action, id) => {
     if (action === "delete") {
-      let tem = transactions.filter((el) => el.sid !== sid);
+      let tem = transactions.filter((el) => el.id !== id);
       setTrans(tem);
     } else {
-      let tem = transactions.find((e) => e.sid === sid);
+      let tem = transactions.find((e) => e.id === id);
       if (tem) {
         setCurrentTran(tem);
         setIsShowBuy(true);
@@ -34,19 +34,58 @@ const BuyFish = () => {
   const findLabel = (obj, key) => {
     return dataDf[obj].find((el) => el.id === parseInt(key)) || {};
   };
+
+  const calculateIntoMoney = (idx) => {
+
+    let tem = transactions.find((e) => e.idx === idx);
+    let basket = dataDf.basket.find(el => el.id === tem.basket)
+    if (tem) {
+      let fishType = totalBuy.arrFish.find((el, i) => idx === i) || {};;
+      debugger
+
+      return fishType.price * (parseInt(tem.qtyOfFish) - basket.weight)
+    }
+
+
+
+  }
+
+  // render button action like: edit, delete
+  const renderBtnAction = (id) => {
+    return (
+      <Menu>
+        <Menu.Item>
+          <Button
+            color="info"
+            className="mr-2"
+            onClick={() => handelAction("edit", id)}
+          >
+            <i className="fa fa-pencil-square-o mr-1" />
+            {i18n.t("edit")}
+          </Button>
+        </Menu.Item>
+        <Menu.Item>
+          <Button color="danger" onClick={() => handelAction("delete", id)}>
+            <i className="fa fa-trash-o mr-1" />
+            {i18n.t("delete")}
+          </Button>
+        </Menu.Item>
+      </Menu>
+    );
+  }
   const columns = [
     {
       title: "STT",
-      dataIndex: "sid",
-      key: "sid",
-      render: (text) => <label>{text}</label>,
+      dataIndex: "idx",
+      key: "idx",
+      render: (idx) => <label>{idx}</label>,
     },
     {
       title: i18n.t("typeOfFish"),
       dataIndex: "typeOfFish",
       key: "typeOfFish",
-      render: (drum) => (
-        <div>{drum && <label>{findLabel("fishType", drum).fishName}</label>}</div>
+      render: (typeOfFish) => (
+        <div>{typeOfFish && <label>{findLabel("fishType", typeOfFish).fishName}</label>}</div>
       ),
     },
     {
@@ -57,9 +96,15 @@ const BuyFish = () => {
     },
     {
       title: i18n.t("intoMoney"),
-      dataIndex: "intoMoney",
-      key: "intoMoney",
+      dataIndex: "idx",
+      key: "idx",
       responsive: ["md", "lg"],
+      render: (idx) => {
+        debugger
+        return (
+          <div>{idx && <label>{calculateIntoMoney(idx)}</label>}</div>)
+
+      },
     },
     {
       title: i18n.t("basket"),
@@ -89,21 +134,15 @@ const BuyFish = () => {
 
     {
       title: i18n.t("action"),
-      key: "sid",
-      dataIndex: "sid",
-      render: (sid) => (
-        <div>
-          {sid && (
-            <div>
-              <label onClick={() => handelAction("edit", sid)}>
-                {i18n.t("edit")} {sid}
-              </label>
-              <label onClick={() => handelAction("delete", sid)}>
-                {i18n.t("delete")} {sid}
-              </label>
-            </div>
-          )}
-        </div>
+      key: "id",
+      dataIndex: "id",
+      render: (id) => (
+        <Dropdown overlay={renderBtnAction(id)}>
+          <Button>
+            <i className="fa fa-cog mr-1" />
+            {i18n.t("action")}
+          </Button>
+        </Dropdown>
       ),
     },
   ];
@@ -119,7 +158,7 @@ const BuyFish = () => {
     }));
   };
   const handleTrans = (value) => {
-    debugger
+
     setCurrentTran({});
     setTrans((pre) => [...pre, value]);
   };

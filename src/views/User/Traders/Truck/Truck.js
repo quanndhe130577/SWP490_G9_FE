@@ -34,7 +34,7 @@ export default class Truck extends Component {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         this.setState({ data: rs.data, user, total: rs.data.length });
       }
-    } catch (error) {}
+    } catch (error) { }
   }
 
   getColumnSearchProps = (dataIndex) => ({
@@ -98,9 +98,9 @@ export default class Truck extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -139,7 +139,7 @@ export default class Truck extends Component {
     return (
       <Row>
         <Col md="6" className="d-flex">
-          <h3 className="">{i18n.t("TruckManagement")}</h3>
+          <h3 className="">{i18n.t("truckManagement")}</h3>
           <label className="hd-total">{total ? "(" + total + ")" : ""}</label>
         </Col>
 
@@ -227,6 +227,14 @@ export default class Truck extends Component {
         sortDirections: ["descend", "ascend"],
       },
       {
+        title: i18n.t("name"),
+        dataIndex: "name",
+        key: "name",
+        ...this.getColumnSearchProps("name"),
+        sorter: (a, b) => a.licensePlate.length - b.licensePlate.length,
+        sortDirections: ["descend", "ascend"],
+      },
+      {
         title: "",
         dataIndex: "id",
         key: "id",
@@ -248,7 +256,7 @@ export default class Truck extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentPO={currentPO || {}}
-            // handleChangeTruck={handleChangeTruck}
+          // handleChangeTruck={handleChangeTruck}
           />
         )}
         <Row>

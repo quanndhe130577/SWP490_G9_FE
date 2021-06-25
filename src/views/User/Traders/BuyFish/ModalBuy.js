@@ -25,7 +25,7 @@ const ModalBuy = ({
         return helper.toast("error", i18n.t(validate))
       }
       let tem = transaction;
-      tem.sid = transactions.length + 1;
+      tem.idx = transactions.length + 1;
 
       handleTrans(tem);
     }

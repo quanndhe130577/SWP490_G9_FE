@@ -29,7 +29,7 @@
   "choosePond": "Chọn ao",
   "fillPondOwner": "Vui lòng chọn chủ ao",
   "drum": "Lồ",
-  "truck": "Xe",
+  "truck": "Xe tải",
   "pleaseSelect": "Vui lòng chọn",
   "chooseFish": "Chọn các loại cá",
   "edit": "Sửa",
@@ -57,5 +57,7 @@
   "BasketManagement":"Quản lý rổ",
   "type":"Loại",
   "fishTypeManagement": "Quản lý loại cá",
-  "intoMoney":"Thành tiền (VND)"
+  "intoMoney":"Thành tiền (VND)",
+  "truckManagement":"Quản lý xe tải",
+  "loginSuccess":"Đăng nhập thành công"
 }
