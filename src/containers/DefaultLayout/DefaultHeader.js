@@ -5,13 +5,14 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import session from "../../services/session";
-import { Layout, Menu, Dropdown, Avatar } from "antd";
+import { Layout, Menu, Dropdown, Avatar, } from "antd";
 import {
   LogoutOutlined,
   UserOutlined,
   VideoCameraOutlined,
   UploadOutlined,
   SettingOutlined,
+  CarOutlined
 } from "@ant-design/icons";
 import "../../css/antd.css";
 import i18n from "i18next";
@@ -69,6 +70,9 @@ class DefaultHeader extends Component {
             <Menu.Item key="4" icon={<UserOutlined />}>
               <Link to="/basket">{i18n.t("basket")}</Link>
             </Menu.Item>
+            <Menu.Item key="5" icon={<CarOutlined />}>
+                <Link to="/truck">{i18n.t("truck")}</Link>
+              </Menu.Item>
           </Menu>
         </Sider>
         <Header

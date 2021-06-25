@@ -7,7 +7,7 @@ import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 
 const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
-  const [basket, setPO] = useState(currentPO);
+  const [truck, setPO] = useState(currentPO);
 
   const handleChangePondOwner = (val, name) => {
     setPO((prevState) => ({
@@ -17,15 +17,13 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
   };
   const handleOk = async () => {
     try {
-      // let user = session.get("user");
       let rs;
       if (mode === "create") {
-        rs = await apis.createBasket({
-          type: basket.type,
-          weight: basket.weight,
+        rs = await apis.createTruck({
+          licensePlate: truck.licensePlate,
         });
       } else if (mode === "edit") {
-        rs = await apis.updateBasket(basket);
+        rs = await apis.updateTruck(truck);
       }
 
       if (rs && rs.statusCode === 200) {
@@ -33,11 +31,10 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
         helper.toast("success", i18n.t(rs.message || "success"));
       }
     } catch (error) {
-      console.log(error);
       helper.toast("error", i18n.t("systemError"));
     }
   };
-  console.log(basket);
+  console.log(truck);
   return (
     <Modal
       title={mode === "edit" ? i18n.t("edit") : i18n.t("create")}
@@ -48,17 +45,9 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
         <Row>
           <Col md="6" xs="12">
             <Widgets.Text
-              label={i18n.t("type")}
-              value={basket.type || ""}
-              onChange={(e) => handleChangePondOwner(e, "type")}
-            />
-          </Col>
-          <Col md="6" xs="12">
-            <Widgets.Text
-              label={i18n.t("weight")}
-              type="number"
-              value={basket.weight || ""}
-              onChange={(e) => handleChangePondOwner(e, "weight")}
+              label={i18n.t("licensePlate")}
+              value={truck.licensePlate || ""}
+              onChange={(e) => handleChangePondOwner(e, "licensePlate")}
             />
           </Col>
         </Row>

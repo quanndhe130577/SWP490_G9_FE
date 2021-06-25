@@ -22,7 +22,13 @@ var path = {
   deleteFT: "/api/fishtype/delete",
   getBasketByTraderId: "/api/basket/getall",
   createBasket: "/api/basket/create",
-  getTruckByTrarderID: "/api/truck/getall" //method get
+  getTruckByTrarderID: "/api/truck/getall", //method get
+  updateBasket: "/api/basket/update",
+  deleteBasket: "/api/basket/delete",
+  getTruck: "/api/truck/getall",
+  createTruck: "/api/truck/create",
+  updateTruck: "/api/truck/update",
+  deleteTruck: "/api/truck/delete",
 };
 
 Object.keys(path).forEach(function (key) {
