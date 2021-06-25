@@ -44,13 +44,14 @@ class DefaultHeader extends Component {
     return (
       <>
         <Sider
+          className="site-layout-background"
           style={{ paddingTop: 64 }}
           breakpoint="lg"
           collapsedWidth="0"
-          onBreakpoint={(broken) => {}}
-          onCollapse={(collapsed, type) => {}}
+          onBreakpoint={(broken) => { }}
+          onCollapse={(collapsed, type) => { }}
         >
-          <Menu theme="dark" mode="inline">
+          <Menu mode="inline">
             <SubMenu
               key="SubMenu"
               icon={<SettingOutlined />}
@@ -71,10 +72,12 @@ class DefaultHeader extends Component {
               <Link to="/basket">{i18n.t("basket")}</Link>
             </Menu.Item>
             <Menu.Item key="5" icon={<CarOutlined />}>
-                <Link to="/truck">{i18n.t("truck")}</Link>
-              </Menu.Item>
+              <Link to="/truck">{i18n.t("truck")}</Link>
+            </Menu.Item>
           </Menu>
         </Sider>
+
+
         <Header
           style={{ position: "fixed", zIndex: 1, width: "100%" }}
           className="site-layout-sub-header-background d-flex justify-content-between"

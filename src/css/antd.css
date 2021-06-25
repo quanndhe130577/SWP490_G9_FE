@@ -11,6 +11,12 @@
 .ant-layout-header {
   padding: 0 1em !important;
   padding-left: 35px !important;
+  background: rgb(220, 241, 244);
+  background: linear-gradient(
+    90deg,
+    rgba(220, 241, 244, 1) 0%,
+    rgba(23, 162, 184, 1) 100%
+  );
 }
 .ant-layout-footer {
   position: fixed;
@@ -23,11 +29,12 @@
   /* min-height: 100vh; */
 }
 .ant-layout-sider-zero-width-trigger {
-  top: 5px !important;
+  top: 7px !important;
   z-index: 5 !important;
   position: fixed !important;
   right: unset !important;
   font-size: 30px !important;
+  background: rgb(220, 241, 244) !important;
 }
 .default-layout {
   padding-bottom: 4em;
@@ -49,4 +56,15 @@
 .ant-btn-danger:hover {
   background-color: #b96d2a !important;
   border-color: #b96d2a !important;
+}
+/* .ant-layout-sider {
+  background: rgb(220, 241, 244) !important;
+  background: linear-gradient(
+    90deg,
+    rgba(220, 241, 244, 1) 0%,
+    rgba(23, 162, 184, 1) 100%
+  ) !important;
+} */
+.site-layout-background {
+  background: #fff;
 }

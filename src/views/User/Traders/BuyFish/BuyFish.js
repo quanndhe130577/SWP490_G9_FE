@@ -56,6 +56,12 @@ const BuyFish = () => {
       // responsive: ["lg"],
     },
     {
+      title: i18n.t("intoMoney"),
+      dataIndex: "intoMoney",
+      key: "intoMoney",
+      responsive: ["md", "lg"],
+    },
+    {
       title: i18n.t("basket"),
       dataIndex: "basket",
       render: (basket) => (
