@@ -49,5 +49,6 @@
   "logout": "Đăng xuất",
   "changeInfo": "Đổi thông tin",
   "urlNotFound": "URL không hợp lệ",
-  "weight": "Cân nặng"
+  "weight": "Cân nặng",
+  "fishType": "Quản lý loại cá"
 }
