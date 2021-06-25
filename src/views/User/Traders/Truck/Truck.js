@@ -227,6 +227,14 @@ export default class Truck extends Component {
         sortDirections: ["descend", "ascend"],
       },
       {
+        title: i18n.t("name"),
+        dataIndex: "name",
+        key: "name",
+        ...this.getColumnSearchProps("name"),
+        sorter: (a, b) => a.licensePlate.length - b.licensePlate.length,
+        sortDirections: ["descend", "ascend"],
+      },
+      {
         title: "",
         dataIndex: "id",
         key: "id",

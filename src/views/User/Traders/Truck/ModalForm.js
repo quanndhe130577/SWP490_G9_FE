@@ -21,6 +21,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
       if (mode === "create") {
         rs = await apis.createTruck({
           licensePlate: truck.licensePlate,
+          name: truck.name,
         });
       } else if (mode === "edit") {
         rs = await apis.updateTruck(truck);
@@ -48,6 +49,13 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
               label={i18n.t("licensePlate")}
               value={truck.licensePlate || ""}
               onChange={(e) => handleChangePondOwner(e, "licensePlate")}
+            />
+          </Col>
+          <Col md="6" xs="12">
+            <Widgets.Text
+              label={i18n.t("name")}
+              value={truck.name || ""}
+              onChange={(e) => handleChangePondOwner(e, "name")}
             />
           </Col>
         </Row>
