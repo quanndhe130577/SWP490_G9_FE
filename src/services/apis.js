@@ -5,6 +5,9 @@ var apis = {};
 var path = {
   login: "/api/login",
   logout: "/api/user/logout",
+  changePassword: "/api/user/change-password",
+  changePhonenumber: "/api/otp/change-phone",
+  checkChangePhonenumber: "/api/user/check-change-phone-otp",
   register: "/api/register",
   getAllRole: "/api/role/get-all",
   getOtp: "/api/otp/register",

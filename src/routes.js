@@ -25,6 +25,10 @@ const ChangeUserInfo = Loadable({
 //   loader: () => import("./views/User/Traders/Basket/Basket"),
 //   loading: Loading,
 // });
+const TimeKeeping = Loadable({
+  loader: () => import("./views/User/Traders/TimeKeeping/TimeKeeping"),
+  loading: Loading,
+});
 const PondOwner = Loadable({
   loader: () => import("./views/User/Traders/PondOwner/PondOwner"),
   loading: Loading,
@@ -86,6 +90,11 @@ const routes = [
     path: "/truck",
     name: "Truck",
     component: Truck,
+  },
+  {
+    path: "/timeKeeping",
+    name: "TimeKeeping",
+    component: TimeKeeping,
   },
 ];
 

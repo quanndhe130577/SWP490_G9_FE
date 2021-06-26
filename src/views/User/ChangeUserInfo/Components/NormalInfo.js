@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import Avatar from "react-avatar-edit";
-import axios from "axios";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
-import Config from "../../../../services/config";
 import Widgets from "../../../../schema/Widgets";
 import { LoadingOutlined } from "@ant-design/icons";
 import apis from "../../../../services/apis";
@@ -20,6 +18,7 @@ class NormalInfo extends Component {
       avatar: "https://via.placeholder.com/150",
       preview: null,
       isRender: true,
+      loading: false,
     };
     this.submit = this.submit.bind(this);
     this.getUserInfo = this.getUserInfo.bind(this);
@@ -56,6 +55,7 @@ class NormalInfo extends Component {
   };
   async submit(e) {
     e.preventDefault();
+    this.setState({ loading: true });
     let rs = await apis.updateUser(
       {
         firstname: this.state.firstname,
@@ -67,6 +67,7 @@ class NormalInfo extends Component {
       "POST",
       session.get("user").userID
     );
+    this.setState({ loading: false });
     if (rs.success) {
       helper.toast("success", rs.message);
     } else {
@@ -135,7 +136,7 @@ class NormalInfo extends Component {
             </div>
             <div className="col-md-12">
               <button className="btn btn-info px-5" type="submit">
-                Lưu
+                {this.state.loading ? <LoadingOutlined /> : "Lưu"}
               </button>
             </div>
           </div>

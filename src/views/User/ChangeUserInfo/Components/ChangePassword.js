@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-// import cookie from "react-cookies";
-import axios from "axios";
+import { LoadingOutlined, RightSquareTwoTone } from "@ant-design/icons";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
-import Config from "../../../../services/config";
+import apis from "../../../../services/apis";
 import Widgets from "../../../../schema/Widgets";
-import local from "../../../../services/local";
 
 class ChangePassword extends Component {
   constructor(props) {
@@ -16,6 +14,7 @@ class ChangePassword extends Component {
       newPassword: "",
       rePassword: "",
       otp: "",
+      loading: false,
     };
     this.submit = this.submit.bind(this);
   }
@@ -33,20 +32,23 @@ class ChangePassword extends Component {
   };
   async submit(e) {
     e.preventDefault();
-    // this.setState({ comfirm: true });
-    let token = session.get("session");
-    let rs = await axios.put(
-      `${Config.host}/api/user/change-password/${local.get("user").userID}`,
+    this.setState({ loading: true });
+    let rs = await apis.changePassword(
       {
         currentPassword: this.state.password,
         newpassword: this.state.newPassword,
         confirmPassword: this.state.rePassword,
       },
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
+      "POST",
+      session.get("user").userID
     );
-    if (rs.data.statusCode) {
+    this.setState({ loading: false });
+    if (rs) {
+      this.setState({
+        password: "",
+        newPassword: "",
+        rePassword: "",
+      });
       helper.toast("success", "Cập nhật thành công");
     }
   }
@@ -70,6 +72,7 @@ class ChangePassword extends Component {
             <div className="col-md-8 mb-2 row justify-content-center">
               <div className="col-md-6 mb-2">
                 <Widgets.Text
+                  value={this.state.password}
                   type="password"
                   required={true}
                   label={"Mật khẩu"}
@@ -80,6 +83,7 @@ class ChangePassword extends Component {
             <div className="col-md-8 mb-2 row justify-content-center">
               <div className="col-md-6 mb-2">
                 <Widgets.Text
+                  value={this.state.newPassword}
                   type="password"
                   required={true}
                   label={"Mật khẩu mới"}
@@ -90,6 +94,7 @@ class ChangePassword extends Component {
             <div className="col-md-8 mb-2 row justify-content-center">
               <div className="col-md-6 mb-2">
                 <Widgets.Text
+                  value={this.state.rePassword}
                   type="password"
                   required={true}
                   label={"Nhập lại mật khẩu mới"}
@@ -102,7 +107,7 @@ class ChangePassword extends Component {
 
         <div className="col-md-12 mb-2 row justify-content-center">
           <button className="btn btn-info px-5" type="submit">
-            Lưu
+            {this.state.loading ? <LoadingOutlined /> : "Lưu"}
           </button>
         </div>
       </form>
