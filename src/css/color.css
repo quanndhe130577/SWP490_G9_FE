@@ -5,3 +5,11 @@
 .bg-e9ecef {
   background-color: #e9ecef;
 }
+
+.primary {
+  color: #137d8d !important;
+}
+
+.danger {
+  color: #e67e22 !important;
+}

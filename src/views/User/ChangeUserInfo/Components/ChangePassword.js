@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { LoadingOutlined, RightSquareTwoTone } from "@ant-design/icons";
+import { LoadingOutlined } from "@ant-design/icons";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import apis from "../../../../services/apis";

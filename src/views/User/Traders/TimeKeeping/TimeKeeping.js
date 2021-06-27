@@ -1,83 +1,166 @@
 import React, { Component } from "react";
-import { Calendar, Badge, Modal } from "antd";
-import "./TimeKeeping.css";
-
+import { Row, Col } from "reactstrap";
+// import Widgets from "../../../../schema/Widgets";
+// import Modal from "../../../../containers/Antd/ModalCustom";
+import { Calendar, Badge, Button, Modal } from "antd";
+import apis from "../../../../services/apis";
+import "./TimeKeeping.scss";
 export default class TimeKeeping extends Component {
   constructor(props) {
     super(props);
-    this.state = { isShow: false };
+    this.state = {
+      isShow: false,
+      time: {
+        workDay: new Date(),
+        status: null,
+        money: null,
+        note: null,
+        empId: null,
+      },
+      times: [],
+      employees: [],
+      currentDate: new Date(),
+    };
+    this.submit = this.submit.bind(this);
   }
-  random(start, end) {
-    return Math.floor(Math.random() * end) + start;
+  componentDidMount() {
+    this.getEmployee();
+    this.getTimes();
   }
-  getListData = (value) => {
-    // console.log(value.date());
-    let colors = [
-      "pink",
-      "red",
-      "yellow",
-      "orange",
-      "cyan",
-      "green",
-      "blue",
-      "purple",
-      "geekblue",
-      "magenta",
-      "volcano",
-      "gold",
-      "volcano",
-    ];
-    let i1 = this.random(0, 4);
-    let i2 = this.random(0, 12);
-    let names = ["Tiến Anh", "Bằng", "Tâm", "Quân", "Anh đức"];
-    let listData = [];
-    listData.push({ type: colors[i1], content: names[i2] });
-    console.log(i1 + " " + i2);
-    return listData;
+  handleChange = (value, name) => {
+    let time = this.state.time;
+    time[name] = value;
+    this.setState({
+      time: time,
+    });
   };
-
+  async getEmployee() {
+    let rs = await apis.getAllEmployee({}, "GET");
+    this.setState({
+      employees: rs.data.listEmployee.map((emp) => {
+        emp.name = emp.firstName + " " + emp.lastName;
+        return emp;
+      }),
+    });
+  }
+  async getTimes() {
+    let rs = await apis.getTimeKeepingByTrader({}, "GET");
+    this.setState({
+      times: rs.data.map((time) => {
+        time.workDay = new Date(time.workDay);
+        return time;
+      }),
+    });
+  }
   dateCellRender = (value) => {
-    const listData = this.getListData(value);
+    let date = value._d.getDate();
+    let month = value._d.getMonth();
+    let year = value._d.getFullYear();
     return (
-      <ul className="events">
-        {listData.map((item) => (
-          <li key={item.content}>
-            <Badge color={item.type} text={item.content} />
-          </li>
-        ))}
-      </ul>
+      <>
+        <Button type="link" className="button-text-primary">
+          Link Button
+        </Button>
+        <ul className="events">
+          {this.state.times
+            .filter(
+              (t) =>
+                t.workDay.getDate() === date &&
+                t.workDay.getMonth() === month &&
+                t.workDay.getFullYear() === year
+            )
+            .map((item) => (
+              <li key={item.name}>
+                <Badge
+                  color={item.note === 0 ? "blue" : "volcano"}
+                  text={item.empName}
+                />
+              </li>
+            ))}
+        </ul>
+      </>
     );
   };
 
-  getMonthData = (value) => {
-    if (value.month() === 8) {
-      return 1394;
-    }
+  select = (date) => {
+    let time = this.state.time;
+    time.workDay = date._d;
+    this.setState({ isShow: true, currentDate: date._d, time: time });
   };
-
-  monthCellRender = (value) => {
-    const num = this.getMonthData(value);
-    return num ? (
-      <div className="notes-month">
-        <section>{num}</section>
-        <span>Backlog number</span>
-      </div>
-    ) : null;
-  };
-  select(date) {
-    let d = new Date();
-    d.getDate();
-    console.log(date._d);
+  async submit() {
+    let time = this.state.time;
+    time.note = parseInt(time.note);
+    let rs = await apis.createTimeKeeping(
+      {
+        WorkDay: time.workDay,
+        Status: time.status,
+        Money: time.money,
+        Note: time.note,
+        EmpId: time.empId,
+      },
+      "POST"
+    );
+    console.log(rs);
+    this.getTimes();
   }
   render() {
     return (
       <>
-        <Calendar
-          dateCellRender={this.dateCellRender}
-          monthCellRender={this.monthCellRender}
-          onSelect={this.select}
-        />
-        <Modal title="Basic Modal" visible={this.state.isShow}></Modal>
+        <Calendar dateCellRender={this.dateCellRender} onSelect={this.select} />
+        <Modal
+          width="100%"
+          title="Basic Modal"
+          visible={this.state.isShow}
+          onCancel={() => this.setState({ isShow: false })}
+          // onCancel={handleCancel}
+        >
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </Modal>
+        {/* <Modal
+          title="Basic Modal"
+          visible={this.state.isShow}
+          onCancel={() => this.setState({ isShow: false })}
+          onOk={this.submit}
+          component={() => (
+            <Row>
+              <Col md="6" xs="12">
+                <Widgets.Select
+                  label={"note"}
+                  value={this.state.time.note}
+                  onChange={(e) => this.handleChange(e, "note")}
+                  items={[
+                    { name: "Đã thanh toán" },
+                    { name: "Chưa thanh toán" },
+                  ]}
+                />
+              </Col>
+              <Col md="6" xs="12">
+                <Widgets.Select
+                  label={"status"}
+                  value={this.state.time.status}
+                  onChange={(e) => this.handleChange(e, "empId")}
+                  items={this.state.employees}
+                />
+              </Col>
+              <Col md="6" xs="12">
+                <Widgets.Text
+                  label={"status"}
+                  value={this.state.time.status}
+                  onChange={(e) => this.handleChange(e, "status")}
+                />
+              </Col>
+              <Col md="6" xs="12">
+                <Widgets.Text
+                  label={"money"}
+                  value={this.state.time.money}
+                  onChange={(e) => this.handleChange(e, "money")}
+                />
+              </Col>
+            </Row>
+          )}
+        /> */}
       </>
     );
   }

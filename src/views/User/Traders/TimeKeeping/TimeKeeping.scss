@@ -1,0 +1,42 @@
+$colors: (
+  primary: #137d8d,
+  danger: #e67e22,
+  mute: #6c757d,
+  dust-red: #f5222d,
+  volcano: #d4380d,
+  sunset-orange: #fa8c16,
+  calendula-gold: #faad14,
+  sunrise-yellow: #fadb14,
+  lime: #a0d911,
+  polar-green: #52c41a,
+  cyan: #13c2c2,
+  daybreak-blue: #1890ff,
+  geek-blue: #2f54eb,
+  golden-purple: #722ed1,
+  magenta: #eb2f96,
+);
+@each $name, $color in $colors {
+  .button-text-#{$name} {
+    color: $color !important;
+  }
+}
+
+.events {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  .ant-badge-status {
+    width: 100%;
+    overflow: hidden;
+    font-size: 12px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+.notes-month {
+  font-size: 28px;
+  text-align: center;
+  section {
+    font-size: 28px;
+  }
+}

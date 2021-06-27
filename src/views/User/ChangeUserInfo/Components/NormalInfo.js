@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "react-datepicker/dist/react-datepicker.css";
 import Avatar from "react-avatar-edit";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
@@ -70,6 +69,9 @@ class NormalInfo extends Component {
     this.setState({ loading: false });
     if (rs.success) {
       helper.toast("success", rs.message);
+      let user = session.get("user");
+      user.avatar = rs.data.avatar;
+      session.set("user", JSON.stringify(user));
     } else {
       helper.toast("warning", rs.message);
     }
@@ -174,7 +176,7 @@ class NormalInfo extends Component {
                       onClose={() =>
                         this.setState({ preview: this.state.avatar })
                       }
-                      onBeforeFileLoad={(elem) => { }}
+                      onBeforeFileLoad={(elem) => {}}
                       className="update-userInfo-avatar"
                     />
                   </div>
