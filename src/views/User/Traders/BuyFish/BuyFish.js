@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Table } from "antd";
+import { Card, Table, Dropdown, Menu } from "antd";
 import { Button, Row, Col } from "reactstrap";
 import i18n from "i18next";
 import ModalBuy from "./ModalBuy";
@@ -17,14 +17,14 @@ const BuyFish = () => {
   const [currentTotal, setCurrentTotal] = useState({});
   const [transactions, setTrans] = useState([]);
   const [currentTran, setCurrentTran] = useState({});
-  const [dataDf, setData] = useState({});
+  const [dataDf, setData] = useState({ basket: [], drum: [], truck: [] });
 
-  const handelAction = (action, sid) => {
+  const handelAction = (action, id) => {
     if (action === "delete") {
-      let tem = transactions.filter((el) => el.sid !== sid);
+      let tem = transactions.filter((el) => el.id !== id);
       setTrans(tem);
     } else {
-      let tem = transactions.find((e) => e.sid === sid);
+      let tem = transactions.find((e) => e.id === id);
       if (tem) {
         setCurrentTran(tem);
         setIsShowBuy(true);
@@ -32,22 +32,60 @@ const BuyFish = () => {
     }
   };
   const findLabel = (obj, key) => {
-    // debugger;
     return dataDf[obj].find((el) => el.id === parseInt(key)) || {};
   };
+
+  const calculateIntoMoney = (idx) => {
+
+    let tem = transactions.find((e) => e.idx === idx);
+    let basket = dataDf.basket.find(el => el.id === tem.basket)
+    if (tem) {
+      let fishType = totalBuy.arrFish.find((el, i) => idx === i) || {};;
+      debugger
+
+      return fishType.price * (parseInt(tem.qtyOfFish) - basket.weight)
+    }
+
+
+
+  }
+
+  // render button action like: edit, delete
+  const renderBtnAction = (id) => {
+    return (
+      <Menu>
+        <Menu.Item>
+          <Button
+            color="info"
+            className="mr-2"
+            onClick={() => handelAction("edit", id)}
+          >
+            <i className="fa fa-pencil-square-o mr-1" />
+            {i18n.t("edit")}
+          </Button>
+        </Menu.Item>
+        <Menu.Item>
+          <Button color="danger" onClick={() => handelAction("delete", id)}>
+            <i className="fa fa-trash-o mr-1" />
+            {i18n.t("delete")}
+          </Button>
+        </Menu.Item>
+      </Menu>
+    );
+  }
   const columns = [
     {
       title: "STT",
-      dataIndex: "sid",
-      key: "sid",
-      render: (text) => <label>{text}</label>,
+      dataIndex: "idx",
+      key: "idx",
+      render: (idx) => <label>{idx}</label>,
     },
     {
       title: i18n.t("typeOfFish"),
       dataIndex: "typeOfFish",
       key: "typeOfFish",
-      render: (drum) => (
-        <div>{drum && <label>{findLabel("fishType", drum).label}</label>}</div>
+      render: (typeOfFish) => (
+        <div>{typeOfFish && <label>{findLabel("fishType", typeOfFish).fishName}</label>}</div>
       ),
     },
     {
@@ -57,11 +95,23 @@ const BuyFish = () => {
       // responsive: ["lg"],
     },
     {
+      title: i18n.t("intoMoney"),
+      dataIndex: "idx",
+      key: "idx",
+      responsive: ["md", "lg"],
+      render: (idx) => {
+        debugger
+        return (
+          <div>{idx && <label>{calculateIntoMoney(idx)}</label>}</div>)
+
+      },
+    },
+    {
       title: i18n.t("basket"),
       dataIndex: "basket",
       render: (basket) => (
         <div>
-          {basket && <label>{findLabel("basket", basket).label}</label>}
+          {basket && <label>{findLabel("basket", basket).type}</label>}
         </div>
       ),
     },
@@ -78,27 +128,21 @@ const BuyFish = () => {
       dataIndex: "truck",
       key: "truck",
       render: (truck) => (
-        <div>{truck && <label>{findLabel("truck", truck).label}</label>}</div>
+        <div>{truck && <label>{findLabel("truck", truck).name}</label>}</div>
       ),
     },
 
     {
-      title: "Action",
-      key: "sid",
-      dataIndex: "sid",
-      render: (sid) => (
-        <div>
-          {sid && (
-            <div>
-              <label onClick={() => handelAction("edit", sid)}>
-                {i18n.t("edit")} {sid}
-              </label>
-              <label onClick={() => handelAction("delete", sid)}>
-                {i18n.t("delete")} {sid}
-              </label>
-            </div>
-          )}
-        </div>
+      title: i18n.t("action"),
+      key: "id",
+      dataIndex: "id",
+      render: (id) => (
+        <Dropdown overlay={renderBtnAction(id)}>
+          <Button>
+            <i className="fa fa-cog mr-1" />
+            {i18n.t("action")}
+          </Button>
+        </Dropdown>
       ),
     },
   ];
@@ -114,6 +158,7 @@ const BuyFish = () => {
     }));
   };
   const handleTrans = (value) => {
+
     setCurrentTran({});
     setTrans((pre) => [...pre, value]);
   };
@@ -121,27 +166,60 @@ const BuyFish = () => {
   const findPO = () => {
     if (currentTotal.pondOwner && dataDf.pondOwner)
       return (
-        dataDf.pondOwner.find((el) => el.id === currentTotal.pondOwner) || {}
+        dataDf.pondOwner.find((el) => el.id === parseInt(currentTotal.pondOwner)) || {}
       );
     else return {};
   };
   async function fetchData() {
     try {
       let user = session.get("user");
+      // get pondOwner by trarder ID
       let rs = await apis.getPondOwnerByTraderId({}, "GET", user.userID);
       if (rs && rs.statusCode === 200) {
         setData((pre) => ({
           ...pre,
           pondOwner: rs.data,
         }));
-        setLoading(false);
-        // rs.data.map((el, idx) => (el.idx = idx + 1));
-        //  this.setState({ data: rs.data, user, total: rs.data.length });
+
       }
-    } catch (error) {}
+      //get fish type trader id
+      rs = await apis.getFTByTraderID({}, "GET");
+      if (rs && rs.statusCode === 200) {
+        setData((pre) => ({
+          ...pre,
+          fishType: rs.data,
+        }));
+      }
+      //get truck trader id
+      rs = await apis.getTruckByTrarderID({}, "GET");
+      if (rs && rs.statusCode === 200) {
+        setData((pre) => ({
+          ...pre,
+          truck: rs.data,
+        }));
+      }
+
+      rs = await apis.getBasketByTraderId({}, "GET");
+      if (rs && rs.statusCode === 200) {
+        setData((pre) => ({
+          ...pre,
+          basket: rs.data,
+        }));
+      }
+
+      setLoading(false);
+
+
+
+    } catch (error) {
+      console.log(error)
+    }
   }
   useEffect(() => {
     let tem = local.get("currentTotal") || {};
+    if (tem.pondOwner) {
+      tem.pondOwner = parseInt(tem.pondOwner)
+    }
     setCurrentTotal(tem);
     fetchData();
   }, []);
@@ -169,7 +247,7 @@ const BuyFish = () => {
     return <div>loading...</div>;
   } else
     return (
-      <Card title={renderTitle()}>
+      <div>
         {isShowBuy && (
           <ModalBuy
             isShowBuy={isShowBuy}
@@ -178,6 +256,7 @@ const BuyFish = () => {
             transactions={transactions}
             handleTrans={handleTrans}
             currentTran={currentTran}
+            dataDf={dataDf}
           />
         )}
         {isShowChoosePond && (
@@ -191,39 +270,45 @@ const BuyFish = () => {
             dataDf={dataDf}
           />
         )}
+        {!isShowChoosePond &&
+          <Card title={renderTitle()}>
 
-        <Row className="mb-2">
-          <Col span="24" className="">
-            {/* <div className="float-left">
-            <Widgets.Select
-              required={true}
-              label={i18n.t("pondOwner")}
-              value={totalBuy.pondOwner}
-              onChange={(e) => handleChange(e, "roleNormalizedName")}
-              items={dataDf.pondOwner}
-            />
-          </div> */}
-            <div className="float-right">
-              <Button
-                color="info"
-                onClick={() => setShowChoosePond(true)}
-                className="mr-2"
-              >
-                {i18n.t("Giá cá hôm nay")}
-              </Button>
-              <Button color="info" onClick={showModal} className=" mr-2">
-                {i18n.t("Thêm Mã")}
-              </Button>
-            </div>
-          </Col>
-        </Row>
 
-        <Row>
-          <Col style={{ overflowX: "auto" }}>
-            <Table columns={columns} dataSource={transactions} />
-          </Col>
-        </Row>
-      </Card>
+            <Row className="mb-2">
+              <Col span="24" className="">
+                {/* <div className="float-left">
+<Widgets.Select
+required={true}
+label={i18n.t("pondOwner")}
+value={totalBuy.pondOwner}
+onChange={(e) => handleChange(e, "roleNormalizedName")}
+items={dataDf.pondOwner}
+/>
+</div> */}
+                <div className="float-right">
+                  <Button
+                    color="info"
+                    onClick={() => setShowChoosePond(true)}
+                    className="mr-2"
+                  >
+                    {i18n.t("Giá cá hôm nay")}
+                  </Button>
+                  <Button color="info" onClick={showModal} className=" mr-2">
+                    {i18n.t("Thêm Mã")}
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col style={{ overflowX: "auto" }}>
+                <Table columns={columns} dataSource={transactions}
+                  loading={isLoading} />
+              </Col>
+            </Row>
+          </Card>
+        }
+      </div>
     );
 };
 

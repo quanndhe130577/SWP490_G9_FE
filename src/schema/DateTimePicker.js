@@ -24,7 +24,7 @@ export default function DateTimePicker({
     >
       {label && (
         <label className="bold">
-          {label} {required ? <span>*</span> : ""}
+          {label} {required ? <span style={{ color: "red" }}>*</span> : ""}
         </label>
       )}
 

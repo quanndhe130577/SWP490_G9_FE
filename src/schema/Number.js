@@ -1,20 +1,17 @@
 import React from "react";
-import NumberFormat from "react-number-format";
-// refer https://www.npmjs.com/package/react-number-format
-export default function NumberFormat2({
+
+export default function Number({
   value,
   label,
   error,
   isDisable = false,
   onChange,
-  displayType = "text",
+  min = "0.5",
+  max,
   required = false,
   submitted,
-  format,
+  onKeyDown
 }) {
-  function onValueChange(e) {
-    if (onChange && !isDisable) onChange(e);
-  }
   return (
     <div className={"form-group" + (submitted && !value ? " has-error" : "")}>
       {label && (
@@ -23,16 +20,28 @@ export default function NumberFormat2({
         </label>
       )}
 
-      <NumberFormat
-        value={value || 0}
-        displayType={displayType}
-        thousandSeparator={true}
-        suffix={"VND"}
-        onValueChange={onValueChange}
+      <input
+        disabled={isDisable}
+        type="number"
+        className="form-control"
+        min={min}
+        max={max}
+        value={value}
+        onChange={(e) => {
+          if (onChange) {
+            onChange(e.target.value);
+          }
+        }}
+        onKeyDown={onKeyDown}
+        required={required}
       />
       {submitted && !value && (
         <div className="help-block">{label} is required</div>
       )}
+      {submitted && !error && (
+        <div className="help-block">{error}</div>
+      )}
+
     </div>
   );
 }

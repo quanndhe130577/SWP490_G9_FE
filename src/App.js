@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter, HashRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import "./css/custom.css";
 import "antd/dist/antd.css";
@@ -13,7 +13,7 @@ import Register from "./views/Entry/Register/Register";
 class App extends Component {
   render() {
     return (
-      <HashRouter>
+      <BrowserRouter>
         <Switch>
           <Route exact path="/login" name="Login Page" component={Login} />
           <Route
@@ -24,7 +24,7 @@ class App extends Component {
           />
           <Route path="/" name="Home" component={DefaultLayout} />
         </Switch>
-      </HashRouter>
+      </BrowserRouter>
     );
   }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import i18n from "i18next";
 import Widgets from "../../schema/Widgets";
@@ -45,6 +45,10 @@ const Login = (props) => {
   const updateSubmitted = () => {
     if (submitted) setSubmitted(true);
   };
+  useEffect(() => {
+    session.set("session", null);
+    session.set("user", null);
+  }, [])
   return (
     <div className="jumbotron">
       <div className="div-login">
@@ -88,17 +92,17 @@ const Login = (props) => {
                     {loggingIn ? (
                       <>
                         <span
-                          className="spinner-border spinner-border-sm"
+                          className="spinner-border spinner-border-sm mr-1"
                           role="status"
                           aria-hidden="true"
                         ></span>
-                        {i18n.t("loading")}...
+                        {i18n.t("logging")}
                       </>
                     ) : (
-                      <span>{i18n.t("Login")}</span>
-                    )}
+                        <span>{i18n.t("Login")}</span>
+                      )}
                   </button>
-                  <div className="ml-3 d-flex">
+                  <div className="ml-3 d-flex align-items-base">
                     <label className="pb-0">{i18n.t("or")}</label>
                     <Link to="/register" className="btn btn-link p-1">
                       {i18n.t("Register")}

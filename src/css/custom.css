@@ -23,6 +23,7 @@ button {
   justify-content: center;
   background-color: #eaf2f8;
   padding: 2em 0em;
+  max-width: 100% !important;
   /* background-color: rgb(116, 114, 114); */
 }
 .pull-right {
@@ -65,4 +66,7 @@ button {
   margin-top: 6px;
   margin-bottom: 0px;
   margin-left: 5px;
+}
+.align-items-base {
+  align-items: baseline;
 }

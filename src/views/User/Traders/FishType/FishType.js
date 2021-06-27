@@ -8,7 +8,7 @@ import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import ModalForm from "./ModalForm";
-import Moment from "react-moment";
+// import Moment from "react-moment";
 export default class FishType extends Component {
   constructor(props) {
     super(props);
@@ -19,6 +19,7 @@ export default class FishType extends Component {
       isShowModal: false,
       mode: "",
       data: [],
+      loading: true
     };
   }
 
@@ -28,13 +29,19 @@ export default class FishType extends Component {
 
   async fetchFishType() {
     try {
+      this.setState({ loading: true })
       let user = await session.get("user");
       let rs = await apis.getFTByTraderID({}, "GET");
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         this.setState({ data: rs.data, user, total: rs.data.length });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
+    finally {
+      this.setState({ loading: false })
+    }
   }
 
   getColumnSearchProps = (dataIndex) => ({
@@ -98,9 +105,9 @@ export default class FishType extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -129,7 +136,7 @@ export default class FishType extends Component {
     return (
       <Row>
         <Col md="6" className="d-flex">
-          <h3 className="">{i18n.t("FishTypeManagement")}</h3>
+          <h3 className="">{i18n.t("fishTypeManagement")}</h3>
           <label className="hd-total">{total ? "(" + total + ")" : ""}</label>
         </Col>
 
@@ -149,7 +156,8 @@ export default class FishType extends Component {
     );
   };
   closeModal = (refresh) => {
-    if (refresh) {
+
+    if (refresh === true) {
       this.fetchFishType();
     }
     this.setState({ isShowModal: false, mode: "", currentFT: {} });
@@ -200,8 +208,17 @@ export default class FishType extends Component {
       </Menu>
     );
   }
+  findFT(id) {
+    let tem = this.state.data.find((el) => el.id === id);
+    if (tem)
+      return (
+        <div>
+          <span>{tem.minWeight} - {tem.maxWeight}</span>
+        </div>
+      );
+  }
   render() {
-    const { isShowModal, mode, currentFT, data } = this.state;
+    const { isShowModal, mode, currentFT, data, loading } = this.state;
     const columns = [
       {
         title: i18n.t("INDEX"),
@@ -242,20 +259,18 @@ export default class FishType extends Component {
       //   sorter: (a, b) => a.maxWeight - b.maxWeight,
       //   sortDirections: ["descend", "ascend"],
       // },
-      
+
       {
         title: i18n.t("Cân nặng (khoảng)"),
         colSpan: 1,
         dataIndex: "id",
         key: "id",
-        render: (id) => {
-          <span>{id.minWeight} - {id.maxWeight}</span>
-        },
-        ...this.getColumnSearchProps("maxWeight"),
-        sorter: (a, b) => a.maxWeight - b.maxWeight,
+        render: (id) => this.findFT(id),
+        // ...this.getColumnSearchProps("minWeight"),
+        sorter: (a, b) => a.minWeight - b.minWeight,
         sortDirections: ["descend", "ascend"],
       },
-      
+
       // {
       //   title: i18n.t("Ngày tạo"),
       //   dataIndex: "date",
@@ -299,7 +314,8 @@ export default class FishType extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentFT={currentFT || {}}
-            // handleChangeFishType={handleChangeFishType}
+            loading={loading}
+          // handleChangeFishType={handleChangeFishType}
           />
         )}
         <Row>
@@ -310,6 +326,7 @@ export default class FishType extends Component {
               dataSource={data}
               pagination={{ pageSize: 10 }}
               scroll={{ y: 600 }}
+              loading={loading}
             />
           </Col>
         </Row>

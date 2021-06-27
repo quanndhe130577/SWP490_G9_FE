@@ -174,7 +174,7 @@ class NormalInfo extends Component {
                       onClose={() =>
                         this.setState({ preview: this.state.avatar })
                       }
-                      onBeforeFileLoad={(elem) => {}}
+                      onBeforeFileLoad={(elem) => { }}
                       className="update-userInfo-avatar"
                     />
                   </div>

@@ -36,7 +36,7 @@ class SelectSearchMulti extends Component {
           disabled={isDisable}
         >
           {items.map((it) => (
-            <Option key={it.value}>{it.label}</Option>
+            <Option key={it.value || it.id}>{it.label || it.name}</Option>
           ))}
         </Select>
       </div>

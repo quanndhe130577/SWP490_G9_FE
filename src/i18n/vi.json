@@ -29,7 +29,7 @@
   "choosePond": "Chọn ao",
   "fillPondOwner": "Vui lòng chọn chủ ao",
   "drum": "Lồ",
-  "truck": "Xe",
+  "truck": "Xe tải",
   "pleaseSelect": "Vui lòng chọn",
   "chooseFish": "Chọn các loại cá",
   "edit": "Sửa",
@@ -50,5 +50,15 @@
   "changeInfo": "Đổi thông tin",
   "urlNotFound": "URL không hợp lệ",
   "weight": "Cân nặng",
-  "fishType": "Quản lý loại cá"
+  "fishType": "Quản lý loại cá",
+  "logging": "Đang đăng nhập",
+  "fillAll*": "Vui lòng điền tất cả các trường có dấu *",
+  "qtyMustLargerThan0": "Khối lượng phải lớn hơn 0",
+  "BasketManagement":"Quản lý rổ",
+  "type":"Loại",
+  "fishTypeManagement": "Quản lý loại cá",
+  "intoMoney":"Thành tiền (VND)",
+  "truckManagement":"Quản lý xe tải",
+  "loginSuccess":"Đăng nhập thành công",
+  "licensePlate":"Biển số"
 }
