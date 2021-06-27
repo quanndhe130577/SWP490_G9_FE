@@ -5,6 +5,7 @@ import i18n from "i18next";
 import "antd/dist/antd.css";
 import Widgets from "../../../../schema/Widgets";
 import helper from "../../../../services/helper";
+import apis from "../../../../services/helper";
 // import data from "../../../../data";
 
 const ModalBuy = ({
@@ -16,8 +17,10 @@ const ModalBuy = ({
   currentTran,
   dataDf,
   createPurchaseDetail,
+  fetchDrumByTruck,
 }) => {
   const [transaction, setTransaction] = useState(currentTran);
+  const [drum, setDrum] = useState([]);
 
   const handleOk = () => {
     if (handleTrans) {
@@ -43,6 +46,10 @@ const ModalBuy = ({
     // }
     if (name === "weight") {
       value = parseInt(value);
+    } else if (name === "truck" && value !== transaction.truck) {
+      fetchDrumByTruck();
+    } else if (name === "listDrumId" && value.length > 0) {
+      value = value.map((el) => (el = parseInt(el)));
     }
     setTransaction((prevState) => ({
       ...prevState,
@@ -59,6 +66,13 @@ const ModalBuy = ({
       }
     }
   };
+
+  function changeKey(arr) {
+    arr.array.forEach((el) => {
+      helper.renameKey(el, "number", "name");
+    });
+    return arr;
+  }
   return (
     <Modal
       title={i18n.t("Thêm Mã")}
@@ -105,12 +119,12 @@ const ModalBuy = ({
         </Col>
         {transaction.truck && (
           <Col md="6" xs="12">
-            <Widgets.Select
+            <Widgets.SelectSearchMulti
               // required={true}
               label={i18n.t("drum")}
-              value={transaction.drum || ""}
-              onChange={(e) => handleChangeTran("drum", e)}
-              items={dataDf.drum || []}
+              value={transaction.listDrumId || []}
+              onChange={(e) => handleChangeTran("listDrumId", e)}
+              items={changeKey(dataDf.drum) || []}
             />
           </Col>
         )}

@@ -1,50 +1,63 @@
 import React, { useState, useEffect } from "react";
 import { Card, Table, Dropdown, Menu } from "antd";
-// import { useSelector } from "react-redux";
 import { Button, Row, Col } from "reactstrap";
 import i18n from "i18next";
 import ModalBuy from "./ModalBuy";
 import ChoosePond from "./ChoosePond";
 import Moment from "react-moment";
-// import queryString from "queryString";
 import queryString from "qs";
 import local from "../../../../services/local";
 import session from "../../../../services/session";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
-// import dataDf from "../../../../data";
+import NumberFormat from "react-number-format";
+
 const BuyFish = (props) => {
   const [isShowBuy, setIsShowBuy] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [isShowChoosePond, setShowChoosePond] = useState(true);
-  const [Purchase, setPurchase] = useState({});
+  const [purchase, setPurchase] = useState([]);
   const [currentPurchase, setCurrentPurchase] = useState({});
-  const [transactions, setTrans] = useState([]);
   const [currentTran, setCurrentTran] = useState({});
   const [dataDf, setData] = useState({ basket: [], drum: [], truck: [] });
 
   const handelAction = (action, id) => {
     if (action === "delete") {
-      let tem = transactions.filter((el) => el.id !== id);
-      setTrans(tem);
+      let tem = purchase.filter((el) => el.id !== id);
+      setPurchase(tem);
     } else {
-      let tem = transactions.find((e) => e.id === id);
+      let tem = purchase.find((e) => e.id === id);
       if (tem) {
         setCurrentTran(tem);
         setIsShowBuy(true);
       }
     }
   };
-  const findLabel = (obj, key) => {
-    return dataDf[obj].find((el) => el.id === parseInt(key)) || {};
+  const renderDrum = (listDrum) => {
+    let label = "";
+    listDrum.forEach((el, idx) => {
+      label += el.number;
+      if (idx < listDrum.length - 1) {
+        label += " - ";
+      }
+    });
+    return label;
   };
 
-  const calculateIntoMoney = (idx) => {
-    let tem = transactions.find((e) => e.idx === idx);
-    let basket = dataDf.basket.find((el) => el.id === tem.basketId);
+  const calculateIntoMoney = (id) => {
+    let tem = purchase.find((e) => e.id === id);
+    // let basket = dataDf.basket.find((el) => el.id === tem.basketId);
     if (tem) {
-      let fishType = Purchase.arrFish.find((el, i) => idx === i) || {};
-      return fishType.price * (parseInt(tem.weight) - basket.weight);
+      let value =
+        tem.fishType.price * (parseInt(tem.weight) - tem.basket.weight);
+      return (
+        <NumberFormat
+          value={value}
+          displayType={"text"}
+          thousandSeparator={true}
+          // suffix={i18n.t("suffix")}
+        />
+      );
     }
   };
 
@@ -82,56 +95,42 @@ const BuyFish = (props) => {
     },
     {
       title: i18n.t("typeOfFish"),
-      dataIndex: "typeOfFish",
-      key: "typeOfFish",
-      render: (typeOfFish) => (
-        <div>
-          {typeOfFish && (
-            <label>{findLabel("fishType", typeOfFish).fishName}</label>
-          )}
-        </div>
+      dataIndex: "fishType",
+      key: "fishType",
+      render: (fishType) => (
+        <div>{fishType && <label>{fishType.fishName}</label>}</div>
       ),
     },
     {
       title: i18n.t("qtyOfFish(Kg)"),
       dataIndex: "weight",
       key: "weight",
-      // responsive: ["lg"],
     },
     {
       title: i18n.t("intoMoney"),
-      dataIndex: "idx",
-      key: "idx",
+      dataIndex: "id",
+      key: "id",
       responsive: ["md", "lg"],
-      render: (idx) => {
-        debugger;
-        return <div>{idx && <label>{calculateIntoMoney(idx)}</label>}</div>;
+      render: (id) => {
+        return <div>{id && <label>{calculateIntoMoney(id)}</label>}</div>;
       },
     },
     {
       title: i18n.t("basket"),
-      dataIndex: "basketId",
-      render: (basketId) => (
-        <div>
-          {basketId && <label>{findLabel("basket", basketId).type}</label>}
-        </div>
-      ),
+      dataIndex: "basket",
+      render: (basket) => <div>{basket && <label>{basket.type}</label>}</div>,
     },
     {
       title: i18n.t("drum"),
-      dataIndex: "drum",
-      key: "drum",
-      render: (drum) => (
-        <div>{drum && <label>{findLabel("drum", drum).label}</label>}</div>
-      ),
+      dataIndex: "listDrum",
+      key: "listDrum",
+      render: (listDrum) => renderDrum(listDrum),
     },
     {
       title: i18n.t("truck"),
       dataIndex: "truck",
       key: "truck",
-      render: (truck) => (
-        <div>{truck && <label>{findLabel("truck", truck).name}</label>}</div>
-      ),
+      render: (truck) => <div>{truck && <label>{truck.name}</label>}</div>,
     },
 
     {
@@ -160,7 +159,7 @@ const BuyFish = (props) => {
   };
   const handleTrans = (value) => {
     setCurrentTran({});
-    setTrans((pre) => [...pre, value]);
+    setPurchase((pre) => [...pre, value]);
   };
 
   const findPO = () => {
@@ -216,6 +215,20 @@ const BuyFish = (props) => {
     }
   }
 
+  async function fetchDrumByTruck() {
+    try {
+      let rs = await apis.getAllDrumByTruckID({}, "GET", purchase.truck);
+      if (rs && rs.statusCode === 200) {
+        setData((pre) => ({
+          ...pre,
+          drum: rs.data,
+        }));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   // create purchase
   async function createPurchase() {
     try {
@@ -265,11 +278,9 @@ const BuyFish = (props) => {
   // Get all purchase detail
   async function getAllPurchaseDetail(currentPurchase) {
     try {
-      debugger;
-
       let rs = await apis.getAllPurchaseDetail({}, "GET", currentPurchase.id);
       if (rs && rs.statusCode === 200) {
-        setTrans(rs.data);
+        setPurchase(rs.data);
         helper.toast("success", i18n.t(rs.message));
       }
     } catch (error) {
@@ -324,11 +335,12 @@ const BuyFish = (props) => {
             isShowBuy={isShowBuy}
             setIsShowBuy={setIsShowBuy}
             currentPurchase={currentPurchase}
-            transactions={transactions}
+            purchase={purchase}
             handleTrans={handleTrans}
             currentTran={currentTran}
             dataDf={dataDf}
             createPurchaseDetail={createPurchaseDetail}
+            fetchDrumByTruck={fetchDrumByTruck}
           />
         )}
         {isShowChoosePond && (
@@ -336,7 +348,6 @@ const BuyFish = (props) => {
             isShowChoosePond={isShowChoosePond}
             setShowChoosePond={setShowChoosePond}
             handlePurchase={handlePurchase}
-            pondOwner={Purchase.pondOwner || ""}
             currentPurchase={currentPurchase}
             setCurrentPurchase={setCurrentPurchase}
             dataDf={dataDf}
@@ -366,7 +377,7 @@ const BuyFish = (props) => {
               <Col style={{ overflowX: "auto" }}>
                 <Table
                   columns={columns}
-                  dataSource={transactions}
+                  dataSource={purchase}
                   loading={isLoading}
                 />
               </Col>
