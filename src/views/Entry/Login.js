@@ -9,8 +9,8 @@ import session from "../../services/session";
 
 const Login = (props) => {
   const dispatch = useDispatch();
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("0357708915");
+  const [password, setPassword] = useState("12345678");
   const [submitted, setSubmitted] = useState(false);
   const [loggingIn, setLoggingIn] = useState(false);
 
@@ -32,7 +32,7 @@ const Login = (props) => {
           token: rs.data.token,
           user: rs.data.user,
         });
-        helper.toast("success", i18n.t("loginSuccess"));
+        helper.toast("success", i18n.t("loginSuccess" || "systemError"));
         props.history.push("home");
       }
     } catch (error) {
@@ -48,7 +48,7 @@ const Login = (props) => {
   useEffect(() => {
     session.set("session", null);
     session.set("user", null);
-  }, [])
+  }, []);
   return (
     <div className="jumbotron">
       <div className="div-login">
@@ -99,8 +99,8 @@ const Login = (props) => {
                         {i18n.t("logging")}
                       </>
                     ) : (
-                        <span>{i18n.t("Login")}</span>
-                      )}
+                      <span>{i18n.t("Login")}</span>
+                    )}
                   </button>
                   <div className="ml-3 d-flex align-items-base">
                     <label className="pb-0">{i18n.t("or")}</label>

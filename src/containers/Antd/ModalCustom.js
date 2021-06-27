@@ -9,7 +9,7 @@ const ModalCustom = ({
   title,
   component,
   titleBtnCancel = i18n.t("cancel"),
-  titleBtnOk = i18n.t("ok"),
+  titleBtnOk = i18n.t(title || "ok"),
   loading,
 }) => {
   return (
@@ -19,10 +19,22 @@ const ModalCustom = ({
       onOk={onOk}
       onCancel={onCancel}
       footer={[
-        <Button key="back" type="danger" className="mr-2" onClick={onCancel} disabled={loading}>
+        <Button
+          key="back"
+          type="danger"
+          className="mr-2"
+          onClick={onCancel}
+          disabled={loading}
+        >
           {titleBtnCancel}
         </Button>,
-        <Button key="submit" type="primary" loading={loading} onClick={onOk} disabled={loading}>
+        <Button
+          key="submit"
+          type="primary"
+          loading={loading}
+          onClick={onOk}
+          disabled={loading}
+        >
           {titleBtnOk}
         </Button>,
       ]}

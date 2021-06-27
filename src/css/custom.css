@@ -1,6 +1,8 @@
 /* @import "./antd.css"; */
-html {
+html,
+body {
   /* color: #6c757d !important; */
+  font-size: 18px;
 }
 button {
   cursor: pointer;

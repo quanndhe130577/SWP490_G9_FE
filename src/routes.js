@@ -41,6 +41,10 @@ const Truck = Loadable({
   loader: () => import("./views/User/Traders/Truck/Truck"),
   loading: Loading,
 });
+const Drum = Loadable({
+  loader: () => import("./views/User/Traders/Drum/Drum"),
+  loading: Loading,
+});
 const routes = [
   {
     path: "/home",
@@ -86,6 +90,11 @@ const routes = [
     path: "/truck",
     name: "Truck",
     component: Truck,
+  },
+  {
+    path: "/drum",
+    name: "Drum",
+    component: Drum,
   },
 ];
 

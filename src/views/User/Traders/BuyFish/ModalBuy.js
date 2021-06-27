@@ -4,30 +4,32 @@ import { Row, Col } from "reactstrap";
 import i18n from "i18next";
 import "antd/dist/antd.css";
 import Widgets from "../../../../schema/Widgets";
-import helper from "../../../../services/helper"
+import helper from "../../../../services/helper";
 // import data from "../../../../data";
 
 const ModalBuy = ({
   isShowBuy,
   setIsShowBuy,
-  currentTotal,
+  currentPurchase,
   transactions,
   handleTrans,
   currentTran,
   dataDf,
+  createPurchaseDetail,
 }) => {
   const [transaction, setTransaction] = useState(currentTran);
 
   const handleOk = () => {
     if (handleTrans) {
-      let validate = validateDate()
+      let validate = validateDate();
       if (validate) {
-        return helper.toast("error", i18n.t(validate))
+        return helper.toast("error", i18n.t(validate));
       }
       let tem = transaction;
       tem.idx = transactions.length + 1;
 
       handleTrans(tem);
+      createPurchaseDetail(tem);
     }
     setIsShowBuy(false);
   };
@@ -35,22 +37,28 @@ const ModalBuy = ({
     setIsShowBuy(false);
   };
   const handleChangeTran = (name, value) => {
+    // if(name === "drum"){
+    //   let drums =transactions.drum
+    //   drums
+    // }
+    if (name === "weight") {
+      value = parseInt(value);
+    }
     setTransaction((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
   const validateDate = () => {
-    let { qtyOfFish, typeOfFish, truck, basket } = transaction;
-    if (!qtyOfFish || !typeOfFish || !truck || !basket) {
-      return "fillAll*"
+    let { weight, fishTypeId, truck, basketId } = transaction;
+    if (!weight || !fishTypeId || !truck || !basketId) {
+      return "fillAll*";
     } else {
-      if (qtyOfFish <= 0.1) {
-        return "qtyMustLargerThan0"
+      if (weight <= 0.1) {
+        return "qtyMustLargerThan0";
       }
     }
-
-  }
+  };
   return (
     <Modal
       title={i18n.t("Thêm Mã")}
@@ -63,9 +71,9 @@ const ModalBuy = ({
           <Widgets.Select
             required={true}
             label={i18n.t("typeOfFish")}
-            value={transaction.typeOfFish || ""}
-            onChange={(e) => handleChangeTran("typeOfFish", e)}
-            items={currentTotal.arrFish || []}
+            value={transaction.fishTypeId || ""}
+            onChange={(e) => handleChangeTran("fishTypeId", e)}
+            items={currentPurchase.arrFish || []}
           />
         </Col>
         <Col md="6" xs="12">
@@ -73,16 +81,16 @@ const ModalBuy = ({
             required={true}
             label={i18n.t("qtyOfFish(Kg)")}
             type="number"
-            value={transaction.qtyOfFish}
-            onChange={(e) => handleChangeTran("qtyOfFish", e)}
+            value={transaction.weight}
+            onChange={(e) => handleChangeTran("weight", e)}
           />
         </Col>
         <Col md="6" xs="12">
           <Widgets.Select
             required={true}
             label={i18n.t("basket")}
-            value={transaction.basket || ""}
-            onChange={(e) => handleChangeTran("basket", e)}
+            value={transaction.basketId || ""}
+            onChange={(e) => handleChangeTran("basketId", e)}
             items={dataDf.basket || []}
           />
         </Col>
@@ -95,7 +103,7 @@ const ModalBuy = ({
             items={dataDf.truck || []}
           />
         </Col>
-        {transaction.truck &&
+        {transaction.truck && (
           <Col md="6" xs="12">
             <Widgets.Select
               // required={true}
@@ -104,9 +112,8 @@ const ModalBuy = ({
               onChange={(e) => handleChangeTran("drum", e)}
               items={dataDf.drum || []}
             />
-          </Col>}
-
-
+          </Col>
+        )}
       </Row>
     </Modal>
   );

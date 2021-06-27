@@ -5,14 +5,14 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import session from "../../services/session";
-import { Layout, Menu, Dropdown, Avatar, } from "antd";
+import { Layout, Menu, Dropdown, Avatar } from "antd";
 import {
   LogoutOutlined,
   UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
+  TableOutlined,
   SettingOutlined,
-  CarOutlined
+  CarOutlined,
+  OrderedListOutlined,
 } from "@ant-design/icons";
 import "../../css/antd.css";
 import i18n from "i18next";
@@ -32,10 +32,10 @@ class DefaultHeader extends Component {
   render() {
     const menu = (
       <Menu>
-        <Menu.Item icon={<SettingOutlined />}>
+        <Menu.Item icon={<SettingOutlined />} key="1">
           <Link to="/changeUserInfo">{i18n.t("changeInfo")}</Link>
         </Menu.Item>
-        <Menu.Item icon={<LogoutOutlined />}>
+        <Menu.Item icon={<LogoutOutlined />} key="2">
           <Link to="/logout">{i18n.t("logout")}</Link>
         </Menu.Item>
       </Menu>
@@ -48,35 +48,33 @@ class DefaultHeader extends Component {
           style={{ paddingTop: 64 }}
           breakpoint="lg"
           collapsedWidth="0"
-          onBreakpoint={(broken) => { }}
-          onCollapse={(collapsed, type) => { }}
+          onBreakpoint={(broken) => {}}
+          onCollapse={(collapsed, type) => {}}
         >
           <Menu mode="inline">
-            <SubMenu
-              key="SubMenu"
-              icon={<SettingOutlined />}
-              title={i18n.t("goodManagement")}
-            >
-              <Menu.Item key="setting:1">
-                <Link to="/buyF">{i18n.t("buyGood")}</Link>
-              </Menu.Item>
-              <Menu.Item key="setting:2">Option 2</Menu.Item>
-            </SubMenu>
-            <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-              <Link to="/pondOwner">{i18n.t("pondOwnerManagement")}</Link>
-            </Menu.Item>
-            <Menu.Item key="3" icon={<UploadOutlined />}>
-              <Link to="/fishType">{i18n.t("fishType")}</Link>
-            </Menu.Item>
-            <Menu.Item key="4" icon={<UserOutlined />}>
-              <Link to="/basket">{i18n.t("basket")}</Link>
-            </Menu.Item>
-            <Menu.Item key="5" icon={<CarOutlined />}>
-              <Link to="/truck">{i18n.t("truck")}</Link>
-            </Menu.Item>
+            {/* auto generate menu, define menu in MENU */}
+            {MENU.map((mn, idx) => {
+              if (mn.type === "subMenu") {
+                const { title, menu, icon } = mn;
+                return (
+                  <SubMenu key={idx + title} icon={icon} title={i18n.t(title)}>
+                    {menu.map((me, i) => (
+                      <Menu.Item key={me + i + idx}>
+                        <Link to={me.link}>{i18n.t(me.title)}</Link>
+                      </Menu.Item>
+                    ))}
+                  </SubMenu>
+                );
+              } else {
+                return (
+                  <Menu.Item key={mn + idx} icon={mn.icon}>
+                    <Link to={mn.link}>{i18n.t(mn.title)}</Link>
+                  </Menu.Item>
+                );
+              }
+            })}
           </Menu>
         </Sider>
-
 
         <Header
           style={{ position: "fixed", zIndex: 1, width: "100%" }}
@@ -121,4 +119,49 @@ DefaultHeader.defaultProps = defaultProps;
 const mapStateToProps = (state) => {
   return { user: state.user };
 };
+const MENU = [
+  {
+    type: "subMenu",
+    title: "goodManagement",
+    icon: <SettingOutlined />,
+    menu: [
+      {
+        link: "/buyF",
+        title: "buyGood",
+      },
+    ],
+  },
+  {
+    title: "pondOwnerManagement",
+    icon: <UserOutlined />,
+    link: "/pondOwner",
+  },
+  {
+    title: "fishType",
+    icon: <OrderedListOutlined />,
+    link: "/fishType",
+  },
+
+  {
+    title: "basket",
+    icon: <TableOutlined />,
+    link: "/basket",
+  },
+  {
+    type: "subMenu",
+    title: "truck",
+    icon: <CarOutlined />,
+    menu: [
+      {
+        link: "/truck",
+        title: "truck",
+      },
+      {
+        link: "/drum",
+        title: "drum",
+      },
+    ],
+  },
+];
+
 export default connect(mapStateToProps)(DefaultHeader);
