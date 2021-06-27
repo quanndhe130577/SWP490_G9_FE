@@ -2,7 +2,8 @@ import React from "react";
 // import DatePicker from "react-datepicker";
 import { DatePicker } from "antd";
 import moment from "moment";
-
+import 'moment/locale/zh-cn';
+import locale from 'antd/es/date-picker/locale/zh_CN';
 export default function DateTimePicker({
   value,
   label,
@@ -32,7 +33,9 @@ export default function DateTimePicker({
         className="form-control"
         defaultValue={moment(value, dateFormat)}
         //defaultValue={value}
-        format={dateFormat}
+        // format={dateFormat}
+        locale={locale}
+        placeholder="Chọn ngày"
         onChange={(date, dateString) => {
           if (onChange) {
             onChange(date);

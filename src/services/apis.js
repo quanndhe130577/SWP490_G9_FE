@@ -29,6 +29,14 @@ var path = {
   createTruck: "/api/truck/create",
   updateTruck: "/api/truck/update",
   deleteTruck: "/api/truck/delete",
+
+  //anhnbt
+  getEmployees: "/api/employee/getallemp", //method GET
+  createEmployee: "/api/employee/create/",
+  updateEmployee: "/api/employee/update",
+  deleteEmployee: "/api/employee/delete",
+  getDetailEmployee: "/api/employee/detail/{empId}"
+
 };
 
 Object.keys(path).forEach(function (key) {

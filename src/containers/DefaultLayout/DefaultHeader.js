@@ -47,8 +47,8 @@ class DefaultHeader extends Component {
           style={{ paddingTop: 64 }}
           breakpoint="lg"
           collapsedWidth="0"
-          onBreakpoint={(broken) => {}}
-          onCollapse={(collapsed, type) => {}}
+          onBreakpoint={(broken) => { }}
+          onCollapse={(collapsed, type) => { }}
         >
           <Menu theme="dark" mode="inline">
             <SubMenu
@@ -71,8 +71,11 @@ class DefaultHeader extends Component {
               <Link to="/basket">{i18n.t("basket")}</Link>
             </Menu.Item>
             <Menu.Item key="5" icon={<CarOutlined />}>
-                <Link to="/truck">{i18n.t("truck")}</Link>
-              </Menu.Item>
+              <Link to="/truck">{i18n.t("truck")}</Link>
+            </Menu.Item>
+            <Menu.Item key="6" icon={<UserOutlined />}>
+              <Link to="/employee">{i18n.t("EmployeeManagement")}</Link>
+            </Menu.Item>
           </Menu>
         </Sider>
         <Header
