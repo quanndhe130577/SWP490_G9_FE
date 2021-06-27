@@ -44,6 +44,13 @@ var path = {
   getAllDrumByTruckID: "/api/drum/getall", //GET param : truckId
   updateDrum: "/api/drum/update",
   deleteDrum: "/api/drum/delete",
+
+    //anhnbt
+  getEmployees: "/api/employee/getallemp", //method GET
+  createEmployee: "/api/employee/create/",
+  updateEmployee: "/api/employee/update",
+  deleteEmployee: "/api/employee/delete",
+  getDetailEmployee: "/api/employee/detail/{empId}"
 };
 
 Object.keys(path).forEach(function (key) {

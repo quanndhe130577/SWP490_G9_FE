@@ -1,5 +1,4 @@
 import React from "react";
-// import DatePicker from "react-datepicker";
 import { DatePicker } from "antd";
 import moment from "moment";
 
@@ -13,8 +12,6 @@ export default function DateTimePicker({
   submitted,
 }) {
   let dateFormat = "DD/MM/yyyy";
-  // console.log(value.toLocaleDateString().trim());
-  //console.log(moment(value.toLocaleDateString().trim(), dateFormat));
   return (
     <div
       className={
@@ -32,48 +29,15 @@ export default function DateTimePicker({
         className="form-control"
         defaultValue={moment(value, dateFormat)}
         //defaultValue={value}
-        format={dateFormat}
+        // format={dateFormat}
+
         onChange={(date, dateString) => {
           if (onChange) {
             onChange(date);
           }
         }}
       />
-      {/* <DatePicker
-        className="form-control"
-        dateFormat="dd/MM/yyyy"
-        // maxDate={maxDate}
-        // minDate={minDate}
-        // isClearable
-        selected={value}
-        onChange={(data) => {
-          if (onChange) {
-            onChange(data);
-          }
-        }}
-        peekNextMonth
-        showMonthDropdown
-        showYearDropdown
-        dropdownMode="select"
-        required={required}
-        showPopperArrow={false}
-        popperModifiers={[
-          {
-            name: "offset",
-            options: {
-              offset: [5, 10],
-            },
-          },
-          {
-            name: "preventOverflow",
-            options: {
-              rootBoundary: "viewport",
-              tether: false,
-              altAxis: true,
-            },
-          },
-        ]}
-      /> */}
+
       {submitted && !value && (
         <div className="help-block">{label} is required</div>
       )}

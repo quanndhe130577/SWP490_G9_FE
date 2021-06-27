@@ -13,6 +13,7 @@ import {
   SettingOutlined,
   CarOutlined,
   OrderedListOutlined,
+  UsergroupAddOutlined,
 } from "@ant-design/icons";
 import "../../css/antd.css";
 import i18n from "i18next";
@@ -161,6 +162,11 @@ const MENU = [
         title: "drum",
       },
     ],
+  },
+  {
+    title: "EmployeeManagement",
+    icon: <UsergroupAddOutlined />,
+    link: "/employee",
   },
 ];
 

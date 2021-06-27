@@ -71,5 +71,7 @@
   "Create Basket Success":"Tạo rổ thành công",
   "drumManagement":"Quản lý lồ",
   "numberDrum":"Tên lồ",
-  "suffix":" VND"
+  "suffix":" VND",
+  "EmployeeManagement": "Quản lí nhân viên",
+  "dob": "Ngày sinh"
 }
