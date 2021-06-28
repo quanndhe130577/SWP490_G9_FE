@@ -16,7 +16,7 @@ $colors: (
   magenta: #eb2f96,
 );
 @each $name, $color in $colors {
-  .button-text-#{$name} {
+  .tnrss-text-#{$name} {
     color: $color !important;
   }
 }
