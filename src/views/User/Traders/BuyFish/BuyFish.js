@@ -11,6 +11,8 @@ import session from "../../../../services/session";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import NumberFormat from "react-number-format";
+import { useSelector } from "react-redux";
+import moment from "moment";
 
 const BuyFish = (props) => {
   const [isShowBuy, setIsShowBuy] = useState(false);
@@ -18,8 +20,11 @@ const BuyFish = (props) => {
   const [isShowChoosePond, setShowChoosePond] = useState(true);
   const [purchase, setPurchase] = useState([]);
   const [currentPurchase, setCurrentPurchase] = useState({});
-  const [currentTran, setCurrentTran] = useState({});
+  // const [currentTran, setCurrentTran] = useState({});
   const [dataDf, setData] = useState({ basket: [], drum: [], truck: [] });
+  const currentPurchasePROPS = useSelector(
+    (state) => state.purchase.currentPurchase
+  ); // data in redux
 
   const handelAction = (action, id) => {
     if (action === "delete") {
@@ -28,12 +33,13 @@ const BuyFish = (props) => {
     } else {
       let tem = purchase.find((e) => e.id === id);
       if (tem) {
-        setCurrentTran(tem);
+        // setCurrentTran(tem);
+        setCurrentPurchase(tem);
         setIsShowBuy(true);
       }
     }
   };
-  const renderDrum = (listDrum) => {
+  const renderDrum = (listDrum = []) => {
     let label = "";
     listDrum.forEach((el, idx) => {
       label += el.number;
@@ -47,7 +53,7 @@ const BuyFish = (props) => {
   const calculateIntoMoney = (id) => {
     let tem = purchase.find((e) => e.id === id);
     // let basket = dataDf.basket.find((el) => el.id === tem.basketId);
-    if (tem) {
+    if (tem && tem.fishType) {
       let value =
         tem.fishType.price * (parseInt(tem.weight) - tem.basket.weight);
       return (
@@ -158,11 +164,13 @@ const BuyFish = (props) => {
     }));
   };
   const handleTrans = (value) => {
-    setCurrentTran({});
+    // setCurrentTran({});
+    setCurrentPurchase({});
     setPurchase((pre) => [...pre, value]);
   };
 
   const findPO = () => {
+    debugger;
     if (currentPurchase.pondOwner && dataDf.pondOwner)
       return (
         dataDf.pondOwner.find(
@@ -255,56 +263,73 @@ const BuyFish = (props) => {
   // createPurchaseDetail
   async function createPurchaseDetail(detail) {
     try {
-      debugger;
+      let { fishTypeId, basketId, weight, listDrumId = [] } = detail;
       let rs = await apis.createPurchaseDetail({
-        ...detail,
+        fishTypeId,
+        basketId,
+        weight,
+        listDrumId,
         purchaseId: currentPurchase.id,
       });
       if (rs && rs.statusCode === 200) {
-        // let tem = rs.data;
-        // setPurchase((pre) => ({
-        //   ...pre,
-        //   tem,
-        // }));
-        // tem = Object.assign(tem, currentPurchase);
-        // local.set("currentPurchase", tem);
+        getAllPurchaseDetail(detail);
         helper.toast("success", i18n.t(rs.message));
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsShowBuy(false);
     }
   }
 
   // Get all purchase detail
   async function getAllPurchaseDetail(currentPurchase) {
     try {
+      setLoading(true);
       let rs = await apis.getAllPurchaseDetail({}, "GET", currentPurchase.id);
       if (rs && rs.statusCode === 200) {
+        rs.data.map((el, idx) => (el.idx = idx + 1));
         setPurchase(rs.data);
-        helper.toast("success", i18n.t(rs.message));
+        // helper.toast("success", i18n.t(rs.message));
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }
 
   useEffect(() => {
+    // lấy id trên address bar
     let query = queryString.parse(props.location.search, {
       ignoreQueryPrefix: true,
     });
-    console.log(query);
-    let tem = local.get("currentPurchase") || {};
+
+    if (query && query.id) {
+      query.id = parseInt(query.id);
+    }
+
+    let tem = local.get("currentPurchase") || query;
     if (tem.pondOwner) {
       tem.pondOwner = parseInt(tem.pondOwner);
     }
-    if (tem.id) {
+
+    if (tem.id || query.id) {
+      // nếu có id thì ko show modal ChoosePond
+      // và get getAllPurchaseDetail theo id ban đâu
       tem.id = parseInt(tem.id);
       setShowChoosePond(false);
-      getAllPurchaseDetail(tem);
+
+      // Object.assign(tem, currentPurchasePROPS);
+      Object.assign(tem, local.get("historyPurchase"));
+
+      getAllPurchaseDetail(tem || query);
     }
     setCurrentPurchase(tem);
+
     fetchData();
-  }, [props]);
+  }, [props, currentPurchasePROPS]);
+
   const renderTitle = () => {
     return (
       <Row>
@@ -319,7 +344,8 @@ const BuyFish = (props) => {
         <Col md="2">
           <label>
             <b>{i18n.t("pondOwner")}:</b>
-            {findPO().name || ""}
+            {/* nếu ko có id thì dùng hàm findPO  */}
+            {findPO().name || currentPurchase.pondOwnerName}
           </label>
         </Col>
       </Row>
@@ -337,7 +363,7 @@ const BuyFish = (props) => {
             currentPurchase={currentPurchase}
             purchase={purchase}
             handleTrans={handleTrans}
-            currentTran={currentTran}
+            // currentTran={currentTran}
             dataDf={dataDf}
             createPurchaseDetail={createPurchaseDetail}
             fetchDrumByTruck={fetchDrumByTruck}
@@ -358,18 +384,24 @@ const BuyFish = (props) => {
           <Card title={renderTitle()}>
             <Row className="mb-2">
               <Col span="24" className="">
-                <div className="float-right">
-                  <Button
-                    color="info"
-                    onClick={() => setShowChoosePond(true)}
-                    className="mr-2"
-                  >
-                    {i18n.t("Giá cá hôm nay")}
-                  </Button>
-                  <Button color="info" onClick={showModal} className=" mr-2">
-                    {i18n.t("Thêm Mã")}
-                  </Button>
-                </div>
+                {/* nếu ngày khác ngày hôm nay thì ko show btn thêm */}
+                {moment(new Date()).isSame(
+                  new Date(currentPurchase.date),
+                  "day"
+                ) && (
+                  <div className="float-right">
+                    <Button
+                      color="info"
+                      onClick={() => setShowChoosePond(true)}
+                      className="mr-2"
+                    >
+                      {i18n.t("Giá cá hôm nay")}
+                    </Button>
+                    <Button color="info" onClick={showModal} className=" mr-2">
+                      {i18n.t("Thêm Mã")}
+                    </Button>
+                  </div>
+                )}
               </Col>
             </Row>
 

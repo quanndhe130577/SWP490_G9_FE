@@ -7,6 +7,7 @@ import Widgets from "../../../../schema/Widgets";
 import local from "../../../../services/local";
 import helper from "../../../../services/helper";
 import PriceFishToday from "./PriceFishToday";
+import { useHistory } from "react-router-dom";
 
 const ChoosePond = ({
   isShowChoosePond,
@@ -18,6 +19,8 @@ const ChoosePond = ({
   dataDf,
   createPurchase,
 }) => {
+  let history = useHistory();
+  let isChange = false;
   const handleOk = () => {
     setShowChoosePond(false);
     if (createPurchase) {
@@ -26,13 +29,17 @@ const ChoosePond = ({
   };
 
   const handleCancel = () => {
-    // if pondOwner null can close modal
-    let check = validate(currentPurchase, "pondOwner");
-    if (!check) {
-      onChange(currentPurchase.pondOwner, "pondOwner");
-      setShowChoosePond(false);
+    if (!isChange) {
+      history.push("/home");
     } else {
-      helper.toast("error", i18n.t(check));
+      // if pondOwner null cant close modal
+      let check = validate(currentPurchase, "pondOwner");
+      if (!check) {
+        onChange(currentPurchase.pondOwner, "pondOwner");
+        setShowChoosePond(false);
+      } else {
+        helper.toast("error", i18n.t(check));
+      }
     }
   };
 

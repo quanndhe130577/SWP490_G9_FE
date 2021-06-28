@@ -3,24 +3,25 @@ import { Modal } from "antd";
 import { Row, Col } from "reactstrap";
 import i18n from "i18next";
 import "antd/dist/antd.css";
+
 import Widgets from "../../../../schema/Widgets";
 import helper from "../../../../services/helper";
-import apis from "../../../../services/helper";
+// import apis from "../../../../services/helper";
 // import data from "../../../../data";
 
 const ModalBuy = ({
   isShowBuy,
   setIsShowBuy,
   currentPurchase,
-  transactions,
+  purchase,
   handleTrans,
-  currentTran,
+  // currentTran,
   dataDf,
   createPurchaseDetail,
   fetchDrumByTruck,
 }) => {
-  const [transaction, setTransaction] = useState(currentTran);
-  const [drum, setDrum] = useState([]);
+  const [transaction, setTransaction] = useState(currentPurchase);
+  // const [drum, setDrum] = useState([]);
 
   const handleOk = () => {
     if (handleTrans) {
@@ -29,7 +30,7 @@ const ModalBuy = ({
         return helper.toast("error", i18n.t(validate));
       }
       let tem = transaction;
-      tem.idx = transactions.length + 1;
+      tem.idx = purchase.length + 1;
 
       handleTrans(tem);
       createPurchaseDetail(tem);
@@ -41,7 +42,7 @@ const ModalBuy = ({
   };
   const handleChangeTran = (name, value) => {
     // if(name === "drum"){
-    //   let drums =transactions.drum
+    //   let drums =purchase.drum
     //   drums
     // }
     if (name === "weight") {
@@ -68,7 +69,7 @@ const ModalBuy = ({
   };
 
   function changeKey(arr) {
-    arr.array.forEach((el) => {
+    arr.forEach((el) => {
       helper.renameKey(el, "number", "name");
     });
     return arr;
@@ -124,7 +125,7 @@ const ModalBuy = ({
               label={i18n.t("drum")}
               value={transaction.listDrumId || []}
               onChange={(e) => handleChangeTran("listDrumId", e)}
-              items={changeKey(dataDf.drum) || []}
+              items={changeKey(dataDf.drum || [])}
             />
           </Col>
         )}
