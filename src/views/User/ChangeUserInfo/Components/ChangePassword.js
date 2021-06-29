@@ -106,7 +106,11 @@ class ChangePassword extends Component {
         )}
 
         <div className="col-md-12 mb-2 row justify-content-center">
-          <button className="btn btn-info px-5" type="submit">
+          <button
+            className="btn btn-info px-5"
+            type="submit"
+            disabled={this.state.loading}
+          >
             {this.state.loading ? <LoadingOutlined /> : "Lưu"}
           </button>
         </div>

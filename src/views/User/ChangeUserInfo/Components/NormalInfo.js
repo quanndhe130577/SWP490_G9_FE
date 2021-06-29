@@ -3,6 +3,7 @@ import Avatar from "react-avatar-edit";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import Widgets from "../../../../schema/Widgets";
+import { Button } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import apis from "../../../../services/apis";
 
@@ -137,7 +138,11 @@ class NormalInfo extends Component {
               />
             </div>
             <div className="col-md-12">
-              <button className="btn btn-info px-5" type="submit">
+              <button
+                className="btn btn-info px-5"
+                type="submit"
+                disabled={this.state.loading}
+              >
                 {this.state.loading ? <LoadingOutlined /> : "Lưu"}
               </button>
             </div>

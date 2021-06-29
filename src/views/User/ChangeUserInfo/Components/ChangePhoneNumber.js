@@ -94,45 +94,49 @@ class ChangePhoneNumber extends Component {
             </div>
           </div>
         ) : (
-            <div className="row justify-content-center">
-              <div className="col-md-8 mb-2 row justify-content-center">
-                <div className="col-md-6 mb-2">
-                  <Widgets.Text
-                    type="text"
-                    required={true}
-                    label={"Số điện thoại mới"}
-                    value={this.state.newPhoneNumber}
-                    onChange={(e) => this.handleChange2(e, "newPhoneNumber")}
-                  />
-                </div>
-              </div>
-              <div className="col-md-8 mb-2 row justify-content-center">
-                <div className="col-md-6 mb-2">
-                  <Widgets.Text
-                    type="password"
-                    required={true}
-                    label={"Mật khẩu"}
-                    value={this.state.password}
-                    onChange={(e) => this.handleChange2(e, "password")}
-                  />
-                </div>
-              </div>
-              <div className="col-md-8 mb-2 row justify-content-center">
-                <div className="col-md-6 mb-2">
-                  <Widgets.Text
-                    type="password"
-                    required={true}
-                    label={"Nhập lại mật khẩu"}
-                    value={this.state.rePassword}
-                    onChange={(e) => this.handleChange2(e, "rePassword")}
-                  />
-                </div>
+          <div className="row justify-content-center">
+            <div className="col-md-8 mb-2 row justify-content-center">
+              <div className="col-md-6 mb-2">
+                <Widgets.Text
+                  type="text"
+                  required={true}
+                  label={"Số điện thoại mới"}
+                  value={this.state.newPhoneNumber}
+                  onChange={(e) => this.handleChange2(e, "newPhoneNumber")}
+                />
               </div>
             </div>
-          )}
+            <div className="col-md-8 mb-2 row justify-content-center">
+              <div className="col-md-6 mb-2">
+                <Widgets.Text
+                  type="password"
+                  required={true}
+                  label={"Mật khẩu"}
+                  value={this.state.password}
+                  onChange={(e) => this.handleChange2(e, "password")}
+                />
+              </div>
+            </div>
+            <div className="col-md-8 mb-2 row justify-content-center">
+              <div className="col-md-6 mb-2">
+                <Widgets.Text
+                  type="password"
+                  required={true}
+                  label={"Nhập lại mật khẩu"}
+                  value={this.state.rePassword}
+                  onChange={(e) => this.handleChange2(e, "rePassword")}
+                />
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="col-md-12 mb-2 row justify-content-center">
-          <button className="btn btn-info px-5" type="submit">
+          <button
+            className="btn btn-info px-5"
+            type="submit"
+            disabled={this.state.loading}
+          >
             {this.state.loading ? <LoadingOutlined /> : "Lưu"}
           </button>
         </div>

@@ -26,9 +26,11 @@ export default class TimeKeeping extends Component {
   }
   async getEmployee() {
     let rs = await apis.getEmployees({}, "GET");
-    this.setState({
-      employees: rs.data,
-    });
+    if (rs) {
+      this.setState({
+        employees: rs.data,
+      });
+    }
   }
   async getTimes() {
     let date = new Date();
