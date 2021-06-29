@@ -97,14 +97,11 @@ export default class TimeKeeping extends Component {
   mapEmp = () => {
     let emps = this.state.employees.filter((emp) => {
       let listCurrentEmp = this.state.currentTimes.map((t) => t.empId);
-      console.log(listCurrentEmp);
       return !listCurrentEmp.includes(emp.id);
     });
-    console.log(emps);
     return emps;
   };
   render() {
-    console.log(this.state);
     this.checkExitsEmp();
     return (
       <>
