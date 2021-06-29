@@ -100,9 +100,6 @@ const routes = [
     component: Truck,
   },
   {
-    path: "/timeKeeping",
-    name: "TimeKeeping",
-    component: TimeKeeping,
     path: "/drum",
     name: "Drum",
     component: Drum,
@@ -111,6 +108,11 @@ const routes = [
     path: "/employee",
     name: "EmployEE",
     component: Employee,
+  },
+  {
+    path: "/timeKeeping",
+    name: "TimeKeeping",
+    component: TimeKeeping,
   },
 ];
 

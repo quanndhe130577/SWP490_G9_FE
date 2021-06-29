@@ -1,5 +1,6 @@
-import React, { Component } from "react";
-import { Calendar, Button, Modal, Collapse, Typography } from "antd";
+import React, {Component} from "react";
+import {Calendar, Button, Modal, Collapse, Typography} from "antd";
+import moment from 'moment';
 import TimeKeepingDetail from "./TimeKeepingDetail";
 import apis from "../../../../services/apis";
 import "./TimeKeeping.scss";
@@ -20,7 +21,7 @@ export default class TimeKeeping extends Component {
     this.getTimes();
   }
   async getEmployee() {
-    let rs = await apis.getAllEmployee({}, "GET");
+    let rs = await apis.getEmployees({}, "GET");
     this.setState({
       employees: rs.data,
     });
@@ -63,17 +64,17 @@ export default class TimeKeeping extends Component {
     );
   };
   select = (date, times) => {
-    this.setState({ isShow: true, currentDate: date, currentTimes: times });
+    this.setState({isShow: true, currentDate: date, currentTimes: times});
   };
   render() {
     return (
       <>
-        <Calendar dateCellRender={this.dateCellRender} />
+        <Calendar dateCellRender={this.dateCellRender} validRange={[moment('01-01-2020', 'MM-DD-YYYY'), moment()]} />
         <Modal
           width="100%"
           title="Basic Modal"
           visible={this.state.isShow}
-          onCancel={() => this.setState({ isShow: false })}
+          onCancel={() => this.setState({isShow: false})}
         >
           <Collapse>
             {this.state.currentTimes.map((item) => (
