@@ -184,6 +184,7 @@ class NormalInfo extends Component {
               </div>
               <div class="modal-footer">
                 <button
+                  disabled={this.state.loading}
                   type="button"
                   class="btn btn-primary"
                   data-dismiss="modal"
