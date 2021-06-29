@@ -11,21 +11,25 @@ import PriceFishToday from "./PriceFishToday";
 const ChoosePond = ({
   isShowChoosePond,
   setShowChoosePond,
-  handleTotalBuy,
+  handlePurchase,
   pondOwner,
-  currentTotal,
-  setCurrentTotal,
+  currentPurchase,
+  setCurrentPurchase,
   dataDf,
+  createPurchase,
 }) => {
   const handleOk = () => {
     setShowChoosePond(false);
+    if (createPurchase) {
+      createPurchase();
+    }
   };
 
   const handleCancel = () => {
     // if pondOwner null can close modal
-    let check = validate(currentTotal, "pondOwner");
+    let check = validate(currentPurchase, "pondOwner");
     if (!check) {
-      onChange(currentTotal.pondOwner, "pondOwner");
+      onChange(currentPurchase.pondOwner, "pondOwner");
       setShowChoosePond(false);
     } else {
       helper.toast("error", i18n.t(check));
@@ -40,24 +44,24 @@ const ChoosePond = ({
   };
 
   const onChange = (val, prop) => {
-
     if (!(prop === "arrFish" && val.length === 0)) {
-      let tem = currentTotal;
+      let tem = currentPurchase;
       if (prop === "pondOwner") {
         tem.pondOwner = val + "";
       } else {
         tem[prop] = val;
       }
-      local.set("currentTotal", tem);
+      local.set("currentPurchase", tem);
 
-      setCurrentTotal(tem);
-      handleTotalBuy(val, prop);
+      setCurrentPurchase(tem);
+      handlePurchase(val, prop);
     }
   };
   function addField(arr, newfield, oldField) {
-    arr.map(el => el[newfield] = el[oldField])
-    return arr
+    arr.map((el) => (el[newfield] = el[oldField]));
+    return arr;
   }
+
   return (
     <Modal
       title={i18n.t("choosePond")}
@@ -71,13 +75,13 @@ const ChoosePond = ({
         <Col md="4" xs="12">
           <Widgets.Select
             label={i18n.t("pondOwner")}
-            value={parseInt(pondOwner || currentTotal.pondOwner)}
+            value={parseInt(pondOwner || currentPurchase.pondOwner)}
             items={dataDf.pondOwner}
             onChange={(vl) => onChange(vl, "pondOwner")}
           />
           <Widgets.SelectSearchMulti
             label={i18n.t("chooseFish")}
-            value={currentTotal.listFish}
+            value={currentPurchase.listFish}
             items={addField(dataDf.fishType || [], "name", "fishName")}
             onChange={(vl) => onChange(vl, "listFish")}
           />
@@ -85,7 +89,7 @@ const ChoosePond = ({
         <Col md="8" xs="12">
           <label className="bold">Các loại các trong ao</label>
           <PriceFishToday
-            listFish={currentTotal.listFish || []}
+            listFish={currentPurchase.listFish || []}
             onChange={(arr) => onChange(arr, "arrFish")}
             dataDf={dataDf}
           />

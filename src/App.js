@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-
+import { ConfigProvider } from "antd";
+import "moment/locale/vi";
+import locale from "antd/lib/locale/vi_VN";
 import "./css/custom.css";
 import "antd/dist/antd.css";
 import "./css/bootstrap.css";
@@ -14,16 +16,18 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <Switch>
-          <Route exact path="/login" name="Login Page" component={Login} />
-          <Route
-            exact
-            path="/register"
-            name="Register Page"
-            component={Register}
-          />
-          <Route path="/" name="Home" component={DefaultLayout} />
-        </Switch>
+        <ConfigProvider locale={locale}>
+          <Switch>
+            <Route exact path="/login" name="Login Page" component={Login} />
+            <Route
+              exact
+              path="/register"
+              name="Register Page"
+              component={Register}
+            />
+            <Route path="/" name="Home" component={DefaultLayout} />
+          </Switch>
+        </ConfigProvider>
       </BrowserRouter>
     );
   }

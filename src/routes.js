@@ -45,6 +45,14 @@ const Truck = Loadable({
   loader: () => import("./views/User/Traders/Truck/Truck"),
   loading: Loading,
 });
+const Drum = Loadable({
+  loader: () => import("./views/User/Traders/Drum/Drum"),
+  loading: Loading,
+});
+const Employee = Loadable({
+  loader: () => import("./views/User/Traders/Employee/Employee"),
+  loading: Loading,
+});
 const routes = [
   {
     path: "/home",
@@ -95,6 +103,14 @@ const routes = [
     path: "/timeKeeping",
     name: "TimeKeeping",
     component: TimeKeeping,
+    path: "/drum",
+    name: "Drum",
+    component: Drum,
+  },
+  {
+    path: "/employee",
+    name: "EmployEE",
+    component: Employee,
   },
 ];
 
