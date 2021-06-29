@@ -5,6 +5,9 @@ var apis = {};
 var path = {
   login: "/api/login",
   logout: "/api/user/logout",
+  changePassword: "/api/user/change-password",
+  changePhonenumber: "/api/otp/change-phone",
+  checkChangePhonenumber: "/api/user/check-change-phone-otp",
   register: "/api/register",
   getAllRole: "/api/role/get-all",
   getOtp: "/api/otp/register",
@@ -45,12 +48,17 @@ var path = {
   updateDrum: "/api/drum/update",
   deleteDrum: "/api/drum/delete",
 
-    //anhnbt
+  //anhnbt
   getEmployees: "/api/employee/getallemp", //method GET
   createEmployee: "/api/employee/create/",
   updateEmployee: "/api/employee/update",
   deleteEmployee: "/api/employee/delete",
-  getDetailEmployee: "/api/employee/detail/{empId}"
+  getDetailEmployee: "/api/employee/detail/{empId}",
+
+  //Time keeping
+  createTimeKeeping: "/api/timeKeeping/create",
+  getTimeKeepingByTrader: "/api/timeKeeping/getByTrader",
+  deleteTimeKeepingByTrader: "/api/timeKeeping/delete",
 };
 
 Object.keys(path).forEach(function (key) {

@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import axios from "axios";
+import { LoadingOutlined } from "@ant-design/icons";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
-import Config from "../../../../services/config";
 import Widgets from "../../../../schema/Widgets";
-// import local from "../../../../services/local";
+import apis from "../../../../services/apis";
 
 class ChangePhoneNumber extends Component {
   constructor(props) {
@@ -16,6 +15,7 @@ class ChangePhoneNumber extends Component {
       rePassword: "",
       otpId: 0,
       otp: "",
+      loading: false,
     };
     this.submit = this.submit.bind(this);
   }
@@ -43,54 +43,35 @@ class ChangePhoneNumber extends Component {
   };
   async submit(e) {
     e.preventDefault();
-    let token = session.get("session");
+    this.setState({ loading: true });
     if (this.state.comfirm) {
-      console.log({
-        newPhoneNumber: this.state.newPhoneNumber,
-        OTPID: this.state.otp,
-        Code: this.state.otpId,
-      });
-      let rs = await axios
-        .post(
-          `${Config.host}/api/user/check-change-phone-otp/${
-          session.get("user").userID
-          }`,
-          {
-            newPhoneNumber: this.state.newPhoneNumber,
-            OTPID: parseInt(this.state.otp),
-            Code: this.state.otpId.toString(),
-          },
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        )
-        .catch((rs) => helper.toast("warning", "Có lỗi từ phía server"));
-      console.log(rs);
-      if (rs.data.statusCode === 200) {
+      let rs = await apis.checkChangePhonenumber(
+        {
+          newPhoneNumber: this.state.newPhoneNumber,
+          OTPID: parseInt(this.state.otp),
+          Code: this.state.otpId.toString(),
+        },
+        "POST",
+        session.get("user").userID
+      );
+      if (rs) {
         helper.toast("success", rs.data.message);
-        this.reset();
-      } else {
-        helper.toast("warning", rs.data.message);
+        this.setState({ loading: false });
         this.reset();
       }
     } else {
-      let rs = await axios.post(
-        `${Config.host}/api/otp/change-phone/${session.get("user").userID}`,
+      let rs = await apis.changePhonenumber(
         {
           newPhoneNumber: this.state.newPhoneNumber,
           CurrentPassword: this.state.password,
           ConfirmPassword: this.state.rePassword,
         },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        "POST",
+        session.get("user").userID
       );
-      if (rs.data.statusCode === 200) {
+      if (rs) {
         helper.toast("success", "Nhập mã otp bạn vừa nhận được");
         this.setState({ confirm: true, otpId: rs.data.data.otpid });
-      } else {
-        console.log(rs.data);
-        helper.toast("warning", rs.data.message);
       }
     }
   }
@@ -152,7 +133,7 @@ class ChangePhoneNumber extends Component {
 
         <div className="col-md-12 mb-2 row justify-content-center">
           <button className="btn btn-info px-5" type="submit">
-            Lưu
+            {this.state.loading ? <LoadingOutlined /> : "Lưu"}
           </button>
         </div>
       </form>

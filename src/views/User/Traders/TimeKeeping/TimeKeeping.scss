@@ -1,0 +1,111 @@
+$colors: (
+  primary: #137d8d,
+  danger: #e67e22,
+  mute: #6c757d,
+  dust-red: #f5222d,
+  volcano: #d4380d,
+  sunset-orange: #fa8c16,
+  calendula-gold: #faad14,
+  sunrise-yellow: #fadb14,
+  lime: #a0d911,
+  polar-green: #52c41a,
+  cyan: #13c2c2,
+  daybreak-blue: #1890ff,
+  geek-blue: #2f54eb,
+  golden-purple: #722ed1,
+  magenta: #eb2f96,
+);
+$fsize: 1rem !default;
+$fsizes: (
+  1: (
+    $fsize * 0.5,
+  ),
+  2: (
+    $fsize * 1,
+  ),
+  3: (
+    $fsize * 1.5,
+  ),
+  4: (
+    $fsize * 2,
+  ),
+  5: (
+    $fsize * 3,
+  ),
+);
+$spacer: 1rem !default;
+$spacers: (
+  0: 0,
+  1: (
+    $spacer * 0.25,
+  ),
+  2: (
+    $spacer * 0.5,
+  ),
+  3: $spacer,
+  4: (
+    $spacer * 1.5,
+  ),
+  5: (
+    $spacer * 3,
+  ),
+  auto: auto,
+);
+@each $name, $color in $colors {
+  .tnrss-text-#{$name} {
+    color: $color !important;
+  }
+}
+@each $name, $size in $fsizes {
+  .tnrss-ts-#{$name} {
+    font-size: $size !important;
+  }
+}
+@each $name, $size in $spacers {
+  .tnrss-lh-#{$name} {
+    line-height: $size !important;
+  }
+}
+@each $name, $color in $colors {
+  .tnrss-btn-#{$name} {
+    color: $color !important;
+    border: 1px solid $color !important;
+  }
+}
+
+.tnrss-btn {
+  // color: #6c757d;
+  border: 1px solid;
+  line-height: 1.5715;
+  position: relative;
+  display: inline-block;
+  font-weight: 400;
+  white-space: nowrap;
+  text-align: center;
+  touch-action: manipulation;
+  height: 32px;
+  padding: 4px 15px;
+  font-size: 14px;
+  border-radius: 2px;
+  background: #fff;
+}
+
+.events {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  .ant-badge-status {
+    width: 100%;
+    overflow: hidden;
+    font-size: 12px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+.notes-month {
+  font-size: 28px;
+  text-align: center;
+  section {
+    font-size: 28px;
+  }
+}

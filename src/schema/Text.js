@@ -1,4 +1,5 @@
 import React from "react";
+import { Input } from "antd";
 
 export default function Text({
   value,
@@ -9,7 +10,7 @@ export default function Text({
   type = "text",
   required = false,
   submitted,
-  onKeyDown
+  onKeyDown,
 }) {
   return (
     <div className={"form-group" + (submitted && !value ? " has-error" : "")}>
@@ -19,10 +20,9 @@ export default function Text({
         </label>
       )}
 
-      <input
+      <Input
         disabled={isDisable}
         type={type}
-        className="form-control"
         value={value}
         onChange={(e) => {
           if (onChange) {
@@ -35,10 +35,7 @@ export default function Text({
       {submitted && !value && (
         <div className="help-block">{label} is required</div>
       )}
-      {submitted && !error && (
-        <div className="help-block">{error}</div>
-      )}
-
+      {submitted && !error && <div className="help-block">{error}</div>}
     </div>
   );
 }

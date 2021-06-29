@@ -12,6 +12,7 @@ import {
   TableOutlined,
   SettingOutlined,
   CarOutlined,
+  CalendarOutlined,
   OrderedListOutlined,
   UsergroupAddOutlined,
 } from "@ant-design/icons";
@@ -167,6 +168,11 @@ const MENU = [
     title: "EmployeeManagement",
     icon: <UsergroupAddOutlined />,
     link: "/employee",
+  },
+  {
+    title: "Time keeping",
+    icon: <CalendarOutlined />,
+    link: "/timeKeeping",
   },
 ];
 
