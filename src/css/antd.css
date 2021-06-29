@@ -17,11 +17,13 @@
     rgba(220, 241, 244, 1) 0%,
     rgba(23, 162, 184, 1) 100%
   );
+  z-index: 99 !important;
 }
 .ant-layout-footer {
   position: fixed;
   bottom: 0;
   width: 100vw;
+  z-index: 99 !important;
 }
 .ant-layout-content {
   /* padding: 64px 0; */
