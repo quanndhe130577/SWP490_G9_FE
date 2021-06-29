@@ -1,6 +1,6 @@
-import React, {Component} from "react";
-import {Calendar, Button, Modal, Collapse, Typography} from "antd";
-import moment from 'moment';
+import React, { Component } from "react";
+import { Calendar, Button, Modal, Collapse, Typography } from "antd";
+import moment from "moment";
 import TimeKeepingDetail from "./TimeKeepingDetail";
 import apis from "../../../../services/apis";
 import "./TimeKeeping.scss";
@@ -15,6 +15,8 @@ export default class TimeKeeping extends Component {
       employees: [],
       currentDate: new Date(),
     };
+    this.getEmployee = this.getEmployee.bind(this);
+    this.getTimes = this.getTimes.bind(this);
   }
   componentDidMount() {
     this.getEmployee();
@@ -34,8 +36,20 @@ export default class TimeKeeping extends Component {
         time.workDay = new Date(time.workDay);
         return time;
       }),
+      currentTimes: this.currentTimes(),
     });
   }
+  currentTimes = () => {
+    let date = this.state.currentDate.getDate();
+    let month = this.state.currentDate.getMonth();
+    let year = this.state.currentDate.getFullYear();
+    return this.state.times.filter(
+      (t) =>
+        t.workDay.getDate() === date &&
+        t.workDay.getMonth() === month &&
+        t.workDay.getFullYear() === year
+    );
+  };
   dateCellRender = (value) => {
     let date = value._d.getDate();
     let month = value._d.getMonth();
@@ -64,17 +78,37 @@ export default class TimeKeeping extends Component {
     );
   };
   select = (date, times) => {
-    this.setState({isShow: true, currentDate: date, currentTimes: times});
+    this.setState({ isShow: true, currentDate: date, currentTimes: times });
+  };
+  checkExitsEmp = () => {
+    let emps = [];
+    this.state.employees.forEach((emp) => {
+      if (this.state.currentTimes.map((time) => time.empId).includes(emp.id)) {
+        emps.push(emp);
+      }
+    });
+    return emps.length !== this.state.employees.length;
+  };
+  mapEmp = () => {
+    let emps = this.state.employees.filter((emp) => {
+      let listCurrentEmp = this.state.currentTimes.map((t) => t.empId);
+      return !listCurrentEmp.includes(emp.id);
+    });
+    return emps;
   };
   render() {
+    this.checkExitsEmp();
     return (
       <>
-        <Calendar dateCellRender={this.dateCellRender} validRange={[moment('01-01-2020', 'MM-DD-YYYY'), moment()]} />
+        <Calendar
+          dateCellRender={this.dateCellRender}
+          validRange={[moment("01-01-2021", "MM-DD-YYYY"), moment()]}
+        />
         <Modal
           width="100%"
           title="Basic Modal"
           visible={this.state.isShow}
-          onCancel={() => this.setState({isShow: false})}
+          onCancel={() => this.setState({ isShow: false })}
         >
           <Collapse>
             {this.state.currentTimes.map((item) => (
@@ -85,11 +119,24 @@ export default class TimeKeeping extends Component {
                 key={item.id}
               >
                 <TimeKeepingDetail
-                  employees={this.state.employees}
+                  employees={this.mapEmp()}
                   data={item}
+                  load={this.getTimes}
                 />
               </Collapse.Panel>
             ))}
+            {this.checkExitsEmp() && (
+              <Collapse.Panel
+                header="Thêm lịch"
+                key={`${this.state.currentDate}`}
+              >
+                <TimeKeepingDetail
+                  employees={this.mapEmp()}
+                  data={{ workDay: this.state.currentDate, note: 0 }}
+                  load={this.getTimes}
+                />
+              </Collapse.Panel>
+            )}
           </Collapse>
         </Modal>
       </>

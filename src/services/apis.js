@@ -58,6 +58,7 @@ var path = {
   //Time keeping
   createTimeKeeping: "/api/timeKeeping/create",
   getTimeKeepingByTrader: "/api/timeKeeping/getByTrader",
+  deleteTimeKeepingByTrader: "/api/timeKeeping/delete",
 };
 
 Object.keys(path).forEach(function (key) {
