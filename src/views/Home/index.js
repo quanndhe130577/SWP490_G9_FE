@@ -1,26 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "reactstrap";
 import apis from "../../services/apis";
-import {
-  Table,
-  //  Input, Space, Card,
-  Dropdown,
-  Menu,
-} from "antd";
-
+import local from "../../services/local";
+import { Table, Dropdown, Menu } from "antd";
+import { useDispatch } from "react-redux";
 import i18n from "i18next";
 // import helper from "../../services/helper";
 // import { SearchOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 import Moment from "react-moment";
+import NumberFormat from "react-number-format";
 
 const Dashboard = () => {
   let history = useHistory();
+  const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(true);
   const [purchase, setPurchase] = useState([]);
 
   function onClick(id) {
     history.push("buyF?id=" + id);
+    local.set(
+      "historyPurchase",
+      purchase.find((e) => e.id === id)
+    );
+    // dispatch({
+    //   type: "SET_PURCHASE",
+    //   currentPurchase: purchase.find((e) => e.id === id),
+    // });
   }
 
   function renderBtnAction(id) {
@@ -78,12 +84,19 @@ const Dashboard = () => {
       sortDirections: ["descend", "ascend"],
     },
     {
-      title: i18n.t("totalAmount"),
+      title: i18n.t("totalAmount (VND)"),
       dataIndex: "totalAmount",
       key: "totalAmount",
       // ...this.getColumnSearchProps("totalAmount"),
       sorter: (a, b) => a.totalAmount - b.totalAmount,
       sortDirections: ["descend", "ascend"],
+      render: (totalAmount) => (
+        <NumberFormat
+          value={totalAmount}
+          displayType={"text"}
+          thousandSeparator={true}
+        />
+      ),
     },
     {
       title: "",
@@ -107,6 +120,10 @@ const Dashboard = () => {
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         setPurchase(rs.data);
+        dispatch({
+          type: "SET_PURCHASE",
+          purchase: rs.data,
+        });
       }
     } catch (error) {
       console.log(error);
@@ -117,6 +134,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

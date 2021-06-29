@@ -73,5 +73,6 @@
   "numberDrum":"Tên lồ",
   "suffix":" VND",
   "EmployeeManagement": "Quản lí nhân viên",
-  "dob": "Ngày sinh"
+  "dob": "Ngày sinh",
+  "totalAmount (VND)":"Thành tiền (VND)"
 }
