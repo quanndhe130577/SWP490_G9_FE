@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Calendar, Button, Modal, Collapse, Typography } from "antd";
+import { HighlightOutlined, UsergroupDeleteOutlined } from "@ant-design/icons";
 import moment from "moment";
+import AddMore from "./AddMore";
 import TimeKeepingDetail from "./TimeKeepingDetail";
 import apis from "../../../../services/apis";
 import "./TimeKeeping.scss";
@@ -67,11 +69,12 @@ export default class TimeKeeping extends Component {
           className="tnrss-text-primary p-0"
           onClick={() => this.select(value._d, times)}
         >
-          Xem chi tiết
+          <HighlightOutlined className="tnrss-ts-2" />
         </Button>
         <ul className="events">
-          <li key="number">
-            <p className="tnrss-text-magenta">{`Tổng số nhân viên: ${times.length}`}</p>
+          <li key="number" className="d-flex">
+            <UsergroupDeleteOutlined className="tnrss-ts-2 tnrss-text-magenta pr-1" />
+            <p className="">{`${times.length}`}</p>
           </li>
         </ul>
       </>
@@ -130,9 +133,9 @@ export default class TimeKeeping extends Component {
                 header="Thêm lịch"
                 key={`${this.state.currentDate}`}
               >
-                <TimeKeepingDetail
+                <AddMore
                   employees={this.mapEmp()}
-                  data={{ workDay: this.state.currentDate, note: 0 }}
+                  data={this.state.currentDate}
                   load={this.getTimes}
                 />
               </Collapse.Panel>

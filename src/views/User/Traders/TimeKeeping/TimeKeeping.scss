@@ -15,9 +15,55 @@ $colors: (
   golden-purple: #722ed1,
   magenta: #eb2f96,
 );
+$fsize: 1rem !default;
+$fsizes: (
+  1: (
+    $fsize * 0.5,
+  ),
+  2: (
+    $fsize * 1,
+  ),
+  3: (
+    $fsize * 1.5,
+  ),
+  4: (
+    $fsize * 2,
+  ),
+  5: (
+    $fsize * 3,
+  ),
+);
+$spacer: 1rem !default;
+$spacers: (
+  0: 0,
+  1: (
+    $spacer * 0.25,
+  ),
+  2: (
+    $spacer * 0.5,
+  ),
+  3: $spacer,
+  4: (
+    $spacer * 1.5,
+  ),
+  5: (
+    $spacer * 3,
+  ),
+  auto: auto,
+);
 @each $name, $color in $colors {
   .tnrss-text-#{$name} {
     color: $color !important;
+  }
+}
+@each $name, $size in $fsizes {
+  .tnrss-ts-#{$name} {
+    font-size: $size !important;
+  }
+}
+@each $name, $size in $spacers {
+  .tnrss-lh-#{$name} {
+    line-height: $size !important;
   }
 }
 @each $name, $color in $colors {
@@ -26,6 +72,7 @@ $colors: (
     border: 1px solid $color !important;
   }
 }
+
 .tnrss-btn {
   // color: #6c757d;
   border: 1px solid;
