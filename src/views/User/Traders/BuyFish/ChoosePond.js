@@ -64,8 +64,8 @@ const ChoosePond = ({
       handlePurchase(val, prop);
     }
   };
-  function addField(arr, newfield, oldField) {
-    arr.map((el) => (el[newfield] = el[oldField]));
+  function addField(arr, newField, oldField) {
+    arr.map((el) => (el[newField] = el[oldField]));
     return arr;
   }
 
