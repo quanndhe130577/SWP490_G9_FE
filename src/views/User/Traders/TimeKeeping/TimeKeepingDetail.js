@@ -60,11 +60,7 @@ export default class TimeKeepingDetail extends Component {
     this.props.load();
   }
   async delete() {
-    let rs = await apis.deleteTimeKeepingByTrader(
-      {},
-      "POST",
-      this.props.data.id
-    );
+    await apis.deleteTimeKeepingByTrader({}, "POST", this.props.data.id);
     if (rs) {
       await this.props.load();
     }

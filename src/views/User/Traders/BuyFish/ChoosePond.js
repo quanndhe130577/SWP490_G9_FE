@@ -12,7 +12,7 @@ import { useHistory } from "react-router-dom";
 const ChoosePond = ({
   isShowChoosePond,
   setShowChoosePond,
-  handlePurchase,
+  // handlePurchase,
   pondOwner,
   currentPurchase,
   setCurrentPurchase,
@@ -21,9 +21,12 @@ const ChoosePond = ({
 }) => {
   let history = useHistory();
   let isChange = false;
+
   const handleOk = () => {
     setShowChoosePond(false);
-    if (createPurchase) {
+    debugger;
+    console.log(currentPurchase);
+    if (createPurchase && !currentPurchase.id) {
       createPurchase();
     }
   };
@@ -61,11 +64,11 @@ const ChoosePond = ({
       local.set("currentPurchase", tem);
 
       setCurrentPurchase(tem);
-      handlePurchase(val, prop);
+      // handlePurchase(val, prop);
     }
   };
-  function addField(arr, newfield, oldField) {
-    arr.map((el) => (el[newfield] = el[oldField]));
+  function addField(arr, newField, oldField) {
+    arr.map((el) => (el[newField] = el[oldField]));
     return arr;
   }
 

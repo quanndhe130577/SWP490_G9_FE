@@ -14,17 +14,17 @@ const ModalBuy = ({
   setIsShowBuy,
   currentPurchase,
   purchase,
-  handleTrans,
+  handlePurchase,
   // currentTran,
   dataDf,
   createPurchaseDetail,
   fetchDrumByTruck,
 }) => {
-  const [transaction, setTransaction] = useState(currentPurchase);
+  const [transaction, setTransaction] = useState(currentPurchase);// transaction là 1 bản ghi của purchase 
   // const [drum, setDrum] = useState([]);
 
   const handleOk = () => {
-    if (handleTrans) {
+    if (handlePurchase) {
       let validate = validateDate();
       if (validate) {
         return helper.toast("error", i18n.t(validate));
@@ -32,7 +32,7 @@ const ModalBuy = ({
       let tem = transaction;
       tem.idx = purchase.length + 1;
 
-      handleTrans(tem);
+      handlePurchase(tem);
       createPurchaseDetail(tem);
     }
     setIsShowBuy(false);
@@ -48,7 +48,7 @@ const ModalBuy = ({
     if (name === "weight") {
       value = parseInt(value);
     } else if (name === "truck" && value !== transaction.truck) {
-      fetchDrumByTruck();
+      fetchDrumByTruck(transaction.truck);
     } else if (name === "listDrumId" && value.length > 0) {
       value = value.map((el) => (el = parseInt(el)));
     }

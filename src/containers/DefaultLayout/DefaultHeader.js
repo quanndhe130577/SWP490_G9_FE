@@ -50,8 +50,8 @@ class DefaultHeader extends Component {
           style={{ paddingTop: 64 }}
           breakpoint="lg"
           collapsedWidth="0"
-          onBreakpoint={(broken) => {}}
-          onCollapse={(collapsed, type) => {}}
+          onBreakpoint={(broken) => { }}
+          onCollapse={(collapsed, type) => { }}
         >
           <Menu mode="inline">
             {/* auto generate menu, define menu in MENU */}
@@ -128,7 +128,7 @@ const MENU = [
     icon: <SettingOutlined />,
     menu: [
       {
-        link: "/buyF",
+        link: "/home",
         title: "buyGood",
       },
     ],

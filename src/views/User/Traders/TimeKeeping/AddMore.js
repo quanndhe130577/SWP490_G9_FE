@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Row, Col } from "reactstrap";
 import { Checkbox, Button } from "antd";
 import Widgets from "../../../../schema/Widgets";
-import apis from "../../../../services/apis";
+// import apis from "../../../../services/apis";
 
 export default class AddMore extends Component {
   constructor(props) {

@@ -21,15 +21,14 @@ const BuyFish = (props) => {
   const [purchase, setPurchase] = useState([]);
   const [currentPurchase, setCurrentPurchase] = useState({});
   // const [currentTran, setCurrentTran] = useState({});
-  const [dataDf, setData] = useState({ basket: [], drum: [], truck: [] });
+  const [dataDf, setData] = useState({ basket: [], drum: [], truck: [] }); // list data of basket, drum, truck,...
   const currentPurchasePROPS = useSelector(
     (state) => state.purchase.currentPurchase
   ); // data in redux
 
   const handelAction = (action, id) => {
     if (action === "delete") {
-      let tem = purchase.filter((el) => el.id !== id);
-      setPurchase(tem);
+      deletePurchaseDetail(id);
     } else {
       let tem = purchase.find((e) => e.id === id);
       if (tem) {
@@ -39,6 +38,22 @@ const BuyFish = (props) => {
       }
     }
   };
+
+  // deletePurchaseDetail
+  async function deletePurchaseDetail(purchaseDetailId) {
+    try {
+      let rs = await apis.deletePurchaseDetail({ purchaseDetailId });
+      if (rs && rs.statusCode === 200) {
+        let tem = purchase.filter((el) => el.id !== purchaseDetailId);
+        setPurchase(tem);
+        helper.toast("success", i18n.t(rs.message));
+      }
+    } catch (error) {
+      console.log(error);
+      helper.toast("success", i18n.t(error));
+    }
+  }
+
   const renderDrum = (listDrum = []) => {
     let label = "";
     listDrum.forEach((el, idx) => {
@@ -157,20 +172,19 @@ const BuyFish = (props) => {
   const showModal = () => {
     setIsShowBuy(true);
   };
-  const handlePurchase = (value, prop) => {
-    setPurchase((pre) => ({
-      ...pre,
-      [prop]: value,
-    }));
-  };
-  const handleTrans = (value) => {
+  // const handlePurchase = (value, prop) => {
+  //   setPurchase((pre) => ({
+  //     ...pre,
+  //     [prop]: value,
+  //   }));
+  // };
+  const handlePurchase = (value) => {
     // setCurrentTran({});
     setCurrentPurchase({});
     setPurchase((pre) => [...pre, value]);
   };
 
   const findPO = () => {
-    debugger;
     if (currentPurchase.pondOwner && dataDf.pondOwner)
       return (
         dataDf.pondOwner.find(
@@ -223,9 +237,9 @@ const BuyFish = (props) => {
     }
   }
 
-  async function fetchDrumByTruck() {
+  async function fetchDrumByTruck(truckId) {
     try {
-      let rs = await apis.getAllDrumByTruckID({}, "GET", purchase.truck);
+      let rs = await apis.getAllDrumByTruckID({}, "GET", truckId);
       if (rs && rs.statusCode === 200) {
         setData((pre) => ({
           ...pre,
@@ -362,7 +376,7 @@ const BuyFish = (props) => {
             setIsShowBuy={setIsShowBuy}
             currentPurchase={currentPurchase}
             purchase={purchase}
-            handleTrans={handleTrans}
+            handlePurchase={handlePurchase}
             // currentTran={currentTran}
             dataDf={dataDf}
             createPurchaseDetail={createPurchaseDetail}
