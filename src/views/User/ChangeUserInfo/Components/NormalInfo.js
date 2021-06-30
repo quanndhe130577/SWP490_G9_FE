@@ -3,7 +3,6 @@ import Avatar from "react-avatar-edit";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import Widgets from "../../../../schema/Widgets";
-import { Button } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import apis from "../../../../services/apis";
 

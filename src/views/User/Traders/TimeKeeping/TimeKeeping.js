@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { Calendar, Button, Modal, Collapse, Typography } from "antd";
-import { HighlightOutlined, UsergroupDeleteOutlined } from "@ant-design/icons";
+import { Calendar, Modal } from "antd";
+import { UsergroupDeleteOutlined } from "@ant-design/icons";
 import moment from "moment";
-import AddMore from "./AddMore";
-import TimeKeepingDetail from "./TimeKeepingDetail";
+import CurrentEmps from "./CurrentEmps";
 import apis from "../../../../services/apis";
 import "./TimeKeeping.scss";
 
@@ -15,15 +14,17 @@ export default class TimeKeeping extends Component {
       currentTimes: [],
       times: [],
       employees: [],
-      currentDate: new Date(),
+      currentDate: moment(),
     };
     this.getEmployee = this.getEmployee.bind(this);
     this.getTimes = this.getTimes.bind(this);
   }
+
   componentDidMount() {
     this.getEmployee();
     this.getTimes();
   }
+
   async getEmployee() {
     let rs = await apis.getEmployees({}, "GET");
     if (rs) {
@@ -32,21 +33,29 @@ export default class TimeKeeping extends Component {
       });
     }
   }
+
   async getTimes() {
     let date = new Date();
-    let rs = await apis.getTimeKeepingByTrader({}, "GET", date.toDateString());
-    this.setState({
-      times: rs.data.map((time) => {
-        time.workDay = new Date(time.workDay);
-        return time;
-      }),
-      currentTimes: this.currentTimes(),
-    });
+    let rs = await apis.getTimeKeepingByTraderWithMonth(
+      {},
+      "GET",
+      date.toDateString()
+    );
+    if (rs) {
+      this.setState({
+        times: rs.data.map((time) => {
+          time.workDay = new Date(time.workDay);
+          return time;
+        }),
+        currentTimes: this.currentTimes(this.state.currentDate._d),
+      });
+    }
   }
-  currentTimes = () => {
-    let date = this.state.currentDate.getDate();
-    let month = this.state.currentDate.getMonth();
-    let year = this.state.currentDate.getFullYear();
+
+  currentTimes = (currentDate) => {
+    let date = currentDate.getDate();
+    let month = currentDate.getMonth();
+    let year = currentDate.getFullYear();
     return this.state.times.filter(
       (t) =>
         t.workDay.getDate() === date &&
@@ -55,35 +64,38 @@ export default class TimeKeeping extends Component {
     );
   };
   dateCellRender = (value) => {
-    let date = value._d.getDate();
-    let month = value._d.getMonth();
-    let year = value._d.getFullYear();
-    let times = this.state.times.filter(
-      (t) =>
-        t.workDay.getDate() === date &&
-        t.workDay.getMonth() === month &&
-        t.workDay.getFullYear() === year
-    );
-    return (
-      <>
-        <Button
-          type="link"
-          className="tnrss-text-primary p-0"
-          onClick={() => this.select(value._d, times)}
-        >
-          <HighlightOutlined className="tnrss-ts-2" />
-        </Button>
+    let times = this.currentTimes(value._d);
+    let currentDate = this.state.currentDate;
+    if (currentDate._d.getMonth() === value._d.getMonth()) {
+      return (
         <ul className="events">
           <li key="number" className="d-flex">
             <UsergroupDeleteOutlined className="tnrss-ts-2 tnrss-text-magenta pr-1" />
             <p className="">{`${times.length}`}</p>
           </li>
         </ul>
-      </>
-    );
+      );
+    } else {
+      return "";
+    }
   };
-  select = (date, times) => {
-    this.setState({ isShow: true, currentDate: date, currentTimes: times });
+
+  onChange = (value) => {
+    if (
+      this.state.currentDate._d.getMonth() === value._d.getMonth() &&
+      this.state.currentDate._d.getYear() === value._d.getYear()
+    ) {
+      this.setState({
+        currentDate: value,
+        currentTimes: this.currentTimes(value._d),
+        isShow: true,
+      });
+    } else {
+      this.setState({
+        currentDate: value,
+        currentTimes: this.currentTimes(value._d),
+      });
+    }
   };
   checkExitsEmp = () => {
     let emps = [];
@@ -101,6 +113,7 @@ export default class TimeKeeping extends Component {
     });
     return emps;
   };
+
   render() {
     this.checkExitsEmp();
     return (
@@ -108,6 +121,8 @@ export default class TimeKeeping extends Component {
         <Calendar
           dateCellRender={this.dateCellRender}
           validRange={[moment("01-01-2021", "MM-DD-YYYY"), moment()]}
+          onChange={this.onChange}
+          value={this.state.currentDate}
         />
         <Modal
           width="100%"
@@ -115,34 +130,11 @@ export default class TimeKeeping extends Component {
           visible={this.state.isShow}
           onCancel={() => this.setState({ isShow: false })}
         >
-          <Collapse>
-            {this.state.currentTimes.map((item) => (
-              <Collapse.Panel
-                header={
-                  <Typography.Text type="success">{`${item.empName} ${item.status} công`}</Typography.Text>
-                }
-                key={item.id}
-              >
-                <TimeKeepingDetail
-                  employees={this.mapEmp()}
-                  data={item}
-                  load={this.getTimes}
-                />
-              </Collapse.Panel>
-            ))}
-            {this.checkExitsEmp() && (
-              <Collapse.Panel
-                header="Thêm lịch"
-                key={`${this.state.currentDate}`}
-              >
-                <AddMore
-                  employees={this.mapEmp()}
-                  data={this.state.currentDate}
-                  load={this.getTimes}
-                />
-              </Collapse.Panel>
-            )}
-          </Collapse>
+          <CurrentEmps
+            currentDate={this.state.currentDate._d}
+            employees={this.state.employees}
+            load={this.getTimes()}
+          />
         </Modal>
       </>
     );
