@@ -57,8 +57,10 @@ var path = {
   getDetailEmployee: "/api/employee/detail/{empId}",
 
   //Time keeping
+  updateTimeKeeping: "/api/timeKeeping/update",
   createTimeKeeping: "/api/timeKeeping/create",
-  getTimeKeepingByTrader: "/api/timeKeeping/getByTrader",
+  getTimeKeepingByTraderWithDate: "/api/timeKeeping/getByTrader/date",
+  getTimeKeepingByTraderWithMonth: "/api/timeKeeping/getByTrader/month",
   deleteTimeKeepingByTrader: "/api/timeKeeping/delete",
 };
 

@@ -109,3 +109,11 @@ $spacers: (
     font-size: 28px;
   }
 }
+.ant-picker-cell-disabled {
+  color: #00000040;
+  background-color: #e6e6e6;
+}
+// .ant-picker-cell-today,
+.ant-picker-calendar-date-today {
+  background-color: #1890ff;
+}

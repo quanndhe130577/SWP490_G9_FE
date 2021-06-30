@@ -327,6 +327,12 @@ const BuyFish = (props) => {
     if (tem.pondOwner) {
       tem.pondOwner = parseInt(tem.pondOwner);
     }
+    debugger;
+    if (tem.date && moment(new Date()).isBetween(new Date(tem.date))) {
+      debugger;
+      tem = {};
+      local.set("currentPurchase", tem);
+    }
 
     if (tem.id || query.id) {
       // nếu có id thì ko show modal ChoosePond
@@ -338,6 +344,8 @@ const BuyFish = (props) => {
       Object.assign(tem, local.get("historyPurchase"));
 
       getAllPurchaseDetail(tem || query);
+    } else {
+      setShowChoosePond(true);
     }
     setCurrentPurchase(tem);
 
