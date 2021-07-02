@@ -24,8 +24,7 @@ const ChoosePond = ({
 
   const handleOk = () => {
     setShowChoosePond(false);
-    debugger;
-    console.log(currentPurchase);
+    // neu ko co id purchase thì tạo purchase mới
     if (createPurchase && !currentPurchase.id) {
       createPurchase();
     }

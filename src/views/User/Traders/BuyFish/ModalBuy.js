@@ -14,17 +14,16 @@ const ModalBuy = ({
   setIsShowBuy,
   currentPurchase,
   purchase,
-  handlePurchase,
   // currentTran,
   dataDf,
   createPurchaseDetail,
   fetchDrumByTruck,
 }) => {
-  const [transaction, setTransaction] = useState(currentPurchase);// transaction là 1 bản ghi của purchase 
-  // const [drum, setDrum] = useState([]);
+  const [transaction, setTransaction] = useState(currentPurchase); // transaction là 1 bản ghi của purchase
+  const [loading, setLoading] = useState(false);
 
   const handleOk = () => {
-    if (handlePurchase) {
+    if (createPurchaseDetail) {
       let validate = validateDate();
       if (validate) {
         return helper.toast("error", i18n.t(validate));
@@ -32,7 +31,6 @@ const ModalBuy = ({
       let tem = transaction;
       tem.idx = purchase.length + 1;
 
-      handlePurchase(tem);
       createPurchaseDetail(tem);
     }
     setIsShowBuy(false);
@@ -40,7 +38,7 @@ const ModalBuy = ({
   const handleCancel = () => {
     setIsShowBuy(false);
   };
-  const handleChangeTran = (name, value) => {
+  const handleChangeTran = async (name, value) => {
     // if(name === "drum"){
     //   let drums =purchase.drum
     //   drums
@@ -48,7 +46,13 @@ const ModalBuy = ({
     if (name === "weight") {
       value = parseInt(value);
     } else if (name === "truck" && value !== transaction.truck) {
-      fetchDrumByTruck(transaction.truck);
+      // neu khac xe thi call api lấy lại list drum và set lại listDrumId
+      let rs = await fetchDrumByTruck(value);
+      setTransaction((prevState) => ({
+        ...prevState,
+        listDrumId: [],
+      }));
+      setLoading(rs);
     } else if (name === "listDrumId" && value.length > 0) {
       value = value.map((el) => (el = parseInt(el)));
     }
@@ -118,7 +122,7 @@ const ModalBuy = ({
             items={dataDf.truck || []}
           />
         </Col>
-        {transaction.truck && (
+        {transaction.truck && loading && (
           <Col md="6" xs="12">
             <Widgets.SelectSearchMulti
               // required={true}

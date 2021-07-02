@@ -172,12 +172,7 @@ const BuyFish = (props) => {
   const showModal = () => {
     setIsShowBuy(true);
   };
-  // const handlePurchase = (value, prop) => {
-  //   setPurchase((pre) => ({
-  //     ...pre,
-  //     [prop]: value,
-  //   }));
-  // };
+
   const handlePurchase = (value) => {
     // setCurrentTran({});
     setCurrentPurchase({});
@@ -245,9 +240,11 @@ const BuyFish = (props) => {
           ...pre,
           drum: rs.data,
         }));
+        return true;
       }
     } catch (error) {
       console.log(error);
+      return false;
     }
   }
 
@@ -261,11 +258,12 @@ const BuyFish = (props) => {
       let rs = await apis.createPurchase({ traderId, pondOwnerID, date });
       if (rs && rs.statusCode === 200) {
         let tem = rs.data;
-        setPurchase((pre) => ({
-          ...pre,
-          tem,
-        }));
+        // setPurchase((pre) => ({
+        //   ...pre,
+        //   tem,
+        // }));
         tem = Object.assign(tem, currentPurchase);
+        setCurrentPurchase(tem);
         local.set("currentPurchase", tem);
         // helper.toast("success", i18n.t(rs.statusCode));
       }
@@ -304,7 +302,6 @@ const BuyFish = (props) => {
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         setPurchase(rs.data);
-        // helper.toast("success", i18n.t(rs.message));
       }
     } catch (error) {
       console.log(error);
@@ -328,6 +325,11 @@ const BuyFish = (props) => {
       tem.pondOwner = parseInt(tem.pondOwner);
     }
 
+    if (tem.date && moment(new Date()).isBetween(new Date(tem.date))) {
+      tem = {};
+      local.set("currentPurchase", tem);
+    }
+
     if (tem.id || query.id) {
       // nếu có id thì ko show modal ChoosePond
       // và get getAllPurchaseDetail theo id ban đâu
@@ -338,6 +340,8 @@ const BuyFish = (props) => {
       Object.assign(tem, local.get("historyPurchase"));
 
       getAllPurchaseDetail(tem || query);
+    } else {
+      setShowChoosePond(true);
     }
     setCurrentPurchase(tem);
 

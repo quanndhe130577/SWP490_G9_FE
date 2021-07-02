@@ -36,6 +36,8 @@ var path = {
   // Purchase Management
   createPurchase: "/api/purchase/create",
   getPurchases: "/api/purchase/getall", // GET
+  deletePurchase: "/api/purchase/delete",
+  updatePurchase: "/api/purchase/update",
 
   // purchase  detail
   createPurchaseDetail: "/api/purchasedetail/create",
