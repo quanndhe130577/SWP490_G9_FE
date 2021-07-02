@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Calendar, Modal } from "antd";
+import { Calendar } from "antd";
 import {
   UsergroupDeleteOutlined,
   DollarCircleOutlined,
