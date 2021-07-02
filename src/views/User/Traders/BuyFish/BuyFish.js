@@ -310,6 +310,8 @@ const BuyFish = (props) => {
     }
   }
 
+  async function closePurchase() {}
+
   useEffect(() => {
     // lấy id trên address bar
     let query = queryString.parse(props.location.search, {
@@ -325,7 +327,7 @@ const BuyFish = (props) => {
       tem.pondOwner = parseInt(tem.pondOwner);
     }
 
-    if (tem.date && moment(new Date()).isBetween(new Date(tem.date))) {
+    if (tem.status === "Pending") {
       tem = {};
       local.set("currentPurchase", tem);
     }
@@ -402,12 +404,16 @@ const BuyFish = (props) => {
           <Card title={renderTitle()}>
             <Row className="mb-2">
               <Col span="24" className="">
-                {/* nếu ngày khác ngày hôm nay thì ko show btn thêm */}
-                {moment(new Date()).isSame(
-                  new Date(currentPurchase.date),
-                  "day"
-                ) && (
+                {/* nếu status khac Pending thì ko show btn thêm */}
+                {currentPurchase.status === "Pending" && (
                   <div className="float-right">
+                    <Button
+                      color="info"
+                      onClick={() => closePurchase()}
+                      className="mr-2"
+                    >
+                      {i18n.t("closePurchase")}
+                    </Button>
                     <Button
                       color="info"
                       onClick={() => setShowChoosePond(true)}
