@@ -74,5 +74,6 @@
   "suffix":" VND",
   "EmployeeManagement": "Quản lí nhân viên",
   "dob": "Ngày sinh",
-  "totalAmount (VND)":"Thành tiền (VND)"
+  "totalAmount (VND)":"Thành tiền (VND)",
+  "closePurchase":"Chốt sổ"
 }

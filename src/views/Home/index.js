@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "reactstrap";
 import apis from "../../services/apis";
+import helper from "../../services/helper";
 import local from "../../services/local";
 import { Table, Dropdown, Menu } from "antd";
 import { useDispatch } from "react-redux";
@@ -17,32 +18,51 @@ const Dashboard = () => {
   const [isLoading, setLoading] = useState(true);
   const [purchase, setPurchase] = useState([]);
 
-  function onClick(id) {
-    history.push("buyF?id=" + id);
-    local.set(
-      "historyPurchase",
-      purchase.find((e) => e.id === id)
-    );
-    // dispatch({
-    //   type: "SET_PURCHASE",
-    //   currentPurchase: purchase.find((e) => e.id === id),
-    // });
+  async function onClick(mode, id) {
+    if (mode === "edit") {
+      history.push("buyF?id=" + id);
+      local.set(
+        "historyPurchase",
+        purchase.find((e) => e.id === id)
+      );
+      // dispatch({
+      //   type: "SET_PURCHASE",
+      //   currentPurchase: purchase.find((e) => e.id === id),
+      // });
+    } else if (mode === "delete") {
+      try {
+        helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
+          if (rs) {
+            setLoading(true);
+            let rs = await apis.deletePurchase({ purchaseId: id });
+            if (rs && rs.statusCode === 200) {
+              setLoading(false);
+              helper.toast("success", i18n.t(rs.message));
+              fetchData();
+            }
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
 
   function renderBtnAction(id) {
     return (
       <Menu>
         <Menu.Item>
-          <Button color="info" className="mr-2" onClick={() => onClick(id)}>
+          <Button
+            color="info"
+            className="mr-2"
+            onClick={() => onClick("edit", id)}
+          >
             <i className="fa fa-pencil-square-o mr-1" />
             {i18n.t("edit")}
           </Button>
         </Menu.Item>
         <Menu.Item>
-          <Button
-            color="danger"
-            // onClick={() => onClick("delete", id)}
-          >
+          <Button color="danger" onClick={() => onClick("delete", id)}>
             <i className="fa fa-trash-o mr-1" />
             {i18n.t("delete")}
           </Button>
