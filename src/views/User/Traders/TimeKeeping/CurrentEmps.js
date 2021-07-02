@@ -22,7 +22,6 @@ export default class CurrentEmps extends Component {
     if (this.props.currentDate !== props.currentDate) {
       this.getTimes();
     }
-    // if(this.props.)
   }
 
   async getTimes() {
@@ -102,7 +101,7 @@ export default class CurrentEmps extends Component {
           <List.Item>
             <Row key="header" className="w-100 tnrss-time-keeping-border pb-4">
               <Col md="2" xs="12" className="d-flex justify-content-center">
-                <b>Trạng thái</b>
+                <b>Có đi làm</b>
               </Col>
               <Col md="3" xs="12">
                 <b>Tên</b>
