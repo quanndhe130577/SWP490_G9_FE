@@ -104,6 +104,28 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
               onChange={(e) => handleChangePondOwner(e, "dob")}
             />
           </Col>
+          <Col md="6" xs="12">
+            <Widgets.DateTimePicker
+              type="date"
+              label={i18n.t("startDate")}
+              value={
+                moment(employee.startDate).format("DD/MM/YYYY") ||
+                moment(new Date()).format("DD/MM/YYYY")
+              }
+              onChange={(e) => handleChangePondOwner(e, "startDate")}
+            />
+          </Col>
+          {mode==="edit" &&
+          <Col md="6" xs="12">
+            <Widgets.DateTimePicker
+              type="date"
+              label={i18n.t("endDate")}
+              value={
+                moment(employee.endDate).format("DD/MM/YYYY")
+              }
+              onChange={(e) => handleChangePondOwner(e, "endDate")}
+            />
+          </Col>}
         </Row>
       )}
     />

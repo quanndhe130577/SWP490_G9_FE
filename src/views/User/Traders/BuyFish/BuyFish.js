@@ -12,7 +12,7 @@ import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import NumberFormat from "react-number-format";
 import { useSelector } from "react-redux";
-import moment from "moment";
+// import moment from "moment";
 
 const BuyFish = (props) => {
   const [isShowBuy, setIsShowBuy] = useState(false);
@@ -76,7 +76,7 @@ const BuyFish = (props) => {
           value={value}
           displayType={"text"}
           thousandSeparator={true}
-          // suffix={i18n.t("suffix")}
+        // suffix={i18n.t("suffix")}
         />
       );
     }
@@ -310,7 +310,7 @@ const BuyFish = (props) => {
     }
   }
 
-  async function closePurchase() {}
+  async function closePurchase() { }
 
   useEffect(() => {
     // lấy id trên address bar
