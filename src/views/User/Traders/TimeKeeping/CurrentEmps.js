@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col } from "reactstrap";
-import { Checkbox, Modal, Typography, List, Radio } from "antd";
+import { Checkbox, Modal, List, Radio } from "antd";
 import Widgets from "../../../../schema/Widgets";
 import apis from "../../../../services/apis";
 import "./TimeKeeping.scss";
@@ -22,7 +22,6 @@ export default class CurrentEmps extends Component {
     if (this.props.currentDate !== props.currentDate) {
       this.getTimes();
     }
-    // if(this.props.)
   }
 
   async getTimes() {
@@ -90,20 +89,19 @@ export default class CurrentEmps extends Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <Modal
-        width="60%"
-        title="Basic Modal"
+        width="70%"
+        title="Danh sách nhân viên trong ngày"
         visible={this.props.visible}
         onCancel={this.props.cancel}
         onOk={this.submit}
       >
         <List>
           <List.Item>
-            <Row key="header" className="w-100">
+            <Row key="header" className="w-100 tnrss-time-keeping-border pb-4">
               <Col md="2" xs="12" className="d-flex justify-content-center">
-                <b>Trạng thái</b>
+                <b>Có đi làm</b>
               </Col>
               <Col md="3" xs="12">
                 <b>Tên</b>

@@ -1,4 +1,5 @@
 import React from "react";
+import { Input } from "antd";
 
 export default function Number({
   value,
@@ -20,10 +21,10 @@ export default function Number({
         </label>
       )}
 
-      <input
+      <Input
         disabled={isDisable}
         type="number"
-        className="form-control"
+        // className="form-control"
         min={min}
         max={max}
         value={value}
