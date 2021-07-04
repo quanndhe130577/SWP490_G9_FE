@@ -1,52 +1,23 @@
-import React from "react";
-// import { useHistory } from "react-router-dom";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { notification } from "antd";
 import i18n from "i18next";
 import Swal from "sweetalert2";
-toast.configure();
+
 let helper = {};
 
-helper.toast = (type, content, disableAutoClose) => {
-  if (type === "error") {
-    console.log(content);
-  }
-  let autoClose = 3000;
-  if (disableAutoClose) {
-    autoClose = false;
-  }
-  if (type) {
-    toast[type](Toast(type, content), {
-      position: toast.POSITION.TOP_RIGHT,
-      autoClose,
-    });
-  } else {
-    toast(Toast(type, content), {
-      position: toast.POSITION.TOP_RIGHT,
-      autoClose,
-    });
-  }
-};
-const Toast = (type, content) => {
-  let icon = "fa fa-info-circle"; // info
+helper.toast = (type, message, duration = 2) => {
+  let className = "noti-error";
   if (type === "success") {
-    icon = "fa fa-check";
-  } else if (type === "error") {
-    icon = "fa fa-shield";
+    className = "noti-success";
   } else if (type === "warning") {
-    icon = "fa fa-exclamation-triangle";
+    className = "noti-warning";
   } else if (type === "info") {
-    icon = "fa fa-info-circle";
-  } else if (type === "dark") {
-    icon = "fa fa-info-circle";
-  } else {
-    icon = "fa fa-newspaper-o";
+    className = "noti-info";
   }
-  return (
-    <div>
-      <i className={icon} aria-hidden="true"></i> &nbsp;{content}
-    </div>
-  );
+  notification[type]({
+    message,
+    duration,
+    className,
+  });
 };
 
 helper.renameKey = (obj, old_key, new_key) => {
@@ -77,10 +48,6 @@ helper.confirm = (content) => {
     });
   });
 };
-// helper.useHistory = (path) => {
-//   let history = useHistory();
-//   history.push(path);
-// };
 helper.getCurrentDate = () => {
   var d = new Date(),
     month = "" + (d.getMonth() + 1),

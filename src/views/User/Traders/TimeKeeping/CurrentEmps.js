@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col } from "reactstrap";
-import { Checkbox, Modal, Typography, List, Radio } from "antd";
+import { Checkbox, Modal, List, Radio } from "antd";
 import Widgets from "../../../../schema/Widgets";
 import apis from "../../../../services/apis";
 import "./TimeKeeping.scss";

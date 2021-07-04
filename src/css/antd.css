@@ -32,7 +32,7 @@
 }
 .ant-layout-sider-zero-width-trigger {
   top: 7px !important;
-  z-index: 5 !important;
+  z-index: 999 !important;
   position: fixed !important;
   right: unset !important;
   font-size: 30px !important;
@@ -53,7 +53,7 @@
 }
 .ant-btn-primary:hover {
   background-color: #137d8d !important;
-  border-color: #137d8d(17, 132, 150) !important;
+  border-color: #137d8d !important;
 }
 .ant-btn-danger:hover {
   background-color: #b96d2a !important;
@@ -70,3 +70,20 @@
 .site-layout-background {
   background: #fff;
 }
+/* .noti-success {
+  background-color: #52c41a;
+  color: white !important;
+}
+
+.noti-error {
+  background-color: #b96d2a;
+  color: white;
+}
+
+.noti-warning {
+  background-color: #dd9f68;
+  color: white;
+}
+
+.noti-info {
+} */
