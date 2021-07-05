@@ -1,54 +1,48 @@
+import i18n from "i18next";
 import React, { useState, useEffect } from "react";
-import { Row, Col } from "reactstrap";
+import { Col, Row } from "reactstrap";
 import Modal from "../../../../containers/Antd/ModalCustom";
 import Widgets from "../../../../schema/Widgets";
-import i18n from "i18next";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import moment from "moment";
 
-const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
-  const [employee, setPO] = useState(currentEmp);
+const ModalEdit = ({ isShow, closeModal, mode, currentCostIncurred }) => {
+  const [costInc, setPO] = useState(currentCostIncurred);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    handleChangeEmpoyee(new Date(), "dob");
+    handleChangeCostIncurred(new Date(), "date");
   }, []);
-  const handleChangeEmpoyee = (val, name) => {
+  const handleChangeCostIncurred = (val, name) => {
     setPO((prevState) => ({
       ...prevState,
       [name]: val,
     }));
   };
 
-  const checkValidate = (data) => {
-    const phoneNumberVNRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
-    if (!phoneNumberVNRegex.test(data)) {
-      return { isValid: false, message: "Số điện thoại không đúng" };
-    }
-    return { isValid: true, message: "" };
-  };
+
   const handleOk = async () => {
     try {
       setLoading(true);
       let user = session.get("user"),
         rs;
-      let valid = checkValidate(employee.phoneNumber);
-      if (!valid.isValid) {
-        helper.toast("error", valid.message);
-        return;
-      }
+      // let valid = checkValidate(costInc.phoneNumber);
+      // if (!valid.isValid) {
+      //   helper.toast("error", valid.message);
+      //   return;
+      // }
 
       if (mode === "create") {
-        rs = await apis.createEmployee({
-          name: employee.name,
-          address: employee.address,
-          phoneNumber: employee.phoneNumber,
-          dob: employee.dob,
+        rs = await apis.createCostIncurred({
+          name: costInc.name,
+          cost: costInc.cost,
+          note: costInc.note,
+          date: costInc.date,
           traderID: user.userID,
         });
       } else if (mode === "edit") {
-        rs = await apis.updateEmployee(employee);
+        rs = await apis.updateCostIncurred(costInc);
       }
 
       if (rs && rs.statusCode === 200) {
@@ -74,34 +68,34 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
           <Col md="6" xs="12">
             <Widgets.Text
               label={i18n.t("name")}
-              value={employee.name || ""}
-              onChange={(e) => handleChangeEmpoyee(e, "name")}
+              value={costInc.name || ""}
+              onChange={(e) => handleChangeCostIncurred(e, "name")}
+            />
+          </Col>
+          <Col md="6" xs="12">
+            <Widgets.Number
+              label={i18n.t("cost")}
+              value={costInc.cost || ""}
+              onChange={(e) => handleChangeCostIncurred(e, "cost")}
             />
           </Col>
           <Col md="6" xs="12">
             <Widgets.Text
-              label={i18n.t("address")}
-              value={employee.address || ""}
-              onChange={(e) => handleChangeEmpoyee(e, "address")}
-            />
-          </Col>
-          <Col md="6" xs="12">
-            <Widgets.Phone
               type="text"
-              label={i18n.t("phone")}
-              value={employee.phoneNumber || ""}
-              onChange={(e) => handleChangeEmpoyee(e, "phoneNumber")}
+              label={i18n.t("note")}
+              value={costInc.note || ""}
+              onChange={(e) => handleChangeCostIncurred(e, "note")}
             />
           </Col>
           <Col md="6" xs="12">
             <Widgets.DateTimePicker
               type="date"
-              label={i18n.t("dob")}
+              label={i18n.t("date")}
               value={
-                moment(employee.dob).format("DD/MM/YYYY") ||
+                moment(costInc.date).format("DD/MM/YYYY") ||
                 moment(new Date()).format("DD/MM/YYYY")
               }
-              onChange={(e) => handleChangeEmpoyee(e, "dob")}
+              onChange={(e) => handleChangeCostIncurred(e, "date")}
             />
           </Col>
         </Row>

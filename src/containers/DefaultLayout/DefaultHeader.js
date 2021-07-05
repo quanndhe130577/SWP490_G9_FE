@@ -14,6 +14,8 @@ import {
   CarOutlined,
   OrderedListOutlined,
   UsergroupAddOutlined,
+  MoneyCollectOutlined,
+  DollarOutlined
 } from "@ant-design/icons";
 import "../../css/antd.css";
 import i18n from "i18next";
@@ -49,8 +51,8 @@ class DefaultHeader extends Component {
           style={{ paddingTop: 64 }}
           breakpoint="lg"
           collapsedWidth="0"
-          onBreakpoint={(broken) => {}}
-          onCollapse={(collapsed, type) => {}}
+          onBreakpoint={(broken) => { }}
+          onCollapse={(collapsed, type) => { }}
         >
           <Menu mode="inline">
             {/* auto generate menu, define menu in MENU */}
@@ -161,12 +163,26 @@ const MENU = [
         link: "/drum",
         title: "drum",
       },
+      {
+        link: "/truck1",
+        title: "truck",
+      },
     ],
   },
   {
     title: "EmployeeManagement",
     icon: <UsergroupAddOutlined />,
     link: "/employee",
+  },
+  {
+    title: "CostIncurredManagement",
+    icon: <MoneyCollectOutlined />,
+    link: "/costIncurred",
+  },
+  {
+    title: "Buyer",
+    icon: <DollarOutlined />,
+    link: "/buyer",
   },
 ];
 

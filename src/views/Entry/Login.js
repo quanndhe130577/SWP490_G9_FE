@@ -65,7 +65,7 @@ const Login = (props) => {
             <form className="col-sm-4 col-md-4 " onSubmit={handleSubmit}>
               <h2 style={{ textAlign: "center" }}> {i18n.t("Login")}</h2>
               <div>
-                <Widgets.Text
+                <Widgets.Phone
                   required={true}
                   label={i18n.t("phoneNumber")}
                   value={phoneNumber}

@@ -45,12 +45,27 @@ var path = {
   updateDrum: "/api/drum/update",
   deleteDrum: "/api/drum/delete",
 
-    //anhnbt
+  //anhnbt
   getEmployees: "/api/employee/getallemp", //method GET
   createEmployee: "/api/employee/create/",
   updateEmployee: "/api/employee/update",
   deleteEmployee: "/api/employee/delete",
-  getDetailEmployee: "/api/employee/detail/{empId}"
+  getDetailEmployee: "/api/employee/detail/{empId}",
+
+
+  //anhnbt
+  getCostIncurred: "/api/costincurred/getall",
+  createCostIncurred: "/api/costincurred/create",
+  updateCostIncurred: "/api/costincurred/update",
+  deleteCostIncurred: "/api/costincurred/delete",
+  getDetailCostIncurred: "/api/costincurred/detail/{incurredId}",
+
+  //anhnbt
+  getBuyers: "/api/buyer/getall",
+  createBuyer: "/api/buyer/create",
+  updateBuyer: "/api/buyer/update",
+  deleteBuyer: "/api/buyer/delete",
+  getDetailBuyer: "/api/buyer/detail/{buyerId}",
 };
 
 Object.keys(path).forEach(function (key) {
