@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Input } from 'antd';
 export default function Number({
   value,
   label,
@@ -19,14 +19,14 @@ export default function Number({
         </label>
       )}
 
-      <input
+      <Input
         disabled={isDisable}
         type="text"
-        className="form-control"
         value={value}
         onChange={(e) => {
           if (onChange) {
-            onChange(e.target.value);
+            let v = e.target.value.replace(/[^0-9]/, "");
+            onChange(v);
           }
         }}
         onBlur={(e) => {

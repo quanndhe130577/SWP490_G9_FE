@@ -50,6 +50,18 @@ const Employee = Loadable({
   loader: () => import("./views/User/Traders/Employee/Employee"),
   loading: Loading,
 });
+const CostIncurred = Loadable({
+  loader: () => import("./views/User/Traders/CostIncurred/CostIncurred"),
+  loading: Loading,
+});
+const TruckComp = Loadable({
+  loader: () => import("./views/User/Traders/Truck/Truck-1"),
+  loading: Loading,
+});
+const Buyer = Loadable({
+  loader: () => import("./views/User/Traders/Buyer/Buyer"),
+  loading: Loading,
+});
 const routes = [
   {
     path: "/home",
@@ -105,6 +117,21 @@ const routes = [
     path: "/timeKeeping",
     name: "TimeKeeping",
     component: TimeKeeping,
+  },
+   {
+    path: "/costIncurred",
+    name: "CostIncurred",
+    component: CostIncurred,
+  },
+  {
+    path: "/truck1",
+    name: "Truck",
+    component: TruckComp,
+  },
+  {
+    path: "/buyer",
+    name: "Buyer",
+    component: Buyer,
   },
 ];
 
