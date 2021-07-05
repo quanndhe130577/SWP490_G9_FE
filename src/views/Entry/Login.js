@@ -93,8 +93,8 @@ const Login = (props) => {
                       <>
                         {i18n.t("Login")}
                         <span
-                          className="spinner-border spinner-border-sm mr-1"
-                        ></span>
+                          className="spinner-border spinner-border-sm ml-1"
+                        />
 
                       </>
                     ) : (
