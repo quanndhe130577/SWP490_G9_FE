@@ -7,11 +7,9 @@ export default function Number({
   error,
   isDisable = false,
   onChange,
-  min = "0.5",
-  max,
   required = false,
   submitted,
-  onKeyDown
+  onKeyDown,
 }) {
   return (
     <div className={"form-group" + (submitted && !value ? " has-error" : "")}>
@@ -30,7 +28,24 @@ export default function Number({
         value={value}
         onChange={(e) => {
           if (onChange) {
-            onChange(e.target.value);
+            let v = e.target.value.replace(/[^0-9.]/, "");
+            onChange(v);
+          }
+        }}
+        onBlur={(e) => {
+          if (onChange) {
+            let val = e.target.value;
+            val = val.replace(/([^0-9.]+)/, "");
+            val = val.replace(/^(0|\.)/, "");
+            const match = /(\d{0,3})[^.]*((?:\.\d{0,1})?)/g.exec(val);
+            let value = match[1] + match[2];
+
+            if (val.length > 0) {
+              let tem = parseFloat(value).toFixed(1);
+              onChange(tem);
+            } else {
+              onChange(0);
+            }
           }
         }}
         onKeyDown={onKeyDown}
@@ -39,10 +54,7 @@ export default function Number({
       {submitted && !value && (
         <div className="help-block">{label} is required</div>
       )}
-      {submitted && !error && (
-        <div className="help-block">{error}</div>
-      )}
-
+      {submitted && !error && <div className="help-block">{error}</div>}
     </div>
   );
 }
