@@ -128,7 +128,7 @@ const MENU = [
     icon: <SettingOutlined />,
     menu: [
       {
-        link: "/home",
+        link: "/buy",
         title: "buyGood",
       },
     ],

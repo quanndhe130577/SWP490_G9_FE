@@ -91,12 +91,11 @@ const Login = (props) => {
                   <button className="btn btn-info p-1">
                     {loggingIn ? (
                       <>
+                        {i18n.t("Login")}
                         <span
                           className="spinner-border spinner-border-sm mr-1"
-                          role="status"
-                          aria-hidden="true"
                         ></span>
-                        {i18n.t("logging")}
+
                       </>
                     ) : (
                       <span>{i18n.t("Login")}</span>

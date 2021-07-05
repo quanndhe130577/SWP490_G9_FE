@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import i18n from "i18next";
-// import data from "../../../../data";
 import Widgets from "../../../../schema/Widgets";
 
-const PriceFishToday = ({ listFish, onChange, dataDf }) => {
+const PriceFishToday = ({ listFishId, onChange, dataDf }) => {
   const columns = [
     {
       title: "STT",
@@ -50,22 +49,23 @@ const PriceFishToday = ({ listFish, onChange, dataDf }) => {
     temArr.forEach((el) => {
       let tem = dataDf.fishType.find((ft) => ft.id === parseInt(el));
       if (tem) {
-        tem.idx = ++count
-        arr.push(tem)
-      };
+        tem.idx = ++count;
+        arr.push(tem);
+      }
+      ;
     });
 
     if (onChange) {
       onChange(arr);
-
     }
     setData(arr);
 
+
   };
   useEffect(() => {
-    findList(listFish);
+    findList(listFishId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [listFish]);
+  }, [listFishId]);
   return (
     <div style={{ overflowX: "auto" }}>
       <Table columns={columns} dataSource={dataS} />

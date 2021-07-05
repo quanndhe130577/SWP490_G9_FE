@@ -75,5 +75,8 @@
   "EmployeeManagement": "Quản lí nhân viên",
   "dob": "Ngày sinh",
   "totalAmount (VND)":"Thành tiền (VND)",
-  "closePurchase":"Chốt sổ"
+  "closePurchase":"Chốt sổ",
+  "continueToBuy": "Mua tiếp",
+  "newPurchase": "Mua mới",
+  "back": "Quay lại"
 }
