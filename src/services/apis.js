@@ -64,6 +64,20 @@ var path = {
   getTimeKeepingByTraderWithDate: "/api/timeKeeping/getByTrader/date",
   getTimeKeepingByTraderWithMonth: "/api/timeKeeping/getByTrader/month",
   deleteTimeKeepingByTrader: "/api/timeKeeping/delete",
+
+  //anhnbt
+  getCostIncurred: "/api/costincurred/getall",
+  createCostIncurred: "/api/costincurred/create",
+  updateCostIncurred: "/api/costincurred/update",
+  deleteCostIncurred: "/api/costincurred/delete",
+  getDetailCostIncurred: "/api/costincurred/detail/{incurredId}",
+
+  //anhnbt
+  getBuyers: "/api/buyer/getall",
+  createBuyer: "/api/buyer/create",
+  updateBuyer: "/api/buyer/update",
+  deleteBuyer: "/api/buyer/delete",
+  getDetailBuyer: "/api/buyer/detail/{buyerId}",
 };
 
 Object.keys(path).forEach(function (key) {

@@ -12,9 +12,9 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
   const [employee, setPO] = useState(currentEmp);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    handleChangePondOwner(new Date(), "dob");
+    handleChangeEmpoyee(new Date(), "dob");
   }, []);
-  const handleChangePondOwner = (val, name) => {
+  const handleChangeEmpoyee = (val, name) => {
     setPO((prevState) => ({
       ...prevState,
       [name]: val,
@@ -75,14 +75,14 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
             <Widgets.Text
               label={i18n.t("name")}
               value={employee.name || ""}
-              onChange={(e) => handleChangePondOwner(e, "name")}
+              onChange={(e) => handleChangeEmpoyee(e, "name")}
             />
           </Col>
           <Col md="6" xs="12">
             <Widgets.Text
               label={i18n.t("address")}
               value={employee.address || ""}
-              onChange={(e) => handleChangePondOwner(e, "address")}
+              onChange={(e) => handleChangeEmpoyee(e, "address")}
             />
           </Col>
           <Col md="6" xs="12">
@@ -90,7 +90,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
               type="text"
               label={i18n.t("phone")}
               value={employee.phoneNumber || ""}
-              onChange={(e) => handleChangePondOwner(e, "phoneNumber")}
+              onChange={(e) => handleChangeEmpoyee(e, "phoneNumber")}
             />
           </Col>
           <Col md="6" xs="12">
@@ -101,7 +101,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
                 moment(employee.dob).format("DD/MM/YYYY") ||
                 moment(new Date()).format("DD/MM/YYYY")
               }
-              onChange={(e) => handleChangePondOwner(e, "dob")}
+              onChange={(e) => handleChangeEmpoyee(e, "dob")}
             />
           </Col>
           <Col md="6" xs="12">
