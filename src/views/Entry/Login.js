@@ -65,7 +65,7 @@ const Login = (props) => {
             <form className="col-sm-4 col-md-4 " onSubmit={handleSubmit}>
               <h2 style={{ textAlign: "center" }}> {i18n.t("Login")}</h2>
               <div>
-                <Widgets.Text
+                <Widgets.Phone
                   required={true}
                   label={i18n.t("phoneNumber")}
                   value={phoneNumber}
@@ -91,12 +91,11 @@ const Login = (props) => {
                   <button className="btn btn-info p-1">
                     {loggingIn ? (
                       <>
+                        {i18n.t("Login")}
                         <span
-                          className="spinner-border spinner-border-sm mr-1"
-                          role="status"
-                          aria-hidden="true"
-                        ></span>
-                        {i18n.t("logging")}
+                          className="spinner-border spinner-border-sm ml-1"
+                        />
+
                       </>
                     ) : (
                       <span>{i18n.t("Login")}</span>

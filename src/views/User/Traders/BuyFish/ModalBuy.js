@@ -14,7 +14,7 @@ const ModalBuy = ({
   setIsShowBuy,
   currentPurchase,
   purchase,
-  // currentTran,
+ mode,
   dataDf,
   createPurchaseDetail,
   fetchDrumByTruck,
@@ -43,9 +43,10 @@ const ModalBuy = ({
     //   let drums =purchase.drum
     //   drums
     // }
-    if (name === "weight") {
-      value = parseInt(value);
-    } else if (name === "truck" && value !== transaction.truck) {
+    // if (name === "weight") {
+    //   value = parseInt(value);
+    // } else
+      if (name === "truck" && value !== transaction.truck) {
       // neu khac xe thi call api lấy lại list drum và set lại listDrumId
       let rs = await fetchDrumByTruck(value);
       setTransaction((prevState) => ({
@@ -80,7 +81,7 @@ const ModalBuy = ({
   }
   return (
     <Modal
-      title={i18n.t("Thêm Mã")}
+      title={mode==="create"?i18n.t("Thêm Mã"):""}
       visible={isShowBuy}
       onOk={handleOk}
       onCancel={handleCancel}
@@ -99,8 +100,7 @@ const ModalBuy = ({
           <Widgets.Number
             required={true}
             label={i18n.t("qtyOfFish(Kg)")}
-            type="number"
-            value={transaction.weight}
+            value={transaction.weight||0}
             onChange={(e) => handleChangeTran("weight", e)}
           />
         </Col>

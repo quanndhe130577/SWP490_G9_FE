@@ -15,6 +15,8 @@ import {
   CalendarOutlined,
   OrderedListOutlined,
   UsergroupAddOutlined,
+  MoneyCollectOutlined,
+  DollarOutlined
 } from "@ant-design/icons";
 import "../../css/antd.css";
 import i18n from "i18next";
@@ -128,7 +130,7 @@ const MENU = [
     icon: <SettingOutlined />,
     menu: [
       {
-        link: "/home",
+        link: "/buy",
         title: "buyGood",
       },
     ],
@@ -162,6 +164,10 @@ const MENU = [
         link: "/drum",
         title: "drum",
       },
+      {
+        link: "/truck1",
+        title: "truck",
+      },
     ],
   },
   {
@@ -173,6 +179,15 @@ const MENU = [
     title: "Time keeping",
     icon: <CalendarOutlined />,
     link: "/timeKeeping",
+    },{
+    title: "CostIncurredManagement",
+    icon: <MoneyCollectOutlined />,
+    link: "/costIncurred",
+  },
+  {
+    title: "Buyer",
+    icon: <DollarOutlined />,
+    link: "/buyer",
   },
 ];
 

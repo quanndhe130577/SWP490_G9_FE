@@ -3,23 +3,19 @@ import { Modal } from "antd";
 import { Row, Col } from "reactstrap";
 import i18n from "i18next";
 import Widgets from "../../../../schema/Widgets";
-// import data from "../../../../data";
 import local from "../../../../services/local";
 import helper from "../../../../services/helper";
 import PriceFishToday from "./PriceFishToday";
-import { useHistory } from "react-router-dom";
 
 const ChoosePond = ({
   isShowChoosePond,
   setShowChoosePond,
-  // handlePurchase,
   pondOwner,
   currentPurchase,
   setCurrentPurchase,
   dataDf,
   createPurchase,
 }) => {
-  let history = useHistory();
   let isChange = false;
 
   const handleOk = () => {
@@ -32,7 +28,9 @@ const ChoosePond = ({
 
   const handleCancel = () => {
     if (!isChange) {
-      history.push("/home");
+      // history.push("/home");
+      setShowChoosePond(false);
+
     } else {
       // if pondOwner null cant close modal
       let check = validate(currentPurchase, "pondOwner");
@@ -60,10 +58,12 @@ const ChoosePond = ({
       } else {
         tem[prop] = val;
       }
-      local.set("currentPurchase", tem);
 
-      setCurrentPurchase(tem);
-      // handlePurchase(val, prop);
+      local.set("currentPurchase", tem);
+      setCurrentPurchase((prevState) => ({
+        ...prevState,
+        [prop]: val,
+      }));
     }
   };
   function addField(arr, newField, oldField) {
@@ -90,15 +90,15 @@ const ChoosePond = ({
           />
           <Widgets.SelectSearchMulti
             label={i18n.t("chooseFish")}
-            value={currentPurchase.listFish}
+            value={currentPurchase.listFishId}
             items={addField(dataDf.fishType || [], "name", "fishName")}
-            onChange={(vl) => onChange(vl, "listFish")}
+            onChange={(vl) => onChange(vl, "listFishId")}
           />
         </Col>
         <Col md="8" xs="12">
           <label className="bold">Các loại các trong ao</label>
           <PriceFishToday
-            listFish={currentPurchase.listFish || []}
+            listFishId={currentPurchase.listFishId || []}
             onChange={(arr) => onChange(arr, "arrFish")}
             dataDf={dataDf}
           />

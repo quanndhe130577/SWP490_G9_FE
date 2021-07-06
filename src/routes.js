@@ -4,15 +4,15 @@ import Loadable from "react-loadable";
 function Loading() {
   return <div>Loading...</div>;
 }
-
-const Dashboard = Loadable({
+const Home = Loadable({
   loader: () => import("./views/Home/index"),
   loading: Loading,
 });
-// const TableViewer = Loadable({
-//   loader: () => import("./views/AutoGenerate/TableViewer"),
-//   loading: Loading,
-// });
+const ManaBuy = Loadable({
+  loader: () => import("./views/Management/BuyFish"),
+  loading: Loading,
+});
+
 const BuyFish = Loadable({
   loader: () => import("./views/User/Traders/BuyFish/BuyFish"),
   loading: Loading,
@@ -21,10 +21,7 @@ const ChangeUserInfo = Loadable({
   loader: () => import("./views/User/ChangeUserInfo/ChangeUserInfo"),
   loading: Loading,
 });
-// const Basket = Loadable({
-//   loader: () => import("./views/User/Traders/Basket/Basket"),
-//   loading: Loading,
-// });
+
 const TimeKeeping = Loadable({
   loader: () => import("./views/User/Traders/TimeKeeping/TimeKeeping"),
   loading: Loading,
@@ -53,19 +50,31 @@ const Employee = Loadable({
   loader: () => import("./views/User/Traders/Employee/Employee"),
   loading: Loading,
 });
+const CostIncurred = Loadable({
+  loader: () => import("./views/User/Traders/CostIncurred/CostIncurred"),
+  loading: Loading,
+});
+const TruckComp = Loadable({
+  loader: () => import("./views/User/Traders/Truck/Truck-1"),
+  loading: Loading,
+});
+const Buyer = Loadable({
+  loader: () => import("./views/User/Traders/Buyer/Buyer"),
+  loading: Loading,
+});
 const routes = [
   {
     path: "/home",
-    name: "Dashboard",
-    component: Dashboard,
+    name: "Home",
+    component: Home,
   },
-  // {
-  //   path: "/tableViewer",
-  //   name: "TableViewer",
-  //   component: TableViewer,
-  // },
   {
-    path: "/buyF",
+    path: "/buy",
+    name: "ManaBuy",
+    component: ManaBuy,
+  },
+  {
+    path: "/buyFish",
     name: "BuyFish",
     component: BuyFish,
   },
@@ -74,11 +83,6 @@ const routes = [
     name: "ChangeUserInfo",
     component: ChangeUserInfo,
   },
-  // {
-  //   path: "/basket",
-  //   name: "Basket",
-  //   component: Basket,
-  // },
   {
     path: "/pondOwner",
     name: "PondOwner",
@@ -113,6 +117,21 @@ const routes = [
     path: "/timeKeeping",
     name: "TimeKeeping",
     component: TimeKeeping,
+  },
+   {
+    path: "/costIncurred",
+    name: "CostIncurred",
+    component: CostIncurred,
+  },
+  {
+    path: "/truck1",
+    name: "Truck",
+    component: TruckComp,
+  },
+  {
+    path: "/buyer",
+    name: "Buyer",
+    component: Buyer,
   },
 ];
 
