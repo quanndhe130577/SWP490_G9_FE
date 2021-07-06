@@ -3,12 +3,12 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Card, Dropdown, Input, Menu, Space, Table } from "antd";
 import i18n from "i18next";
 import React, { Component } from "react";
+import NumberFormat from "react-number-format";
 import { Button, Col, Row } from "reactstrap";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import ModalForm from "./ModalForm";
-import Moment from "react-moment";
 
 export default class CostIncurred extends Component {
   constructor(props) {
@@ -263,7 +263,15 @@ export default class CostIncurred extends Component {
         ...this.getColumnSearchProps("cost"),
         sorter: (a, b) => a.cost - b.cost,
         sortDirections: ["descend", "ascend"],
+        render: (cost) => (
+          <NumberFormat
+            value={cost}
+            displayType={"text"}
+            thousandSeparator={true}
+          />
+        ),
       },
+
       {
         title: "",
         dataIndex: "id",

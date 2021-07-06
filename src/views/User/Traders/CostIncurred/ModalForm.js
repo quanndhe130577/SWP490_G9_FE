@@ -67,6 +67,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostIncurred }) => {
         <Row>
           <Col md="6" xs="12">
             <Widgets.Text
+              required={true}
               label={i18n.t("name")}
               value={costInc.name || ""}
               onChange={(e) => handleChangeCostIncurred(e, "name")}
@@ -74,6 +75,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostIncurred }) => {
           </Col>
           <Col md="6" xs="12">
             <Widgets.Number
+              required={true}
               label={i18n.t("cost")}
               value={costInc.cost || ""}
               onChange={(e) => handleChangeCostIncurred(e, "cost")}

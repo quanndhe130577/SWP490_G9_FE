@@ -73,6 +73,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
         <Row>
           <Col md="6" xs="12">
             <Widgets.Text
+              required={true}
               label={i18n.t("name")}
               value={employee.name || ""}
               onChange={(e) => handleChangeEmpoyee(e, "name")}
@@ -87,6 +88,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
           </Col>
           <Col md="6" xs="12">
             <Widgets.Phone
+              required={true}
               type="text"
               label={i18n.t("phone")}
               value={employee.phoneNumber || ""}
@@ -106,26 +108,27 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
           </Col>
           <Col md="6" xs="12">
             <Widgets.DateTimePicker
+              required={true}
               type="date"
               label={i18n.t("startDate")}
               value={
                 moment(employee.startDate).format("DD/MM/YYYY") ||
                 moment(new Date()).format("DD/MM/YYYY")
               }
-              onChange={(e) => handleChangePondOwner(e, "startDate")}
+              onChange={(e) => handleChangeEmpoyee(e, "startDate")}
             />
           </Col>
-          {mode==="edit" &&
-          <Col md="6" xs="12">
-            <Widgets.DateTimePicker
-              type="date"
-              label={i18n.t("endDate")}
-              value={
-                moment(employee.endDate).format("DD/MM/YYYY")
-              }
-              onChange={(e) => handleChangePondOwner(e, "endDate")}
-            />
-          </Col>}
+          {mode === "edit" &&
+            <Col md="6" xs="12">
+              <Widgets.DateTimePicker
+                type="date"
+                label={i18n.t("endDate")}
+                value={
+                  moment(employee.endDate).format("DD/MM/YYYY")
+                }
+                onChange={(e) => handleChangeEmpoyee(e, "endDate")}
+              />
+            </Col>}
         </Row>
       )}
     />

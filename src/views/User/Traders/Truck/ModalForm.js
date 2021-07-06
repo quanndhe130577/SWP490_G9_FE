@@ -47,6 +47,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
         <Row>
           <Col md="6" xs="12">
             <Widgets.Text
+              required={true}
               label={i18n.t("licensePlate")}
               value={truck.licensePlate || ""}
               onChange={(e) => handleChangePondOwner(e, "licensePlate")}
@@ -54,6 +55,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
           </Col>
           <Col md="6" xs="12">
             <Widgets.Text
+              required={true}
               label={i18n.t("name")}
               value={truck.name || ""}
               onChange={(e) => handleChangePondOwner(e, "name")}
