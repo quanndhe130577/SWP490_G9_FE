@@ -176,7 +176,7 @@ const MENU = [
     link: "/employee",
   },
   {
-    title: "Time keeping",
+    title: "MenuTimekeeping",
     icon: <CalendarOutlined />,
     link: "/timeKeeping",
     },{
