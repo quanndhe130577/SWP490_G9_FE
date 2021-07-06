@@ -6,6 +6,7 @@ import locale from "antd/lib/locale/vi_VN";
 import "./css/custom.css";
 import "antd/dist/antd.css";
 import "./css/bootstrap.css";
+import "./css/responsive.css"
 
 // Containers
 import { DefaultLayout } from "./containers";

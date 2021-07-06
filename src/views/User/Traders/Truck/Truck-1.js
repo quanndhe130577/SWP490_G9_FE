@@ -4,10 +4,13 @@ import { Button, Col, Row } from "reactstrap";
 import TruckComponent from './components/TruckComponent';
 import OtoComponent from "./components/otoComponent";
 export default function Truck1() {
+
   const [isCreate, setIsCreate] = useState(false);
 
 
   const renderTitle = () => {
+    // set de xô warning
+    setIsCreate(false)
     let total = 0;
     return (
       <Row>

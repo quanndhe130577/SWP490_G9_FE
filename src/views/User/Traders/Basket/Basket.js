@@ -53,54 +53,54 @@ export default class Basket extends Component {
       confirm,
       clearFilters,
     }) => (
-        <div style={{ padding: 8 }}>
-          <Input
-            ref={(node) => {
-              this.searchInput = node;
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={(node) => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() =>
+            this.handleSearch(selectedKeys, confirm, dataIndex)
+          }
+          style={{ marginBottom: 8, display: "block" }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => this.handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({ closeDropdown: false });
+              this.setState({
+                searchText: selectedKeys[0],
+                searchedColumn: dataIndex,
+              });
             }}
-            placeholder={`Search ${dataIndex}`}
-            value={selectedKeys[0]}
-            onChange={(e) =>
-              setSelectedKeys(e.target.value ? [e.target.value] : [])
-            }
-            onPressEnter={() =>
-              this.handleSearch(selectedKeys, confirm, dataIndex)
-            }
-            style={{ marginBottom: 8, display: "block" }}
-          />
-          <Space>
-            <Button
-              type="primary"
-              onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-              icon={<SearchOutlined />}
-              size="small"
-              style={{ width: 90 }}
-            >
-              Search
+          >
+            Filter
           </Button>
-            <Button
-              onClick={() => this.handleReset(clearFilters)}
-              size="small"
-              style={{ width: 90 }}
-            >
-              Reset
-          </Button>
-            <Button
-              type="link"
-              size="small"
-              onClick={() => {
-                confirm({ closeDropdown: false });
-                this.setState({
-                  searchText: selectedKeys[0],
-                  searchedColumn: dataIndex,
-                });
-              }}
-            >
-              Filter
-          </Button>
-          </Space>
-        </div>
-      ),
+        </Space>
+      </div>
+    ),
     filterIcon: (filtered) => (
       <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
@@ -126,8 +126,8 @@ export default class Basket extends Component {
         //   />
         <div>{text}</div>
       ) : (
-          text
-        ),
+        text
+      ),
   });
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -251,7 +251,7 @@ export default class Basket extends Component {
           <Dropdown overlay={this.renderBtnAction(id)}>
             <Button>
               <i className="fa fa-cog mr-1" />
-              {i18n.t("action")}
+              <label className="tb-lb-action">{i18n.t("action")}</label>
             </Button>
           </Dropdown>
         ),

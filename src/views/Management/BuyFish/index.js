@@ -124,7 +124,7 @@ const ManaBuy = () => {
         <Dropdown overlay={renderBtnAction(id)}>
           <Button>
             <i className="fa fa-cog mr-1" />
-            {i18n.t("action")}
+            <label className="tb-lb-action">{i18n.t("action")}</label>
           </Button>
         </Dropdown>
       ),

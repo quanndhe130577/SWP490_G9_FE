@@ -14,7 +14,7 @@ const ModalBuy = ({
   setIsShowBuy,
   currentPurchase,
   purchase,
- mode,
+  mode,
   dataDf,
   createPurchaseDetail,
   fetchDrumByTruck,
@@ -24,7 +24,7 @@ const ModalBuy = ({
 
   const handleOk = () => {
     if (createPurchaseDetail) {
-      let validate = validateDate();
+      let validate = validateData();
       if (validate) {
         return helper.toast("error", i18n.t(validate));
       }
@@ -46,7 +46,7 @@ const ModalBuy = ({
     // if (name === "weight") {
     //   value = parseInt(value);
     // } else
-      if (name === "truck" && value !== transaction.truck) {
+    if (name === "truck" && value !== transaction.truck) {
       // neu khac xe thi call api lấy lại list drum và set lại listDrumId
       let rs = await fetchDrumByTruck(value);
       setTransaction((prevState) => ({
@@ -62,14 +62,23 @@ const ModalBuy = ({
       [name]: value,
     }));
   };
-  const validateDate = () => {
+
+  // validate các trường required
+  const validateData = () => {
     let { weight, fishTypeId, truck, basketId } = transaction;
     if (!weight || !fishTypeId || !truck || !basketId) {
       return "fillAll*";
     } else {
       if (weight <= 0.1) {
         return "qtyMustLargerThan0";
+      } else if (weight > 200) {
+        setTransaction((prevState) => ({
+          ...prevState,
+          weight: 0,
+        }));
+        return "qtyMustSmallerThan200";
       }
+
     }
   };
 
@@ -81,7 +90,7 @@ const ModalBuy = ({
   }
   return (
     <Modal
-      title={mode==="create"?i18n.t("Thêm Mã"):""}
+      title={mode === "create" ? i18n.t("Thêm Mã") : ""}
       visible={isShowBuy}
       onOk={handleOk}
       onCancel={handleCancel}
@@ -100,7 +109,7 @@ const ModalBuy = ({
           <Widgets.Number
             required={true}
             label={i18n.t("qtyOfFish(Kg)")}
-            value={transaction.weight||0}
+            value={transaction.weight || 0}
             onChange={(e) => handleChangeTran("weight", e)}
           />
         </Col>
