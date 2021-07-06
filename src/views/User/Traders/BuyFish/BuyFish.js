@@ -34,7 +34,7 @@ const BuyFish = (props) => {
       let tem = purchase.find((e) => e.id === id);
       if (tem) {
         setMode("edit");
-        setCurrentPurchase(tem);
+        setCurrentPurchase(Object.assign(tem, currentPurchase));
         setIsShowBuy(true);
       }
     }
@@ -177,12 +177,13 @@ const BuyFish = (props) => {
   //   setIsShowBuy(true);
   // };
 
-  const handleAddBaskest = () => {
+  const handleAddPurchaseDetail = () => {
     setMode("create");
     setIsShowBuy(true);
   };
 
   const handlePurchase = (value) => {
+    // ham nay dang loi, can xem lai
     // setCurrentTran({});
     setCurrentPurchase({});
     setPurchase((pre) => [...pre, value]);
@@ -195,7 +196,7 @@ const BuyFish = (props) => {
           (el) => el.id === parseInt(currentPurchase.pondOwner)
         ) || {}
       );
-    else return {};
+    else return null;
   };
 
   // fetch data
@@ -320,6 +321,26 @@ const BuyFish = (props) => {
       });
       if (rs && rs.statusCode === 200) {
         getAllPurchaseDetail(detail);
+        setCurrentPurchase((pre) => ({ ...pre, weight: 0 }));
+        helper.toast("success", i18n.t(rs.message));
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsShowBuy(false);
+    }
+  }
+
+  // updatePurchaseDetail
+  async function updatePurchaseDetail(detail) {
+    try {
+      // let { fishTypeId, basketId, weight, listDrumId = [] } = detail;
+      let rs = await apis.updatePurchaseDetail({
+        ...detail,
+        purchaseId: currentPurchase.id,
+      });
+      if (rs && rs.statusCode === 200) {
+        getAllPurchaseDetail(detail);
         helper.toast("success", i18n.t(rs.message));
       }
     } catch (error) {
@@ -384,7 +405,6 @@ const BuyFish = (props) => {
     } else {
       setShowChoosePond(true);
     }
-    debugger;
     setData((pre) => ({ ...pre, arrFish: tem.arrFish }));
     setCurrentPurchase(tem);
 
@@ -422,11 +442,12 @@ const BuyFish = (props) => {
             setIsShowBuy={setIsShowBuy}
             currentPurchase={currentPurchase}
             purchase={purchase}
-            handlePurchase={handlePurchase}
+            // handlePurchase={handlePurchase}
             dataDf={dataDf}
             createPurchaseDetail={createPurchaseDetail}
             fetchDrumByTruck={fetchDrumByTruck}
             mode={mode}
+            updatePurchaseDetail={updatePurchaseDetail}
           />
         )}
         {isShowChoosePond && (
@@ -453,7 +474,7 @@ const BuyFish = (props) => {
                 <label>
                   <b className="mr-2">{i18n.t("pondOwner")}:</b>
                   {/* /!* nếu ko có id thì dùng hàm findPO  *!/ */}
-                  {findPO().name || currentPurchase.pondOwnerName}
+                  {(findPO() && findPO().name) || currentPurchase.pondOwnerName}
                 </label>
               </Col>
               <Col md="6">
@@ -476,7 +497,7 @@ const BuyFish = (props) => {
                     </Button>
                     <Button
                       color="info"
-                      onClick={handleAddBaskest}
+                      onClick={handleAddPurchaseDetail}
                       className=" mr-2"
                     >
                       {i18n.t("Thêm Mã")}

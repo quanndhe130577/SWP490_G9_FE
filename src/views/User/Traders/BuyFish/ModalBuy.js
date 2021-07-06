@@ -4,6 +4,7 @@ import { Row, Col } from "reactstrap";
 import i18n from "i18next";
 import Widgets from "../../../../schema/Widgets";
 import helper from "../../../../services/helper";
+// import { update } from "lodash";
 // import apis from "../../../../services/helper";
 
 const ModalBuy = ({
@@ -15,22 +16,28 @@ const ModalBuy = ({
   dataDf,
   createPurchaseDetail,
   fetchDrumByTruck,
+  updatePurchaseDetail,
 }) => {
   const [transaction, setTransaction] = useState(currentPurchase); // transaction là 1 bản ghi của purchase
   const [loading, setLoading] = useState(false);
 
   const handleOk = () => {
-    if (createPurchaseDetail) {
-      let validate = validateData();
-      if (validate) {
-        return helper.toast("error", i18n.t(validate));
-      }
-      let tem = transaction;
-      tem.idx = purchase.length + 1;
-
-      createPurchaseDetail(tem);
+    let validate = validateData();
+    if (validate) {
+      return helper.toast("error", i18n.t(validate));
     }
-    setIsShowBuy(false);
+    let tem = transaction;
+    debugger;
+    if (mode === "create") {
+      if (createPurchaseDetail) {
+        tem.idx = purchase.length + 1;
+
+        createPurchaseDetail(tem);
+      }
+      setIsShowBuy(false);
+    } else if (mode === "edit") {
+      updatePurchaseDetail(tem);
+    }
   };
   const handleCancel = () => {
     setIsShowBuy(false);

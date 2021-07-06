@@ -3,7 +3,7 @@ import Select from "./Select";
 import DateTimePicker from "./DateTimePicker";
 import SelectSearchMulti from "./SelectSearchMulti";
 import NumberFormat from "./NumberFormat";
-import Number from "./Number";
+import Number from "./WeightInput";
 import Phone from "./Phone";
 import Custom from "./Custom";
 let Widgets = {
