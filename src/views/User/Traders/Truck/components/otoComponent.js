@@ -1,11 +1,8 @@
-import React, { useEffect } from "react";
-import {
-    Form,
-    Button,
-    Row,
-    Col
-} from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import {
+    Button, Col, Form, Row
+} from 'antd';
+import React, { useEffect } from "react";
 import "./styles.css";
 
 export default function OtoComponent(props) {
@@ -19,17 +16,18 @@ export default function OtoComponent(props) {
 
     useEffect(() => {
         form.setFieldsValue({ trucks: data })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
-    const renderColor = (weight) => {
-        let color = ""
-        if (weight >= 500) color = "#e50606";
-        if (weight >= 400 && weight < 500) color = "#c22b2b";
-        if (weight >= 300 && weight < 400) color = "#e1713b";
-        if (weight >= 100 && weight < 200) color = "#e9d01c";
-        if (weight < 100) color = "green";
-        return color;
-    }
+    // const renderColor = (weight) => {
+    //     let color = ""
+    //     if (weight >= 500) color = "#e50606";
+    //     if (weight >= 400 && weight < 500) color = "#c22b2b";
+    //     if (weight >= 300 && weight < 400) color = "#e1713b";
+    //     if (weight >= 100 && weight < 200) color = "#e9d01c";
+    //     if (weight < 100) color = "green";
+    //     return color;
+    // }
 
     const showDetailTruck = (index) => {
         console.log(data[index]);

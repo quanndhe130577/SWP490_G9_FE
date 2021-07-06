@@ -12,7 +12,7 @@ import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import NumberFormat from "react-number-format";
 import { useSelector } from "react-redux";
-// import moment from "moment";
+import Moment from "react-moment";
 
 const BuyFish = (props) => {
   const history = useHistory();
@@ -24,7 +24,7 @@ const BuyFish = (props) => {
   const [currentPurchase, setCurrentPurchase] = useState({});
   const [dataDf, setData] = useState({ basket: [], drum: [], truck: [] }); // list data of basket, drum, truck,...
   const currentPurchasePROPS = useSelector(
-    (state) => state.purchase.currentPurchase,
+    (state) => state.purchase.currentPurchase
   ); // data in redux
 
   const handleAction = (action, id) => {
@@ -33,7 +33,7 @@ const BuyFish = (props) => {
     } else {
       let tem = purchase.find((e) => e.id === id);
       if (tem) {
-        setMode("edit")
+        setMode("edit");
         setCurrentPurchase(tem);
         setIsShowBuy(true);
       }
@@ -43,6 +43,7 @@ const BuyFish = (props) => {
   // deletePurchaseDetail
   async function deletePurchaseDetail(purchaseDetailId) {
     try {
+      setLoading(true);
       let rs = await apis.deletePurchaseDetail({ purchaseDetailId });
       if (rs && rs.statusCode === 200) {
         let tem = purchase.filter((el) => el.id !== purchaseDetailId);
@@ -52,6 +53,8 @@ const BuyFish = (props) => {
     } catch (error) {
       console.log(error);
       helper.toast("success", i18n.t(error));
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -68,7 +71,6 @@ const BuyFish = (props) => {
 
   const calculateIntoMoney = (id) => {
     let tem = purchase.find((e) => e.id === id);
-    // let basket = dataDf.basket.find((el) => el.id === tem.basketId);
     if (tem && tem.fishType) {
       let value =
         tem.fishType.price * (parseInt(tem.weight) - tem.basket.weight);
@@ -113,6 +115,7 @@ const BuyFish = (props) => {
       title: "STT",
       dataIndex: "idx",
       key: "idx",
+      fixed: true,
       render: (idx) => <label>{idx}</label>,
     },
     {
@@ -163,21 +166,21 @@ const BuyFish = (props) => {
         <Dropdown overlay={renderBtnAction(id)}>
           <Button>
             <i className="fa fa-cog mr-1" />
-            {i18n.t("action")}
+            <label className="tb-lb-action">{i18n.t("action")}</label>
           </Button>
         </Dropdown>
       ),
     },
   ];
 
-  const showModal = () => {
+  // const showModal = () => {
+  //   setIsShowBuy(true);
+  // };
+
+  const handleAddBaskest = () => {
+    setMode("create");
     setIsShowBuy(true);
   };
-
-  const  handleAddBaskest=()=>{
-    setMode("create")
-    setIsShowBuy(true)
-  }
 
   const handlePurchase = (value) => {
     // setCurrentTran({});
@@ -189,7 +192,7 @@ const BuyFish = (props) => {
     if (currentPurchase.pondOwner && dataDf.pondOwner)
       return (
         dataDf.pondOwner.find(
-          (el) => el.id === parseInt(currentPurchase.pondOwner),
+          (el) => el.id === parseInt(currentPurchase.pondOwner)
         ) || {}
       );
     else return {};
@@ -210,7 +213,7 @@ const BuyFish = (props) => {
     }
   }
 
-  async function getBasketByTraderId(userID) {
+  async function getBasketByTraderId() {
     try {
       let rs = await apis.getBasketByTraderId({}, "GET");
       if (rs && rs.statusCode === 200) {
@@ -239,7 +242,7 @@ const BuyFish = (props) => {
     }
   }
 
-  async function getTruckByTrarderID(userID) {
+  async function getTruckByTrarderID() {
     try {
       //get truck trader id
       let rs = await apis.getTruckByTrarderID({}, "GET");
@@ -268,7 +271,6 @@ const BuyFish = (props) => {
       console.log(error);
     }
   }
-
 
   async function fetchDrumByTruck(truckId) {
     try {
@@ -343,12 +345,10 @@ const BuyFish = (props) => {
     }
   }
 
-  function closePurchase() {
-  }
+  function closePurchase() {}
 
   function handleBack() {
     history.push("/buy");
-
   }
 
   useEffect(() => {
@@ -367,8 +367,8 @@ const BuyFish = (props) => {
     }
 
     if (tem.status === "Pending") {
-      tem = {};
-      local.set("currentPurchase", tem);
+      // tem = {};
+      // local.set("currentPurchase", tem);
     }
 
     if (tem.id || query.id) {
@@ -384,6 +384,8 @@ const BuyFish = (props) => {
     } else {
       setShowChoosePond(true);
     }
+    debugger;
+    setData((pre) => ({ ...pre, arrFish: tem.arrFish }));
     setCurrentPurchase(tem);
 
     fetchData();
@@ -397,23 +399,15 @@ const BuyFish = (props) => {
           <h3 className="mr-5">{i18n.t("buyGood")}</h3>
         </Col>
         <Col md="6">
-          <Button className="pull-right" color={"danger"} onClick={() => handleBack()}>
+          <Button
+            className="pull-right"
+            color={"danger"}
+            onClick={() => handleBack()}
+          >
             <i className="fa fa-arrow-left mr-1" />
             {i18n.t("back")}
           </Button>
         </Col>
-        {/*<Col md="2">*/}
-        {/*  <Moment format="DD/MM/YYYY" className="mt-2">*/}
-        {/*    {currentPurchase.date}*/}
-        {/*  </Moment>*/}
-        {/*</Col>*/}
-        {/*<Col md="2">*/}
-        {/*  <label>*/}
-        {/*    <b>{i18n.t("pondOwner")}:</b>*/}
-        {/*    /!* nếu ko có id thì dùng hàm findPO  *!/*/}
-        {/*    {findPO().name || currentPurchase.pondOwnerName}*/}
-        {/*  </label>*/}
-        {/*</Col>*/}
       </Row>
     );
   };
@@ -449,7 +443,20 @@ const BuyFish = (props) => {
         {!isShowChoosePond && (
           <Card title={renderTitle()}>
             <Row className="mb-2">
-              <Col span="24" className="">
+              <Col md="6">
+                <label className="mr-2">
+                  <b>{i18n.t("date")}:</b>
+                  <Moment format="DD/MM/YYYY" className="ml-2">
+                    {currentPurchase.date}
+                  </Moment>
+                </label>
+                <label>
+                  <b className="mr-2">{i18n.t("pondOwner")}:</b>
+                  {/* /!* nếu ko có id thì dùng hàm findPO  *!/ */}
+                  {findPO().name || currentPurchase.pondOwnerName}
+                </label>
+              </Col>
+              <Col md="6">
                 {/* nếu status khac Pending thì ko show btn thêm */}
                 {currentPurchase.status === "Pending" && (
                   <div className="float-right">
@@ -467,7 +474,11 @@ const BuyFish = (props) => {
                     >
                       {i18n.t("Giá cá hôm nay")}
                     </Button>
-                    <Button color="info" onClick={handleAddBaskest} className=" mr-2">
+                    <Button
+                      color="info"
+                      onClick={handleAddBaskest}
+                      className=" mr-2"
+                    >
                       {i18n.t("Thêm Mã")}
                     </Button>
                   </div>
@@ -481,6 +492,45 @@ const BuyFish = (props) => {
                   columns={columns}
                   dataSource={purchase}
                   loading={isLoading}
+                  scroll={{ y: 420 }}
+                  // pagination={{ pageSize: 5 }}
+                  bordered
+                  summary={(pageData) => {
+                    let totalWeight = 0;
+                    let totalAmount = 0;
+                    pageData.forEach(({ weight, fishType, basket }) => {
+                      totalWeight += weight;
+                      totalAmount +=
+                        fishType.price * (parseInt(weight) - basket.weight);
+                    });
+
+                    return (
+                      <Table.Summary fixed>
+                        <Table.Summary.Row>
+                          <Table.Summary.Cell colSpan="2" key="1">
+                            {i18n.t("total")}
+                          </Table.Summary.Cell>
+                          <Table.Summary.Cell key="2">
+                            <NumberFormat
+                              value={totalWeight.toFixed(1)}
+                              displayType={"text"}
+                              thousandSeparator={true}
+                              suffix=" Kg"
+                            />
+                          </Table.Summary.Cell>
+                          <Table.Summary.Cell key="3">
+                            <NumberFormat
+                              value={totalAmount}
+                              displayType={"text"}
+                              thousandSeparator={true}
+                              suffix={i18n.t("suffix")}
+                            />
+                          </Table.Summary.Cell>
+                          <Table.Summary.Cell colSpan="4" key="4" />
+                        </Table.Summary.Row>
+                      </Table.Summary>
+                    );
+                  }}
                 />
               </Col>
             </Row>

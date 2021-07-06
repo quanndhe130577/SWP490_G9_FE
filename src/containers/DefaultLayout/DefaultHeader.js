@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
-
 import session from "../../services/session";
 import { Layout, Menu, Dropdown, Avatar } from "antd";
 import {
@@ -21,11 +18,7 @@ import {
 import "../../css/antd.css";
 import i18n from "i18next";
 const { Header, Sider } = Layout;
-const propTypes = {
-  children: PropTypes.node,
-};
 const { SubMenu } = Menu;
-const defaultProps = {};
 
 class DefaultHeader extends Component {
   constructor(props) {
@@ -117,9 +110,6 @@ class DefaultHeader extends Component {
   }
 }
 
-DefaultHeader.propTypes = propTypes;
-DefaultHeader.defaultProps = defaultProps;
-
 const mapStateToProps = (state) => {
   return { user: state.user };
 };
@@ -179,7 +169,7 @@ const MENU = [
     title: "MenuTimekeeping",
     icon: <CalendarOutlined />,
     link: "/timeKeeping",
-    },{
+  }, {
     title: "CostIncurredManagement",
     icon: <MoneyCollectOutlined />,
     link: "/costIncurred",

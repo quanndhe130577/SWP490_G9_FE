@@ -1,15 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-    Form,
-    Input,
-    Button,
     Row,
     Col,
     Select
 } from 'antd';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+// import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import "./styles.css";
-import { switchStatement } from "@babel/types";
+// import { switchStatement } from "@babel/types";
 import OtoComponent from './otoComponent';
 
 
@@ -17,9 +14,9 @@ import OtoComponent from './otoComponent';
 
 
 export default function TruckComponent(props) {
-    const {
-        isModal
-    } = props;
+    // const {
+    //     isModal
+    // } = props;
 
     const refForm = useRef();
     const [data, setData] = useState([]);
