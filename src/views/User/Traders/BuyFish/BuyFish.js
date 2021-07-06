@@ -170,9 +170,9 @@ const BuyFish = (props) => {
     },
   ];
 
-  const showModal = () => {
-    setIsShowBuy(true);
-  };
+  // const showModal = () => {
+  //   setIsShowBuy(true);
+  // };
 
   const  handleAddBaskest=()=>{
     setMode("create")

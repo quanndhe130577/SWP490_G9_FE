@@ -73,6 +73,7 @@
   "numberDrum": "Tên lồ",
   "suffix": " VND",
   "EmployeeManagement": "Quản lí nhân viên",
+  "TimekeepingManagement": "Quản lí chấm công",
   "dob": "Ngày sinh",
   "totalAmount (VND)": "Thành tiền (VND)",
   "closePurchase": "Chốt sổ",
@@ -83,5 +84,6 @@
   "note": "Chú thích",
   "CostIncurredManagement": "Quản lí chi phí phát sinh",
   "date": "Ngày",
-  "Buyer": "Người mua"
+  "Buyer": "Người mua",
+  "Time keeping":"Chấm công"
 }

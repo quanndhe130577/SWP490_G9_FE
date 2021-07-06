@@ -112,7 +112,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
                 moment(employee.startDate).format("DD/MM/YYYY") ||
                 moment(new Date()).format("DD/MM/YYYY")
               }
-              onChange={(e) => handleChangePondOwner(e, "startDate")}
+              onChange={(e) => handleChangeEmpoyee(e, "startDate")}
             />
           </Col>
           {mode==="edit" &&
@@ -123,7 +123,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
               value={
                 moment(employee.endDate).format("DD/MM/YYYY")
               }
-              onChange={(e) => handleChangePondOwner(e, "endDate")}
+              onChange={(e) => handleChangeEmpoyee(e, "endDate")}
             />
           </Col>}
         </Row>

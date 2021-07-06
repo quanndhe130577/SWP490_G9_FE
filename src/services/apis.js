@@ -52,7 +52,7 @@ var path = {
   deleteDrum: "/api/drum/delete",
 
   //anhnbt
-  getEmployees: "/api/employee/getallemp", //method GET
+  getEmployees: "/api/employee/getall", //method GET
   createEmployee: "/api/employee/create/",
   updateEmployee: "/api/employee/update",
   deleteEmployee: "/api/employee/delete",
