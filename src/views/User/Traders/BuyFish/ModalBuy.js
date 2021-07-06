@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal } from "antd";
 import { Row, Col } from "reactstrap";
 import i18n from "i18next";
@@ -6,6 +6,7 @@ import "antd/dist/antd.css";
 
 import Widgets from "../../../../schema/Widgets";
 import helper from "../../../../services/helper";
+import { difference } from "lodash";
 // import apis from "../../../../services/helper";
 // import data from "../../../../data";
 
@@ -78,7 +79,6 @@ const ModalBuy = ({
         }));
         return "qtyMustSmallerThan200";
       }
-
     }
   };
 
@@ -88,6 +88,31 @@ const ModalBuy = ({
     });
     return arr;
   }
+  async function convertDataInEditMode() {
+    // data to display in create mode and edit mode is difference, we need convert data
+    if (mode === "edit") {
+      let fishTypeId = transaction.fishType.id;
+      let basketId = transaction.basket.id;
+      let truck = transaction.truck.id;
+      let listDrumId = [];
+      // get list drum id
+      transaction.listDrum.forEach((el) => listDrumId.push(el.id || ""));
+      setTransaction((prevState) => ({
+        ...prevState,
+        fishTypeId,
+        basketId,
+        truck,
+        listDrumId,
+      }));
+      // fetch Drum By Truck
+      let rs = await fetchDrumByTruck(truck);
+      setLoading(rs);
+    }
+  }
+  useEffect(() => {
+    convertDataInEditMode();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <Modal
       title={mode === "create" ? i18n.t("Thêm Mã") : ""}
@@ -102,7 +127,7 @@ const ModalBuy = ({
             label={i18n.t("typeOfFish")}
             value={transaction.fishTypeId || ""}
             onChange={(e) => handleChangeTran("fishTypeId", e)}
-            items={currentPurchase.arrFish || []}
+            items={currentPurchase.arrFish || dataDf.arrFish || []}
           />
         </Col>
         <Col md="6" xs="12">
@@ -136,7 +161,7 @@ const ModalBuy = ({
             <Widgets.SelectSearchMulti
               // required={true}
               label={i18n.t("drum")}
-              value={transaction.listDrumId || []}
+              value={transaction.listDrumId || transaction.listDrum || []}
               onChange={(e) => handleChangeTran("listDrumId", e)}
               items={changeKey(dataDf.drum || [])}
             />

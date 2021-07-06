@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Dropdown, Menu, Table, Typography } from "antd";
+import { Card, Dropdown, Menu, Table } from "antd";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import i18n from "i18next";
@@ -14,8 +14,6 @@ import NumberFormat from "react-number-format";
 import { useSelector } from "react-redux";
 import Moment from "react-moment";
 
-const { Text } = Typography;
-
 const BuyFish = (props) => {
   const history = useHistory();
   const [isShowBuy, setIsShowBuy] = useState(false);
@@ -26,7 +24,7 @@ const BuyFish = (props) => {
   const [currentPurchase, setCurrentPurchase] = useState({});
   const [dataDf, setData] = useState({ basket: [], drum: [], truck: [] }); // list data of basket, drum, truck,...
   const currentPurchasePROPS = useSelector(
-    (state) => state.purchase.currentPurchase,
+    (state) => state.purchase.currentPurchase
   ); // data in redux
 
   const handleAction = (action, id) => {
@@ -35,7 +33,7 @@ const BuyFish = (props) => {
     } else {
       let tem = purchase.find((e) => e.id === id);
       if (tem) {
-        setMode("edit")
+        setMode("edit");
         setCurrentPurchase(tem);
         setIsShowBuy(true);
       }
@@ -45,7 +43,7 @@ const BuyFish = (props) => {
   // deletePurchaseDetail
   async function deletePurchaseDetail(purchaseDetailId) {
     try {
-      setLoading(true)
+      setLoading(true);
       let rs = await apis.deletePurchaseDetail({ purchaseDetailId });
       if (rs && rs.statusCode === 200) {
         let tem = purchase.filter((el) => el.id !== purchaseDetailId);
@@ -56,7 +54,7 @@ const BuyFish = (props) => {
       console.log(error);
       helper.toast("success", i18n.t(error));
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -81,7 +79,7 @@ const BuyFish = (props) => {
           value={value}
           displayType={"text"}
           thousandSeparator={true}
-        // suffix={i18n.t("suffix")}
+          // suffix={i18n.t("suffix")}
         />
       );
     }
@@ -169,7 +167,6 @@ const BuyFish = (props) => {
           <Button>
             <i className="fa fa-cog mr-1" />
             <label className="tb-lb-action">{i18n.t("action")}</label>
-
           </Button>
         </Dropdown>
       ),
@@ -181,9 +178,9 @@ const BuyFish = (props) => {
   // };
 
   const handleAddBaskest = () => {
-    setMode("create")
-    setIsShowBuy(true)
-  }
+    setMode("create");
+    setIsShowBuy(true);
+  };
 
   const handlePurchase = (value) => {
     // setCurrentTran({});
@@ -195,7 +192,7 @@ const BuyFish = (props) => {
     if (currentPurchase.pondOwner && dataDf.pondOwner)
       return (
         dataDf.pondOwner.find(
-          (el) => el.id === parseInt(currentPurchase.pondOwner),
+          (el) => el.id === parseInt(currentPurchase.pondOwner)
         ) || {}
       );
     else return {};
@@ -275,7 +272,6 @@ const BuyFish = (props) => {
     }
   }
 
-
   async function fetchDrumByTruck(truckId) {
     try {
       let rs = await apis.getAllDrumByTruckID({}, "GET", truckId);
@@ -349,12 +345,10 @@ const BuyFish = (props) => {
     }
   }
 
-  function closePurchase() {
-  }
+  function closePurchase() {}
 
   function handleBack() {
     history.push("/buy");
-
   }
 
   useEffect(() => {
@@ -390,6 +384,8 @@ const BuyFish = (props) => {
     } else {
       setShowChoosePond(true);
     }
+    debugger;
+    setData((pre) => ({ ...pre, arrFish: tem.arrFish }));
     setCurrentPurchase(tem);
 
     fetchData();
@@ -403,7 +399,11 @@ const BuyFish = (props) => {
           <h3 className="mr-5">{i18n.t("buyGood")}</h3>
         </Col>
         <Col md="6">
-          <Button className="pull-right" color={"danger"} onClick={() => handleBack()}>
+          <Button
+            className="pull-right"
+            color={"danger"}
+            onClick={() => handleBack()}
+          >
             <i className="fa fa-arrow-left mr-1" />
             {i18n.t("back")}
           </Button>
@@ -474,7 +474,11 @@ const BuyFish = (props) => {
                     >
                       {i18n.t("Giá cá hôm nay")}
                     </Button>
-                    <Button color="info" onClick={handleAddBaskest} className=" mr-2">
+                    <Button
+                      color="info"
+                      onClick={handleAddBaskest}
+                      className=" mr-2"
+                    >
                       {i18n.t("Thêm Mã")}
                     </Button>
                   </div>
@@ -491,18 +495,21 @@ const BuyFish = (props) => {
                   scroll={{ y: 420 }}
                   // pagination={{ pageSize: 5 }}
                   bordered
-                  summary={pageData => {
+                  summary={(pageData) => {
                     let totalWeight = 0;
                     let totalAmount = 0;
                     pageData.forEach(({ weight, fishType, basket }) => {
                       totalWeight += weight;
-                      totalAmount += fishType.price * (parseInt(weight) - basket.weight);
+                      totalAmount +=
+                        fishType.price * (parseInt(weight) - basket.weight);
                     });
 
                     return (
                       <Table.Summary fixed>
                         <Table.Summary.Row>
-                          <Table.Summary.Cell colSpan="2" key="1">{i18n.t('total')}</Table.Summary.Cell>
+                          <Table.Summary.Cell colSpan="2" key="1">
+                            {i18n.t("total")}
+                          </Table.Summary.Cell>
                           <Table.Summary.Cell key="2">
                             <NumberFormat
                               value={totalWeight.toFixed(1)}
@@ -518,7 +525,6 @@ const BuyFish = (props) => {
                               thousandSeparator={true}
                               suffix={i18n.t("suffix")}
                             />
-
                           </Table.Summary.Cell>
                           <Table.Summary.Cell colSpan="4" key="4" />
                         </Table.Summary.Row>
