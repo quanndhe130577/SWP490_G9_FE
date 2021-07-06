@@ -8,6 +8,7 @@ import helper from "../../../../services/helper";
 
 const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
   const [truck, setPO] = useState(currentPO);
+  const [loading, setLoading] = useState(false);
 
   const handleChangePondOwner = (val, name) => {
     setPO((prevState) => ({
@@ -17,6 +18,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
   };
   const handleOk = async () => {
     try {
+      setLoading(true);
       let rs;
       if (mode === "create") {
         rs = await apis.createTruck({
@@ -33,6 +35,9 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
       }
     } catch (error) {
       helper.toast("error", i18n.t("systemError"));
+      setLoading(true);
+    } finally {
+      setLoading(false);
     }
   };
   console.log(truck);
@@ -42,6 +47,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
       visible={isShow}
       onOk={handleOk}
       onCancel={closeModal}
+      loading={loading}
       titleBtnOk={mode === "edit" ? i18n.t("edit") : i18n.t("create")}
       component={() => (
         <Row>

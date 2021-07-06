@@ -2,13 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Modal } from "antd";
 import { Row, Col } from "reactstrap";
 import i18n from "i18next";
-import "antd/dist/antd.css";
-
 import Widgets from "../../../../schema/Widgets";
 import helper from "../../../../services/helper";
-import { difference } from "lodash";
 // import apis from "../../../../services/helper";
-// import data from "../../../../data";
 
 const ModalBuy = ({
   isShowBuy,

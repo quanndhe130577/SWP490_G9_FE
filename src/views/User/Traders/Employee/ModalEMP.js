@@ -115,17 +115,16 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
               onChange={(e) => handleChangeEmployee(e, "startDate")}
             />
           </Col>
-          {mode==="edit" &&
-          <Col md="6" xs="12">
-            <Widgets.DateTimePicker
-              type="date"
-              label={i18n.t("endDate")}
-              value={
-                moment(employee.endDate).format("DD/MM/YYYY")
-              }
-              onChange={(e) => handleChangeEmployee(e, "endDate")}
-            />
-          </Col>}
+          {mode === "edit" && (
+            <Col md="6" xs="12">
+              <Widgets.DateTimePicker
+                type="date"
+                label={i18n.t("endDate")}
+                value={moment(employee.endDate).format("DD/MM/YYYY")}
+                onChange={(e) => handleChangeEmployee(e, "endDate")}
+              />
+            </Col>
+          )}
         </Row>
       )}
     />

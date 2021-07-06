@@ -7,7 +7,7 @@ import i18n from "i18next";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
-import ModalForm from "./ModalForm";
+import ModalForm from "./ModalEMP";
 import Moment from "react-moment";
 export default class Employee extends Component {
   constructor(props) {
@@ -197,9 +197,9 @@ export default class Employee extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -284,7 +284,7 @@ export default class Employee extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentEmp={currentEmp || {}}
-          // handleChangePondOwner={handleChangePondOwner}
+            // handleChangePondOwner={handleChangePondOwner}
           />
         )}
         <Row>

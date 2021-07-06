@@ -26,7 +26,6 @@ export default function DateTimePicker({
       )}
 
       <DatePicker
-        className="form-control"
         defaultValue={moment(value, dateFormat)}
         //defaultValue={value}
         // format={dateFormat}
