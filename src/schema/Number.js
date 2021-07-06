@@ -21,6 +21,8 @@ export default function Number({
 
       <Input
         disabled={isDisable}
+        type="number"
+        // className="form-control"
         value={value}
         onChange={(e) => {
           if (onChange) {
