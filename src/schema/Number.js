@@ -23,8 +23,6 @@ export default function Number({
         disabled={isDisable}
         type="number"
         // className="form-control"
-        min={min}
-        max={max}
         value={value}
         onChange={(e) => {
           if (onChange) {
