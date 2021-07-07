@@ -199,9 +199,9 @@ export default class CostIncurred extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -223,7 +223,7 @@ export default class CostIncurred extends Component {
   });
 
   render() {
-    const { isShowModal, mode, currentCostIncurred, data, loading } = this.state;
+    const { isShowModal, mode, currentCostInc, data, loading } = this.state;
     const columns = [
       {
         title: i18n.t("INDEX"),
@@ -257,7 +257,7 @@ export default class CostIncurred extends Component {
         sortDirections: ["descend", "ascend"],
       },
       {
-        title: i18n.t("cost"),
+        title: i18n.t("cost") + i18n.t("(suffix)"),
         dataIndex: "cost",
         key: "cost",
         ...this.getColumnSearchProps("cost"),
@@ -293,8 +293,8 @@ export default class CostIncurred extends Component {
             isShow={isShowModal}
             mode={mode}
             closeModal={this.closeModal}
-            currentCostIncurred={currentCostIncurred || {}}
-          // handleChangePondOwner={handleChangePondOwner}
+            currentCostInc={currentCostInc || {}}
+            // handleChangePondOwner={handleChangePondOwner}
           />
         )}
         <Row>

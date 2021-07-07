@@ -81,7 +81,7 @@
   "back": "Quay lại",
   "cost": "Chi phí",
   "note": "Chú thích",
-  "CostIncurredManagement": "Quản lí chi phí phát sinh",
+  "CostIncurredManagement": "Chi phí phát sinh",
   "date": "Ngày",
   "Buyer": "Người mua",
   "total": "Tổng cộng",
@@ -95,5 +95,6 @@
   "percent": "Phần trăm",
   "payStatus": "Trạng thái thanh toán",
   "paid": "Đã thanh toán",
-  "hasn'tPaid": "Chưa thanh toán"
+  "hasn'tPaid": "Chưa thanh toán",
+  "(suffix)": " (VND)"
 }
