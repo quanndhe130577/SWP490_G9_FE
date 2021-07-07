@@ -86,7 +86,7 @@ const ChoosePond = ({
             label={i18n.t("pondOwner")}
             value={parseInt(pondOwner || currentPurchase.pondOwner)}
             items={dataDf.pondOwner}
-            isDisable={currentPurchase.pondOwner?true:false}
+            isDisable={currentPurchase.pondOwner ? true : false}
             onChange={(vl) => onChange(vl, "pondOwner")}
           />
           <Widgets.SelectSearchMulti
@@ -97,7 +97,7 @@ const ChoosePond = ({
           />
         </Col>
         <Col md="8" xs="12">
-          <label className="bold">Các loại các trong ao</label>
+          <label className="bold">{i18n.t("fishesInPond")}</label>
           <PriceFishToday
             listFishId={currentPurchase.listFishId || []}
             onChange={(arr) => onChange(arr, "arrFish")}

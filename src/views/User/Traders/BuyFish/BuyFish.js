@@ -23,6 +23,7 @@ const BuyFish = (props) => {
   const [purchase, setPurchase] = useState([]);
   const [mode, setMode] = useState("");
   const [currentPurchase, setCurrentPurchase] = useState({});
+  const [currentPurchaseDetail, setCurrentPurchaseDetail] = useState({});
   const [suggestionPurchase, setSuggestionPurchase] = useState(null); //purchase dung de goi y khi them purchase detail
   const [dataDf, setData] = useState({ basket: [], drum: [], truck: [] }); // list data of basket, drum, truck,...
   const [isShowClosePurchase, setShowClosePurchase] = useState(false);
@@ -36,6 +37,7 @@ const BuyFish = (props) => {
     } else {
       let tem = purchase.find((e) => e.id === id);
       if (tem) {
+        tem.purchaseDetailId = id
         setMode("edit");
         setCurrentPurchase(Object.assign(tem, currentPurchase));
         setIsShowBuy(true);
@@ -82,7 +84,7 @@ const BuyFish = (props) => {
           value={value}
           displayType={"text"}
           thousandSeparator={true}
-          // suffix={i18n.t("suffix")}
+        // suffix={i18n.t("suffix")}
         />
       );
     }
@@ -118,7 +120,7 @@ const BuyFish = (props) => {
       title: "STT",
       dataIndex: "idx",
       key: "idx",
-      width:60,
+      width: 60,
       render: (idx) => <label className="antd-tb-idx">{idx}</label>,
     },
     {
@@ -332,14 +334,16 @@ const BuyFish = (props) => {
   // updatePurchaseDetail
   async function updatePurchaseDetail(detail) {
     try {
-      let { fishTypeId, basketId, weight, listDrumId = [], purchaseId } = detail;
+      let { fishTypeId, basketId, weight, listDrumId = [] } = detail;
+
       let rs = await apis.updatePurchaseDetail({
-         fishTypeId,
+        fishTypeId,
         basketId,
         weight,
         listDrumId,
-        purchaseId,
-        id: currentPurchase.id,
+        id: currentPurchase.purchaseDetailId,
+        purchaseId: currentPurchase.id,
+
       });
       if (rs && rs.statusCode === 200) {
         getAllPurchaseDetail(detail);
@@ -450,6 +454,7 @@ const BuyFish = (props) => {
             purchase={purchase}
             prCurrentPurchase={currentPurchase}
             handleClosePurchase={handleClosePurchase}
+            dataDf={dataDf}
           />
         )}
         {isShowBuy && (

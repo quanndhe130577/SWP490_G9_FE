@@ -88,7 +88,12 @@
   "qtyMustSmallerThan200": "Khối lượng  cá phải nhỏ hơn 200 kg",
   "startDate": "Ngày bắt đầu làm",
   "endDate": "Ngày nghỉ làm",
-  "temporary":"Tạm tính",
-  "editPurchaseDetail":"Sửa mã cân",
-  "createPurchaseDetail":"Thêm mã cân"
+  "temporary": "Tạm tính",
+  "editPurchaseDetail": "Sửa mã cân",
+  "createPurchaseDetail": "Thêm mã cân",
+  "fishesInPond": "Các loại các trong ao",
+  "percent": "Phần trăm",
+  "payStatus": "Trạng thái thanh toán",
+  "paid": "Đã thanh toán",
+  "hasn'tPaid": "Chưa thanh toán"
 }
