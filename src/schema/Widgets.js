@@ -6,6 +6,7 @@ import NumberFormat from "./NumberFormat";
 import Number from "./WeightInput";
 import Phone from "./Phone";
 import Custom from "./Custom";
+import Money from './Money'
 let Widgets = {
   Text,
   Select,
@@ -15,5 +16,6 @@ let Widgets = {
   Number,
   Phone,
   Custom,
+  Money
 };
 export default Widgets;

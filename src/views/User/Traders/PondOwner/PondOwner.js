@@ -235,7 +235,7 @@ export default class PondOwner extends Component {
         dataIndex: "address",
         key: "address",
         ...this.getColumnSearchProps("address"),
-        sorter: (a, b) => a.address - b.address,
+        sorter: (a, b) => a.address.length - b.address.length,
         sortDirections: ["descend", "ascend"],
       },
       {
