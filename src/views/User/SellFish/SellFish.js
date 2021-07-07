@@ -7,10 +7,10 @@ import ModalBuy from "./ModalBuy";
 import ModalClosePurchase from "./ModalClosePurchase";
 import ChoosePond from "./ChoosePond";
 import queryString from "qs";
-import local from "../../../../services/local";
-import session from "../../../../services/session";
-import apis from "../../../../services/apis";
-import helper from "../../../../services/helper";
+import local from "../../../services/local";
+import session from "../../../services/session";
+import apis from "../../../services/apis";
+import helper from "../../../services/helper";
 import NumberFormat from "react-number-format";
 import { useSelector } from "react-redux";
 import Moment from "react-moment";
@@ -544,9 +544,10 @@ const BuyFish = (props) => {
                   summary={(pageData) => {
                     let totalWeight = 0;
                     let totalAmount = 0;
-                    pageData.forEach(({ weight, price, basket }) => {
+                    pageData.forEach(({ weight, fishType, basket }) => {
                       totalWeight += weight;
-                      totalAmount += price;
+                      totalAmount +=
+                        fishType.price * (parseInt(weight) - basket.weight);
                     });
 
                     return (

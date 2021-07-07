@@ -62,6 +62,10 @@ const Buyer = Loadable({
   loader: () => import("./views/User/Traders/Buyer/Buyer"),
   loading: Loading,
 });
+const SellFish = Loadable({
+  loader: () => import("./views/User/SellFish/SellFish"),
+  loading: Loading,
+});
 const routes = [
   {
     path: "/home",
@@ -118,7 +122,7 @@ const routes = [
     name: "TimeKeeping",
     component: TimeKeeping,
   },
-   {
+  {
     path: "/costIncurred",
     name: "CostIncurred",
     component: CostIncurred,
@@ -132,6 +136,11 @@ const routes = [
     path: "/buyer",
     name: "Buyer",
     component: Buyer,
+  },
+  {
+    path: "/sell",
+    name: "SellFish",
+    component: SellFish,
   },
 ];
 

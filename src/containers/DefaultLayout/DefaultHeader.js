@@ -13,7 +13,7 @@ import {
   OrderedListOutlined,
   UsergroupAddOutlined,
   MoneyCollectOutlined,
-  DollarOutlined
+  DollarOutlined,
 } from "@ant-design/icons";
 import "../../css/antd.css";
 import i18n from "i18next";
@@ -45,8 +45,8 @@ class DefaultHeader extends Component {
           style={{ paddingTop: 64 }}
           breakpoint="lg"
           collapsedWidth="0"
-          onBreakpoint={(broken) => { }}
-          onCollapse={(collapsed, type) => { }}
+          onBreakpoint={(broken) => {}}
+          onCollapse={(collapsed, type) => {}}
         >
           <Menu mode="inline">
             {/* auto generate menu, define menu in MENU */}
@@ -123,6 +123,10 @@ const MENU = [
         link: "/buy",
         title: "buyGood",
       },
+      {
+        link: "/sell",
+        title: "sellGood",
+      },
     ],
   },
   {
@@ -169,7 +173,8 @@ const MENU = [
     title: "Time keeping",
     icon: <CalendarOutlined />,
     link: "/timeKeeping",
-  }, {
+  },
+  {
     title: "CostIncurredManagement",
     icon: <MoneyCollectOutlined />,
     link: "/costIncurred",

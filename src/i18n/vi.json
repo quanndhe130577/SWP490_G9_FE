@@ -96,5 +96,6 @@
   "payStatus": "Trạng thái thanh toán",
   "paid": "Đã thanh toán",
   "hasn'tPaid": "Chưa thanh toán",
-  "(suffix)": " (VND)"
+  "(suffix)": " (VND)",
+  "sellGood": "Bán hàng"
 }

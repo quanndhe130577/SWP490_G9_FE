@@ -53,8 +53,8 @@ class DefaultLayout extends Component {
               <Redirect exact to="/login" />
             </Switch>
           </div>
+          <DefaultFooter />
         </Content>
-        <DefaultFooter />
       </Layout>
     );
   }
