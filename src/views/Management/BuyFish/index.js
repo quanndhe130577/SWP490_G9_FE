@@ -21,7 +21,7 @@ const ManaBuy = () => {
       history.push("buyFish?id=" + id);
       local.set(
         "historyPurchase",
-        purchase.find((e) => e.id === id),
+        purchase.find((e) => e.id === id)
       );
       // dispatch({
       //   type: "SET_PURCHASE",
@@ -156,7 +156,6 @@ const ManaBuy = () => {
         <Col md="6" className="d-flex">
           <h3 className="">{i18n.t("goodManagement")}</h3>
         </Col>
-
       </Row>
     );
   };
@@ -185,9 +184,7 @@ const ManaBuy = () => {
       {/*  {i18n.t("continueToBuy")}*/}
       {/*</Button>*/}
       <Table columns={columns} dataSource={purchase} loading={isLoading} />
-
     </Card>
-
   );
 };
 export default ManaBuy;

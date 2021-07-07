@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import i18n from "i18next";
 import ModalBuy from "./ModalBuy";
+import ModalClosePurchase from "./ModalClosePurchase";
 import ChoosePond from "./ChoosePond";
 import queryString from "qs";
 import local from "../../../../services/local";
@@ -22,7 +23,9 @@ const BuyFish = (props) => {
   const [purchase, setPurchase] = useState([]);
   const [mode, setMode] = useState("");
   const [currentPurchase, setCurrentPurchase] = useState({});
+  const [suggestionPurchase, setSuggestionPurchase] = useState(null); //purchase dung de goi y khi them purchase detail
   const [dataDf, setData] = useState({ basket: [], drum: [], truck: [] }); // list data of basket, drum, truck,...
+  const [isShowClosePurchase, setShowClosePurchase] = useState(false);
   const currentPurchasePROPS = useSelector(
     (state) => state.purchase.currentPurchase
   ); // data in redux
@@ -115,8 +118,8 @@ const BuyFish = (props) => {
       title: "STT",
       dataIndex: "idx",
       key: "idx",
-      fixed: true,
-      render: (idx) => <label>{idx}</label>,
+      width:60,
+      render: (idx) => <label className="antd-tb-idx">{idx}</label>,
     },
     {
       title: i18n.t("typeOfFish"),
@@ -132,7 +135,7 @@ const BuyFish = (props) => {
       key: "weight",
     },
     {
-      title: i18n.t("intoMoney"),
+      title: <div><label>{i18n.t("intoMoney")}</label><label>({i18n.t("temporary")})</label></div>,
       dataIndex: "id",
       key: "id",
       responsive: ["md", "lg"],
@@ -182,13 +185,6 @@ const BuyFish = (props) => {
     setIsShowBuy(true);
   };
 
-  const handlePurchase = (value) => {
-    // ham nay dang loi, can xem lai
-    // setCurrentTran({});
-    setCurrentPurchase({});
-    setPurchase((pre) => [...pre, value]);
-  };
-
   const findPO = () => {
     if (currentPurchase.pondOwner && dataDf.pondOwner)
       return (
@@ -205,7 +201,7 @@ const BuyFish = (props) => {
       let user = session.get("user");
       getPondOwnerByTraderId(user.userID);
       getFTByTraderID();
-      getTruckByTrarderID();
+      getTruckByTraderID();
       getBasketByTraderId();
 
       setLoading(false);
@@ -243,10 +239,10 @@ const BuyFish = (props) => {
     }
   }
 
-  async function getTruckByTrarderID() {
+  async function getTruckByTraderID() {
     try {
       //get truck trader id
-      let rs = await apis.getTruckByTrarderID({}, "GET");
+      let rs = await apis.getTruck({}, "GET");
       if (rs && rs.statusCode === 200) {
         setData((pre) => ({
           ...pre,
@@ -322,6 +318,8 @@ const BuyFish = (props) => {
       if (rs && rs.statusCode === 200) {
         getAllPurchaseDetail(detail);
         setCurrentPurchase((pre) => ({ ...pre, weight: 0 }));
+        // purchase goi y
+        setSuggestionPurchase(detail);
         helper.toast("success", i18n.t(rs.message));
       }
     } catch (error) {
@@ -334,13 +332,19 @@ const BuyFish = (props) => {
   // updatePurchaseDetail
   async function updatePurchaseDetail(detail) {
     try {
-      // let { fishTypeId, basketId, weight, listDrumId = [] } = detail;
+      let { fishTypeId, basketId, weight, listDrumId = [], purchaseId } = detail;
       let rs = await apis.updatePurchaseDetail({
-        ...detail,
-        purchaseId: currentPurchase.id,
+         fishTypeId,
+        basketId,
+        weight,
+        listDrumId,
+        purchaseId,
+        id: currentPurchase.id,
       });
       if (rs && rs.statusCode === 200) {
         getAllPurchaseDetail(detail);
+        // setCurrentPurchase(.find((e) => e.id === currentPurchase.id));
+
         helper.toast("success", i18n.t(rs.message));
       }
     } catch (error) {
@@ -358,6 +362,8 @@ const BuyFish = (props) => {
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         setPurchase(rs.data);
+        if (currentPurchase.id) {
+        }
       }
     } catch (error) {
       console.log(error);
@@ -366,7 +372,9 @@ const BuyFish = (props) => {
     }
   }
 
-  function closePurchase() {}
+  function handleClosePurchase() {
+    setShowClosePurchase(!isShowClosePurchase);
+  }
 
   function handleBack() {
     history.push("/buy");
@@ -436,25 +444,33 @@ const BuyFish = (props) => {
   } else
     return (
       <div>
+        {isShowClosePurchase && (
+          <ModalClosePurchase
+            isShowClosePurchase={isShowClosePurchase}
+            purchase={purchase}
+            prCurrentPurchase={currentPurchase}
+            handleClosePurchase={handleClosePurchase}
+          />
+        )}
         {isShowBuy && (
           <ModalBuy
             isShowBuy={isShowBuy}
             setIsShowBuy={setIsShowBuy}
             currentPurchase={currentPurchase}
             purchase={purchase}
-            // handlePurchase={handlePurchase}
             dataDf={dataDf}
             createPurchaseDetail={createPurchaseDetail}
             fetchDrumByTruck={fetchDrumByTruck}
             mode={mode}
             updatePurchaseDetail={updatePurchaseDetail}
+            suggestionPurchase={suggestionPurchase}
+            setSuggestionPurchase={setSuggestionPurchase}
           />
         )}
         {isShowChoosePond && (
           <ChoosePond
             isShowChoosePond={isShowChoosePond}
             setShowChoosePond={setShowChoosePond}
-            handlePurchase={handlePurchase}
             currentPurchase={currentPurchase}
             setCurrentPurchase={setCurrentPurchase}
             dataDf={dataDf}
@@ -483,7 +499,7 @@ const BuyFish = (props) => {
                   <div className="float-right">
                     <Button
                       color="info"
-                      onClick={() => closePurchase()}
+                      onClick={() => handleClosePurchase()}
                       className="mr-2"
                     >
                       {i18n.t("closePurchase")}
@@ -514,7 +530,7 @@ const BuyFish = (props) => {
                   dataSource={purchase}
                   loading={isLoading}
                   scroll={{ y: 420 }}
-                  // pagination={{ pageSize: 5 }}
+                  pagination={{ pageSize: 100 }}
                   bordered
                   summary={(pageData) => {
                     let totalWeight = 0;
@@ -528,7 +544,7 @@ const BuyFish = (props) => {
                     return (
                       <Table.Summary fixed>
                         <Table.Summary.Row>
-                          <Table.Summary.Cell colSpan="2" key="1">
+                          <Table.Summary.Cell colSpan="2" key="1" className="bold" >
                             {i18n.t("total")}
                           </Table.Summary.Cell>
                           <Table.Summary.Cell key="2">

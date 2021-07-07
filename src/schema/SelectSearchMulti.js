@@ -31,7 +31,13 @@ class SelectSearchMulti extends Component {
           placeholder={i18n.t("pleaseSelect")}
           defaultValue={value}
           value={value}
-          onChange={onChange}
+          onChange={(e) => {
+            console.log("a" + e);
+
+            let a = Array.from(new Set(e));
+            console.log("a1" + a);
+            onChange(a);
+          }}
           onBlur={onBlur}
           disabled={isDisable}
         >
