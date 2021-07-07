@@ -119,9 +119,9 @@ export default class Truck extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -269,7 +269,7 @@ export default class Truck extends Component {
           <Dropdown overlay={this.renderBtnAction(id)}>
             <Button>
               <i className="fa fa-cog mr-1" />
-              {i18n.t("action")}
+              <label className="tb-lb-action">{i18n.t("action")}</label>
             </Button>
           </Dropdown>
         ),
@@ -285,7 +285,7 @@ export default class Truck extends Component {
             trucks={trucks}
             user={user}
             currentDrum={currentDrum}
-            // handleChangeTruck={handleChangeTruck}
+          // handleChangeTruck={handleChangeTruck}
           />
         )}
         <Row>

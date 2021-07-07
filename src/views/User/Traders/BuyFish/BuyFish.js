@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import i18n from "i18next";
 import ModalBuy from "./ModalBuy";
+import ModalClosePurchase from "./ModalClosePurchase";
 import ChoosePond from "./ChoosePond";
 import queryString from "qs";
 import local from "../../../../services/local";
@@ -12,7 +13,7 @@ import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import NumberFormat from "react-number-format";
 import { useSelector } from "react-redux";
-// import moment from "moment";
+import Moment from "react-moment";
 
 const BuyFish = (props) => {
   const history = useHistory();
@@ -22,9 +23,11 @@ const BuyFish = (props) => {
   const [purchase, setPurchase] = useState([]);
   const [mode, setMode] = useState("");
   const [currentPurchase, setCurrentPurchase] = useState({});
+  const [suggestionPurchase, setSuggestionPurchase] = useState(null); //purchase dung de goi y khi them purchase detail
   const [dataDf, setData] = useState({ basket: [], drum: [], truck: [] }); // list data of basket, drum, truck,...
+  const [isShowClosePurchase, setShowClosePurchase] = useState(false);
   const currentPurchasePROPS = useSelector(
-    (state) => state.purchase.currentPurchase,
+    (state) => state.purchase.currentPurchase
   ); // data in redux
 
   const handleAction = (action, id) => {
@@ -33,8 +36,8 @@ const BuyFish = (props) => {
     } else {
       let tem = purchase.find((e) => e.id === id);
       if (tem) {
-        setMode("edit")
-        setCurrentPurchase(tem);
+        setMode("edit");
+        setCurrentPurchase(Object.assign(tem, currentPurchase));
         setIsShowBuy(true);
       }
     }
@@ -43,6 +46,7 @@ const BuyFish = (props) => {
   // deletePurchaseDetail
   async function deletePurchaseDetail(purchaseDetailId) {
     try {
+      setLoading(true);
       let rs = await apis.deletePurchaseDetail({ purchaseDetailId });
       if (rs && rs.statusCode === 200) {
         let tem = purchase.filter((el) => el.id !== purchaseDetailId);
@@ -52,6 +56,8 @@ const BuyFish = (props) => {
     } catch (error) {
       console.log(error);
       helper.toast("success", i18n.t(error));
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -68,7 +74,6 @@ const BuyFish = (props) => {
 
   const calculateIntoMoney = (id) => {
     let tem = purchase.find((e) => e.id === id);
-    // let basket = dataDf.basket.find((el) => el.id === tem.basketId);
     if (tem && tem.fishType) {
       let value =
         tem.fishType.price * (parseInt(tem.weight) - tem.basket.weight);
@@ -113,7 +118,8 @@ const BuyFish = (props) => {
       title: "STT",
       dataIndex: "idx",
       key: "idx",
-      render: (idx) => <label>{idx}</label>,
+      width:60,
+      render: (idx) => <label className="antd-tb-idx">{idx}</label>,
     },
     {
       title: i18n.t("typeOfFish"),
@@ -129,7 +135,7 @@ const BuyFish = (props) => {
       key: "weight",
     },
     {
-      title: i18n.t("intoMoney"),
+      title: <div><label>{i18n.t("intoMoney")}</label><label>({i18n.t("temporary")})</label></div>,
       dataIndex: "id",
       key: "id",
       responsive: ["md", "lg"],
@@ -163,7 +169,7 @@ const BuyFish = (props) => {
         <Dropdown overlay={renderBtnAction(id)}>
           <Button>
             <i className="fa fa-cog mr-1" />
-            {i18n.t("action")}
+            <label className="tb-lb-action">{i18n.t("action")}</label>
           </Button>
         </Dropdown>
       ),
@@ -174,25 +180,19 @@ const BuyFish = (props) => {
   //   setIsShowBuy(true);
   // };
 
-  const  handleAddBaskest=()=>{
-    setMode("create")
-    setIsShowBuy(true)
-  }
-
-  const handlePurchase = (value) => {
-    // setCurrentTran({});
-    setCurrentPurchase({});
-    setPurchase((pre) => [...pre, value]);
+  const handleAddPurchaseDetail = () => {
+    setMode("create");
+    setIsShowBuy(true);
   };
 
   const findPO = () => {
     if (currentPurchase.pondOwner && dataDf.pondOwner)
       return (
         dataDf.pondOwner.find(
-          (el) => el.id === parseInt(currentPurchase.pondOwner),
+          (el) => el.id === parseInt(currentPurchase.pondOwner)
         ) || {}
       );
-    else return {};
+    else return null;
   };
 
   // fetch data
@@ -201,7 +201,7 @@ const BuyFish = (props) => {
       let user = session.get("user");
       getPondOwnerByTraderId(user.userID);
       getFTByTraderID();
-      getTruckByTrarderID();
+      getTruckByTraderID();
       getBasketByTraderId();
 
       setLoading(false);
@@ -210,7 +210,7 @@ const BuyFish = (props) => {
     }
   }
 
-  async function getBasketByTraderId(userID) {
+  async function getBasketByTraderId() {
     try {
       let rs = await apis.getBasketByTraderId({}, "GET");
       if (rs && rs.statusCode === 200) {
@@ -239,10 +239,10 @@ const BuyFish = (props) => {
     }
   }
 
-  async function getTruckByTrarderID(userID) {
+  async function getTruckByTraderID() {
     try {
       //get truck trader id
-      let rs = await apis.getTruckByTrarderID({}, "GET");
+      let rs = await apis.getTruck({}, "GET");
       if (rs && rs.statusCode === 200) {
         setData((pre) => ({
           ...pre,
@@ -268,7 +268,6 @@ const BuyFish = (props) => {
       console.log(error);
     }
   }
-
 
   async function fetchDrumByTruck(truckId) {
     try {
@@ -318,6 +317,34 @@ const BuyFish = (props) => {
       });
       if (rs && rs.statusCode === 200) {
         getAllPurchaseDetail(detail);
+        setCurrentPurchase((pre) => ({ ...pre, weight: 0 }));
+        // purchase goi y
+        setSuggestionPurchase(detail);
+        helper.toast("success", i18n.t(rs.message));
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsShowBuy(false);
+    }
+  }
+
+  // updatePurchaseDetail
+  async function updatePurchaseDetail(detail) {
+    try {
+      let { fishTypeId, basketId, weight, listDrumId = [], purchaseId } = detail;
+      let rs = await apis.updatePurchaseDetail({
+         fishTypeId,
+        basketId,
+        weight,
+        listDrumId,
+        purchaseId,
+        id: currentPurchase.id,
+      });
+      if (rs && rs.statusCode === 200) {
+        getAllPurchaseDetail(detail);
+        // setCurrentPurchase(.find((e) => e.id === currentPurchase.id));
+
         helper.toast("success", i18n.t(rs.message));
       }
     } catch (error) {
@@ -335,6 +362,8 @@ const BuyFish = (props) => {
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         setPurchase(rs.data);
+        if (currentPurchase.id) {
+        }
       }
     } catch (error) {
       console.log(error);
@@ -343,12 +372,12 @@ const BuyFish = (props) => {
     }
   }
 
-  function closePurchase() {
+  function handleClosePurchase() {
+    setShowClosePurchase(!isShowClosePurchase);
   }
 
   function handleBack() {
     history.push("/buy");
-
   }
 
   useEffect(() => {
@@ -367,8 +396,8 @@ const BuyFish = (props) => {
     }
 
     if (tem.status === "Pending") {
-      tem = {};
-      local.set("currentPurchase", tem);
+      // tem = {};
+      // local.set("currentPurchase", tem);
     }
 
     if (tem.id || query.id) {
@@ -384,6 +413,7 @@ const BuyFish = (props) => {
     } else {
       setShowChoosePond(true);
     }
+    setData((pre) => ({ ...pre, arrFish: tem.arrFish }));
     setCurrentPurchase(tem);
 
     fetchData();
@@ -397,23 +427,15 @@ const BuyFish = (props) => {
           <h3 className="mr-5">{i18n.t("buyGood")}</h3>
         </Col>
         <Col md="6">
-          <Button className="pull-right" color={"danger"} onClick={() => handleBack()}>
+          <Button
+            className="pull-right"
+            color={"danger"}
+            onClick={() => handleBack()}
+          >
             <i className="fa fa-arrow-left mr-1" />
             {i18n.t("back")}
           </Button>
         </Col>
-        {/*<Col md="2">*/}
-        {/*  <Moment format="DD/MM/YYYY" className="mt-2">*/}
-        {/*    {currentPurchase.date}*/}
-        {/*  </Moment>*/}
-        {/*</Col>*/}
-        {/*<Col md="2">*/}
-        {/*  <label>*/}
-        {/*    <b>{i18n.t("pondOwner")}:</b>*/}
-        {/*    /!* nếu ko có id thì dùng hàm findPO  *!/*/}
-        {/*    {findPO().name || currentPurchase.pondOwnerName}*/}
-        {/*  </label>*/}
-        {/*</Col>*/}
       </Row>
     );
   };
@@ -422,24 +444,33 @@ const BuyFish = (props) => {
   } else
     return (
       <div>
+        {isShowClosePurchase && (
+          <ModalClosePurchase
+            isShowClosePurchase={isShowClosePurchase}
+            purchase={purchase}
+            prCurrentPurchase={currentPurchase}
+            handleClosePurchase={handleClosePurchase}
+          />
+        )}
         {isShowBuy && (
           <ModalBuy
             isShowBuy={isShowBuy}
             setIsShowBuy={setIsShowBuy}
             currentPurchase={currentPurchase}
             purchase={purchase}
-            handlePurchase={handlePurchase}
             dataDf={dataDf}
             createPurchaseDetail={createPurchaseDetail}
             fetchDrumByTruck={fetchDrumByTruck}
             mode={mode}
+            updatePurchaseDetail={updatePurchaseDetail}
+            suggestionPurchase={suggestionPurchase}
+            setSuggestionPurchase={setSuggestionPurchase}
           />
         )}
         {isShowChoosePond && (
           <ChoosePond
             isShowChoosePond={isShowChoosePond}
             setShowChoosePond={setShowChoosePond}
-            handlePurchase={handlePurchase}
             currentPurchase={currentPurchase}
             setCurrentPurchase={setCurrentPurchase}
             dataDf={dataDf}
@@ -449,13 +480,26 @@ const BuyFish = (props) => {
         {!isShowChoosePond && (
           <Card title={renderTitle()}>
             <Row className="mb-2">
-              <Col span="24" className="">
+              <Col md="6">
+                <label className="mr-2">
+                  <b>{i18n.t("date")}:</b>
+                  <Moment format="DD/MM/YYYY" className="ml-2">
+                    {currentPurchase.date}
+                  </Moment>
+                </label>
+                <label>
+                  <b className="mr-2">{i18n.t("pondOwner")}:</b>
+                  {/* /!* nếu ko có id thì dùng hàm findPO  *!/ */}
+                  {(findPO() && findPO().name) || currentPurchase.pondOwnerName}
+                </label>
+              </Col>
+              <Col md="6">
                 {/* nếu status khac Pending thì ko show btn thêm */}
                 {currentPurchase.status === "Pending" && (
                   <div className="float-right">
                     <Button
                       color="info"
-                      onClick={() => closePurchase()}
+                      onClick={() => handleClosePurchase()}
                       className="mr-2"
                     >
                       {i18n.t("closePurchase")}
@@ -467,7 +511,11 @@ const BuyFish = (props) => {
                     >
                       {i18n.t("Giá cá hôm nay")}
                     </Button>
-                    <Button color="info" onClick={handleAddBaskest} className=" mr-2">
+                    <Button
+                      color="info"
+                      onClick={handleAddPurchaseDetail}
+                      className=" mr-2"
+                    >
                       {i18n.t("Thêm Mã")}
                     </Button>
                   </div>
@@ -481,6 +529,45 @@ const BuyFish = (props) => {
                   columns={columns}
                   dataSource={purchase}
                   loading={isLoading}
+                  scroll={{ y: 420 }}
+                  pagination={{ pageSize: 100 }}
+                  bordered
+                  summary={(pageData) => {
+                    let totalWeight = 0;
+                    let totalAmount = 0;
+                    pageData.forEach(({ weight, fishType, basket }) => {
+                      totalWeight += weight;
+                      totalAmount +=
+                        fishType.price * (parseInt(weight) - basket.weight);
+                    });
+
+                    return (
+                      <Table.Summary fixed>
+                        <Table.Summary.Row>
+                          <Table.Summary.Cell colSpan="2" key="1" className="bold" >
+                            {i18n.t("total")}
+                          </Table.Summary.Cell>
+                          <Table.Summary.Cell key="2">
+                            <NumberFormat
+                              value={totalWeight.toFixed(1)}
+                              displayType={"text"}
+                              thousandSeparator={true}
+                              suffix=" Kg"
+                            />
+                          </Table.Summary.Cell>
+                          <Table.Summary.Cell key="3">
+                            <NumberFormat
+                              value={totalAmount}
+                              displayType={"text"}
+                              thousandSeparator={true}
+                              suffix={i18n.t("suffix")}
+                            />
+                          </Table.Summary.Cell>
+                          <Table.Summary.Cell colSpan="4" key="4" />
+                        </Table.Summary.Row>
+                      </Table.Summary>
+                    );
+                  }}
                 />
               </Col>
             </Row>

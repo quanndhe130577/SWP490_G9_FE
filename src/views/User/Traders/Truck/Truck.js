@@ -7,7 +7,7 @@ import i18n from "i18next";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
-import ModalForm from "./ModalForm";
+import ModalForm from "./ModalTruck";
 export default class Truck extends Component {
   constructor(props) {
     super(props);
@@ -18,6 +18,7 @@ export default class Truck extends Component {
       isShowModal: false,
       mode: "",
       data: [],
+      isLoading: true,
     };
   }
 
@@ -27,14 +28,20 @@ export default class Truck extends Component {
 
   async fetchTruck() {
     try {
+      this.setState({ isLoading: true });
       let user = await session.get("user");
       let rs = await apis.getTruck({}, "GET");
       if (rs && rs.statusCode === 200) {
         console.log(rs);
         rs.data.map((el, idx) => (el.idx = idx + 1));
-        this.setState({ data: rs.data, user, total: rs.data.length });
+        this.setState({
+          data: rs.data,
+          user,
+          total: rs.data.length,
+          isLoading: false,
+        });
       }
-    } catch (error) { }
+    } catch (error) {}
   }
 
   getColumnSearchProps = (dataIndex) => ({
@@ -98,9 +105,9 @@ export default class Truck extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -210,7 +217,7 @@ export default class Truck extends Component {
     );
   }
   render() {
-    const { isShowModal, mode, currentPO, data } = this.state;
+    const { isShowModal, mode, currentPO, data, isLoading } = this.state;
     const columns = [
       {
         title: i18n.t("INDEX"),
@@ -242,7 +249,7 @@ export default class Truck extends Component {
           <Dropdown overlay={this.renderBtnAction(id)}>
             <Button>
               <i className="fa fa-cog mr-1" />
-              {i18n.t("action")}
+              <label className="tb-lb-action">{i18n.t("action")}</label>
             </Button>
           </Dropdown>
         ),
@@ -267,6 +274,7 @@ export default class Truck extends Component {
               dataSource={data}
               pagination={{ pageSize: 10 }}
               scroll={{ y: 600 }}
+              loading={isLoading}
             />
           </Col>
         </Row>

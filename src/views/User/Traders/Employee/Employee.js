@@ -7,7 +7,7 @@ import i18n from "i18next";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
-import ModalForm from "./ModalForm";
+import ModalForm from "./ModalEMP";
 import Moment from "react-moment";
 export default class Employee extends Component {
   constructor(props) {
@@ -270,7 +270,7 @@ export default class Employee extends Component {
           <Dropdown overlay={this.renderBtnAction(id)}>
             <Button>
               <i className="fa fa-cog mr-1" />
-              {i18n.t("action")}
+              <label className="tb-lb-action">{i18n.t("action")}</label>
             </Button>
           </Dropdown>
         ),

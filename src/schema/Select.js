@@ -5,7 +5,7 @@ const { Option } = Select;
 
 class Select2 extends Component {
   render() {
-    const { value, label, required, isDisable, submitted, onChange, items } =
+    const { value, label, required, isDisable, submitted, onChange, items=[] } =
       this.props;
     let valueTem = items.find((el) => el.value === value || el.id === value);
     return (

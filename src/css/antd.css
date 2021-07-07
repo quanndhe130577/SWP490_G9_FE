@@ -31,12 +31,14 @@
   /* min-height: 100vh; */
 }
 .ant-layout-sider-zero-width-trigger {
-  top: 7px !important;
+  top: 2px !important;
   z-index: 999 !important;
   position: fixed !important;
   right: unset !important;
-  font-size: 30px !important;
+  font-size: 35px !important;
+  color: #137d8d !important;
   background: rgb(220, 241, 244) !important;
+  font-weight: 900;
 }
 .default-layout {
   padding-bottom: 4em;
@@ -87,3 +89,7 @@
 
 .noti-info {
 } */
+.antd-tb-idx {
+  width: 100%;
+  text-align: center;
+}

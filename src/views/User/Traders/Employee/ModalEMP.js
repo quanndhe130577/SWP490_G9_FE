@@ -12,9 +12,9 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
   const [employee, setPO] = useState(currentEmp);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    handleChangeEmpoyee(new Date(), "dob");
+    handleChangeEmployee(new Date(), "dob");
   }, []);
-  const handleChangeEmpoyee = (val, name) => {
+  const handleChangeEmployee = (val, name) => {
     setPO((prevState) => ({
       ...prevState,
       [name]: val,
@@ -75,14 +75,14 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
             <Widgets.Text
               label={i18n.t("name")}
               value={employee.name || ""}
-              onChange={(e) => handleChangeEmpoyee(e, "name")}
+              onChange={(e) => handleChangeEmployee(e, "name")}
             />
           </Col>
           <Col md="6" xs="12">
             <Widgets.Text
               label={i18n.t("address")}
               value={employee.address || ""}
-              onChange={(e) => handleChangeEmpoyee(e, "address")}
+              onChange={(e) => handleChangeEmployee(e, "address")}
             />
           </Col>
           <Col md="6" xs="12">
@@ -90,7 +90,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
               type="text"
               label={i18n.t("phone")}
               value={employee.phoneNumber || ""}
-              onChange={(e) => handleChangeEmpoyee(e, "phoneNumber")}
+              onChange={(e) => handleChangeEmployee(e, "phoneNumber")}
             />
           </Col>
           <Col md="6" xs="12">
@@ -101,7 +101,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
                 moment(employee.dob).format("DD/MM/YYYY") ||
                 moment(new Date()).format("DD/MM/YYYY")
               }
-              onChange={(e) => handleChangeEmpoyee(e, "dob")}
+              onChange={(e) => handleChangeEmployee(e, "dob")}
             />
           </Col>
           <Col md="6" xs="12">
@@ -112,20 +112,19 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
                 moment(employee.startDate).format("DD/MM/YYYY") ||
                 moment(new Date()).format("DD/MM/YYYY")
               }
-              onChange={(e) => handleChangeEmpoyee(e, "startDate")}
+              onChange={(e) => handleChangeEmployee(e, "startDate")}
             />
           </Col>
-          {mode==="edit" &&
-          <Col md="6" xs="12">
-            <Widgets.DateTimePicker
-              type="date"
-              label={i18n.t("endDate")}
-              value={
-                moment(employee.endDate).format("DD/MM/YYYY")
-              }
-              onChange={(e) => handleChangeEmpoyee(e, "endDate")}
-            />
-          </Col>}
+          {mode === "edit" && (
+            <Col md="6" xs="12">
+              <Widgets.DateTimePicker
+                type="date"
+                label={i18n.t("endDate")}
+                value={moment(employee.endDate).format("DD/MM/YYYY")}
+                onChange={(e) => handleChangeEmployee(e, "endDate")}
+              />
+            </Col>
+          )}
         </Row>
       )}
     />
