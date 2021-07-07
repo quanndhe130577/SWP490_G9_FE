@@ -223,7 +223,7 @@ export default class CostIncurred extends Component {
   });
 
   render() {
-    const { isShowModal, mode, currentCostIncurred, data, loading } = this.state;
+    const { isShowModal, mode, currentCostInc, data, loading } = this.state;
     const columns = [
       {
         title: i18n.t("INDEX"),
@@ -293,7 +293,7 @@ export default class CostIncurred extends Component {
             isShow={isShowModal}
             mode={mode}
             closeModal={this.closeModal}
-            currentCostIncurred={currentCostIncurred || {}}
+            currentCostInc={currentCostInc || {}}
           // handleChangePondOwner={handleChangePondOwner}
           />
         )}

@@ -10,8 +10,8 @@ import moment from "moment";
 import NumberFormat from "react-number-format";
 
 
-const ModalEdit = ({ isShow, closeModal, mode, currentCostIncurred }) => {
-  const [costInc, setPO] = useState(currentCostIncurred);
+const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
+  const [costInc, setPO] = useState(currentCostInc);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     handleChangeCostIncurred(new Date(), "date");

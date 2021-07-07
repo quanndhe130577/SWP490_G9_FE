@@ -29,6 +29,7 @@ export default function Money({
             <InputNumber
                 style={{ width: "100%" }}
                 disabled={isDisable}
+                defaultValue={value}
                 formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 required={required}
                 onChange={(e) => {
