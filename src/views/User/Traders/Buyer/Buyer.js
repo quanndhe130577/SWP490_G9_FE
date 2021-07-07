@@ -8,7 +8,6 @@ import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import ModalForm from "./ModalForm";
-// import Moment from "react-moment";
 
 export default class Buyer extends Component {
   constructor(props) {
@@ -253,7 +252,14 @@ export default class Buyer extends Component {
         dataIndex: "phoneNumber",
         key: "phoneNumber",
         ...this.getColumnSearchProps("phoneNumber"),
-        sorter: (a, b) => a.phone.length - b.phone.length,
+        sorter: (a, b) =>
+          (a?.phoneNumber ?? '').localeCompare(
+            b?.phoneNumber ?? '',
+            'vi',
+            {
+              sensitivity: 'base'
+            }
+          ),
         sortDirections: ["descend", "ascend"],
       },
       {

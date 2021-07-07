@@ -86,6 +86,7 @@ const ChoosePond = ({
             label={i18n.t("pondOwner")}
             value={parseInt(pondOwner || currentPurchase.pondOwner)}
             items={dataDf.pondOwner}
+            isDisable={currentPurchase.pondOwner?true:false}
             onChange={(vl) => onChange(vl, "pondOwner")}
           />
           <Widgets.SelectSearchMulti

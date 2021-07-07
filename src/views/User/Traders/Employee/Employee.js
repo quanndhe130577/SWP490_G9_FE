@@ -7,8 +7,9 @@ import i18n from "i18next";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
-import ModalForm from "./ModalForm";
+import ModalForm from "./ModalEMP";
 import Moment from "react-moment";
+import moment from "moment";
 export default class Employee extends Component {
   constructor(props) {
     super(props);
@@ -242,7 +243,7 @@ export default class Employee extends Component {
         dataIndex: "dob",
         key: "dob",
         ...this.getColumnSearchProps("dob"),
-        sorter: (a, b) => a.dob.length - b.dob.length,
+        sorter: (a, b) => moment(a.dob).unix() - moment(b.dob).unix(),
         sortDirections: ["descend", "ascend"],
         render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
       },
@@ -259,7 +260,14 @@ export default class Employee extends Component {
         dataIndex: "phoneNumber",
         key: "phoneNumber",
         ...this.getColumnSearchProps("phoneNumber"),
-        sorter: (a, b) => a.phoneNumber.length - b.phoneNumber.length,
+        sorter: (a, b) =>
+          (a?.phoneNumber ?? '').localeCompare(
+            b?.phoneNumber ?? '',
+            'vi',
+            {
+              sensitivity: 'base'
+            }
+          ),
         sortDirections: ["descend", "ascend"],
       },
       {

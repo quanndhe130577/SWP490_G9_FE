@@ -2,13 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Modal } from "antd";
 import { Row, Col } from "reactstrap";
 import i18n from "i18next";
-import "antd/dist/antd.css";
-
 import Widgets from "../../../../schema/Widgets";
 import helper from "../../../../services/helper";
-import { difference } from "lodash";
+// import { update } from "lodash";
 // import apis from "../../../../services/helper";
-// import data from "../../../../data";
 
 const ModalBuy = ({
   isShowBuy,
@@ -19,22 +16,27 @@ const ModalBuy = ({
   dataDf,
   createPurchaseDetail,
   fetchDrumByTruck,
+  updatePurchaseDetail,
+  suggestionPurchase,
 }) => {
   const [transaction, setTransaction] = useState(currentPurchase); // transaction là 1 bản ghi của purchase
   const [loading, setLoading] = useState(false);
 
   const handleOk = () => {
-    if (createPurchaseDetail) {
-      let validate = validateData();
-      if (validate) {
-        return helper.toast("error", i18n.t(validate));
-      }
-      let tem = transaction;
-      tem.idx = purchase.length + 1;
-
-      createPurchaseDetail(tem);
+    let validate = validateData();
+    if (validate) {
+      return helper.toast("error", i18n.t(validate));
     }
-    setIsShowBuy(false);
+    let tem = transaction;
+    if (mode === "create") {
+      if (createPurchaseDetail) {
+        tem.idx = purchase.length + 1;
+        createPurchaseDetail(tem);
+      }
+      setIsShowBuy(false);
+    } else if (mode === "edit") {
+      updatePurchaseDetail(transaction);
+    }
   };
   const handleCancel = () => {
     setIsShowBuy(false);
@@ -107,6 +109,23 @@ const ModalBuy = ({
       // fetch Drum By Truck
       let rs = await fetchDrumByTruck(truck);
       setLoading(rs);
+    } else if (mode === "create" && suggestionPurchase) {
+      // purchase goi y khi mua
+      let fishTypeId = suggestionPurchase.fishTypeId;
+      let basketId = suggestionPurchase.basketId;
+      let truck = suggestionPurchase.truck;
+      let listDrumId = suggestionPurchase.listDrumId;
+
+      setTransaction((prevState) => ({
+        ...prevState,
+        fishTypeId,
+        basketId,
+        truck,
+        listDrumId,
+      }));
+      // fetch Drum By Truck
+      let rs = await fetchDrumByTruck(truck);
+      setLoading(rs);
     }
   }
   useEffect(() => {
@@ -115,7 +134,7 @@ const ModalBuy = ({
   }, []);
   return (
     <Modal
-      title={mode === "create" ? i18n.t("Thêm Mã") : ""}
+      title={mode === "create" ? i18n.t("createPurchaseDetail") : i18n.t("editPurchaseDetail")}
       visible={isShowBuy}
       onOk={handleOk}
       onCancel={handleCancel}

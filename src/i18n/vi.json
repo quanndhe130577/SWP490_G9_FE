@@ -86,5 +86,10 @@
   "Buyer": "Người mua",
   "MenuTimekeeping": "Chấm công",
   "total": "Tổng cộng",
-  "qtyMustSmallerThan200": "Khối lượng  cá phải nhỏ hơn 200 kg"
+  "qtyMustSmallerThan200": "Khối lượng  cá phải nhỏ hơn 200 kg",
+  "startDate": "Ngày bắt đầu làm",
+  "endDate": "Ngày nghỉ làm",
+  "temporary":"Tạm tính",
+  "editPurchaseDetail":"Sửa mã cân",
+  "createPurchaseDetail":"Thêm mã cân"
 }

@@ -43,6 +43,7 @@ var path = {
   createPurchaseDetail: "/api/purchasedetail/create",
   getAllPurchaseDetail: "/api/purchasedetail/getall", // GET
   deletePurchaseDetail: "/api/purchasedetail/delete", // POST body: PurchaseDetailId
+  updatePurchaseDetail: "/api/purchasedetail/update",
 
   // Drum management
   getDrumByTraderId: "/api/drum/getall",

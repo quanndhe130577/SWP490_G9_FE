@@ -73,6 +73,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
         <Row>
           <Col md="6" xs="12">
             <Widgets.Text
+              required={true}
               label={i18n.t("name")}
               value={employee.name || ""}
               onChange={(e) => handleChangeEmployee(e, "name")}
@@ -87,6 +88,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
           </Col>
           <Col md="6" xs="12">
             <Widgets.Phone
+              required={true}
               type="text"
               label={i18n.t("phone")}
               value={employee.phoneNumber || ""}
@@ -106,6 +108,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
           </Col>
           <Col md="6" xs="12">
             <Widgets.DateTimePicker
+              required={true}
               type="date"
               label={i18n.t("startDate")}
               value={
@@ -115,17 +118,16 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
               onChange={(e) => handleChangeEmployee(e, "startDate")}
             />
           </Col>
-          {mode==="edit" &&
-          <Col md="6" xs="12">
-            <Widgets.DateTimePicker
-              type="date"
-              label={i18n.t("endDate")}
-              value={
-                moment(employee.endDate).format("DD/MM/YYYY")
-              }
-              onChange={(e) => handleChangeEmployee(e, "endDate")}
-            />
-          </Col>}
+          {mode === "edit" && (
+            <Col md="6" xs="12">
+              <Widgets.DateTimePicker
+                type="date"
+                label={i18n.t("endDate")}
+                value={moment(employee.endDate || new Date()).format("DD/MM/YYYY")}
+                onChange={(e) => handleChangeEmployee(e, "endDate")}
+              />
+            </Col>
+          )}
         </Row>
       )}
     />

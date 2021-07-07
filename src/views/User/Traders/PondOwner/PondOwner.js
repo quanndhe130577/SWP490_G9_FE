@@ -243,7 +243,14 @@ export default class PondOwner extends Component {
         dataIndex: "phoneNumber",
         key: "phoneNumber",
         ...this.getColumnSearchProps("phoneNumber"),
-        sorter: (a, b) => a.phone.length - b.phone.length,
+        sorter: (a, b) =>
+          (a?.phoneNumber ?? '').localeCompare(
+            b?.phoneNumber ?? '',
+            'vi',
+            {
+              sensitivity: 'base'
+            }
+          ),
         sortDirections: ["descend", "ascend"],
       },
       {

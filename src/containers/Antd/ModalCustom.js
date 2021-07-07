@@ -11,6 +11,7 @@ const ModalCustom = ({
   titleBtnCancel = i18n.t("cancel"),
   titleBtnOk = i18n.t(title || "ok"),
   loading,
+  width
 }) => {
   return (
     <Modal
@@ -18,6 +19,7 @@ const ModalCustom = ({
       visible={visible}
       onOk={onOk}
       onCancel={onCancel}
+      width={width}
       footer={[
         <Button
           key="back"
