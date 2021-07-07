@@ -120,7 +120,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
               <Widgets.DateTimePicker
                 type="date"
                 label={i18n.t("endDate")}
-                value={moment(employee.endDate).format("DD/MM/YYYY")}
+                value={moment(employee.endDate || new Date()).format("DD/MM/YYYY")}
                 onChange={(e) => handleChangeEmployee(e, "endDate")}
               />
             </Col>
