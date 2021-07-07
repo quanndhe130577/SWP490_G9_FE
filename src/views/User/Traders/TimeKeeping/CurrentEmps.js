@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Row, Col } from "reactstrap";
-import { Checkbox, Modal, List, Radio } from "antd";
+import React, {Component} from "react";
+import {Row, Col} from "reactstrap";
+import {Checkbox, Modal, List, Radio} from "antd";
 import Widgets from "../../../../schema/Widgets";
 import apis from "../../../../services/apis";
 import "./TimeKeeping.scss";
@@ -10,6 +10,10 @@ export default class CurrentEmps extends Component {
     super(props);
     this.state = {
       currentTimes: [],
+      employees: this.props.employees.filter(emp => {
+        let dateStart = new Date(emp.startDate);
+        return this.props.currentDate > dateStart;
+      })
     };
     this.getTimes = this.getTimes.bind(this);
     this.submit = this.submit.bind(this);
@@ -32,7 +36,10 @@ export default class CurrentEmps extends Component {
     );
     if (rs) {
       let list = [];
-      this.props.employees.forEach((emp) => {
+      this.props.employees.filter(emp => {
+        let dateStart = new Date(emp.startDate);
+        return this.props.currentDate > dateStart;
+      }).forEach((emp) => {
         let filter = rs.data.filter((e) => e.empId === emp.id);
         if (filter.length > 0) {
           let data = filter[0];
@@ -61,7 +68,7 @@ export default class CurrentEmps extends Component {
     let data = currentTimes.filter((time) => time.empId === item.empId);
     if (data.length > 0) {
       data[0][name] = value;
-      this.setState({ currentTimes: currentTimes });
+      this.setState({currentTimes: currentTimes});
     }
   };
   load() {
