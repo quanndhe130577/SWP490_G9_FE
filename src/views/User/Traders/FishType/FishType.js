@@ -1,9 +1,10 @@
-import React, { Component } from "react";
-import { Table, Input, Space, Card, Dropdown, Menu } from "antd";
 // import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
-import { Row, Col, Button } from "reactstrap";
+import { Card, Dropdown, Input, Menu, Space, Table } from "antd";
 import i18n from "i18next";
+import React, { Component } from "react";
+import NumberFormat from "react-number-format";
+import { Button, Col, Row } from "reactstrap";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
@@ -291,6 +292,13 @@ export default class FishType extends Component {
         ...this.getColumnSearchProps("price"),
         sorter: (a, b) => a.price - b.price,
         sortDirections: ["descend", "ascend"],
+        render: (price) => (
+          <NumberFormat
+            value={price}
+            displayType={"text"}
+            thousandSeparator={true}
+          />
+        ),
       },
       {
         title: "",

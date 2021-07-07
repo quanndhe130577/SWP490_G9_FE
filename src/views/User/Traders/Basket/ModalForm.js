@@ -48,6 +48,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
         <Row>
           <Col md="6" xs="12">
             <Widgets.Text
+              required={true}
               label={i18n.t("type")}
               value={basket.type || ""}
               onChange={(e) => handleChangePondOwner(e, "type")}
@@ -55,6 +56,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
           </Col>
           <Col md="6" xs="12">
             <Widgets.Text
+              required={true}
               label={i18n.t("weight")}
               type="number"
               value={basket.weight || ""}

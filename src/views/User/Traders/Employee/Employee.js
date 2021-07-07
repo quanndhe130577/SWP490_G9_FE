@@ -9,6 +9,7 @@ import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import ModalForm from "./ModalEMP";
 import Moment from "react-moment";
+import moment from "moment";
 export default class Employee extends Component {
   constructor(props) {
     super(props);
@@ -197,9 +198,9 @@ export default class Employee extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -242,7 +243,7 @@ export default class Employee extends Component {
         dataIndex: "dob",
         key: "dob",
         ...this.getColumnSearchProps("dob"),
-        sorter: (a, b) => a.dob.length - b.dob.length,
+        sorter: (a, b) => moment(a.dob).unix() - moment(b.dob).unix(),
         sortDirections: ["descend", "ascend"],
         render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
       },
@@ -259,7 +260,14 @@ export default class Employee extends Component {
         dataIndex: "phoneNumber",
         key: "phoneNumber",
         ...this.getColumnSearchProps("phoneNumber"),
-        sorter: (a, b) => a.phoneNumber.length - b.phoneNumber.length,
+        sorter: (a, b) =>
+          (a?.phoneNumber ?? '').localeCompare(
+            b?.phoneNumber ?? '',
+            'vi',
+            {
+              sensitivity: 'base'
+            }
+          ),
         sortDirections: ["descend", "ascend"],
       },
       {
@@ -284,7 +292,7 @@ export default class Employee extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentEmp={currentEmp || {}}
-            // handleChangePondOwner={handleChangePondOwner}
+          // handleChangePondOwner={handleChangePondOwner}
           />
         )}
         <Row>
