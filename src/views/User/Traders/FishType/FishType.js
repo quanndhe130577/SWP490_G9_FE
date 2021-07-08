@@ -228,7 +228,7 @@ export default class FishType extends Component {
         render: (text) => <label>{text}</label>,
       },
       {
-        title: i18n.t("Tên loại cá"),
+        title: i18n.t("Fish Name"),
         dataIndex: "fishName",
         key: "fishName",
         ...this.getColumnSearchProps("fishName"),
@@ -262,7 +262,7 @@ export default class FishType extends Component {
       // },
 
       {
-        title: i18n.t("Cân nặng (khoảng)"),
+        title: i18n.t("Range of Weight"),
         colSpan: 1,
         dataIndex: "id",
         key: "id",
@@ -286,7 +286,7 @@ export default class FishType extends Component {
       //   ),
       // },
       {
-        title: i18n.t("Giá"),
+        title: i18n.t("Price"),
         dataIndex: "price",
         key: "price",
         ...this.getColumnSearchProps("price"),
