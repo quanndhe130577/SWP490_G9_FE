@@ -23,7 +23,7 @@ const BuyFish = (props) => {
   const [purchase, setPurchase] = useState([]);
   const [mode, setMode] = useState("");
   const [currentPurchase, setCurrentPurchase] = useState({});
-  const [currentPurchaseDetail, setCurrentPurchaseDetail] = useState({});
+  // const [currentPurchaseDetail, setCurrentPurchaseDetail] = useState({});
   const [suggestionPurchase, setSuggestionPurchase] = useState(null); //purchase dung de goi y khi them purchase detail
   const [dataDf, setData] = useState({ basket: [], drum: [], truck: [] }); // list data of basket, drum, truck,...
   const [isShowClosePurchase, setShowClosePurchase] = useState(false);
@@ -39,7 +39,7 @@ const BuyFish = (props) => {
       if (tem) {
         tem.purchaseDetailId = id;
         setMode("edit");
-        setCurrentPurchase(Object.assign(tem, currentPurchase));
+        setCurrentPurchase(Object.assign(currentPurchase, tem));
         setIsShowBuy(true);
       }
     }
@@ -78,7 +78,7 @@ const BuyFish = (props) => {
     let tem = purchase.find((e) => e.id === id);
     if (tem && tem.fishType) {
       let value =
-        tem.fishType.price * (parseInt(tem.weight) - tem.basket.weight);
+        tem.fishType.price * (parseFloat(tem.weight) - tem.basket.weight);
       return (
         <NumberFormat
           value={value}
@@ -380,8 +380,26 @@ const BuyFish = (props) => {
     }
   }
 
-  function handleClosePurchase() {
+  function handleShowClosePurchase() {
     setShowClosePurchase(!isShowClosePurchase);
+  }
+
+  async function handleClosePurchase(data) {
+    try {
+      debugger;
+      let { id, commissionPercent, isPaid } = data;
+
+      let rs = await apis.closePurchase({
+        id,
+        isPaid,
+        commissionPercent,
+      });
+      if (rs && rs.statusCode === 200) {
+        helper.toast("success", i18n.t(rs.message));
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function handleBack() {
@@ -456,9 +474,10 @@ const BuyFish = (props) => {
           <ModalClosePurchase
             isShowClosePurchase={isShowClosePurchase}
             purchase={purchase}
-            prCurrentPurchase={currentPurchase}
-            handleClosePurchase={handleClosePurchase}
+            prCurrentPurchase={currentPurchase || {}}
+            handleShowClosePurchase={handleShowClosePurchase}
             dataDf={dataDf}
+            handleClosePurchase={handleClosePurchase}
           />
         )}
         {isShowBuy && (
@@ -508,7 +527,7 @@ const BuyFish = (props) => {
                   <div className="float-right">
                     <Button
                       color="info"
-                      onClick={() => handleClosePurchase()}
+                      onClick={() => handleShowClosePurchase()}
                       className="mr-2"
                     >
                       {i18n.t("closePurchase")}

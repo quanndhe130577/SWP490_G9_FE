@@ -38,6 +38,7 @@ var path = {
   getPurchases: "/api/purchase/getall", // GET
   deletePurchase: "/api/purchase/delete",
   updatePurchase: "/api/purchase/update",
+  closePurchase: "/api/purchase/chot-so",
 
   // purchase  detail
   createPurchaseDetail: "/api/purchasedetail/create",

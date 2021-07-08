@@ -41,7 +41,7 @@
   font-weight: 900;
 }
 .default-layout {
-  padding-bottom: 4em;
+  /* padding-bottom: 4em; */
 }
 /* over button */
 .ant-btn-primary {

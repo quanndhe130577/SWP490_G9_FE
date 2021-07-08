@@ -156,16 +156,14 @@ const BuyFish = (props) => {
       render: (basket) => <div>{basket && <label>{basket.type}</label>}</div>,
     },
     {
-      title: i18n.t("drum"),
-      dataIndex: "listDrum",
-      key: "listDrum",
-      render: (listDrum) => renderDrum(listDrum),
+      title: i18n.t("trader"),
+      dataIndex: "trader",
+      key: "trader",
     },
     {
-      title: i18n.t("truck"),
-      dataIndex: "truck",
-      key: "truck",
-      render: (truck) => <div>{truck && <label>{truck.name}</label>}</div>,
+      title: i18n.t("buyer"),
+      dataIndex: "buyer",
+      key: "buyer",
     },
 
     {
@@ -432,7 +430,7 @@ const BuyFish = (props) => {
     return (
       <Row>
         <Col md="6">
-          <h3 className="mr-5">{i18n.t("buyGood")}</h3>
+          <h3 className="mr-5">{i18n.t("sellGood")}</h3>
         </Col>
         <Col md="6">
           <Button
@@ -541,46 +539,47 @@ const BuyFish = (props) => {
                   scroll={{ y: 420 }}
                   pagination={{ pageSize: 100 }}
                   bordered
-                  summary={(pageData) => {
-                    let totalWeight = 0;
-                    let totalAmount = 0;
-                    pageData.forEach(({ weight, fishType, basket }) => {
-                      totalWeight += weight;
-                      totalAmount +=
-                        fishType.price * (parseInt(weight) - basket.weight);
-                    });
+                  // summary={(pageData) => {
+                  //   let totalWeight = 0;
+                  //   let totalAmount = 0;
+                  //   pageData.forEach(({ weight, fishType, basket }) => {
+                  //     totalWeight += weight;
+                  //     totalAmount +=
+                  //       fishType.price * (parseInt(weight) - basket.weight);
+                  //   });
 
-                    return (
-                      <Table.Summary fixed>
-                        <Table.Summary.Row>
-                          <Table.Summary.Cell
-                            colSpan="2"
-                            key="1"
-                            className="bold"
-                          >
-                            {i18n.t("total")}
-                          </Table.Summary.Cell>
-                          <Table.Summary.Cell key="2">
-                            <NumberFormat
-                              value={totalWeight.toFixed(1)}
-                              displayType={"text"}
-                              thousandSeparator={true}
-                              suffix=" Kg"
-                            />
-                          </Table.Summary.Cell>
-                          <Table.Summary.Cell key="3">
-                            <NumberFormat
-                              value={totalAmount}
-                              displayType={"text"}
-                              thousandSeparator={true}
-                              suffix={i18n.t("suffix")}
-                            />
-                          </Table.Summary.Cell>
-                          <Table.Summary.Cell colSpan="4" key="4" />
-                        </Table.Summary.Row>
-                      </Table.Summary>
-                    );
-                  }}
+                  //   return (
+                  //     <Table.Summary fixed>
+                  //       <Table.Summary.Row>
+                  //         <Table.Summary.Cell
+                  //           colSpan="2"
+                  //           key="1"
+                  //           className="bold"
+                  //         >
+                  //           {i18n.t("total")}
+                  //         </Table.Summary.Cell>
+                  //         <Table.Summary.Cell key="2">
+                  //           <NumberFormat
+                  //             value={totalWeight.toFixed(1)}
+                  //             displayType={"text"}
+                  //             thousandSeparator={true}
+                  //             suffix=" Kg"
+                  //           />
+                  //         </Table.Summary.Cell>
+                  //         <Table.Summary.Cell key="3">
+                  //           <NumberFormat
+                  //             value={totalAmount}
+                  //             displayType={"text"}
+                  //             thousandSeparator={true}
+                  //             suffix={i18n.t("suffix")}
+                  //           />
+                  //         </Table.Summary.Cell>
+                  //         <Table.Summary.Cell colSpan="4" key="4" />
+                  //       </Table.Summary.Row>
+                  //     </Table.Summary>
+                  //   );
+
+                  // }}
                 />
               </Col>
             </Row>

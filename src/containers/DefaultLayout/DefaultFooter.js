@@ -6,11 +6,7 @@ const { Footer } = Layout;
 
 class DefaultFooter extends Component {
   render() {
-    return (
-      <Footer style={{ textAlign: "center" }}>
-        Ant Design ©2018 Created by Ant UED
-      </Footer>
-    );
+    return <Footer style={{ textAlign: "center" }}>TnR - 0987654321</Footer>;
   }
 }
 
