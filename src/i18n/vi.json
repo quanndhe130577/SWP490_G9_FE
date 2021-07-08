@@ -97,5 +97,12 @@
   "paid": "Đã thanh toán",
   "hasn'tPaid": "Chưa thanh toán",
   "(suffix)": " (VND)",
-  "sellGood": "Bán hàng"
+  "sellGood": "Bán hàng",
+  "Fish Name" : "Tên loại cá",
+  "Range of Weight" : "Khoảng cân",
+  "Price" : "Giá",
+  "Description" : "Mô tả",
+  "Min Weight" : "Cân nặng tối thiểu",
+  "Max Weight" : "Cân nặng tối đa",
+  "Created Date" : "Ngày tạo"
 }
