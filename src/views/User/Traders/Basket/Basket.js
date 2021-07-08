@@ -18,8 +18,7 @@ export default class Basket extends Component {
       isShowModal: false,
       mode: "",
       data: [],
-      loading: true
-
+      loading: true,
     };
   }
 
@@ -38,11 +37,9 @@ export default class Basket extends Component {
         this.setState({ data: rs.data, user, total: rs.data.length });
       }
     } catch (error) {
-      console.log(error)
-
-    }
-    finally {
-      this.setState({ loading: false })
+      console.log(error);
+    } finally {
+      this.setState({ loading: false });
     }
   }
 
@@ -107,9 +104,9 @@ export default class Basket extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -199,7 +196,7 @@ export default class Basket extends Component {
   renderBtnAction(id) {
     return (
       <Menu>
-        <Menu.Item>
+        <Menu.Item key="1">
           <Button
             color="info"
             className="mr-2"
@@ -209,7 +206,7 @@ export default class Basket extends Component {
             {i18n.t("edit")}
           </Button>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key="2">
           <Button color="danger" onClick={() => this.onClick("delete", id)}>
             <i className="fa fa-trash-o mr-1" />
             {i18n.t("delete")}
@@ -265,7 +262,7 @@ export default class Basket extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentPO={currentPO || {}}
-          // handleChangeBasket={handleChangeBasket}
+            // handleChangeBasket={handleChangeBasket}
           />
         )}
         <Row>

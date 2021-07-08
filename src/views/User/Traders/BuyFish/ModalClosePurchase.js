@@ -67,6 +67,7 @@ const ModalBuy = ({
         }
       });
     });
+    console.log("totalAmount" + totalAmount);
     setObjPurchase({
       totalWeight,
       totalAmount,
@@ -109,7 +110,7 @@ const ModalBuy = ({
             />
           </Col>
           <Col md="6">
-            <Widgets.Number
+            <Widgets.WeightInput
               label={i18n.t("percent") + " %"}
               value={currentPurchase.commissionPercent || ""}
               onChange={(val) => handlePurchase("commissionPercent", val)}
@@ -126,14 +127,14 @@ const ModalBuy = ({
             />
           </Col>
           <Col md="6">
-            <Widgets.Number
+            <Widgets.MoneyInput
               label={i18n.t("totalAmount")}
               value={objPurchase.totalAmount || ""}
               // onChange={(val) => handlePurchase("commission", val)}
             />
           </Col>
           <Col md="6">
-            <Widgets.Number
+            <Widgets.WeightInput
               label={i18n.t("totalWeight")}
               value={objPurchase.totalWeight.toFixed(1) || ""}
             />

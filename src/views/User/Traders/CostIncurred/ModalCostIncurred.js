@@ -7,8 +7,6 @@ import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import moment from "moment";
-import NumberFormat from "react-number-format";
-
 
 const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
   const [costInc, setPO] = useState(currentCostInc);
@@ -22,7 +20,6 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
       [name]: val,
     }));
   };
-
 
   const handleOk = async () => {
     try {
@@ -76,7 +73,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
             />
           </Col>
           <Col md="6" xs="12">
-            <Widgets.Money
+            <Widgets.MoneyInput
               required={true}
               label={i18n.t("cost")}
               value={costInc.cost || ""}

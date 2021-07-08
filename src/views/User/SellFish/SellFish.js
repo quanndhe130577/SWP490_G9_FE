@@ -94,7 +94,7 @@ const BuyFish = (props) => {
   const renderBtnAction = (id) => {
     return (
       <Menu>
-        <Menu.Item>
+        <Menu.Item key="1">
           <Button
             color="info"
             className="mr-2"
@@ -104,7 +104,7 @@ const BuyFish = (props) => {
             {i18n.t("edit")}
           </Button>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key="2">
           <Button color="danger" onClick={() => handleAction("delete", id)}>
             <i className="fa fa-trash-o mr-1" />
             {i18n.t("delete")}

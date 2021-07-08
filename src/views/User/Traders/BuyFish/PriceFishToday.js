@@ -45,22 +45,20 @@ const PriceFishToday = ({ listFishId, onChange, dataDf }) => {
   ];
   const [dataS, setData] = useState([]);
   const findList = (temArr) => {
-    let arr = [], count = 0;
+    let arr = [],
+      count = 0;
     temArr.forEach((el) => {
       let tem = dataDf.fishType.find((ft) => ft.id === parseInt(el));
       if (tem) {
         tem.idx = ++count;
         arr.push(tem);
       }
-      ;
     });
 
     if (onChange) {
       onChange(arr);
     }
     setData(arr);
-
-
   };
   useEffect(() => {
     findList(listFishId);

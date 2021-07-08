@@ -2,7 +2,7 @@ import React from "react";
 import { InputNumber } from "antd";
 
 export default function Money({
-  value,
+  value = null,
   label,
   error,
   isDisable = false,
@@ -11,6 +11,7 @@ export default function Money({
   submitted,
   onKeyDown,
 }) {
+  console.log("number " + value);
   return (
     <div
       className={"form-group " + (submitted && !value ? " has-error" : "")}
@@ -29,8 +30,10 @@ export default function Money({
         formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
         required={required}
         onChange={(e) => {
-          console.log(e);
-          onChange(e);
+          if (onChange) {
+            console.log(e);
+            onChange(e);
+          }
         }}
       />
       {submitted && !value && (

@@ -8,7 +8,7 @@ import { Button, Col, Row } from "reactstrap";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
-import ModalForm from "./ModalForm";
+import ModalForm from "./ModalCostIncurred";
 
 export default class CostIncurred extends Component {
   constructor(props) {
@@ -75,7 +75,7 @@ export default class CostIncurred extends Component {
   renderBtnAction(id) {
     return (
       <Menu>
-        <Menu.Item>
+        <Menu.Item key="1">
           <Button
             color="info"
             className="mr-2"
@@ -85,7 +85,7 @@ export default class CostIncurred extends Component {
             {i18n.t("edit")}
           </Button>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key="2">
           <Button color="danger" onClick={() => this.onClick("delete", id)}>
             <i className="fa fa-trash-o mr-1" />
             {i18n.t("delete")}

@@ -53,7 +53,7 @@ const ModalBuy = ({
             />
           </Col>
           <Col md="6">
-            <Widgets.Number
+            <Widgets.WeightInput
               label={i18n.t("percent")}
               value={currentPurchase.commission || ""}
               onChange={(val) => handlePurchase("commission", val)}

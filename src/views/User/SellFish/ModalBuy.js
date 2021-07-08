@@ -154,7 +154,7 @@ const ModalBuy = ({
           />
         </Col>
         <Col md="6" xs="12">
-          <Widgets.Number
+          <Widgets.WeightInput
             required={true}
             label={i18n.t("qtyOfFish(Kg)")}
             value={transaction.weight || 0}

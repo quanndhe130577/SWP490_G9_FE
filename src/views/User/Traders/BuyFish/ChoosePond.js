@@ -30,7 +30,6 @@ const ChoosePond = ({
     if (!isChange) {
       // history.push("/home");
       setShowChoosePond(false);
-
     } else {
       // if pondOwner null cant close modal
       let check = validate(currentPurchase, "pondOwner");
@@ -86,11 +85,11 @@ const ChoosePond = ({
             label={i18n.t("pondOwner")}
             value={parseInt(pondOwner || currentPurchase.pondOwner)}
             items={dataDf.pondOwner}
-            isDisable={currentPurchase.pondOwner ? true : false}
+            // isDisable={currentPurchase.pondOwner ? true : false}
             onChange={(vl) => onChange(vl, "pondOwner")}
           />
           <Widgets.SelectSearchMulti
-            label={i18n.t("chooseFish")}
+            labl={i18n.t("chooseFish")}
             value={currentPurchase.listFishId}
             items={addField(dataDf.fishType || [], "name", "fishName")}
             onChange={(vl) => onChange(vl, "listFishId")}

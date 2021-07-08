@@ -134,7 +134,11 @@ const ModalBuy = ({
   }, []);
   return (
     <Modal
-      title={mode === "create" ? i18n.t("createPurchaseDetail") : i18n.t("editPurchaseDetail")}
+      title={
+        mode === "create"
+          ? i18n.t("createPurchaseDetail")
+          : i18n.t("editPurchaseDetail")
+      }
       visible={isShowBuy}
       onOk={handleOk}
       onCancel={handleCancel}
@@ -150,7 +154,7 @@ const ModalBuy = ({
           />
         </Col>
         <Col md="6" xs="12">
-          <Widgets.Number
+          <Widgets.WeightInput
             required={true}
             label={i18n.t("qtyOfFish(Kg)")}
             value={transaction.weight || 0}

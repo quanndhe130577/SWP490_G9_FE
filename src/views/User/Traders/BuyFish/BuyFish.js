@@ -94,7 +94,7 @@ const BuyFish = (props) => {
   const renderBtnAction = (id) => {
     return (
       <Menu>
-        <Menu.Item>
+        <Menu.Item key="1">
           <Button
             color="info"
             className="mr-2"
@@ -104,7 +104,7 @@ const BuyFish = (props) => {
             {i18n.t("edit")}
           </Button>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key="2">
           <Button color="danger" onClick={() => handleAction("delete", id)}>
             <i className="fa fa-trash-o mr-1" />
             {i18n.t("delete")}
@@ -153,6 +153,7 @@ const BuyFish = (props) => {
     {
       title: i18n.t("basket"),
       dataIndex: "basket",
+      key: "basket",
       render: (basket) => <div>{basket && <label>{basket.type}</label>}</div>,
     },
     {
@@ -386,7 +387,6 @@ const BuyFish = (props) => {
 
   async function handleClosePurchase(data) {
     try {
-      debugger;
       let { id, commissionPercent, isPaid } = data;
 
       let rs = await apis.closePurchase({
@@ -421,9 +421,10 @@ const BuyFish = (props) => {
       tem.pondOwner = parseInt(tem.pondOwner);
     }
 
-    if (tem.status === "Pending") {
-      // tem = {};
-      // local.set("currentPurchase", tem);
+    if (tem.status === "Pending" && !query.id) {
+      debugger;
+      tem = {};
+      local.set("currentPurchase", tem);
     }
 
     if (tem.id || query.id) {
