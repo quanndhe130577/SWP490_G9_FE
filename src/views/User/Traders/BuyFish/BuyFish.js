@@ -32,16 +32,20 @@ const BuyFish = (props) => {
   ); // data in redux
 
   const handleAction = (action, id) => {
-    if (action === "delete") {
-      deletePurchaseDetail(id);
-    } else {
-      let tem = purchase.find((e) => e.id === id);
-      if (tem) {
-        tem.purchaseDetailId = id;
-        setMode("edit");
-        setCurrentPurchase(Object.assign(currentPurchase, tem));
-        setIsShowBuy(true);
+    if (currentPurchase.status && currentPurchase.status === "Pending") {
+      if (action === "delete") {
+        deletePurchaseDetail(id);
+      } else {
+        let tem = purchase.find((e) => e.id === id);
+        if (tem) {
+          tem.purchaseDetailId = id;
+          setMode("edit");
+          setCurrentPurchase(Object.assign(currentPurchase, tem));
+          setIsShowBuy(true);
+        }
       }
+    } else {
+      helper.toast("error", i18n.t("youCanDoActionWhenCompleted"));
     }
   };
 
@@ -206,15 +210,17 @@ const BuyFish = (props) => {
   // fetch data
   async function fetchData() {
     try {
+      setLoading(true);
+
       let user = session.get("user");
       getPondOwnerByTraderId(user.userID);
       getFTByTraderID();
       getTruckByTraderID();
       getBasketByTraderId();
-
-      setLoading(false);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }
 

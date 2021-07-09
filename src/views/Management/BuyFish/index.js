@@ -117,6 +117,12 @@ const ManaBuy = () => {
       ),
     },
     {
+      title: i18n.t("status"),
+      dataIndex: "status",
+      key: "status",
+      // ...this.getColumnSearchProps("totalAmount"),
+    },
+    {
       title: "",
       dataIndex: "id",
       key: "id",
@@ -156,6 +162,17 @@ const ManaBuy = () => {
         <Col md="6" className="d-flex">
           <h3 className="">{i18n.t("goodManagement")}</h3>
         </Col>
+        <Col md="6">
+          <Button
+            color="info"
+            className="mb-2 pull-right"
+            onClick={() => {
+              history.push("buyFish");
+            }}
+          >
+            {i18n.t("newPurchase")}
+          </Button>
+        </Col>
       </Row>
     );
   };
@@ -166,15 +183,6 @@ const ManaBuy = () => {
 
   return (
     <Card title={renderTitle()}>
-      <Button
-        color="info"
-        className="mb-2"
-        onClick={() => {
-          history.push("buyFish");
-        }}
-      >
-        {i18n.t("newPurchase")}
-      </Button>
       {/*<Button*/}
       {/*  color="info"*/}
       {/*  onClick={() => {*/}

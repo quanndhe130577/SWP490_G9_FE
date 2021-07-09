@@ -99,11 +99,14 @@
   "(suffix)": " (VND)",
   "sellGood": "Bán hàng",
   "trader": "Thương lái",
-  "Fish Name" : "Tên loại cá",
-  "Range of Weight" : "Khoảng cân",
-  "Price" : "Giá",
-  "Description" : "Mô tả",
-  "Min Weight" : "Cân nặng tối thiểu",
-  "Max Weight" : "Cân nặng tối đa",
-  "Created Date" : "Ngày tạo"
+  "Fish Name": "Tên loại cá",
+  "Range of Weight": "Khoảng cân",
+  "Price": "Giá",
+  "Description": "Mô tả",
+  "Min Weight": "Cân nặng tối thiểu",
+  "Max Weight": "Cân nặng tối đa",
+  "Created Date": "Ngày tạo",
+  "payForPondOwner": "Số tiền trả cho chủ ao",
+  "status": "Trạng thái",
+  "youCanDoActionWhenCompleted": "Bạn không thể sửa hoặc xóa khi đã chốt sổ"
 }
