@@ -80,6 +80,13 @@ var path = {
   updateBuyer: "/api/buyer/update",
   deleteBuyer: "/api/buyer/delete",
   getDetailBuyer: "/api/buyer/detail/{buyerId}",
+
+  //Debt
+  getAllDebt: "",
+  createDebt: "",
+  updateDebt: "",
+  deleteDebt: "",
+  getDetailDebt: "",
 };
 
 Object.keys(path).forEach(function (key) {
