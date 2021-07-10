@@ -56,6 +56,7 @@ class DefaultHeader extends Component {
         >
           <Menu mode="inline">
             {/* auto generate menu, define menu in MENU */}
+            {/* eslint-disable-next-line array-callback-return */}
             {MENU.map((mn, idx) => {
               if (mn.type === "subMenu") {
                 const { title, menu, icon } = mn;
@@ -66,6 +67,7 @@ class DefaultHeader extends Component {
                       icon={icon}
                       title={i18n.t(title)}
                     >
+                      {/* eslint-disable-next-line array-callback-return */}
                       {menu.map((me, i) => {
                         if (!me.role || me.role === user.roleDisplayName)
                           return (

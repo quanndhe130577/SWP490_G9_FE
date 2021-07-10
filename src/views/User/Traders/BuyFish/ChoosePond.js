@@ -3,9 +3,10 @@ import { Modal } from "antd";
 import { Row, Col } from "reactstrap";
 import i18n from "i18next";
 import Widgets from "../../../../schema/Widgets";
-import local from "../../../../services/local";
-import helper from "../../../../services/helper";
 import PriceFishToday from "./PriceFishToday";
+import services from "../../../../services";
+
+const { local, helper } = services;
 
 const ChoosePond = ({
   isShowChoosePond,

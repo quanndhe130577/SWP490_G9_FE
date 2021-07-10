@@ -37,7 +37,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
   };
   useEffect(() => {
     handleChangeFishType(new Date(), "date");
-  }, [])
+  }, []);
   return (
     <Modal
       title={mode === "edit" ? i18n.t("edit") : i18n.t("create")}
@@ -77,7 +77,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
             />
           </Col>
           <Col md="6" xs="12">
-            <Widgets.WeightInput
+            <Widgets.MoneyInput
               type="number"
               label={i18n.t("Price")}
               value={fishType.price || ""}
@@ -87,7 +87,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
           <Col md="6" xs="12">
             <Widgets.DateTimePicker
               required={true}
-              label={"Created Date"}
+              label={i18n.t("Created Date")}
               value={fishType.date || new Date()}
               // maxDate={new Date()}
               // minDate={minDate}

@@ -7,13 +7,11 @@ import ModalBuy from "./ModalBuy";
 import ModalClosePurchase from "./ModalClosePurchase";
 import ChoosePond from "./ChoosePond";
 import queryString from "qs";
-import local from "../../../../services/local";
-import session from "../../../../services/session";
-import apis from "../../../../services/apis";
-import helper from "../../../../services/helper";
+import services from "../../../../services";
 import NumberFormat from "react-number-format";
 import { useSelector } from "react-redux";
 import Moment from "react-moment";
+const { local, session, apis, helper } = services;
 
 const BuyFish = (props) => {
   const history = useHistory();
@@ -23,10 +21,10 @@ const BuyFish = (props) => {
   const [purchase, setPurchase] = useState([]);
   const [mode, setMode] = useState("");
   const [currentPurchase, setCurrentPurchase] = useState({});
-  // const [currentPurchaseDetail, setCurrentPurchaseDetail] = useState({});
   const [suggestionPurchase, setSuggestionPurchase] = useState(null); //purchase dung de goi y khi them purchase detail
   const [dataDf, setData] = useState({ basket: [], drum: [], truck: [] }); // list data of basket, drum, truck,...
   const [isShowClosePurchase, setShowClosePurchase] = useState(false);
+
   const currentPurchasePROPS = useSelector(
     (state) => state.purchase.currentPurchase
   ); // data in redux
@@ -358,8 +356,6 @@ const BuyFish = (props) => {
       });
       if (rs && rs.statusCode === 200) {
         getAllPurchaseDetail(detail);
-        // setCurrentPurchase(.find((e) => e.id === currentPurchase.id));
-
         helper.toast("success", i18n.t(rs.message));
       }
     } catch (error) {
@@ -428,7 +424,6 @@ const BuyFish = (props) => {
     }
 
     if (tem.status === "Pending" && !query.id) {
-      debugger;
       tem = {};
       local.set("currentPurchase", tem);
     }
@@ -570,7 +565,7 @@ const BuyFish = (props) => {
                   summary={(pageData) => {
                     let totalWeight = 0;
                     let totalAmount = 0;
-                    pageData.forEach(({ weight, price, basket }) => {
+                    pageData.forEach(({ weight, price }) => {
                       totalWeight += weight;
                       totalAmount += price;
                     });

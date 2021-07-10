@@ -47,6 +47,7 @@ const ModalBuy = ({
 
     // clear total weight
     tem.forEach(({ fishType }) => {
+      //  eslint-disable-next-line array-callback-return
       fishInPurchase.map((el) => {
         if (el.id === fishType.id) {
           el.totalWeight = 0;
@@ -57,6 +58,7 @@ const ModalBuy = ({
     tem.forEach(({ weight, price, fishType, basket }) => {
       totalWeight += weight;
       totalAmount += price;
+      //  eslint-disable-next-line array-callback-return
       fishInPurchase.map((el) => {
         if (el.id === fishType.id) {
           if (el.totalWeight) {

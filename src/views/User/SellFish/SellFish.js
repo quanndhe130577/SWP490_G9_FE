@@ -23,7 +23,7 @@ const BuyFish = (props) => {
   const [purchase, setPurchase] = useState([]);
   const [mode, setMode] = useState("");
   const [currentPurchase, setCurrentPurchase] = useState({});
-  const [currentPurchaseDetail, setCurrentPurchaseDetail] = useState({});
+  // const [currentPurchaseDetail, setCurrentPurchaseDetail] = useState({});
   const [suggestionPurchase, setSuggestionPurchase] = useState(null); //purchase dung de goi y khi them purchase detail
   const [dataDf, setData] = useState({ basket: [], drum: [], truck: [] }); // list data of basket, drum, truck,...
   const [isShowClosePurchase, setShowClosePurchase] = useState(false);
@@ -63,16 +63,16 @@ const BuyFish = (props) => {
     }
   }
 
-  const renderDrum = (listDrum = []) => {
-    let label = "";
-    listDrum.forEach((el, idx) => {
-      label += el.number;
-      if (idx < listDrum.length - 1) {
-        label += " - ";
-      }
-    });
-    return label;
-  };
+  // const renderDrum = (listDrum = []) => {
+  //   let label = "";
+  //   listDrum.forEach((el, idx) => {
+  //     label += el.number;
+  //     if (idx < listDrum.length - 1) {
+  //       label += " - ";
+  //     }
+  //   });
+  //   return label;
+  // };
 
   const calculateIntoMoney = (id) => {
     let tem = purchase.find((e) => e.id === id);

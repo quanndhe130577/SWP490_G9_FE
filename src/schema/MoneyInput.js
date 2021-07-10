@@ -29,6 +29,7 @@ export default function Money({
         defaultValue={value}
         formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
         required={required}
+        step="100"
         onChange={(e) => {
           if (onChange) {
             console.log(e);

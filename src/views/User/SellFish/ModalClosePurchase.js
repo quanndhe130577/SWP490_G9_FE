@@ -16,7 +16,9 @@ const ModalBuy = ({
   // transaction là 1 bản ghi của purchase
   const [loading, setLoading] = useState(false);
 
-  const handleOk = () => {};
+  const handleOk = () => {
+    setLoading(false);
+  };
 
   const handleCancel = () => {
     handleClosePurchase(!isShowClosePurchase);
