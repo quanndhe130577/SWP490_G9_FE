@@ -1,3 +1,4 @@
+import { DatabaseTwoTone } from "@ant-design/icons";
 import React from "react";
 import Loadable from "react-loadable";
 
@@ -64,6 +65,10 @@ const Buyer = Loadable({
 });
 const SellFish = Loadable({
   loader: () => import("./views/User/SellFish/SellFish"),
+  loading: Loading,
+});
+const Debt = Loadable({
+  loader: () => import("./views/User/Debt/Debt"),
   loading: Loading,
 });
 const routes = [
@@ -142,6 +147,11 @@ const routes = [
     name: "SellFish",
     component: SellFish,
   },
+  {
+    path: "/debt",
+    name: "Debt",
+    component: Debt,
+  }
 ];
 
 export default routes;

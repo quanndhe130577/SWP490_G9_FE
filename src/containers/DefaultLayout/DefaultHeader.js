@@ -208,6 +208,11 @@ const MENU = [
     icon: <DollarOutlined />,
     link: "/buyer",
   },
+  {
+    title: "Debt Management",
+    icon: <DollarOutlined/>,
+    link: "/debt"
+  }
 ];
 
 export default connect(mapStateToProps)(DefaultHeader);

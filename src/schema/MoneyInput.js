@@ -27,6 +27,7 @@ export default function Money({
         style={{ width: "100%" }}
         disabled={isDisable}
         defaultValue={value}
+        step="100"
         formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
         required={required}
         step="100"
