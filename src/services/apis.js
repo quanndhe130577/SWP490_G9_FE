@@ -17,12 +17,15 @@ var path = {
   createPO: "/api/pondOwner/create",
   updatePO: "/api/pondOwner/update",
   deletePO: "/api/pondOwner/delete",
-  getFTByTraderID: "/api/fishtype/getlastall", // method get, FT: fish type
+
+  getFTByTraderID: "/api/fishtype/getall",
+  getLastAllFTByTraderID: "api/fishtype/getlastall",
   createFT: "/api/fishtype/create", // method post need param
   getUserInfo: "/api/getUserInfo",
   updateUser: "/api/user/update",
   updateFT: "/api/fishtype/update",
   deleteFT: "/api/fishtype/delete",
+
   getBasketByTraderId: "/api/basket/getall",
   createBasket: "/api/basket/create",
   getTruckByTrarderID: "/api/truck/getall", //method get

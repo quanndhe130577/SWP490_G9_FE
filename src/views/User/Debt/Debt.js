@@ -7,26 +7,33 @@ import { Button, Col, Row } from "reactstrap";
 import apis from "../../../services/apis";
 import helper from "../../../services/helper";
 import session from "../../../services/session";
-import ModalForm from "./ModalForm";
+import ModalForm from "./ModalDebt";
 import Moment from "react-moment";
+
 export default class Debt extends Component {
     constructor(props) {
       super(props);
-  
       this.state = {
         searchText: "",
         searchedColumn: "",
         isShowModal: false,
         mode: "",
-        data: [],
+        data: dataTest,
         loading: true,
       };
+      this.testHanldeEdit  = this.testHanldeEdit.bind(this);
     }
 
     componentDidMount() {
-      this.fetchDebt();
+      this.setState({loading:false})
+      // this.fetchDebt();
     }
-  
+    testHanldeEdit(editedDebt){
+      let temArr= this.state.data;
+      // replace debt at position idx by edited debt
+      temArr[parseInt(editedDebt.idx)]= editedDebt;
+      this.setState({data:temArr});
+    }
     async fetchDebt() {
       try {
         this.setState({ loading: true });
@@ -40,7 +47,7 @@ export default class Debt extends Component {
         console.log(error);
       } finally {
         this.setState({ loading: false });
-      }
+      } 
     }
 
     getColumnSearchProps = (dataIndex) => ({
@@ -117,6 +124,7 @@ export default class Debt extends Component {
         this.state.searchedColumn === dataIndex ? <div>{text}</div> : text,
     });
 
+    
     handleSearch = (selectedKeys, confirm, dataIndex) => {
       confirm();
       this.setState({
@@ -161,6 +169,8 @@ export default class Debt extends Component {
         });
       }
     }
+
+    
     renderBtnAction(id) {
       return (
         <Menu>
@@ -205,7 +215,7 @@ export default class Debt extends Component {
               {i18n.t("create")}
             </Button>
           </Col>
-        </Row>
+        </Row> 
       );
     };
     render() {
@@ -274,6 +284,27 @@ export default class Debt extends Component {
               </Moment>
             ),
           },
+          {
+            title: i18n.t("Status"),
+            dataIndex: "status",
+            key: "status",
+            ...this.getColumnSearchProps("status"),
+            sorter: (a, b) => a.status.length - b.status.length,
+            sortDirections: ["descend", "ascend"],
+          },
+          {
+            title: "",
+            dataIndex: "id",
+            key: "id",
+            render: (id) => (
+              <Dropdown overlay={this.renderBtnAction(id)}>
+                <Button>
+                  <i className="fa fa-cog mr-1" />
+                  <label className="tb-lb-action">{i18n.t("action")}</label>
+                </Button>
+              </Dropdown>
+            ),
+          },
         ];
         return (
           <Card title={this.renderTitle()}>
@@ -284,6 +315,8 @@ export default class Debt extends Component {
                 closeModal={this.closeModal}
                 currentDebt={currentDebt || {}}
                 loading={loading}
+                testHanldeEdit={this.testHanldeEdit}
+                
               />
             )}
             <Row>
@@ -302,3 +335,25 @@ export default class Debt extends Component {
         );
     }
 }
+const dataTest = [
+  {
+    id: 1,
+    idx: "0",
+    debtorname: "Quan",
+    note: "tien ca",
+    money: 10000,
+    createdDate: "2021-09-05",
+    deadline: "2021-09-12",
+    status: "đã trả"
+  },
+  {
+    id: 2,
+    idx: "1",
+    debtorname: "Tam",
+    note: "tien ca",
+    money: 120000,
+    createdDate: "2021-06-05",
+    deadline: "2021-06-12",
+    status: "chưa trả"
+  }
+]

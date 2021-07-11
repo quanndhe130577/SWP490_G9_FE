@@ -9,7 +9,7 @@ import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import ModalForm from "./ModalForm";
-// import Moment from "react-moment";
+import Moment from "react-moment";
 export default class FishType extends Component {
   constructor(props) {
     super(props);
@@ -272,19 +272,19 @@ export default class FishType extends Component {
         sortDirections: ["descend", "ascend"],
       },
 
-      // {
-      //   title: i18n.t("Ngày tạo"),
-      //   dataIndex: "date",
-      //   key: "date",
-      //   ...this.getColumnSearchProps("date"),
-      //   sorter: (a, b) => a.date.length - b.date.length,
-      //   sortDirections: ["descend", "ascend"],
-      //   render: (date) => (
-      //     <Moment format="DD/MM/YYYY">
-      //           {date}
-      //       </Moment>
-      //   ),
-      // },
+      {
+        title: i18n.t("Sell Date FT"),
+        dataIndex: "date",
+        key: "date",
+        ...this.getColumnSearchProps("date"),
+        sorter: (a, b) => a.date.length - b.date.length,
+        sortDirections: ["descend", "ascend"],
+        render: (date) => (
+          <Moment format="DD/MM/YYYY">
+                {date}
+            </Moment>
+        ),
+      },
       {
         title: i18n.t("Price"),
         dataIndex: "price",
@@ -299,6 +299,29 @@ export default class FishType extends Component {
             thousandSeparator={true}
           />
         ),
+      },
+      {
+        title: i18n.t("Transaction Price"),
+        dataIndex: "transactionPrice",
+        key: "transactionPrice",
+        ...this.getColumnSearchProps("transactionPrice"),
+        sorter: (a, b) => a.transactionprice - b.transactionprice,
+        sortDirections: ["descend", "ascend"],
+        render: (transactionprice) => (
+          <NumberFormat
+            value={transactionprice}
+            displayType={"text"}
+            thousandSeparator={true}
+          />
+        ),
+      },
+      {
+        title: i18n.t("Pond Owner"),
+        dataIndex: "pondOwnerId",
+        key: "pondOwnerId",
+        ...this.getColumnSearchProps("pondOwnerId"),
+        sorter: (a, b) => a.pondOwnerId - b.pondOwnerId,
+        sortDirections: ["descend", "ascend"],
       },
       {
         title: "",

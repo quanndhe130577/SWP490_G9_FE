@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col } from "reactstrap";
-import { Modal } from "antd";
+import Modal from "../../../containers/Antd/ModalCustom";
 import Widgets from "../../../schema/Widgets";
 import helper from "../../../services/helper";
 import i18n from "i18next";
 import apis from "../../../services/apis";
 
-const ModalEdit = ({ isShow, closeModal, mode, currentDebt }) => {
+const ModalEdit = ({ isShow, closeModal, mode, currentDebt,testHanldeEdit}) => {
   const [debt, setDebt] = useState(currentDebt);
 
   const handleChangeDebt = (val, name) => {
@@ -15,15 +15,20 @@ const ModalEdit = ({ isShow, closeModal, mode, currentDebt }) => {
       [name]: val,
     }));
   };
+
   const handleOk = async () => {
     try {
       let rs;
       if (mode === "create") {
-        rs = await apis.createDebt({
-          ...debt,
-        });
+        // rs = await apis.createDebt({
+        //   ...debt,
+        // });
+
+
       } else if (mode === "edit") {
-        rs = await apis.updateDebt(debt);
+        // rs = await apis.updateDebt(debt);
+        testHanldeEdit(debt)
+        
       }
 
       if (rs && rs.statusCode === 200) {
@@ -38,6 +43,8 @@ const ModalEdit = ({ isShow, closeModal, mode, currentDebt }) => {
   useEffect(() => {
     handleChangeDebt(new Date(), "date");
   }, [])
+
+ 
   return (
     <Modal
       title={mode === "edit" ? i18n.t("edit") : i18n.t("create")}
@@ -49,7 +56,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentDebt }) => {
           <Col md="6" xs="12">
             <Widgets.Text
               label={i18n.t("Debtor Name")}
-              value={debt.debtname || ""}
+              value={debt.debtorname || ""}
               onChange={(e) => handleChangeDebt(e, "debtorname")}
             />
           </Col>
@@ -70,7 +77,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentDebt }) => {
           <Col md="6" xs="12">
             <Widgets.DateTimePicker
               required={true}
-              label={"Created Date"}
+              label={i18n.t("Created Date")}
               value={debt.createdDate || new Date()}
               onChange={(data) => {
                 handleChangeDebt(new Date(data), "createdDate");
@@ -80,11 +87,19 @@ const ModalEdit = ({ isShow, closeModal, mode, currentDebt }) => {
           <Col md="6" xs="12">
             <Widgets.DateTimePicker
               required={true}
-              label={"Deadline"}
+              label={i18n.t("Deadline")}
               value={debt.deadline || new Date()}
               onChange={(data) => {
                 handleChangeDebt(new Date(data), "deadline");
               }}
+            />
+          </Col>
+          <Col md="6" xs="12">
+            <Widgets.Checkbox
+              label={i18n.t("Status")}
+              lblCheckbox = {i18n.t("isPaid")}
+              value={debt.isPaid || false}
+              onChange={(val) => handleChangeDebt(val, "isPaid")}
             />
           </Col>
         </Row>

@@ -20,7 +20,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
       let rs;
       if (mode === "create") {
         rs = await apis.createFT({
-          ...fishType,
+          ...fishType
         });
       } else if (mode === "edit") {
         rs = await apis.updateFT(fishType);
@@ -69,7 +69,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
             />
           </Col>
           <Col md="6" xs="12">
-            <Widgets.WeightInput
+            <Widgets.Text
               type="number"
               label={i18n.t("Max Weight")}
               value={fishType.maxWeight || ""}
@@ -77,17 +77,31 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
             />
           </Col>
           <Col md="6" xs="12">
-            <Widgets.WeightInput
-              type="number"
+            <Widgets.Text
+              type="MoneyInput"
               label={i18n.t("Price")}
               value={fishType.price || ""}
               onChange={(e) => handleChangeFishType(e, "price")}
             />
           </Col>
           <Col md="6" xs="12">
+            <Widgets.MoneyInput
+              label={i18n.t("Transaction Price")}
+              value={fishType.transactionPrice || ""}
+              onChange={(e) => handleChangeFishType(e, "transactionPrice")}
+            />
+          </Col>
+          <Col md="6" xs="12">
+            <Widgets.Select
+              label={i18n.t("Pond Owner")}
+              value={fishType.pondOwnerId || ""}
+              onChange={(e) => handleChangeFishType(e, "pondOwnerId")}
+            />
+          </Col>
+          <Col md="6" xs="12">
             <Widgets.DateTimePicker
               required={true}
-              label={"Created Date"}
+              label={i18n.t("Sell Date FT")}
               value={fishType.date || new Date()}
               // maxDate={new Date()}
               // minDate={minDate}
