@@ -20,7 +20,7 @@ export default class FishType extends Component {
       isShowModal: false,
       mode: "",
       data: [],
-      loading: true
+      loading: true,
     };
   }
 
@@ -30,7 +30,7 @@ export default class FishType extends Component {
 
   async fetchFishType() {
     try {
-      this.setState({ loading: true })
+      this.setState({ loading: true });
       let user = await session.get("user");
       let rs = await apis.getFTByTraderID({}, "GET");
       if (rs && rs.statusCode === 200) {
@@ -38,10 +38,9 @@ export default class FishType extends Component {
         this.setState({ data: rs.data, user, total: rs.data.length });
       }
     } catch (error) {
-      console.log(error)
-    }
-    finally {
-      this.setState({ loading: false })
+      console.log(error);
+    } finally {
+      this.setState({ loading: false });
     }
   }
 
@@ -106,9 +105,9 @@ export default class FishType extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -157,7 +156,6 @@ export default class FishType extends Component {
     );
   };
   closeModal = (refresh) => {
-
     if (refresh === true) {
       this.fetchFishType();
     }
@@ -168,7 +166,7 @@ export default class FishType extends Component {
 
     if (modeBtn === "edit") {
       currentFT = data.find((el) => el.id === FishTypeID);
-      currentFT.date = new Date(currentFT.date)
+      currentFT.date = new Date(currentFT.date);
       this.setState({ currentFT, mode: "edit", isShowModal: true });
     } else if (modeBtn === "delete") {
       helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
@@ -190,7 +188,7 @@ export default class FishType extends Component {
   renderBtnAction(id) {
     return (
       <Menu>
-        <Menu.Item>
+        <Menu.Item key="1">
           <Button
             color="info"
             className="mr-2"
@@ -200,7 +198,7 @@ export default class FishType extends Component {
             {i18n.t("edit")}
           </Button>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key="2">
           <Button color="danger" onClick={() => this.onClick("delete", id)}>
             <i className="fa fa-trash-o mr-1" />
             {i18n.t("delete")}
@@ -214,7 +212,9 @@ export default class FishType extends Component {
     if (tem)
       return (
         <div>
-          <span>{tem.minWeight} - {tem.maxWeight}</span>
+          <span>
+            {tem.minWeight} - {tem.maxWeight}
+          </span>
         </div>
       );
   }
@@ -228,7 +228,7 @@ export default class FishType extends Component {
         render: (text) => <label>{text}</label>,
       },
       {
-        title: i18n.t("Tên loại cá"),
+        title: i18n.t("Fish Name"),
         dataIndex: "fishName",
         key: "fishName",
         ...this.getColumnSearchProps("fishName"),
@@ -262,7 +262,7 @@ export default class FishType extends Component {
       // },
 
       {
-        title: i18n.t("Cân nặng (khoảng)"),
+        title: i18n.t("Range of Weight"),
         colSpan: 1,
         dataIndex: "id",
         key: "id",
@@ -286,7 +286,7 @@ export default class FishType extends Component {
       //   ),
       // },
       {
-        title: i18n.t("Giá"),
+        title: i18n.t("Price"),
         dataIndex: "price",
         key: "price",
         ...this.getColumnSearchProps("price"),
@@ -323,7 +323,7 @@ export default class FishType extends Component {
             closeModal={this.closeModal}
             currentFT={currentFT || {}}
             loading={loading}
-          // handleChangeFishType={handleChangeFishType}
+            // handleChangeFishType={handleChangeFishType}
           />
         )}
         <Row>

@@ -2,11 +2,10 @@ import React from "react";
 import { Modal } from "antd";
 import { Row, Col } from "reactstrap";
 import i18n from "i18next";
-import Widgets from "../../../../schema/Widgets";
+import Widgets from "../../../schema/Widgets";
+import local from "../../../services/local";
+import helper from "../../../services/helper";
 import PriceFishToday from "./PriceFishToday";
-import services from "../../../../services";
-
-const { local, helper } = services;
 
 const ChoosePond = ({
   isShowChoosePond,
@@ -86,11 +85,11 @@ const ChoosePond = ({
             label={i18n.t("pondOwner")}
             value={parseInt(pondOwner || currentPurchase.pondOwner)}
             items={dataDf.pondOwner}
-            // isDisable={currentPurchase.pondOwner ? true : false}
+            isDisable={currentPurchase.pondOwner ? true : false}
             onChange={(vl) => onChange(vl, "pondOwner")}
           />
           <Widgets.SelectSearchMulti
-            labl={i18n.t("chooseFish")}
+            label={i18n.t("chooseFish")}
             value={currentPurchase.listFishId}
             items={addField(dataDf.fishType || [], "name", "fishName")}
             onChange={(vl) => onChange(vl, "listFishId")}

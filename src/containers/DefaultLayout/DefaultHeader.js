@@ -13,7 +13,7 @@ import {
   OrderedListOutlined,
   UsergroupAddOutlined,
   MoneyCollectOutlined,
-  DollarOutlined
+  DollarOutlined,
 } from "@ant-design/icons";
 import "../../css/antd.css";
 import i18n from "i18next";
@@ -23,11 +23,17 @@ const { SubMenu } = Menu;
 class DefaultHeader extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { user: {} };
   }
 
+  componentDidMount() {
+    let user = session.get("user");
+    this.setState({ user });
+  }
   render() {
-    const menu = (
+    let { user } = this.state;
+
+    const menuOverlay = (
       <Menu>
         <Menu.Item icon={<SettingOutlined />} key="1">
           <Link to="/changeUserInfo">{i18n.t("changeInfo")}</Link>
@@ -45,29 +51,40 @@ class DefaultHeader extends Component {
           style={{ paddingTop: 64 }}
           breakpoint="lg"
           collapsedWidth="0"
-          onBreakpoint={(broken) => { }}
-          onCollapse={(collapsed, type) => { }}
+          onBreakpoint={(broken) => {}}
+          onCollapse={(collapsed, type) => {}}
         >
           <Menu mode="inline">
             {/* auto generate menu, define menu in MENU */}
+            {/* eslint-disable-next-line array-callback-return */}
             {MENU.map((mn, idx) => {
               if (mn.type === "subMenu") {
                 const { title, menu, icon } = mn;
-                return (
-                  <SubMenu key={idx + title} icon={icon} title={i18n.t(title)}>
-                    {menu.map((me, i) => (
-                      <Menu.Item key={me + i + idx}>
-                        <Link to={me.link}>{i18n.t(me.title)}</Link>
-                      </Menu.Item>
-                    ))}
-                  </SubMenu>
-                );
+                if (!mn.role || mn.role === user.roleDisplayName)
+                  return (
+                    <SubMenu
+                      key={idx + title}
+                      icon={icon}
+                      title={i18n.t(title)}
+                    >
+                      {/* eslint-disable-next-line array-callback-return */}
+                      {menu.map((me, i) => {
+                        if (!me.role || me.role === user.roleDisplayName)
+                          return (
+                            <Menu.Item key={me + i + idx}>
+                              <Link to={me.link}>{i18n.t(me.title)}</Link>
+                            </Menu.Item>
+                          );
+                      })}
+                    </SubMenu>
+                  );
               } else {
-                return (
-                  <Menu.Item key={mn + idx} icon={mn.icon}>
-                    <Link to={mn.link}>{i18n.t(mn.title)}</Link>
-                  </Menu.Item>
-                );
+                if (!mn.role || mn.role === user.roleDisplayName)
+                  return (
+                    <Menu.Item key={mn + idx} icon={mn.icon}>
+                      <Link to={mn.link}>{i18n.t(mn.title)}</Link>
+                    </Menu.Item>
+                  );
               }
             })}
           </Menu>
@@ -87,7 +104,7 @@ class DefaultHeader extends Component {
             </Link>
           </div>
 
-          <Dropdown overlay={menu} placement="topRight">
+          <Dropdown overlay={menuOverlay} placement="topRight">
             <Avatar
               className="dropdown-toggle mt-2"
               size={45}
@@ -122,6 +139,11 @@ const MENU = [
       {
         link: "/buy",
         title: "buyGood",
+        role: "Thương lái",
+      },
+      {
+        link: "/sell",
+        title: "sellGood",
       },
     ],
   },
@@ -129,6 +151,7 @@ const MENU = [
     title: "pondOwnerManagement",
     icon: <UserOutlined />,
     link: "/pondOwner",
+    role: "Thương lái",
   },
   {
     title: "fishType",
@@ -145,14 +168,17 @@ const MENU = [
     type: "subMenu",
     title: "truck",
     icon: <CarOutlined />,
+    role: "Thương lái",
     menu: [
       {
         link: "/truck",
         title: "truck",
+        role: "Thương lái",
       },
       {
         link: "/drum",
         title: "drum",
+        role: "Thương lái",
       },
       {
         link: "/truck1",
@@ -164,12 +190,15 @@ const MENU = [
     title: "EmployeeManagement",
     icon: <UsergroupAddOutlined />,
     link: "/employee",
+    role: "Thương lái",
   },
   {
     title: "MenuTimekeeping",
     icon: <CalendarOutlined />,
     link: "/timeKeeping",
-  }, {
+    role: "Thương lái",
+  },
+  {
     title: "CostIncurredManagement",
     icon: <MoneyCollectOutlined />,
     link: "/costIncurred",

@@ -49,7 +49,7 @@ const ManaBuy = () => {
   function renderBtnAction(id) {
     return (
       <Menu>
-        <Menu.Item>
+        <Menu.Item key="1">
           <Button
             color="info"
             className="mr-2"
@@ -59,7 +59,7 @@ const ManaBuy = () => {
             {i18n.t("edit")}
           </Button>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key="2">
           <Button color="danger" onClick={() => onClick("delete", id)}>
             <i className="fa fa-trash-o mr-1" />
             {i18n.t("delete")}
@@ -117,6 +117,12 @@ const ManaBuy = () => {
       ),
     },
     {
+      title: i18n.t("status"),
+      dataIndex: "status",
+      key: "status",
+      // ...this.getColumnSearchProps("totalAmount"),
+    },
+    {
       title: "",
       dataIndex: "id",
       key: "id",
@@ -156,6 +162,17 @@ const ManaBuy = () => {
         <Col md="6" className="d-flex">
           <h3 className="">{i18n.t("goodManagement")}</h3>
         </Col>
+        <Col md="6">
+          <Button
+            color="info"
+            className="mb-2 pull-right"
+            onClick={() => {
+              history.push("buyFish");
+            }}
+          >
+            {i18n.t("newPurchase")}
+          </Button>
+        </Col>
       </Row>
     );
   };
@@ -166,15 +183,6 @@ const ManaBuy = () => {
 
   return (
     <Card title={renderTitle()}>
-      <Button
-        color="info"
-        className="mb-2"
-        onClick={() => {
-          history.push("buyFish");
-        }}
-      >
-        {i18n.t("newPurchase")}
-      </Button>
       {/*<Button*/}
       {/*  color="info"*/}
       {/*  onClick={() => {*/}

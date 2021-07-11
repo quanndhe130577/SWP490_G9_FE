@@ -37,7 +37,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
   };
   useEffect(() => {
     handleChangeFishType(new Date(), "date");
-  }, [])
+  }, []);
   return (
     <Modal
       title={mode === "edit" ? i18n.t("edit") : i18n.t("create")}
@@ -48,38 +48,38 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
         <Row>
           <Col md="6" xs="12">
             <Widgets.Text
-              label={i18n.t("Tên loại cá")}
+              label={i18n.t("Fish Name")}
               value={fishType.fishName || ""}
               onChange={(e) => handleChangeFishType(e, "fishName")}
             />
           </Col>
           <Col md="6" xs="12">
             <Widgets.Text
-              label={i18n.t("Mô tả")}
+              label={i18n.t("Description")}
               value={fishType.description || ""}
               onChange={(e) => handleChangeFishType(e, "description")}
             />
           </Col>
           <Col md="6" xs="12">
-            <Widgets.Text
+            <Widgets.WeightInput
               type="number"
-              label={i18n.t("Cân nặng tối thiểu")}
+              label={i18n.t("Min Weight")}
               value={fishType.minWeight || ""}
               onChange={(e) => handleChangeFishType(e, "minWeight")}
             />
           </Col>
           <Col md="6" xs="12">
-            <Widgets.Text
+            <Widgets.WeightInput
               type="number"
-              label={i18n.t("Cân nặng tối đa")}
+              label={i18n.t("Max Weight")}
               value={fishType.maxWeight || ""}
               onChange={(e) => handleChangeFishType(e, "maxWeight")}
             />
           </Col>
           <Col md="6" xs="12">
-            <Widgets.Text
+            <Widgets.MoneyInput
               type="number"
-              label={i18n.t("Giá")}
+              label={i18n.t("Price")}
               value={fishType.price || ""}
               onChange={(e) => handleChangeFishType(e, "price")}
             />
@@ -87,7 +87,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
           <Col md="6" xs="12">
             <Widgets.DateTimePicker
               required={true}
-              label={"Ngày tạo"}
+              label={i18n.t("Created Date")}
               value={fishType.date || new Date()}
               // maxDate={new Date()}
               // minDate={minDate}

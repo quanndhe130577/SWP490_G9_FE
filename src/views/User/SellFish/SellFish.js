@@ -7,11 +7,13 @@ import ModalBuy from "./ModalBuy";
 import ModalClosePurchase from "./ModalClosePurchase";
 import ChoosePond from "./ChoosePond";
 import queryString from "qs";
-import services from "../../../../services";
+import local from "../../../services/local";
+import session from "../../../services/session";
+import apis from "../../../services/apis";
+import helper from "../../../services/helper";
 import NumberFormat from "react-number-format";
 import { useSelector } from "react-redux";
 import Moment from "react-moment";
-const { local, session, apis, helper } = services;
 
 const BuyFish = (props) => {
   const history = useHistory();
@@ -21,29 +23,25 @@ const BuyFish = (props) => {
   const [purchase, setPurchase] = useState([]);
   const [mode, setMode] = useState("");
   const [currentPurchase, setCurrentPurchase] = useState({});
+  // const [currentPurchaseDetail, setCurrentPurchaseDetail] = useState({});
   const [suggestionPurchase, setSuggestionPurchase] = useState(null); //purchase dung de goi y khi them purchase detail
   const [dataDf, setData] = useState({ basket: [], drum: [], truck: [] }); // list data of basket, drum, truck,...
   const [isShowClosePurchase, setShowClosePurchase] = useState(false);
-
   const currentPurchasePROPS = useSelector(
     (state) => state.purchase.currentPurchase
   ); // data in redux
 
   const handleAction = (action, id) => {
-    if (currentPurchase.status && currentPurchase.status === "Pending") {
-      if (action === "delete") {
-        deletePurchaseDetail(id);
-      } else {
-        let tem = purchase.find((e) => e.id === id);
-        if (tem) {
-          tem.purchaseDetailId = id;
-          setMode("edit");
-          setCurrentPurchase(Object.assign(currentPurchase, tem));
-          setIsShowBuy(true);
-        }
-      }
+    if (action === "delete") {
+      deletePurchaseDetail(id);
     } else {
-      helper.toast("error", i18n.t("youCanDoActionWhenCompleted"));
+      let tem = purchase.find((e) => e.id === id);
+      if (tem) {
+        tem.purchaseDetailId = id;
+        setMode("edit");
+        setCurrentPurchase(Object.assign(tem, currentPurchase));
+        setIsShowBuy(true);
+      }
     }
   };
 
@@ -65,22 +63,22 @@ const BuyFish = (props) => {
     }
   }
 
-  const renderDrum = (listDrum = []) => {
-    let label = "";
-    listDrum.forEach((el, idx) => {
-      label += el.number;
-      if (idx < listDrum.length - 1) {
-        label += " - ";
-      }
-    });
-    return label;
-  };
+  // const renderDrum = (listDrum = []) => {
+  //   let label = "";
+  //   listDrum.forEach((el, idx) => {
+  //     label += el.number;
+  //     if (idx < listDrum.length - 1) {
+  //       label += " - ";
+  //     }
+  //   });
+  //   return label;
+  // };
 
   const calculateIntoMoney = (id) => {
     let tem = purchase.find((e) => e.id === id);
     if (tem && tem.fishType) {
       let value =
-        tem.fishType.price * (parseFloat(tem.weight) - tem.basket.weight);
+        tem.fishType.price * (parseInt(tem.weight) - tem.basket.weight);
       return (
         <NumberFormat
           value={value}
@@ -155,20 +153,17 @@ const BuyFish = (props) => {
     {
       title: i18n.t("basket"),
       dataIndex: "basket",
-      key: "basket",
       render: (basket) => <div>{basket && <label>{basket.type}</label>}</div>,
     },
     {
-      title: i18n.t("drum"),
-      dataIndex: "listDrum",
-      key: "listDrum",
-      render: (listDrum) => renderDrum(listDrum),
+      title: i18n.t("trader"),
+      dataIndex: "trader",
+      key: "trader",
     },
     {
-      title: i18n.t("truck"),
-      dataIndex: "truck",
-      key: "truck",
-      render: (truck) => <div>{truck && <label>{truck.name}</label>}</div>,
+      title: i18n.t("buyer"),
+      dataIndex: "buyer",
+      key: "buyer",
     },
 
     {
@@ -208,17 +203,15 @@ const BuyFish = (props) => {
   // fetch data
   async function fetchData() {
     try {
-      setLoading(true);
-
       let user = session.get("user");
       getPondOwnerByTraderId(user.userID);
       getFTByTraderID();
       getTruckByTraderID();
       getBasketByTraderId();
+
+      setLoading(false);
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -356,6 +349,8 @@ const BuyFish = (props) => {
       });
       if (rs && rs.statusCode === 200) {
         getAllPurchaseDetail(detail);
+        // setCurrentPurchase(.find((e) => e.id === currentPurchase.id));
+
         helper.toast("success", i18n.t(rs.message));
       }
     } catch (error) {
@@ -383,25 +378,8 @@ const BuyFish = (props) => {
     }
   }
 
-  function handleShowClosePurchase() {
+  function handleClosePurchase() {
     setShowClosePurchase(!isShowClosePurchase);
-  }
-
-  async function handleClosePurchase(data) {
-    try {
-      let { id, commissionPercent, isPaid } = data;
-
-      let rs = await apis.closePurchase({
-        id,
-        isPaid,
-        commissionPercent,
-      });
-      if (rs && rs.statusCode === 200) {
-        helper.toast("success", i18n.t(rs.message));
-      }
-    } catch (error) {
-      console.log(error);
-    }
   }
 
   function handleBack() {
@@ -423,9 +401,9 @@ const BuyFish = (props) => {
       tem.pondOwner = parseInt(tem.pondOwner);
     }
 
-    if (tem.status === "Pending" && !query.id) {
-      tem = {};
-      local.set("currentPurchase", tem);
+    if (tem.status === "Pending") {
+      // tem = {};
+      // local.set("currentPurchase", tem);
     }
 
     if (tem.id || query.id) {
@@ -452,7 +430,7 @@ const BuyFish = (props) => {
     return (
       <Row>
         <Col md="6">
-          <h3 className="mr-5">{i18n.t("buyGood")}</h3>
+          <h3 className="mr-5">{i18n.t("sellGood")}</h3>
         </Col>
         <Col md="6">
           <Button
@@ -476,10 +454,9 @@ const BuyFish = (props) => {
           <ModalClosePurchase
             isShowClosePurchase={isShowClosePurchase}
             purchase={purchase}
-            prCurrentPurchase={currentPurchase || {}}
-            handleShowClosePurchase={handleShowClosePurchase}
-            dataDf={dataDf}
+            prCurrentPurchase={currentPurchase}
             handleClosePurchase={handleClosePurchase}
+            dataDf={dataDf}
           />
         )}
         {isShowBuy && (
@@ -529,7 +506,7 @@ const BuyFish = (props) => {
                   <div className="float-right">
                     <Button
                       color="info"
-                      onClick={() => handleShowClosePurchase()}
+                      onClick={() => handleClosePurchase()}
                       className="mr-2"
                     >
                       {i18n.t("closePurchase")}
@@ -562,45 +539,47 @@ const BuyFish = (props) => {
                   scroll={{ y: 420 }}
                   pagination={{ pageSize: 100 }}
                   bordered
-                  summary={(pageData) => {
-                    let totalWeight = 0;
-                    let totalAmount = 0;
-                    pageData.forEach(({ weight, price }) => {
-                      totalWeight += weight;
-                      totalAmount += price;
-                    });
+                  // summary={(pageData) => {
+                  //   let totalWeight = 0;
+                  //   let totalAmount = 0;
+                  //   pageData.forEach(({ weight, fishType, basket }) => {
+                  //     totalWeight += weight;
+                  //     totalAmount +=
+                  //       fishType.price * (parseInt(weight) - basket.weight);
+                  //   });
 
-                    return (
-                      <Table.Summary fixed>
-                        <Table.Summary.Row>
-                          <Table.Summary.Cell
-                            colSpan="2"
-                            key="1"
-                            className="bold"
-                          >
-                            {i18n.t("total")}
-                          </Table.Summary.Cell>
-                          <Table.Summary.Cell key="2">
-                            <NumberFormat
-                              value={totalWeight.toFixed(1)}
-                              displayType={"text"}
-                              thousandSeparator={true}
-                              suffix=" Kg"
-                            />
-                          </Table.Summary.Cell>
-                          <Table.Summary.Cell key="3">
-                            <NumberFormat
-                              value={totalAmount}
-                              displayType={"text"}
-                              thousandSeparator={true}
-                              suffix={i18n.t("suffix")}
-                            />
-                          </Table.Summary.Cell>
-                          <Table.Summary.Cell colSpan="4" key="4" />
-                        </Table.Summary.Row>
-                      </Table.Summary>
-                    );
-                  }}
+                  //   return (
+                  //     <Table.Summary fixed>
+                  //       <Table.Summary.Row>
+                  //         <Table.Summary.Cell
+                  //           colSpan="2"
+                  //           key="1"
+                  //           className="bold"
+                  //         >
+                  //           {i18n.t("total")}
+                  //         </Table.Summary.Cell>
+                  //         <Table.Summary.Cell key="2">
+                  //           <NumberFormat
+                  //             value={totalWeight.toFixed(1)}
+                  //             displayType={"text"}
+                  //             thousandSeparator={true}
+                  //             suffix=" Kg"
+                  //           />
+                  //         </Table.Summary.Cell>
+                  //         <Table.Summary.Cell key="3">
+                  //           <NumberFormat
+                  //             value={totalAmount}
+                  //             displayType={"text"}
+                  //             thousandSeparator={true}
+                  //             suffix={i18n.t("suffix")}
+                  //           />
+                  //         </Table.Summary.Cell>
+                  //         <Table.Summary.Cell colSpan="4" key="4" />
+                  //       </Table.Summary.Row>
+                  //     </Table.Summary>
+                  //   );
+
+                  // }}
                 />
               </Col>
             </Row>
