@@ -56,7 +56,7 @@ var path = {
   updateDrum: "/api/drum/update",
   deleteDrum: "/api/drum/delete",
 
-  //anhnbt
+  //employee anhnbt
   getEmployees: "/api/employee/getall", //method GET
   createEmployee: "/api/employee/create/",
   updateEmployee: "/api/employee/update",
@@ -90,6 +90,9 @@ var path = {
   updateDebt: "",
   deleteDebt: "",
   getDetailDebt: "",
+  // fishType
+  getOneFT: "api/fishtype/getone/{ddMMyyyy}/{pondOwnerId}",
+
 };
 
 Object.keys(path).forEach(function (key) {

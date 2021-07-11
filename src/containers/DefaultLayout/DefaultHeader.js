@@ -27,7 +27,7 @@ class DefaultHeader extends Component {
   }
 
   componentDidMount() {
-    let user = session.get("user");
+    let user = session.get("user") || {};
     this.setState({ user });
   }
   render() {

@@ -8,7 +8,7 @@ import { Button, Col, Row } from "reactstrap";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
-import ModalForm from "./ModalForm";
+import ModalForm from "./ModalFishType";
 import Moment from "react-moment";
 export default class FishType extends Component {
   constructor(props) {
