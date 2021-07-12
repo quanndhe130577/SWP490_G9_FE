@@ -37,8 +37,12 @@ export default class CurrentEmps extends Component {
     if (rs) {
       let list = [];
       this.props.employees.filter(emp => {
-        let dateStart = new Date(emp.startDate);
-        return this.props.currentDate > dateStart;
+        let startDate = new Date(emp.startDate);
+        let endDate=null;
+        if(emp.endDate) {
+          endDate=new Date(emp.endDate);
+        }
+        return this.props.currentDate > startDate && endDate === null||(this.props.currentDate < endDate);
       }).forEach((emp) => {
         let filter = rs.data.filter((e) => e.empId === emp.id);
         if (filter.length > 0) {
@@ -100,9 +104,9 @@ export default class CurrentEmps extends Component {
       <Modal
         width="70%"
         title="Danh sách nhân viên trong ngày"
+        footer={null}
         visible={this.props.visible}
         onCancel={this.props.cancel}
-        onOk={this.submit}
       >
         <List>
           <List.Item>
@@ -186,7 +190,6 @@ export default class CurrentEmps extends Component {
                   </Col>
                   <Col md="2" xs="12">
                     <Widgets.Text
-                      // displayType="input"
                       isDisable={!item.checked}
                       value={item.money}
                       onChange={(e) => this.handleChange(e, item, "money")}
@@ -198,31 +201,6 @@ export default class CurrentEmps extends Component {
           )}
         />
       </Modal>
-      // <Collapse>
-      //   {this.state.currentTimes.map((item) => (
-      //     <Collapse.Panel
-      //       header={
-      //         <Typography.Text type="success">{`${item.empName} | ${item.status} công | số tiền cần phải trả ${item.money} vnd`}</Typography.Text>
-      //       }
-      //       key={item.id}
-      //     >
-      //       <TimeKeepingDetail
-      //         employees={this.mapEmp()}
-      //         data={item}
-      //         load={this.getTimes}
-      //       />
-      //     </Collapse.Panel>
-      //   ))}
-      //   {this.checkExitsEmp() && (
-      //     <Collapse.Panel header="Thêm lịch" key={`${this.props.currentDate}`}>
-      //       <AddMore
-      //         employees={this.mapEmp()}
-      //         currentDate={this.props.currentDate}
-      //         load={this.getTimes}
-      //       />
-      //     </Collapse.Panel>
-      //   )}
-      // </Collapse>
     );
   }
 }
