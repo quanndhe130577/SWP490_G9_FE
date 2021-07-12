@@ -48,11 +48,14 @@ const PriceFishToday = ({ listFishId, onChange, dataDf }) => {
     let arr = [],
       count = 0;
     temArr.forEach((el) => {
-      let tem = dataDf.fishType.find((ft) => ft.id === parseInt(el));
-      if (tem) {
-        tem.idx = ++count;
-        arr.push(tem);
-      }
+      debugger
+      //if (dataDf.fishType != null && dataDf.fishType != "undefined") {
+        let tem = dataDf.fishType.find((ft) => ft.id === parseInt(el));
+        if (tem) {
+          tem.idx = ++count;
+          arr.push(tem);
+        }
+      //}
     });
 
     if (onChange) {
