@@ -188,7 +188,7 @@ export default class TimeKeeping extends Component {
             <Calendar
               mode={this.state.mode}
               dateCellRender={this.dateCellRender}
-              validRange={[moment("01-01-2021", "MM-DD-YYYY"), moment()]}
+              validRange={[moment("01-01-2020", "MM-DD-YYYY"), moment()]}
               onSelect={this.onChange}
               value={this.state.currentDate}
               onPanelChange={this.onPanelChange}
