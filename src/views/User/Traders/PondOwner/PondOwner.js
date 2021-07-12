@@ -18,7 +18,7 @@ export default class PondOwner extends Component {
       isShowModal: false,
       mode: "",
       data: [],
-      loading: true
+      loading: true,
     };
   }
 
@@ -35,9 +35,9 @@ export default class PondOwner extends Component {
         this.setState({ data: rs.data, user, total: rs.data.length });
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     } finally {
-      this.setState({ loading: false })
+      this.setState({ loading: false });
     }
   }
 
@@ -102,9 +102,9 @@ export default class PondOwner extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -194,7 +194,7 @@ export default class PondOwner extends Component {
   renderBtnAction(id) {
     return (
       <Menu>
-        <Menu.Item>
+        <Menu.Item key="1">
           <Button
             color="info"
             className="mr-2"
@@ -204,7 +204,7 @@ export default class PondOwner extends Component {
             {i18n.t("edit")}
           </Button>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key="2">
           <Button color="danger" onClick={() => this.onClick("delete", id)}>
             <i className="fa fa-trash-o mr-1" />
             {i18n.t("delete")}
@@ -235,7 +235,7 @@ export default class PondOwner extends Component {
         dataIndex: "address",
         key: "address",
         ...this.getColumnSearchProps("address"),
-        sorter: (a, b) => a.address - b.address,
+        sorter: (a, b) => a.address.length - b.address.length,
         sortDirections: ["descend", "ascend"],
       },
       {
@@ -243,7 +243,10 @@ export default class PondOwner extends Component {
         dataIndex: "phoneNumber",
         key: "phoneNumber",
         ...this.getColumnSearchProps("phoneNumber"),
-        sorter: (a, b) => a.phone.length - b.phone.length,
+        sorter: (a, b) =>
+          (a?.phoneNumber ?? "").localeCompare(b?.phoneNumber ?? "", "vi", {
+            sensitivity: "base",
+          }),
         sortDirections: ["descend", "ascend"],
       },
       {
@@ -268,7 +271,7 @@ export default class PondOwner extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentPO={currentPO || {}}
-          // handleChangePondOwner={handleChangePondOwner}
+            // handleChangePondOwner={handleChangePondOwner}
           />
         )}
         <Row>

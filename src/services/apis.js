@@ -17,12 +17,15 @@ var path = {
   createPO: "/api/pondOwner/create",
   updatePO: "/api/pondOwner/update",
   deletePO: "/api/pondOwner/delete",
-  getFTByTraderID: "/api/fishtype/getlastall", // method get, FT: fish type
+
+  getFTByTraderID: "/api/fishtype/getall",
+  getLastAllFTByTraderID: "api/fishtype/getlastall",
   createFT: "/api/fishtype/create", // method post need param
   getUserInfo: "/api/getUserInfo",
   updateUser: "/api/user/update",
   updateFT: "/api/fishtype/update",
   deleteFT: "/api/fishtype/delete",
+
   getBasketByTraderId: "/api/basket/getall",
   createBasket: "/api/basket/create",
   getTruckByTrarderID: "/api/truck/getall", //method get
@@ -38,6 +41,7 @@ var path = {
   getPurchases: "/api/purchase/getall", // GET
   deletePurchase: "/api/purchase/delete",
   updatePurchase: "/api/purchase/update",
+  closePurchase: "/api/purchase/chot-so",
 
   // purchase  detail
   createPurchaseDetail: "/api/purchasedetail/create",
@@ -52,7 +56,7 @@ var path = {
   updateDrum: "/api/drum/update",
   deleteDrum: "/api/drum/delete",
 
-  //anhnbt
+  //employee anhnbt
   getEmployees: "/api/employee/getall", //method GET
   createEmployee: "/api/employee/create/",
   updateEmployee: "/api/employee/update",
@@ -79,6 +83,16 @@ var path = {
   updateBuyer: "/api/buyer/update",
   deleteBuyer: "/api/buyer/delete",
   getDetailBuyer: "/api/buyer/detail/{buyerId}",
+
+  //Debt
+  getAllDebt: "",
+  createDebt: "",
+  updateDebt: "",
+  deleteDebt: "",
+  getDetailDebt: "",
+  // fishType
+  getOneFT: "api/fishtype/getone/{ddMMyyyy}/{pondOwnerId}",
+
 };
 
 Object.keys(path).forEach(function (key) {

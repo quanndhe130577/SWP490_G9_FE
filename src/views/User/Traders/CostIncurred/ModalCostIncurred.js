@@ -8,8 +8,8 @@ import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import moment from "moment";
 
-const ModalEdit = ({ isShow, closeModal, mode, currentCostIncurred }) => {
-  const [costInc, setPO] = useState(currentCostIncurred);
+const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
+  const [costInc, setPO] = useState(currentCostInc);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     handleChangeCostIncurred(new Date(), "date");
@@ -20,7 +20,6 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostIncurred }) => {
       [name]: val,
     }));
   };
-
 
   const handleOk = async () => {
     try {
@@ -67,13 +66,15 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostIncurred }) => {
         <Row>
           <Col md="6" xs="12">
             <Widgets.Text
+              required={true}
               label={i18n.t("name")}
               value={costInc.name || ""}
               onChange={(e) => handleChangeCostIncurred(e, "name")}
             />
           </Col>
           <Col md="6" xs="12">
-            <Widgets.Number
+            <Widgets.MoneyInput
+              required={true}
               label={i18n.t("cost")}
               value={costInc.cost || ""}
               onChange={(e) => handleChangeCostIncurred(e, "cost")}

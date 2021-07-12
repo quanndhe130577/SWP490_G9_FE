@@ -8,7 +8,6 @@ import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import ModalForm from "./ModalForm";
-// import Moment from "react-moment";
 
 export default class Buyer extends Component {
   constructor(props) {
@@ -75,7 +74,7 @@ export default class Buyer extends Component {
   renderBtnAction(id) {
     return (
       <Menu>
-        <Menu.Item>
+        <Menu.Item key="1">
           <Button
             color="info"
             className="mr-2"
@@ -85,7 +84,7 @@ export default class Buyer extends Component {
             {i18n.t("edit")}
           </Button>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key="2">
           <Button color="danger" onClick={() => this.onClick("delete", id)}>
             <i className="fa fa-trash-o mr-1" />
             {i18n.t("delete")}
@@ -199,9 +198,9 @@ export default class Buyer extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -224,7 +223,7 @@ export default class Buyer extends Component {
 
   render() {
     const { isShowModal, mode, currentBuyer, data, loading } = this.state;
-    console.log(currentBuyer)
+    console.log(currentBuyer);
     const columns = [
       {
         title: i18n.t("INDEX"),
@@ -253,7 +252,10 @@ export default class Buyer extends Component {
         dataIndex: "phoneNumber",
         key: "phoneNumber",
         ...this.getColumnSearchProps("phoneNumber"),
-        sorter: (a, b) => a.phone.length - b.phone.length,
+        sorter: (a, b) =>
+          (a?.phoneNumber ?? "").localeCompare(b?.phoneNumber ?? "", "vi", {
+            sensitivity: "base",
+          }),
         sortDirections: ["descend", "ascend"],
       },
       {
@@ -278,7 +280,7 @@ export default class Buyer extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentBuyer={currentBuyer || {}}
-          // handleChangePondOwner={handleChangePondOwner}
+            // handleChangePondOwner={handleChangePondOwner}
           />
         )}
         <Row>

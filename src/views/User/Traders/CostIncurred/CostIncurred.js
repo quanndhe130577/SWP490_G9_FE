@@ -3,12 +3,12 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Card, Dropdown, Input, Menu, Space, Table } from "antd";
 import i18n from "i18next";
 import React, { Component } from "react";
+import NumberFormat from "react-number-format";
 import { Button, Col, Row } from "reactstrap";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
-import ModalForm from "./ModalForm";
-// import Moment from "react-moment";
+import ModalForm from "./ModalCostIncurred";
 
 export default class CostIncurred extends Component {
   constructor(props) {
@@ -75,7 +75,7 @@ export default class CostIncurred extends Component {
   renderBtnAction(id) {
     return (
       <Menu>
-        <Menu.Item>
+        <Menu.Item key="1">
           <Button
             color="info"
             className="mr-2"
@@ -85,7 +85,7 @@ export default class CostIncurred extends Component {
             {i18n.t("edit")}
           </Button>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key="2">
           <Button color="danger" onClick={() => this.onClick("delete", id)}>
             <i className="fa fa-trash-o mr-1" />
             {i18n.t("delete")}
@@ -199,9 +199,9 @@ export default class CostIncurred extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -223,7 +223,7 @@ export default class CostIncurred extends Component {
   });
 
   render() {
-    const { isShowModal, mode, currentCostIncurred, data, loading } = this.state;
+    const { isShowModal, mode, currentCostInc, data, loading } = this.state;
     const columns = [
       {
         title: i18n.t("INDEX"),
@@ -257,13 +257,21 @@ export default class CostIncurred extends Component {
         sortDirections: ["descend", "ascend"],
       },
       {
-        title: i18n.t("cost"),
+        title: i18n.t("cost") + i18n.t("(suffix)"),
         dataIndex: "cost",
         key: "cost",
         ...this.getColumnSearchProps("cost"),
         sorter: (a, b) => a.cost - b.cost,
         sortDirections: ["descend", "ascend"],
+        render: (cost) => (
+          <NumberFormat
+            value={cost}
+            displayType={"text"}
+            thousandSeparator={true}
+          />
+        ),
       },
+
       {
         title: "",
         dataIndex: "id",
@@ -285,8 +293,8 @@ export default class CostIncurred extends Component {
             isShow={isShowModal}
             mode={mode}
             closeModal={this.closeModal}
-            currentCostIncurred={currentCostIncurred || {}}
-          // handleChangePondOwner={handleChangePondOwner}
+            currentCostInc={currentCostInc || {}}
+            // handleChangePondOwner={handleChangePondOwner}
           />
         )}
         <Row>

@@ -1,3 +1,4 @@
+import { DatabaseTwoTone } from "@ant-design/icons";
 import React from "react";
 import Loadable from "react-loadable";
 
@@ -62,6 +63,14 @@ const Buyer = Loadable({
   loader: () => import("./views/User/Traders/Buyer/Buyer"),
   loading: Loading,
 });
+const SellFish = Loadable({
+  loader: () => import("./views/User/SellFish/SellFish"),
+  loading: Loading,
+});
+const Debt = Loadable({
+  loader: () => import("./views/User/Debt/Debt"),
+  loading: Loading,
+});
 const routes = [
   {
     path: "/home",
@@ -118,7 +127,7 @@ const routes = [
     name: "TimeKeeping",
     component: TimeKeeping,
   },
-   {
+  {
     path: "/costIncurred",
     name: "CostIncurred",
     component: CostIncurred,
@@ -133,6 +142,16 @@ const routes = [
     name: "Buyer",
     component: Buyer,
   },
+  {
+    path: "/sell",
+    name: "SellFish",
+    component: SellFish,
+  },
+  {
+    path: "/debt",
+    name: "Debt",
+    component: Debt,
+  }
 ];
 
 export default routes;

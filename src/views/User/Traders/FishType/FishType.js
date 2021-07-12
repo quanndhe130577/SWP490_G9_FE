@@ -1,14 +1,15 @@
-import React, { Component } from "react";
-import { Table, Input, Space, Card, Dropdown, Menu } from "antd";
 // import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
-import { Row, Col, Button } from "reactstrap";
+import { Card, Dropdown, Input, Menu, Space, Table } from "antd";
 import i18n from "i18next";
+import React, { Component } from "react";
+import NumberFormat from "react-number-format";
+import { Button, Col, Row } from "reactstrap";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
-import ModalForm from "./ModalForm";
-// import Moment from "react-moment";
+import ModalForm from "./ModalFishType";
+import Moment from "react-moment";
 export default class FishType extends Component {
   constructor(props) {
     super(props);
@@ -19,7 +20,7 @@ export default class FishType extends Component {
       isShowModal: false,
       mode: "",
       data: [],
-      loading: true
+      loading: true,
     };
   }
 
@@ -29,7 +30,7 @@ export default class FishType extends Component {
 
   async fetchFishType() {
     try {
-      this.setState({ loading: true })
+      this.setState({ loading: true });
       let user = await session.get("user");
       let rs = await apis.getFTByTraderID({}, "GET");
       if (rs && rs.statusCode === 200) {
@@ -37,10 +38,9 @@ export default class FishType extends Component {
         this.setState({ data: rs.data, user, total: rs.data.length });
       }
     } catch (error) {
-      console.log(error)
-    }
-    finally {
-      this.setState({ loading: false })
+      console.log(error);
+    } finally {
+      this.setState({ loading: false });
     }
   }
 
@@ -105,9 +105,9 @@ export default class FishType extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -156,7 +156,6 @@ export default class FishType extends Component {
     );
   };
   closeModal = (refresh) => {
-
     if (refresh === true) {
       this.fetchFishType();
     }
@@ -167,7 +166,7 @@ export default class FishType extends Component {
 
     if (modeBtn === "edit") {
       currentFT = data.find((el) => el.id === FishTypeID);
-      currentFT.date = new Date(currentFT.date)
+      currentFT.date = new Date(currentFT.date);
       this.setState({ currentFT, mode: "edit", isShowModal: true });
     } else if (modeBtn === "delete") {
       helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
@@ -189,7 +188,7 @@ export default class FishType extends Component {
   renderBtnAction(id) {
     return (
       <Menu>
-        <Menu.Item>
+        <Menu.Item key="1">
           <Button
             color="info"
             className="mr-2"
@@ -199,7 +198,7 @@ export default class FishType extends Component {
             {i18n.t("edit")}
           </Button>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key="2">
           <Button color="danger" onClick={() => this.onClick("delete", id)}>
             <i className="fa fa-trash-o mr-1" />
             {i18n.t("delete")}
@@ -213,7 +212,9 @@ export default class FishType extends Component {
     if (tem)
       return (
         <div>
-          <span>{tem.minWeight} - {tem.maxWeight}</span>
+          <span>
+            {tem.minWeight} - {tem.maxWeight}
+          </span>
         </div>
       );
   }
@@ -227,7 +228,7 @@ export default class FishType extends Component {
         render: (text) => <label>{text}</label>,
       },
       {
-        title: i18n.t("Tên loại cá"),
+        title: i18n.t("Fish Name"),
         dataIndex: "fishName",
         key: "fishName",
         ...this.getColumnSearchProps("fishName"),
@@ -261,7 +262,7 @@ export default class FishType extends Component {
       // },
 
       {
-        title: i18n.t("Cân nặng (khoảng)"),
+        title: i18n.t("Range of Weight"),
         colSpan: 1,
         dataIndex: "id",
         key: "id",
@@ -271,25 +272,51 @@ export default class FishType extends Component {
         sortDirections: ["descend", "ascend"],
       },
 
-      // {
-      //   title: i18n.t("Ngày tạo"),
-      //   dataIndex: "date",
-      //   key: "date",
-      //   ...this.getColumnSearchProps("date"),
-      //   sorter: (a, b) => a.date.length - b.date.length,
-      //   sortDirections: ["descend", "ascend"],
-      //   render: (date) => (
-      //     <Moment format="DD/MM/YYYY">
-      //           {date}
-      //       </Moment>
-      //   ),
-      // },
       {
-        title: i18n.t("Giá"),
+        title: i18n.t("Sell Date FT"),
+        dataIndex: "date",
+        key: "date",
+        ...this.getColumnSearchProps("date"),
+        sorter: (a, b) => a.date.length - b.date.length,
+        sortDirections: ["descend", "ascend"],
+        render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
+      },
+      {
+        title: i18n.t("buyPrice") + i18n.t("(suffix)"),
         dataIndex: "price",
         key: "price",
         ...this.getColumnSearchProps("price"),
         sorter: (a, b) => a.price - b.price,
+        sortDirections: ["descend", "ascend"],
+        render: (price) => (
+          <NumberFormat
+            value={price}
+            displayType={"text"}
+            thousandSeparator={true}
+          />
+        ),
+      },
+      {
+        title: i18n.t("Transaction Price"),
+        dataIndex: "transactionPrice",
+        key: "transactionPrice",
+        ...this.getColumnSearchProps("transactionPrice"),
+        sorter: (a, b) => a.transactionprice - b.transactionprice,
+        sortDirections: ["descend", "ascend"],
+        render: (transactionprice) => (
+          <NumberFormat
+            value={transactionprice}
+            displayType={"text"}
+            thousandSeparator={true}
+          />
+        ),
+      },
+      {
+        title: i18n.t("Pond Owner"),
+        dataIndex: "pondOwnerId",
+        key: "pondOwnerId",
+        ...this.getColumnSearchProps("pondOwnerId"),
+        sorter: (a, b) => a.pondOwnerId - b.pondOwnerId,
         sortDirections: ["descend", "ascend"],
       },
       {
@@ -315,7 +342,7 @@ export default class FishType extends Component {
             closeModal={this.closeModal}
             currentFT={currentFT || {}}
             loading={loading}
-          // handleChangeFishType={handleChangeFishType}
+            // handleChangeFishType={handleChangeFishType}
           />
         )}
         <Row>
