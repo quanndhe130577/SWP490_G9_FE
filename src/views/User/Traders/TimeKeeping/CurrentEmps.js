@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Row, Col } from "reactstrap";
-import { Checkbox, Modal, List, Radio } from "antd";
+import React, {Component} from "react";
+import {Row, Col} from "reactstrap";
+import {Checkbox, Modal, List, Radio} from "antd";
 import Widgets from "../../../../schema/Widgets";
 import apis from "../../../../services/apis";
 import "./TimeKeeping.scss";
@@ -10,6 +10,10 @@ export default class CurrentEmps extends Component {
     super(props);
     this.state = {
       currentTimes: [],
+      employees: this.props.employees.filter(emp => {
+        let dateStart = new Date(emp.startDate);
+        return this.props.currentDate > dateStart;
+      })
     };
     this.getTimes = this.getTimes.bind(this);
     this.submit = this.submit.bind(this);
@@ -32,7 +36,14 @@ export default class CurrentEmps extends Component {
     );
     if (rs) {
       let list = [];
-      this.props.employees.forEach((emp) => {
+      this.props.employees.filter(emp => {
+        let startDate = new Date(emp.startDate);
+        let endDate=null;
+        if(emp.endDate) {
+          endDate=new Date(emp.endDate);
+        }
+        return this.props.currentDate > startDate && endDate === null||(this.props.currentDate < endDate);
+      }).forEach((emp) => {
         let filter = rs.data.filter((e) => e.empId === emp.id);
         if (filter.length > 0) {
           let data = filter[0];
@@ -61,7 +72,7 @@ export default class CurrentEmps extends Component {
     let data = currentTimes.filter((time) => time.empId === item.empId);
     if (data.length > 0) {
       data[0][name] = value;
-      this.setState({ currentTimes: currentTimes });
+      this.setState({currentTimes: currentTimes});
     }
   };
   load() {
@@ -93,9 +104,9 @@ export default class CurrentEmps extends Component {
       <Modal
         width="70%"
         title="Danh sách nhân viên trong ngày"
+        footer={null}
         visible={this.props.visible}
         onCancel={this.props.cancel}
-        onOk={this.submit}
       >
         <List>
           <List.Item>
@@ -179,7 +190,6 @@ export default class CurrentEmps extends Component {
                   </Col>
                   <Col md="2" xs="12">
                     <Widgets.Text
-                      // displayType="input"
                       isDisable={!item.checked}
                       value={item.money}
                       onChange={(e) => this.handleChange(e, item, "money")}
@@ -191,31 +201,6 @@ export default class CurrentEmps extends Component {
           )}
         />
       </Modal>
-      // <Collapse>
-      //   {this.state.currentTimes.map((item) => (
-      //     <Collapse.Panel
-      //       header={
-      //         <Typography.Text type="success">{`${item.empName} | ${item.status} công | số tiền cần phải trả ${item.money} vnd`}</Typography.Text>
-      //       }
-      //       key={item.id}
-      //     >
-      //       <TimeKeepingDetail
-      //         employees={this.mapEmp()}
-      //         data={item}
-      //         load={this.getTimes}
-      //       />
-      //     </Collapse.Panel>
-      //   ))}
-      //   {this.checkExitsEmp() && (
-      //     <Collapse.Panel header="Thêm lịch" key={`${this.props.currentDate}`}>
-      //       <AddMore
-      //         employees={this.mapEmp()}
-      //         currentDate={this.props.currentDate}
-      //         load={this.getTimes}
-      //       />
-      //     </Collapse.Panel>
-      //   )}
-      // </Collapse>
     );
   }
 }
