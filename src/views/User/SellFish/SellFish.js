@@ -3,9 +3,9 @@ import { Card, Dropdown, Menu, Table } from "antd";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import i18n from "i18next";
-import ModalBuy from "./ModalBuy";
+import ModalBuy from "./ModalSell";
 import ModalClosePurchase from "./ModalClosePurchase";
-import ChoosePond from "./ChoosePond";
+import ChoosePond from "./ChooseTraders";
 import queryString from "qs";
 import local from "../../../services/local";
 import session from "../../../services/session";
@@ -180,10 +180,6 @@ const BuyFish = (props) => {
       ),
     },
   ];
-
-  // const showModal = () => {
-  //   setIsShowBuy(true);
-  // };
 
   const handleAddPurchaseDetail = () => {
     setMode("create");
