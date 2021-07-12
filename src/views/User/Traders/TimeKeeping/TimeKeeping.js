@@ -1,14 +1,16 @@
-import React, { Component } from "react";
-import { Calendar } from "antd";
+import React, {Component} from "react";
+import {Calendar, Card, Button, Select} from "antd";
 import {
   UsergroupDeleteOutlined,
   DollarCircleOutlined,
 } from "@ant-design/icons";
+import {Row, Col} from "reactstrap";
 import Widgets from "../../../../schema/Widgets";
 import moment from "moment";
 import CurrentEmps from "./CurrentEmps";
 import apis from "../../../../services/apis";
 import "./TimeKeeping.scss";
+import i18n from "i18next";
 
 export default class TimeKeeping extends Component {
   constructor(props) {
@@ -19,6 +21,7 @@ export default class TimeKeeping extends Component {
       times: [],
       employees: [],
       currentDate: moment(),
+      mode: 'month'
     };
     this.getEmployee = this.getEmployee.bind(this);
     this.getTimes = this.getTimes.bind(this);
@@ -47,7 +50,6 @@ export default class TimeKeeping extends Component {
       "GET",
       date.toDateString()
     );
-    console.log(rs);
     if (rs) {
       this.setState({
         times: rs.data.map((time) => {
@@ -103,7 +105,6 @@ export default class TimeKeeping extends Component {
             </li>
             <li key="status" className="d-flex">
               <DollarCircleOutlined className="tnrss-ts-2 tnrss-text-warning px-1" />
-              {/* <p className="">{`${money}`}</p> */}
               <Widgets.NumberFormat displayType="text" value={money} />
             </li>
           </ul>
@@ -115,6 +116,13 @@ export default class TimeKeeping extends Component {
   };
 
   onChange(value) {
+    if (this.state.mode === 'year') {
+      this.setState({
+        currentDate: value,
+        mode: 'month'
+      });
+      return;
+    }
     if (
       this.state.currentDate._d.getMonth() === value._d.getMonth() &&
       this.state.currentDate._d.getYear() === value._d.getYear()
@@ -148,18 +156,26 @@ export default class TimeKeeping extends Component {
     return emps;
   };
   onCancel = () => {
-    this.setState({ isShow: false });
+    this.setState({isShow: false});
   };
+  renderTitle = () => {
+    let {total} = this.state || 0;
+    return (
+      <Row>
+        <Col md="6" className="d-flex">
+          <h3 className="">{i18n.t("TimekeepingManagement")}</h3>
+          <label className="hd-total">{total ? "(" + total + ")" : ""}</label>
+        </Col>
+      </Row>
+    );
+  };
+  onPanelChange = (date, mode) => {
+    this.setState({mode: mode});
+  }
   render() {
     this.checkExitsEmp();
     return (
-      <>
-        <Calendar
-          dateCellRender={this.dateCellRender}
-          validRange={[moment("01-01-2021", "MM-DD-YYYY"), moment()]}
-          onSelect={this.onChange}
-          value={this.state.currentDate}
-        />
+      <Card title={this.renderTitle()}>
         <CurrentEmps
           visible={this.state.isShow}
           cancel={this.onCancel}
@@ -167,7 +183,19 @@ export default class TimeKeeping extends Component {
           employees={this.state.employees}
           load={this.getTimes}
         />
-      </>
+        <Row>
+          <Col style={{overflowX: "auto"}}>
+            <Calendar
+              mode={this.state.mode}
+              dateCellRender={this.dateCellRender}
+              validRange={[moment("01-01-2021", "MM-DD-YYYY"), moment()]}
+              onSelect={this.onChange}
+              value={this.state.currentDate}
+              onPanelChange={this.onPanelChange}
+            />
+          </Col>
+        </Row>
+      </Card>
     );
   }
 }

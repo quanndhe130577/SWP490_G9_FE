@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { Row, Col } from "reactstrap";
+import React, {useState} from "react";
+import {Row, Col} from "reactstrap";
 import Modal from "../../../../containers/Antd/ModalCustom";
 import Widgets from "../../../../schema/Widgets";
 import i18n from "i18next";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 
-const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
+const ModalEdit = ({isShow, closeModal, mode, currentPO}) => {
   const [basket, setPO] = useState(currentPO);
 
   const handleChangePondOwner = (val, name) => {
@@ -17,7 +17,11 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
   };
   const handleOk = async () => {
     try {
-      // let user = session.get("user");
+      console.log(parseInt(basket.weight))
+      if (parseInt(basket.weight) <= 0) {
+        helper.toast('error', 'Cân nặng phải lớn hơn 0');
+        return;
+      }
       let rs;
       if (mode === "create") {
         rs = await apis.createBasket({
@@ -37,7 +41,6 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
       helper.toast("error", i18n.t("systemError"));
     }
   };
-  console.log(basket);
   return (
     <Modal
       title={mode === "edit" ? i18n.t("edit") : i18n.t("create")}
@@ -58,7 +61,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
             <Widgets.Text
               required={true}
               label={i18n.t("weight")}
-              type="number"
+              type="text"
               value={basket.weight || ""}
               onChange={(e) => handleChangePondOwner(e, "weight")}
             />
