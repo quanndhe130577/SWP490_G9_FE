@@ -235,11 +235,11 @@ const BuyFish = (props) => {
   async function getFTByTraderID() {
     try {
       //get fish type trader id
-      let rs = await apis.getFTByTraderID({}, "GET");
+      let rs = await apis.getLastAllFTByTraderID({}, "GET");
       if (rs && rs.statusCode === 200) {
         setData((pre) => ({
           ...pre,
-          fishType: rs.data,
+          fishType: rs.data || [],
         }));
       }
     } catch (error) {
