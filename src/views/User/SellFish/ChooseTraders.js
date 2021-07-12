@@ -10,7 +10,7 @@ import PriceFishToday from "./PriceFishToday";
 const ChoosePond = ({
   isShowChoosePond,
   setShowChoosePond,
-  pondOwner,
+  trader,
   currentPurchase,
   setCurrentPurchase,
   dataDf,
@@ -31,10 +31,10 @@ const ChoosePond = ({
       // history.push("/home");
       setShowChoosePond(false);
     } else {
-      // if pondOwner null cant close modal
-      let check = validate(currentPurchase, "pondOwner");
+      // if trader null cant close modal
+      let check = validate(currentPurchase, "trader");
       if (!check) {
-        onChange(currentPurchase.pondOwner, "pondOwner");
+        onChange(currentPurchase.trader, "trader");
         setShowChoosePond(false);
       } else {
         helper.toast("error", i18n.t(check));
@@ -43,17 +43,17 @@ const ChoosePond = ({
   };
 
   const validate = (obj, prop) => {
-    // if pondOwner null return msg
-    if (prop === "pondOwner" && !obj[prop]) {
-      return "fillPondOwner";
+    // if trader null return msg
+    if (prop === "trader" && !obj[prop]) {
+      return "filltrader";
     }
   };
 
   const onChange = (val, prop) => {
     if (!(prop === "arrFish" && val.length === 0)) {
       let tem = currentPurchase;
-      if (prop === "pondOwner") {
-        tem.pondOwner = val + "";
+      if (prop === "trader") {
+        tem.trader = val + "";
       } else {
         tem[prop] = val;
       }
@@ -82,11 +82,11 @@ const ChoosePond = ({
       <Row>
         <Col md="4" xs="12">
           <Widgets.Select
-            label={i18n.t("pondOwner")}
-            value={parseInt(pondOwner || currentPurchase.pondOwner)}
-            items={dataDf.pondOwner}
-            isDisable={currentPurchase.pondOwner ? true : false}
-            onChange={(vl) => onChange(vl, "pondOwner")}
+            label={i18n.t("trader")}
+            value={parseInt(trader || currentPurchase.trader)}
+            items={dataDf.trader}
+            isDisable={currentPurchase.trader ? true : false}
+            onChange={(vl) => onChange(vl, "trader")}
           />
           <Widgets.SelectSearchMulti
             label={i18n.t("chooseFish")}
