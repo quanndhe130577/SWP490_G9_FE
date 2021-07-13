@@ -5,9 +5,9 @@ import i18n from "i18next";
 import Widgets from "../../../../schema/Widgets";
 import PriceFishToday from "./PriceFishToday";
 import services from "../../../../services";
+import { useHistory } from "react-router-dom";
 
 const { local, helper } = services;
-
 const ChoosePond = ({
   isShowChoosePond,
   setShowChoosePond,
@@ -18,6 +18,7 @@ const ChoosePond = ({
   createPurchase,
 }) => {
   let isChange = false;
+  const history = useHistory();
 
   const handleOk = () => {
     setShowChoosePond(false);
@@ -29,7 +30,7 @@ const ChoosePond = ({
 
   const handleCancel = () => {
     if (!isChange) {
-      // history.push("/home");
+      history.push("/buy");
       setShowChoosePond(false);
     } else {
       // if pondOwner null cant close modal
@@ -90,7 +91,7 @@ const ChoosePond = ({
             onChange={(vl) => onChange(vl, "pondOwner")}
           />
           <Widgets.SelectSearchMulti
-            labl={i18n.t("chooseFish")}
+            label={i18n.t("chooseFish")}
             value={currentPurchase.listFishId}
             items={addField(dataDf.fishType || [], "name", "fishName")}
             onChange={(vl) => onChange(vl, "listFishId")}
