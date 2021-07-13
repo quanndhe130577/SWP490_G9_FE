@@ -103,9 +103,10 @@ export default class CurrentEmps extends Component {
       <Modal
         width="70%"
         title="Danh sách nhân viên trong ngày"
-        footer={null}
+        okText='Lưu'
         visible={this.props.visible}
         onCancel={this.props.cancel}
+        onOk={this.submit}
       >
         <List>
           <List.Item>

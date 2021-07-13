@@ -48,7 +48,8 @@ export default class EmployeeSalary extends Component {
     return (
       <>
         <Modal
-          title="Danh sách nhân viên trong ngày"
+          width={675}
+          title="Quản lý lương"
           footer={null}
           visible={this.state.isShow}
           onCancel={this.onCancel}
