@@ -127,5 +127,7 @@
   "Sell Date FT": "Ngày bán",
   "Transaction Price": "Giá bán (VND)",
   "Pond Owner": "Chủ ao",
-  "buyPrice": "Giá mua"
+  "buyPrice": "Giá mua",
+  "EmployeeList": "Danh sách",
+  "EmployeeSalary": "Quản lý lương"
 }

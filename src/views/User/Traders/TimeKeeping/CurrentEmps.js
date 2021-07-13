@@ -3,7 +3,6 @@ import {Row, Col} from "reactstrap";
 import {Checkbox, Modal, List, Radio} from "antd";
 import Widgets from "../../../../schema/Widgets";
 import apis from "../../../../services/apis";
-import "./TimeKeeping.scss";
 
 export default class CurrentEmps extends Component {
   constructor(props) {

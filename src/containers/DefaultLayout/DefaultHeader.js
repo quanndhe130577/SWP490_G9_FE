@@ -187,10 +187,23 @@ const MENU = [
     ],
   },
   {
+    type: "subMenu",
     title: "EmployeeManagement",
     icon: <UsergroupAddOutlined />,
     link: "/employee",
     role: "Thương lái",
+    menu:[
+      {
+        title: "EmployeeList",
+        link: "/employee",
+        role: "Thương lái",
+      },
+      {
+        link: "/salary",
+        title: "EmployeeSalary",
+        role: "Thương lái",
+        }
+    ]
   },
   {
     title: "Time keeping",
