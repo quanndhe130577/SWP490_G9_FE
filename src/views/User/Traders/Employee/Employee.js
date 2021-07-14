@@ -10,6 +10,7 @@ import session from "../../../../services/session";
 import ModalForm from "./ModalEMP";
 import Moment from "react-moment";
 import moment from "moment";
+
 export default class Employee extends Component {
   constructor(props) {
     super(props);
@@ -72,6 +73,8 @@ export default class Employee extends Component {
   };
 
   renderBtnAction(id) {
+    let { emp, data } = this.state;
+    emp = data.find((el) => el.id === id);
     return (
       <Menu>
         <Menu.Item key="1">
@@ -90,9 +93,23 @@ export default class Employee extends Component {
             {i18n.t("delete")}
           </Button>
         </Menu.Item>
+        {emp.status === "available" ? 
+        <Menu.Item key="3">
+          <Button className="deactive" onClick={() => this.onClick("deactive", id)}>
+            <i className="fa fa-times mr-1" />
+            {i18n.t("deactive")}
+          </Button>
+        </Menu.Item> :
+        <Menu.Item key="4">
+          <Button className="active" onClick={() => this.onClick("active", id)}>
+            <i className="fa fa-check-square mr-1" />
+            {i18n.t("active")}
+          </Button>
+        </Menu.Item>}
       </Menu>
     );
   }
+
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     this.setState({
@@ -129,6 +146,40 @@ export default class Employee extends Component {
               this.fetchEmployee();
             }
           } catch (error) {
+            console.log(error);
+            helper.toast("error", i18n.t("systemError"));
+          }
+        }
+      });
+    }else if(modeBtn == "deactive"){
+      helper.confirm(i18n.t("confirmDeactive")).then(async (rs) =>{
+        if(rs){
+          try{
+            currentEmp = data.find((el) => el.id === employeeId);
+            currentEmp.endDate = new Date();
+            let rs = await apis.updateEmployee(currentEmp);
+            if (rs && rs.statusCode === 200) {
+              helper.toast("success", "This Employee is Deactive now!");
+              this.fetchEmployee();
+            }
+          }catch (error){
+            console.log(error);
+            helper.toast("error", i18n.t("systemError"));
+          }
+        }
+      });
+    }else if(modeBtn == "active"){
+      helper.confirm(i18n.t("confirmActive")).then(async (rs) =>{
+        if(rs){
+          try{
+            currentEmp = data.find((el) => el.id === employeeId);
+            currentEmp.endDate = null;
+            let rs = await apis.updateEmployee(currentEmp);
+            if (rs && rs.statusCode === 200) {
+              helper.toast("success","This Employee is Active now!");
+              this.fetchEmployee();
+            }
+          }catch (error){
             console.log(error);
             helper.toast("error", i18n.t("systemError"));
           }
