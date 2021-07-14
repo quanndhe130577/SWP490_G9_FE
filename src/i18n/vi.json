@@ -73,6 +73,7 @@
   "numberDrum": "Tên lồ",
   "suffix": " VND",
   "EmployeeManagement": "Quản lí nhân viên",
+  "TimekeepingManagement": "Quản lí chấm công",
   "dob": "Ngày sinh",
   "totalAmount (VND)": "Thành tiền (VND)",
   "closePurchase": "Chốt sổ",
@@ -84,6 +85,7 @@
   "CostIncurredManagement": "Chi phí phát sinh",
   "date": "Ngày",
   "Buyer": "Người mua",
+  "Time keeping":"Chấm công",
   "total": "Tổng cộng",
   "qtyMustSmallerThan200": "Khối lượng  cá phải nhỏ hơn 200 kg",
   "startDate": "Ngày bắt đầu làm",
@@ -125,5 +127,7 @@
   "Sell Date FT": "Ngày bán",
   "Transaction Price": "Giá bán (VND)",
   "Pond Owner": "Chủ ao",
-  "buyPrice": "Giá mua"
+  "buyPrice": "Giá mua",
+  "EmployeeList": "Danh sách",
+  "EmployeeSalary": "Quản lý lương"
 }

@@ -11,19 +11,23 @@ export default function NumberFormat2({
   required = false,
   submitted,
   format,
+  prefix = '',
+  neddFormGroup = true,
+  className = ''
 }) {
   function onValueChange(e) {
     if (onChange && !isDisable) onChange(e);
   }
   return (
-    <div className={"form-group" + (submitted && !value ? " has-error" : "")}>
+    <div className={(submitted && !value ? " has-error" : "") + ` ${className}`}>
       {label && (
         <label className="bold">
-          {label} {required ? <span style={{ color: "red" }}>*</span> : ""}
+          {label} {required ? <span style={{color: "red"}}>*</span> : ""}
         </label>
       )}
 
       <NumberFormat
+        prefix={prefix}
         value={value || 0}
         displayType={displayType}
         thousandSeparator={true}

@@ -186,10 +186,6 @@ const BuyFish = (props) => {
     },
   ];
 
-  // const showModal = () => {
-  //   setIsShowBuy(true);
-  // };
-
   const handleAddPurchaseDetail = () => {
     setMode("create");
     setIsShowBuy(true);
@@ -239,11 +235,11 @@ const BuyFish = (props) => {
   async function getFTByTraderID() {
     try {
       //get fish type trader id
-      let rs = await apis.getFTByTraderID({}, "GET");
+      let rs = await apis.getLastAllFTByTraderID({}, "GET");
       if (rs && rs.statusCode === 200) {
         setData((pre) => ({
           ...pre,
-          fishType: rs.data,
+          fishType: rs.data || [],
         }));
       }
     } catch (error) {
@@ -467,147 +463,147 @@ const BuyFish = (props) => {
       </Row>
     );
   };
-  if (isLoading) {
-    return <div>loading...</div>;
-  } else
-    return (
-      <div>
-        {isShowClosePurchase && (
-          <ModalClosePurchase
-            isShowClosePurchase={isShowClosePurchase}
-            purchase={purchase}
-            prCurrentPurchase={currentPurchase || {}}
-            handleShowClosePurchase={handleShowClosePurchase}
-            dataDf={dataDf}
-            handleClosePurchase={handleClosePurchase}
-          />
-        )}
-        {isShowBuy && (
-          <ModalBuy
-            isShowBuy={isShowBuy}
-            setIsShowBuy={setIsShowBuy}
-            currentPurchase={currentPurchase}
-            purchase={purchase}
-            dataDf={dataDf}
-            createPurchaseDetail={createPurchaseDetail}
-            fetchDrumByTruck={fetchDrumByTruck}
-            mode={mode}
-            updatePurchaseDetail={updatePurchaseDetail}
-            suggestionPurchase={suggestionPurchase}
-            setSuggestionPurchase={setSuggestionPurchase}
-          />
-        )}
-        {isShowChoosePond && (
-          <ChoosePond
-            isShowChoosePond={isShowChoosePond}
-            setShowChoosePond={setShowChoosePond}
-            currentPurchase={currentPurchase}
-            setCurrentPurchase={setCurrentPurchase}
-            dataDf={dataDf}
-            createPurchase={createPurchase}
-          />
-        )}
-        {!isShowChoosePond && (
-          <Card title={renderTitle()}>
-            <Row className="mb-2">
-              <Col md="6">
-                <label className="mr-2">
-                  <b>{i18n.t("date")}:</b>
-                  <Moment format="DD/MM/YYYY" className="ml-2">
-                    {currentPurchase.date}
-                  </Moment>
-                </label>
-                <label>
-                  <b className="mr-2">{i18n.t("pondOwner")}:</b>
-                  {/* /!* nếu ko có id thì dùng hàm findPO  *!/ */}
-                  {(findPO() && findPO().name) || currentPurchase.pondOwnerName}
-                </label>
-              </Col>
-              <Col md="6">
-                {/* nếu status khac Pending thì ko show btn thêm */}
-                {currentPurchase.status === "Pending" && (
-                  <div className="float-right">
-                    <Button
-                      color="info"
-                      onClick={() => handleShowClosePurchase()}
-                      className="mr-2"
-                    >
-                      {i18n.t("closePurchase")}
-                    </Button>
-                    <Button
-                      color="info"
-                      onClick={() => setShowChoosePond(true)}
-                      className="mr-2"
-                    >
-                      {i18n.t("Giá cá hôm nay")}
-                    </Button>
-                    <Button
-                      color="info"
-                      onClick={handleAddPurchaseDetail}
-                      className=" mr-2"
-                    >
-                      {i18n.t("Thêm Mã")}
-                    </Button>
-                  </div>
-                )}
-              </Col>
-            </Row>
+  // if (isLoading) {
+  //   return <div>loading...</div>;
+  // } else
+  return (
+    <div>
+      {isShowClosePurchase && (
+        <ModalClosePurchase
+          isShowClosePurchase={isShowClosePurchase}
+          purchase={purchase}
+          prCurrentPurchase={currentPurchase || {}}
+          handleShowClosePurchase={handleShowClosePurchase}
+          dataDf={dataDf}
+          handleClosePurchase={handleClosePurchase}
+        />
+      )}
+      {isShowBuy && (
+        <ModalBuy
+          isShowBuy={isShowBuy}
+          setIsShowBuy={setIsShowBuy}
+          currentPurchase={currentPurchase}
+          purchase={purchase}
+          dataDf={dataDf}
+          createPurchaseDetail={createPurchaseDetail}
+          fetchDrumByTruck={fetchDrumByTruck}
+          mode={mode}
+          updatePurchaseDetail={updatePurchaseDetail}
+          suggestionPurchase={suggestionPurchase}
+          setSuggestionPurchase={setSuggestionPurchase}
+        />
+      )}
+      {isShowChoosePond && (
+        <ChoosePond
+          isShowChoosePond={isShowChoosePond}
+          setShowChoosePond={setShowChoosePond}
+          currentPurchase={currentPurchase}
+          setCurrentPurchase={setCurrentPurchase}
+          dataDf={dataDf}
+          createPurchase={createPurchase}
+        />
+      )}
+      {!isShowChoosePond && (
+        <Card title={renderTitle()}>
+          <Row className="mb-2">
+            <Col md="6">
+              <label className="mr-2">
+                <b>{i18n.t("date")}:</b>
+                <Moment format="DD/MM/YYYY" className="ml-2">
+                  {currentPurchase.date}
+                </Moment>
+              </label>
+              <label>
+                <b className="mr-2">{i18n.t("pondOwner")}:</b>
+                {/* /!* nếu ko có id thì dùng hàm findPO  *!/ */}
+                {(findPO() && findPO().name) || currentPurchase.pondOwnerName}
+              </label>
+            </Col>
+            <Col md="6">
+              {/* nếu status khac Pending thì ko show btn thêm */}
+              {currentPurchase.status === "Pending" && (
+                <div className="float-right">
+                  <Button
+                    color="info"
+                    onClick={() => handleShowClosePurchase()}
+                    className="mr-2"
+                  >
+                    {i18n.t("closePurchase")}
+                  </Button>
+                  <Button
+                    color="info"
+                    onClick={() => setShowChoosePond(true)}
+                    className="mr-2"
+                  >
+                    {i18n.t("Giá cá hôm nay")}
+                  </Button>
+                  <Button
+                    color="info"
+                    onClick={handleAddPurchaseDetail}
+                    className=" mr-2"
+                  >
+                    {i18n.t("Thêm Mã")}
+                  </Button>
+                </div>
+              )}
+            </Col>
+          </Row>
 
-            <Row>
-              <Col style={{ overflowX: "auto" }}>
-                <Table
-                  columns={columns}
-                  dataSource={purchase}
-                  loading={isLoading}
-                  scroll={{ y: 420 }}
-                  pagination={{ pageSize: 100 }}
-                  bordered
-                  summary={(pageData) => {
-                    let totalWeight = 0;
-                    let totalAmount = 0;
-                    pageData.forEach(({ weight, price }) => {
-                      totalWeight += weight;
-                      totalAmount += price;
-                    });
+          <Row>
+            <Col style={{ overflowX: "auto" }}>
+              <Table
+                columns={columns}
+                dataSource={purchase}
+                loading={isLoading}
+                scroll={{ y: 420 }}
+                pagination={{ pageSize: 100 }}
+                bordered
+                summary={(pageData) => {
+                  let totalWeight = 0;
+                  let totalAmount = 0;
+                  pageData.forEach(({ weight, price }) => {
+                    totalWeight += weight;
+                    totalAmount += price;
+                  });
 
-                    return (
-                      <Table.Summary fixed>
-                        <Table.Summary.Row>
-                          <Table.Summary.Cell
-                            colSpan="2"
-                            key="1"
-                            className="bold"
-                          >
-                            {i18n.t("total")}
-                          </Table.Summary.Cell>
-                          <Table.Summary.Cell key="2">
-                            <NumberFormat
-                              value={totalWeight.toFixed(1)}
-                              displayType={"text"}
-                              thousandSeparator={true}
-                              suffix=" Kg"
-                            />
-                          </Table.Summary.Cell>
-                          <Table.Summary.Cell key="3">
-                            <NumberFormat
-                              value={totalAmount}
-                              displayType={"text"}
-                              thousandSeparator={true}
-                              suffix={i18n.t("suffix")}
-                            />
-                          </Table.Summary.Cell>
-                          <Table.Summary.Cell colSpan="4" key="4" />
-                        </Table.Summary.Row>
-                      </Table.Summary>
-                    );
-                  }}
-                />
-              </Col>
-            </Row>
-          </Card>
-        )}
-      </div>
-    );
+                  return (
+                    <Table.Summary fixed>
+                      <Table.Summary.Row>
+                        <Table.Summary.Cell
+                          colSpan="2"
+                          key="1"
+                          className="bold"
+                        >
+                          {i18n.t("total")}
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell key="2">
+                          <NumberFormat
+                            value={totalWeight.toFixed(1)}
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            suffix=" Kg"
+                          />
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell key="3">
+                          <NumberFormat
+                            value={totalAmount}
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            suffix={i18n.t("suffix")}
+                          />
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell colSpan="4" key="4" />
+                      </Table.Summary.Row>
+                    </Table.Summary>
+                  );
+                }}
+              />
+            </Col>
+          </Row>
+        </Card>
+      )}
+    </div>
+  );
 };
 
 export default BuyFish;

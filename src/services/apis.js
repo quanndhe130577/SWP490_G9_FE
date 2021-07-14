@@ -19,7 +19,7 @@ var path = {
   deletePO: "/api/pondOwner/delete",
 
   getFTByTraderID: "/api/fishtype/getall",
-  getLastAllFTByTraderID: "api/fishtype/getlastall",
+  getLastAllFTByTraderID: "/api/fishtype/getlastall",
   createFT: "/api/fishtype/create", // method post need param
   getUserInfo: "/api/getUserInfo",
   updateUser: "/api/user/update",
@@ -92,7 +92,6 @@ var path = {
   getDetailDebt: "",
   // fishType
   getOneFT: "api/fishtype/getone/{ddMMyyyy}/{pondOwnerId}",
-
 };
 
 Object.keys(path).forEach(function (key) {
