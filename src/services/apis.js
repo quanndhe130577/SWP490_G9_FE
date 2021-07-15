@@ -92,6 +92,7 @@ var path = {
   getDetailDebt: "",
   // fishType
   getOneFT: "api/fishtype/getone/{ddMMyyyy}/{pondOwnerId}",
+  updateAllFishType: "/api/fishtype/updatelist"
 };
 
 Object.keys(path).forEach(function (key) {

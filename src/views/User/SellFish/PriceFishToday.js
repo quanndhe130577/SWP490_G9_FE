@@ -30,7 +30,7 @@ const PriceFishToday = ({ listFishId, onChange, dataDf }) => {
       title: "Giá (VND/kg)",
       dataIndex: "price",
       key: "price",
-      render: (price) => <Widgets.NumberFormat value={price} />,
+      render: (price) => <Widgets.MoneyInput value={price} />,
     },
 
     {
