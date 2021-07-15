@@ -7,7 +7,7 @@ import "./css/custom.css";
 import "antd/dist/antd.css";
 import "./css/bootstrap.css";
 import "./css/responsive.css"
-
+import "./css/color.css";
 // Containers
 import { DefaultLayout } from "./containers";
 // Pages

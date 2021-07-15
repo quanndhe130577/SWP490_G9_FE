@@ -10,6 +10,7 @@ import session from "../../../../services/session";
 import ModalForm from "./ModalEMP";
 import Moment from "react-moment";
 import moment from "moment";
+
 export default class Employee extends Component {
   constructor(props) {
     super(props);
@@ -72,6 +73,8 @@ export default class Employee extends Component {
   };
 
   renderBtnAction(id) {
+    let { emp, data } = this.state;
+    emp = data.find((el) => el.id === id);
     return (
       <Menu>
         <Menu.Item key="1">
@@ -90,9 +93,23 @@ export default class Employee extends Component {
             {i18n.t("delete")}
           </Button>
         </Menu.Item>
+        {emp.status === "Đang làm" ? 
+        <Menu.Item key="3">
+          <Button className="deactive" onClick={() => this.onClick("deactive", id)}>
+            <i className="fa fa-times mr-1" />
+            {i18n.t("deactive")}
+          </Button>
+        </Menu.Item> :
+        <Menu.Item key="4">
+          <Button className="active" onClick={() => this.onClick("active", id)}>
+            <i className="fa fa-check-square mr-1" />
+            {i18n.t("active")}
+          </Button>
+        </Menu.Item>}
       </Menu>
     );
   }
+
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     this.setState({
@@ -129,6 +146,40 @@ export default class Employee extends Component {
               this.fetchEmployee();
             }
           } catch (error) {
+            console.log(error);
+            helper.toast("error", i18n.t("systemError"));
+          }
+        }
+      });
+    }else if(modeBtn == "deactive"){
+      helper.confirm(i18n.t("confirmDeactive")).then(async (rs) =>{
+        if(rs){
+          try{
+            currentEmp = data.find((el) => el.id === employeeId);
+            currentEmp.endDate = new Date();
+            let rs = await apis.updateEmployee(currentEmp);
+            if (rs && rs.statusCode === 200) {
+              helper.toast("success", i18n.t("This Employee is deactive now"));
+              this.fetchEmployee();
+            }
+          }catch (error){
+            console.log(error);
+            helper.toast("error", i18n.t("systemError"));
+          }
+        }
+      });
+    }else if(modeBtn == "active"){
+      helper.confirm(i18n.t("confirmActive")).then(async (rs) =>{
+        if(rs){
+          try{
+            currentEmp = data.find((el) => el.id === employeeId);
+            currentEmp.endDate = null;
+            let rs = await apis.updateEmployee(currentEmp);
+            if (rs && rs.statusCode === 200) {
+              helper.toast("success",i18n.t("This Employee is active now"));
+              this.fetchEmployee();
+            }
+          }catch (error){
             console.log(error);
             helper.toast("error", i18n.t("systemError"));
           }
@@ -238,23 +289,23 @@ export default class Employee extends Component {
         sorter: (a, b) => a.name.length - b.name.length,
         sortDirections: ["descend", "ascend"],
       },
-      {
-        title: i18n.t("dob"),
-        dataIndex: "dob",
-        key: "dob",
-        ...this.getColumnSearchProps("dob"),
-        sorter: (a, b) => moment(a.dob).unix() - moment(b.dob).unix(),
-        sortDirections: ["descend", "ascend"],
-        render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
-      },
-      {
-        title: i18n.t("address"),
-        dataIndex: "address",
-        key: "address",
-        ...this.getColumnSearchProps("address"),
-        sorter: (a, b) => a.address.length - b.address.length,
-        sortDirections: ["descend", "ascend"],
-      },
+      // {
+      //   title: i18n.t("dob"),
+      //   dataIndex: "dob",
+      //   key: "dob",
+      //   ...this.getColumnSearchProps("dob"),
+      //   sorter: (a, b) => moment(a.dob).unix() - moment(b.dob).unix(),
+      //   sortDirections: ["descend", "ascend"],
+      //   render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
+      // },
+      // {
+      //   title: i18n.t("address"),
+      //   dataIndex: "address",
+      //   key: "address",
+      //   ...this.getColumnSearchProps("address"),
+      //   sorter: (a, b) => a.address.length - b.address.length,
+      //   sortDirections: ["descend", "ascend"],
+      // },
       {
         title: i18n.t("phoneNumber"),
         dataIndex: "phoneNumber",
@@ -264,6 +315,23 @@ export default class Employee extends Component {
           (a?.phoneNumber ?? "").localeCompare(b?.phoneNumber ?? "", "vi", {
             sensitivity: "base",
           }),
+        sortDirections: ["descend", "ascend"],
+      },
+      {
+        title: i18n.t("startDate"),
+        dataIndex: "startDate",
+        key: "startDate",
+        ...this.getColumnSearchProps("startDate"),
+        sorter: (a, b) => moment(a.startDate).unix() - moment(b.startDate).unix(),
+        sortDirections: ["descend", "ascend"],
+        render: (startDate) => <Moment format="DD/MM/YYYY">{startDate}</Moment>,
+      },
+      {
+        title: i18n.t("status"),
+        dataIndex: "status",
+        key: "status",
+        ...this.getColumnSearchProps("status"),
+        sorter: (a, b) => a.status.length - b.status.length,
         sortDirections: ["descend", "ascend"],
       },
       {

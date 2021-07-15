@@ -13,3 +13,12 @@
 .danger {
   color: #e67e22 !important;
 }
+
+.bg-deactive{
+  background-color: #ff4d4f !important;
+
+}
+
+.bg-active{
+  background-color: #73d13d !important;
+}

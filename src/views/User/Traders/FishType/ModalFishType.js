@@ -69,8 +69,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
             />
           </Col>
           <Col md="6" xs="12">
-            <Widgets.Text
-              type="number"
+            <Widgets.WeightInput
               label={i18n.t("Max Weight")}
               value={fishType.maxWeight || ""}
               onChange={(e) => handleChangeFishType(e, "maxWeight")}
@@ -89,13 +88,6 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
               label={i18n.t("Transaction Price")}
               value={fishType.transactionPrice || ""}
               onChange={(e) => handleChangeFishType(e, "transactionPrice")}
-            />
-          </Col>
-          <Col md="6" xs="12">
-            <Widgets.Select
-              label={i18n.t("Pond Owner")}
-              value={fishType.pondOwnerId || ""}
-              onChange={(e) => handleChangeFishType(e, "pondOwnerId")}
             />
           </Col>
           <Col md="6" xs="12">
