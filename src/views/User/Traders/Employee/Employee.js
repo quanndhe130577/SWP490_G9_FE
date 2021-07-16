@@ -93,7 +93,7 @@ export default class Employee extends Component {
             {i18n.t("delete")}
           </Button>
         </Menu.Item>
-        {emp.status === "available" ? 
+        {emp.status === "Đang làm" ? 
         <Menu.Item key="3">
           <Button className="deactive" onClick={() => this.onClick("deactive", id)}>
             <i className="fa fa-times mr-1" />
@@ -159,7 +159,7 @@ export default class Employee extends Component {
             currentEmp.endDate = new Date();
             let rs = await apis.updateEmployee(currentEmp);
             if (rs && rs.statusCode === 200) {
-              helper.toast("success", "This Employee is Deactive now!");
+              helper.toast("success", i18n.t("This Employee is deactive now"));
               this.fetchEmployee();
             }
           }catch (error){
@@ -176,7 +176,7 @@ export default class Employee extends Component {
             currentEmp.endDate = null;
             let rs = await apis.updateEmployee(currentEmp);
             if (rs && rs.statusCode === 200) {
-              helper.toast("success","This Employee is Active now!");
+              helper.toast("success",i18n.t("This Employee is active now"));
               this.fetchEmployee();
             }
           }catch (error){
@@ -324,7 +324,7 @@ export default class Employee extends Component {
         ...this.getColumnSearchProps("startDate"),
         sorter: (a, b) => moment(a.startDate).unix() - moment(b.startDate).unix(),
         sortDirections: ["descend", "ascend"],
-        render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
+        render: (startDate) => <Moment format="DD/MM/YYYY">{startDate}</Moment>,
       },
       {
         title: i18n.t("status"),

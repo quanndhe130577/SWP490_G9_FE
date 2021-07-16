@@ -101,13 +101,6 @@
   "(suffix)": " (VND)",
   "sellGood": "Bán hàng",
   "trader": "Thương lái",
-  "Fish Name": "Tên loại cá",
-  "Range of Weight": "Khoảng cân",
-  "Price": "Giá",
-  "Description": "Mô tả",
-  "Min Weight": "Cân nặng tối thiểu",
-  "Max Weight": "Cân nặng tối đa",
-  "Created Date": "Ngày tạo",
   "payForPondOwner": "Số tiền trả cho chủ ao",
   "status": "Trạng thái",
   "youCanDoActionWhenCompleted": "Bạn không thể sửa hoặc xóa khi đã chốt sổ",
@@ -129,5 +122,11 @@
   "Pond Owner": "Chủ ao",
   "buyPrice": "Giá mua",
   "EmployeeList": "Danh sách",
-  "EmployeeSalary": "Quản lý lương"
+  "EmployeeSalary": "Quản lý lương",
+  "This Employee is deactive now": "Nhân viên đã nghỉ làm",
+  "This Employee is active now": "Nhân viên đang đi làm",
+  "deactive": "Nghỉ",
+  "active": "Đi làm",
+  "confirmActive": "Xác nhận đi làm",
+  "confirmDeactive": "Xác nhận nghỉ làm"
 }
