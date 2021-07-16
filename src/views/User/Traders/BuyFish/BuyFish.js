@@ -24,7 +24,7 @@ const BuyFish = (props) => {
   const [suggestionPurchase, setSuggestionPurchase] = useState(null); //purchase dung de goi y khi them purchase detail
   const [dataDf, setData] = useState({ basket: [], drum: [], truck: [] }); // list data of basket, drum, truck,...
   const [isShowClosePurchase, setShowClosePurchase] = useState(false);
-
+  const [currentListFishTyppe, setCurrentListFishTyppe] = useState([]);
   const currentPurchasePROPS = useSelector(
     (state) => state.purchase.currentPurchase
   ); // data in redux
@@ -86,7 +86,7 @@ const BuyFish = (props) => {
           value={value}
           displayType={"text"}
           thousandSeparator={true}
-          // suffix={i18n.t("suffix")}
+        // suffix={i18n.t("suffix")}
         />
       );
     }
@@ -378,6 +378,19 @@ const BuyFish = (props) => {
       setLoading(false);
     }
   }
+  // Update All fish type anhnbt
+  async function updateAllFishType(listFishType) {
+    try {
+      setLoading(true);
+      debugger
+      let rs = await apis.updateAllFishType({ listFishType }, "POST");
+      console.log(rs)
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   function handleShowClosePurchase() {
     setShowClosePurchase(!isShowClosePurchase);
@@ -501,6 +514,7 @@ const BuyFish = (props) => {
           setCurrentPurchase={setCurrentPurchase}
           dataDf={dataDf}
           createPurchase={createPurchase}
+          updateAllFishType={updateAllFishType}
         />
       )}
       {!isShowChoosePond && (

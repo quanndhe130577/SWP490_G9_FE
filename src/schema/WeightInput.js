@@ -12,7 +12,7 @@ export default function Number({
   onKeyDown,
 }) {
   return (
-    <div className={"form-group" + (submitted && !value ? " has-error" : "")}>
+    <div className={"form-group" + (submitted && !value ? " has-error" : "")} style={{ margin: "auto" }}>
       {label && (
         <label className="bold">
           {label} {required ? <span style={{ color: "red" }}>*</span> : ""}

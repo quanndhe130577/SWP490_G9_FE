@@ -6,6 +6,7 @@ import Widgets from "../../../../schema/Widgets";
 import PriceFishToday from "./PriceFishToday";
 import services from "../../../../services";
 import { useHistory } from "react-router-dom";
+import { useState } from "react";
 
 const { local, helper } = services;
 const ChoosePond = ({
@@ -16,12 +17,17 @@ const ChoosePond = ({
   setCurrentPurchase,
   dataDf,
   createPurchase,
+  updateAllFishType
 }) => {
   let isChange = false;
   const history = useHistory();
 
+  const [dataChange, setDataChange] = useState([]);
   const handleOk = () => {
     setShowChoosePond(false);
+    //updateAllFishType
+    console.log(dataChange)
+    updateAllFishType(dataChange)
     // neu ko co id purchase thì tạo purchase mới
     if (createPurchase && !currentPurchase.id) {
       createPurchase();
@@ -103,6 +109,7 @@ const ChoosePond = ({
             listFishId={currentPurchase.listFishId || []}
             onChange={(arr) => onChange(arr, "arrFish")}
             dataDf={dataDf}
+            dataChange={(data) => setDataChange(data)}
           />
         </Col>
         <Col md="4" xs="12" />
