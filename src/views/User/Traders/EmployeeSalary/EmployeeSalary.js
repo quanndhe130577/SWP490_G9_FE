@@ -48,7 +48,7 @@ export default class EmployeeSalary extends Component {
     return (
       <>
         <Modal
-          width={675}
+          width='auto'
           title="Quản lý lương"
           footer={null}
           visible={this.state.isShow}
