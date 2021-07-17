@@ -8,6 +8,7 @@ import Phone from "./Phone";
 import Custom from "./Custom";
 import Checkbox from "./CheckBox";
 import MoneyInput from "./MoneyInput";
+import SearchFetchApi from "./SearchFetchApi";
 let Widgets = {
   Text,
   Select,
@@ -19,5 +20,6 @@ let Widgets = {
   Custom,
   Checkbox,
   MoneyInput,
+  SearchFetchApi,
 };
 export default Widgets;

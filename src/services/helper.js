@@ -48,9 +48,10 @@ helper.confirm = (content) => {
     });
   });
 };
-helper.getCurrentDate = () => {
-  var d = new Date(),
-    month = "" + (d.getMonth() + 1),
+helper.getDateFormat = (date) => {
+  // format date as type yyyy-mm-dd
+  var d = date || new Date();
+  let month = "" + (d.getMonth() + 1),
     day = "" + d.getDate(),
     year = d.getFullYear();
 

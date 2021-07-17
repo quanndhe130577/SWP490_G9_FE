@@ -15,3 +15,11 @@ let services = {
   modal,
 };
 export default services;
+
+export { default as apis } from "./apis";
+export { default as constant } from "./constant";
+export { default as local } from "./local";
+export { default as session } from "./session";
+export { default as request } from "./request";
+export { default as helper } from "./helper";
+export { default as modal } from "./modal";

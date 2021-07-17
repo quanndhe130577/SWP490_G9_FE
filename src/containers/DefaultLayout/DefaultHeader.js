@@ -163,6 +163,7 @@ const MENU = [
     title: "basket",
     icon: <TableOutlined />,
     link: "/basket",
+    role: "Thương lái",
   },
   {
     type: "subMenu",
@@ -180,10 +181,10 @@ const MENU = [
         title: "drum",
         role: "Thương lái",
       },
-      {
-        link: "/truck1",
-        title: "truck",
-      },
+      // {
+      //   link: "/truck1",
+      //   title: "truck",
+      // },
     ],
   },
   {
@@ -204,15 +205,21 @@ const MENU = [
     link: "/costIncurred",
   },
   {
+    title: "Trader",
+    icon: <UserOutlined />,
+    link: "/trader",
+    role: "Chủ bến",
+  },
+  {
     title: "Buyer",
     icon: <DollarOutlined />,
     link: "/buyer",
   },
   {
     title: "Debt Management",
-    icon: <DollarOutlined/>,
-    link: "/debt"
-  }
+    icon: <DollarOutlined />,
+    link: "/debt",
+  },
 ];
 
 export default connect(mapStateToProps)(DefaultHeader);
