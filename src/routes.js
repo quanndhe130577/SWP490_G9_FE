@@ -82,6 +82,10 @@ const Trader = Loadable({
   loader: () => import("./views/User/WeightRecorder/Trader/Trader"),
   loading: Loading,
 });
+const EmployeeSalary = Loadable({
+  loader: () => import("./views/User/Traders/EmployeeSalary/EmployeeSalary"),
+  loading: Loading,
+});
 const routes = [
   {
     path: "/home",
@@ -173,6 +177,11 @@ const routes = [
     name: "ManaSell",
     component: ManaSell,
   },
+  {
+    path: "/salary",
+    name: "EmployeeSalary",
+    component: EmployeeSalary,
+  }
 ];
 
 export default routes;

@@ -3,7 +3,6 @@ import {Row, Col} from "reactstrap";
 import {Checkbox, Modal, List, Radio} from "antd";
 import Widgets from "../../../../schema/Widgets";
 import apis from "../../../../services/apis";
-import "./TimeKeeping.scss";
 
 export default class CurrentEmps extends Component {
   constructor(props) {
@@ -104,9 +103,10 @@ export default class CurrentEmps extends Component {
       <Modal
         width="70%"
         title="Danh sách nhân viên trong ngày"
-        footer={null}
+        okText='Lưu'
         visible={this.props.visible}
         onCancel={this.props.cancel}
+        onOk={this.submit}
       >
         <List>
           <List.Item>

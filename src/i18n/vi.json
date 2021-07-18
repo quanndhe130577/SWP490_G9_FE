@@ -129,5 +129,7 @@
   "listTrader": "Danh sách thương lái",
   "sellFish": "Bán hàng",
   "traderName": "Tên thương lái",
-  "buyContinue": "Mua tiếp"
+  "buyContinue": "Mua tiếp",
+  "EmployeeList": "Danh sách",
+  "EmployeeSalary": "Quản lý lương"
 }
