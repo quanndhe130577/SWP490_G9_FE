@@ -3,79 +3,48 @@ import { Card, Dropdown, Menu, Table } from "antd";
 import { useHistory } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
 import i18n from "i18next";
-import ModalBuy from "./ModalSell";
-import ModalClosePurchase from "./ModalClosePurchase";
-import ChoosePond from "./ChooseTraders";
+import LoadingCustom from "../../../containers/Antd/LoadingCustom";
+// import ModalClosetransaction from "./ModalClosetransaction";
+import ChooseTraders from "./ChooseTraders";
 import queryString from "qs";
-import local from "../../../services/local";
-import session from "../../../services/session";
-import apis from "../../../services/apis";
-import helper from "../../../services/helper";
+
+import { apis, session } from "../../../services";
+
 import NumberFormat from "react-number-format";
 import { useSelector } from "react-redux";
 import Moment from "react-moment";
 
-const BuyFish = (props) => {
+const SellFish = (props) => {
   const history = useHistory();
-  const [isShowBuy, setIsShowBuy] = useState(false);
-  const [isLoading, setLoading] = useState(true);
-  const [isShowChoosePond, setShowChoosePond] = useState(true);
-  const [purchase, setPurchase] = useState([]);
+
+  const [isLoading, setLoading] = useState(false);
+  const [isShowChooseTraders, setShowChooseTraders] = useState(false);
+  const [transaction, setTransaction] = useState([]);
+  const [currentTransaction, setCurrentTrans] = useState({});
   const [mode, setMode] = useState("");
-  const [currentPurchase, setCurrentPurchase] = useState({});
-  // const [currentPurchaseDetail, setCurrentPurchaseDetail] = useState({});
-  const [suggestionPurchase, setSuggestionPurchase] = useState(null); //purchase dung de goi y khi them purchase detail
-  const [dataDf, setData] = useState({ basket: [], drum: [], truck: [] }); // list data of basket, drum, truck,...
-  const [isShowClosePurchase, setShowClosePurchase] = useState(false);
-  const currentPurchasePROPS = useSelector(
-    (state) => state.purchase.currentPurchase
-  ); // data in redux
+  const [dataFetched, setDtFetched] = useState({}); // include trader by WR
+
+  // const currentTransactionPROPS = useSelector(
+  //   (state) => state.transaction.currentTransaction
+  // ); // data in redux
 
   const handleAction = (action, id) => {
     if (action === "delete") {
-      deletePurchaseDetail(id);
+      // deletetransactionDetail(id);
     } else {
-      let tem = purchase.find((e) => e.id === id);
+      let tem = transaction.find((e) => e.id === id);
       if (tem) {
-        tem.purchaseDetailId = id;
+        tem.transactionDetailId = id;
         setMode("edit");
-        setCurrentPurchase(Object.assign(tem, currentPurchase));
-        setIsShowBuy(true);
       }
     }
   };
 
-  // deletePurchaseDetail
-  async function deletePurchaseDetail(purchaseDetailId) {
-    try {
-      setLoading(true);
-      let rs = await apis.deletePurchaseDetail({ purchaseDetailId });
-      if (rs && rs.statusCode === 200) {
-        let tem = purchase.filter((el) => el.id !== purchaseDetailId);
-        setPurchase(tem);
-        helper.toast("success", i18n.t(rs.message));
-      }
-    } catch (error) {
-      console.log(error);
-      helper.toast("success", i18n.t(error));
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  // const renderDrum = (listDrum = []) => {
-  //   let label = "";
-  //   listDrum.forEach((el, idx) => {
-  //     label += el.number;
-  //     if (idx < listDrum.length - 1) {
-  //       label += " - ";
-  //     }
-  //   });
-  //   return label;
-  // };
-
+  const handleChangeTrans = (pro, value) => {
+    setCurrentTrans((preStates) => ({ ...preStates, [pro]: value }));
+  };
   const calculateIntoMoney = (id) => {
-    let tem = purchase.find((e) => e.id === id);
+    let tem = transaction.find((e) => e.id === id);
     if (tem && tem.fishType) {
       let value =
         tem.fishType.price * (parseInt(tem.weight) - tem.basket.weight);
@@ -181,203 +150,41 @@ const BuyFish = (props) => {
     },
   ];
 
-  const handleAddPurchaseDetail = () => {
-    setMode("create");
-    setIsShowBuy(true);
-  };
-
-  const findPO = () => {
-    if (currentPurchase.pondOwner && dataDf.pondOwner)
-      return (
-        dataDf.pondOwner.find(
-          (el) => el.id === parseInt(currentPurchase.pondOwner)
-        ) || {}
-      );
-    else return null;
-  };
-
   // fetch data
   async function fetchData() {
     try {
-      let user = session.get("user");
-      getPondOwnerByTraderId(user.userID);
-      getFTByTraderID();
-      getTruckByTraderID();
-      getBasketByTraderId();
-
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function getBasketByTraderId() {
-    try {
-      let rs = await apis.getBasketByTraderId({}, "GET");
-      if (rs && rs.statusCode === 200) {
-        setData((pre) => ({
-          ...pre,
-          basket: rs.data,
-        }));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function getFTByTraderID() {
-    try {
-      //get fish type trader id
-      let rs = await apis.getFTByTraderID({}, "GET");
-      if (rs && rs.statusCode === 200) {
-        setData((pre) => ({
-          ...pre,
-          fishType: rs.data,
-        }));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function getTruckByTraderID() {
-    try {
-      //get truck trader id
-      let rs = await apis.getTruck({}, "GET");
-      if (rs && rs.statusCode === 200) {
-        setData((pre) => ({
-          ...pre,
-          truck: rs.data,
-        }));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function getPondOwnerByTraderId(userID) {
-    try {
-      // get pondOwner by trarder ID
-      let rs = await apis.getPondOwnerByTraderId({}, "GET", userID);
-      if (rs && rs.statusCode === 200) {
-        setData((pre) => ({
-          ...pre,
-          pondOwner: rs.data,
-        }));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function fetchDrumByTruck(truckId) {
-    try {
-      let rs = await apis.getAllDrumByTruckID({}, "GET", truckId);
-      if (rs && rs.statusCode === 200) {
-        setData((pre) => ({
-          ...pre,
-          drum: rs.data,
-        }));
-        return true;
-      }
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
-  }
-
-  // create purchase
-  async function createPurchase() {
-    try {
-      let traderId = session.get("user").userID;
-      let pondOwnerID = currentPurchase.pondOwner;
-      let date = helper.getCurrentDate();
-
-      let rs = await apis.createPurchase({ traderId, pondOwnerID, date });
-      if (rs && rs.statusCode === 200) {
-        let tem = rs.data;
-        tem = Object.assign(tem, currentPurchase);
-        setCurrentPurchase(tem);
-        local.set("currentPurchase", tem);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  // createPurchaseDetail
-  async function createPurchaseDetail(detail) {
-    try {
-      let { fishTypeId, basketId, weight, listDrumId = [] } = detail;
-      let rs = await apis.createPurchaseDetail({
-        fishTypeId,
-        basketId,
-        weight,
-        listDrumId,
-        purchaseId: currentPurchase.id,
-      });
-      if (rs && rs.statusCode === 200) {
-        getAllPurchaseDetail(detail);
-        setCurrentPurchase((pre) => ({ ...pre, weight: 0 }));
-        // purchase goi y
-        setSuggestionPurchase(detail);
-        helper.toast("success", i18n.t(rs.message));
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsShowBuy(false);
-    }
-  }
-
-  // updatePurchaseDetail
-  async function updatePurchaseDetail(detail) {
-    try {
-      let { fishTypeId, basketId, weight, listDrumId = [] } = detail;
-
-      let rs = await apis.updatePurchaseDetail({
-        fishTypeId,
-        basketId,
-        weight,
-        listDrumId,
-        id: currentPurchase.purchaseDetailId,
-        purchaseId: currentPurchase.id,
-      });
-      if (rs && rs.statusCode === 200) {
-        getAllPurchaseDetail(detail);
-        // setCurrentPurchase(.find((e) => e.id === currentPurchase.id));
-
-        helper.toast("success", i18n.t(rs.message));
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsShowBuy(false);
-    }
-  }
-
-  // Get all purchase detail
-  async function getAllPurchaseDetail(currentPurchase) {
-    try {
       setLoading(true);
-      let rs = await apis.getAllPurchaseDetail({}, "GET", currentPurchase.id);
-      if (rs && rs.statusCode === 200) {
-        rs.data.map((el, idx) => (el.idx = idx + 1));
-        setPurchase(rs.data);
-        if (currentPurchase.id) {
-        }
-      }
+      let user = session.get("user");
+      setDtFetched((preProps) => ({ ...preProps, currentWR: user }));
+      getAllTransaction();
+      getTraderByWR();
+      setLoading(false);
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   }
 
-  function handleClosePurchase() {
-    setShowClosePurchase(!isShowClosePurchase);
+  async function getTraderByWR() {
+    try {
+      let rs = await apis.getTraderByWR({}, "GET");
+      if (rs && rs.statusCode === 200) {
+        setDtFetched((preProps) => ({ ...preProps, traders: rs.data }));
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
-
+  async function getAllTransaction() {
+    try {
+      let rs = await apis.getAllTransaction();
+      if (rs && rs.statusCode === 200) {
+        setTransaction(transaction);
+        // setDtFetched((preProps) => ({ ...preProps, traders: rs.data }));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
   function handleBack() {
     history.push("/buy");
   }
@@ -392,35 +199,9 @@ const BuyFish = (props) => {
       query.id = parseInt(query.id);
     }
 
-    let tem = local.get("currentPurchase") || query;
-    if (tem.pondOwner) {
-      tem.pondOwner = parseInt(tem.pondOwner);
-    }
-
-    if (tem.status === "Pending") {
-      // tem = {};
-      // local.set("currentPurchase", tem);
-    }
-
-    if (tem.id || query.id) {
-      // nếu có id thì ko show modal ChoosePond
-      // và get getAllPurchaseDetail theo id ban đâu
-      tem.id = parseInt(tem.id);
-      setShowChoosePond(false);
-
-      // Object.assign(tem, currentPurchasePROPS);
-      Object.assign(tem, local.get("historyPurchase"));
-
-      getAllPurchaseDetail(tem || query);
-    } else {
-      setShowChoosePond(true);
-    }
-    setData((pre) => ({ ...pre, arrFish: tem.arrFish }));
-    setCurrentPurchase(tem);
-
     fetchData();
-    // eslint-disable-next-line
-  }, [props, currentPurchasePROPS]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props]);
 
   const renderTitle = () => {
     return (
@@ -442,87 +223,53 @@ const BuyFish = (props) => {
     );
   };
   if (isLoading) {
-    return <div>loading...</div>;
+    return <LoadingCustom />;
   } else
     return (
       <div>
-        {isShowClosePurchase && (
-          <ModalClosePurchase
-            isShowClosePurchase={isShowClosePurchase}
-            purchase={purchase}
-            prCurrentPurchase={currentPurchase}
-            handleClosePurchase={handleClosePurchase}
-            dataDf={dataDf}
+        {isShowChooseTraders && (
+          <ChooseTraders
+            dataFetched={dataFetched}
+            isShowChooseTraders={isShowChooseTraders}
+            currentTransaction={currentTransaction}
+            handleChangeTrans={handleChangeTrans}
+            setShowChooseTraders={(status) => setShowChooseTraders(status)}
           />
         )}
-        {isShowBuy && (
-          <ModalBuy
-            isShowBuy={isShowBuy}
-            setIsShowBuy={setIsShowBuy}
-            currentPurchase={currentPurchase}
-            purchase={purchase}
-            dataDf={dataDf}
-            createPurchaseDetail={createPurchaseDetail}
-            fetchDrumByTruck={fetchDrumByTruck}
-            mode={mode}
-            updatePurchaseDetail={updatePurchaseDetail}
-            suggestionPurchase={suggestionPurchase}
-            setSuggestionPurchase={setSuggestionPurchase}
-          />
-        )}
-        {isShowChoosePond && (
-          <ChoosePond
-            isShowChoosePond={isShowChoosePond}
-            setShowChoosePond={setShowChoosePond}
-            currentPurchase={currentPurchase}
-            setCurrentPurchase={setCurrentPurchase}
-            dataDf={dataDf}
-            createPurchase={createPurchase}
-          />
-        )}
-        {!isShowChoosePond && (
+        {!isShowChooseTraders && (
           <Card title={renderTitle()}>
             <Row className="mb-2">
               <Col md="6">
                 <label className="mr-2">
                   <b>{i18n.t("date")}:</b>
-                  <Moment format="DD/MM/YYYY" className="ml-2">
-                    {currentPurchase.date}
-                  </Moment>
+                  <Moment format="DD/MM/YYYY" className="ml-2"></Moment>
                 </label>
-                <label>
-                  <b className="mr-2">{i18n.t("pondOwner")}:</b>
-                  {/* /!* nếu ko có id thì dùng hàm findPO  *!/ */}
-                  {(findPO() && findPO().name) || currentPurchase.pondOwnerName}
-                </label>
+                <label></label>
               </Col>
               <Col md="6">
-                {/* nếu status khac Pending thì ko show btn thêm */}
-                {currentPurchase.status === "Pending" && (
-                  <div className="float-right">
-                    <Button
-                      color="info"
-                      onClick={() => handleClosePurchase()}
-                      className="mr-2"
-                    >
-                      {i18n.t("closePurchase")}
-                    </Button>
-                    <Button
-                      color="info"
-                      onClick={() => setShowChoosePond(true)}
-                      className="mr-2"
-                    >
-                      {i18n.t("Giá cá hôm nay")}
-                    </Button>
-                    <Button
-                      color="info"
-                      onClick={handleAddPurchaseDetail}
-                      className=" mr-2"
-                    >
-                      {i18n.t("Thêm Mã")}
-                    </Button>
-                  </div>
-                )}
+                <div className="float-right">
+                  <Button
+                    color="info"
+                    // onClick={() => handleClosetransaction()}
+                    className="mr-2"
+                  >
+                    {i18n.t("closetransaction")}
+                  </Button>
+                  <Button
+                    color="info"
+                    onClick={() => setShowChooseTraders(true)}
+                    className="mr-2"
+                  >
+                    {i18n.t("choseTrader")}
+                  </Button>
+                  <Button
+                    color="info"
+                    // onClick={handleAddtransactionDetail}
+                    className=" mr-2"
+                  >
+                    {i18n.t("Thêm Mã")}
+                  </Button>
+                </div>
               </Col>
             </Row>
 
@@ -530,7 +277,7 @@ const BuyFish = (props) => {
               <Col style={{ overflowX: "auto" }}>
                 <Table
                   columns={columns}
-                  dataSource={purchase}
+                  dataSource={transaction}
                   loading={isLoading}
                   scroll={{ y: 420 }}
                   pagination={{ pageSize: 100 }}
@@ -585,4 +332,4 @@ const BuyFish = (props) => {
     );
 };
 
-export default BuyFish;
+export default SellFish;

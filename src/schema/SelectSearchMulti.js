@@ -32,10 +32,7 @@ class SelectSearchMulti extends Component {
           defaultValue={value}
           value={value}
           onChange={(e) => {
-            console.log("a" + e);
-
             let a = Array.from(new Set(e));
-            console.log("a1" + a);
             onChange(a);
           }}
           onBlur={onBlur}

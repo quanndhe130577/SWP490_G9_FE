@@ -298,7 +298,7 @@ const BuyFish = (props) => {
     try {
       let traderId = session.get("user").userID;
       let pondOwnerID = currentPurchase.pondOwner;
-      let date = helper.getCurrentDate();
+      let date = helper.getDateFormat();
 
       let rs = await apis.createPurchase({ traderId, pondOwnerID, date });
       if (rs && rs.statusCode === 200) {
