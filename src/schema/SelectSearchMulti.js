@@ -19,8 +19,8 @@ class SelectSearchMulti extends Component {
     return (
       <div className={"form-group" + (submitted && !value ? " has-error" : "")}>
         {label && (
-          <label className="bold">
-            {label} {required ? <span>*</span> : ""}
+          <label className="bold red">
+            {label} {required ? <span style={{ color: "red" }}>*</span> : ""}
           </label>
         )}
 

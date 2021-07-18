@@ -1,5 +1,6 @@
 import React, {Component} from "react";
-import {Table, Card, Typography, Row, Col} from 'antd';
+import {Table, Card, Button, Row, Col} from 'antd';
+import helper from "../../../../services/helper";
 import Widgets from "../../../../schema/Widgets";
 import apis from "../../../../services/apis";
 
@@ -8,6 +9,7 @@ export default class EmployeeSalaryDetail extends Component {
     super(props);
     this.state = {times: []};
     this.getTimes = this.getTimes.bind(this);
+    this.paidTk=this.paidTk.bind(this)
   }
   componentDidMount() {
     this.getTimes();
@@ -55,6 +57,7 @@ export default class EmployeeSalaryDetail extends Component {
       let notPaid = 0;
       let dates = []
       let name = map[id][0].empName;
+      let empId = map[id][0].empId;
       map[id].forEach(time => {
         if (time.note === 0) {
           paid += time.money;
@@ -64,9 +67,17 @@ export default class EmployeeSalaryDetail extends Component {
         }
 
       })
-      list.push({paid, notPaid, dates, name})
+      let total=paid+notPaid;
+      list.push({paid, notPaid, dates, name, empId, total})
     }
     return list;
+  }
+  async paidTk(id) {
+    let rs = await apis.paidTimeKeeping({empId:id,workDay:this.props.date},"POST")
+    helper.toast("success", rs.message);
+    if(rs) {
+      this.getTimes()
+    }
   }
   render() {
     let paid = this.paid(this.state.times)
@@ -91,11 +102,15 @@ export default class EmployeeSalaryDetail extends Component {
     },
     {
       title: 'Tổng số tiền',
-      dataIndex: 'notPaid',
-      key: 'notPaid',
+      dataIndex: 'total',
+      key: 'total',
       render: data => <Widgets.NumberFormat neddFormGroup={false} displayType='text' value={data} />
     },
-    ]
+    {
+      title:'Hành động',
+      render:data=> <Button onClick={()=>this.paidTk(data.empId)} type="primary" disabled={data.notPaid===0}>Thanh toán</Button>
+    }
+    ];
     return (
       <>
         <Table dataSource={employees} columns={columns} bordered />

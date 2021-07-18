@@ -69,6 +69,7 @@ var path = {
   getTimeKeepingByTraderWithDate: "/api/timeKeeping/getByTrader/date",
   getTimeKeepingByTraderWithMonth: "/api/timeKeeping/getByTrader/month",
   deleteTimeKeepingByTrader: "/api/timeKeeping/delete",
+  paidTimeKeeping: "/api/timeKeeping/paid",
 
   //anhnbt
   getCostIncurred: "/api/costincurred/getall",
@@ -92,6 +93,7 @@ var path = {
   getDetailDebt: "",
   // fishType
   getOneFT: "api/fishtype/getone/{ddMMyyyy}/{pondOwnerId}",
+    updateAllFishType: "/api/fishtype/updatelist",
   // Trader management for weight recorder
   findTraderByPhone: "/api/trader/find-trader-by-phone", //GET, param: phoneNumber
   suggestTDByPhone: "/api/wc/suggest-traders-by-phone",

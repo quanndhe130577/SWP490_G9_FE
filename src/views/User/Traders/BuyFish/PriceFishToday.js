@@ -1,9 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Input, Table } from "antd";
 import i18n from "i18next";
 import Widgets from "../../../../schema/Widgets";
 
-const PriceFishToday = ({ listFishId, onChange, dataDf }) => {
+const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
+  const [dataS, setData] = useState([]);
+
+  const onChangeWeight = (value, id, name) => {
+    console.log(dataS);
+    const newDatas = [...dataS];
+    const index = dataS.findIndex(x => x.id === id);
+    if (index !== -1) {
+      const newItem = { ...newDatas[index], [name]: value };
+      newDatas.splice(index, 1, newItem);
+      setData(newDatas);
+      dataChange(newDatas);
+      console.log("NEW DATA: ", newDatas)
+    }
+    // this.setData({ ...dataS[0], maxWeight: value }),
+  }
+
   const columns = [
     {
       title: "STT",
@@ -20,17 +36,27 @@ const PriceFishToday = ({ listFishId, onChange, dataDf }) => {
       title: "Trọng lượng tối thiểu",
       dataIndex: "minWeight",
       key: "minWeight",
+      render: (minWeight, record) => <Input defaultValue={minWeight}
+        onChange={(e) => onChangeWeight(e.target.value, record.id, "minWeight")} />,
     },
     {
       title: "Trọng lượng tối đa",
       dataIndex: "maxWeight",
       key: "maxWeight",
+      render: (maxWeight, record) =>
+        <Input
+          defaultValue={maxWeight}
+          onChange={(e) => onChangeWeight(e.target.value, record.id, maxWeight)}
+        />
     },
     {
       title: "Giá (VND/kg)",
       dataIndex: "price",
       key: "price",
-      render: (price) => <Widgets.NumberFormat value={price} />,
+      render: (price, record) =>
+        <Input defaultValue={price}
+          onChange={(e) => onChangeWeight(e.target.value, record.id, "price")}
+        />,
     },
 
     {
@@ -43,7 +69,6 @@ const PriceFishToday = ({ listFishId, onChange, dataDf }) => {
       ),
     },
   ];
-  const [dataS, setData] = useState([]);
   const findList = (temArr) => {
     let arr = [],
       count = 0;

@@ -78,12 +78,12 @@ const Debt = Loadable({
   loader: () => import("./views/User/Debt/Debt"),
   loading: Loading,
 });
-const EmployeeSalary = Loadable({
-  loader: () => import("./views/User/Traders/EmployeeSalary/EmployeeSalary"),
-  loading: Loading,
-});
 const Trader = Loadable({
   loader: () => import("./views/User/WeightRecorder/Trader/Trader"),
+  loading: Loading,
+});
+const EmployeeSalary = Loadable({
+  loader: () => import("./views/User/Traders/EmployeeSalary/EmployeeSalary"),
   loading: Loading,
 });
 const routes = [
@@ -168,11 +168,6 @@ const routes = [
     component: Debt,
   },
   {
-    path: "/salary",
-    name: "EmployeeSalary",
-    component: EmployeeSalary,
-  },
-  {
     path: "/trader",
     name: "Trader",
     component: Trader,
@@ -182,6 +177,11 @@ const routes = [
     name: "ManaSell",
     component: ManaSell,
   },
+  {
+    path: "/salary",
+    name: "EmployeeSalary",
+    component: EmployeeSalary,
+  }
 ];
 
 export default routes;

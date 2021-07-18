@@ -186,7 +186,7 @@ const SellFish = (props) => {
     }
   }
   function handleBack() {
-    history.push("/buy");
+    history.push("/sell");
   }
 
   useEffect(() => {
