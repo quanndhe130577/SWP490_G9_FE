@@ -94,7 +94,8 @@ request.request = async (url, data, headers, method = "POST") => {
         helper.toast("error", i18next.t("urlNotFound"));
         break;
       case 400:
-        helper.toast("error", i18next.t(res.message || "badRequest"));
+        let result = await res.json();
+        helper.toast("error", i18next.t(result.message || "badRequest"));
         break;
       default:
         throw rs;

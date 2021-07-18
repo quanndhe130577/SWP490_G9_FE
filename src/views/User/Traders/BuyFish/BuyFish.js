@@ -86,7 +86,7 @@ const BuyFish = (props) => {
           value={value}
           displayType={"text"}
           thousandSeparator={true}
-        // suffix={i18n.t("suffix")}
+          // suffix={i18n.t("suffix")}
         />
       );
     }
@@ -298,7 +298,7 @@ const BuyFish = (props) => {
     try {
       let traderId = session.get("user").userID;
       let pondOwnerID = currentPurchase.pondOwner;
-      let date = helper.getCurrentDate();
+      let date = helper.getDateFormat();
 
       let rs = await apis.createPurchase({ traderId, pondOwnerID, date });
       if (rs && rs.statusCode === 200) {
@@ -382,9 +382,9 @@ const BuyFish = (props) => {
   async function updateAllFishType(listFishType) {
     try {
       setLoading(true);
-      debugger
+      debugger;
       let rs = await apis.updateAllFishType({ listFishType }, "POST");
-      console.log(rs)
+      console.log(rs);
     } catch (error) {
       console.log(error);
     } finally {
