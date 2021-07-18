@@ -126,5 +126,8 @@
   "addTrader": "Thêm thương lái",
   "findTrader": "Tìm thương lái",
   "choseTrader": "Chọn thương lái",
-  "listTrader": "Danh sách thương lái"
+  "listTrader": "Danh sách thương lái",
+  "sellFish": "Bán hàng",
+  "traderName": "Tên thương lái",
+  "buyContinue": "Mua tiếp"
 }

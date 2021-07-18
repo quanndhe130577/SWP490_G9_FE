@@ -46,7 +46,7 @@ const ManaBuy = () => {
     }
   }
 
-  function renderBtnAction(id) {
+  function renderBtnAction(id, record) {
     return (
       <Menu>
         <Menu.Item key="1">
@@ -56,7 +56,7 @@ const ManaBuy = () => {
             onClick={() => onClick("edit", id)}
           >
             <i className="fa fa-pencil-square-o mr-1" />
-            {i18n.t("edit")}
+            {i18n.t(record.status === "Pending" ? "buyContinue" : "edit")}
           </Button>
         </Menu.Item>
         <Menu.Item key="2">
@@ -126,8 +126,8 @@ const ManaBuy = () => {
       title: "",
       dataIndex: "id",
       key: "id",
-      render: (id) => (
-        <Dropdown overlay={renderBtnAction(id)}>
+      render: (id, record) => (
+        <Dropdown overlay={renderBtnAction(id, record)}>
           <Button>
             <i className="fa fa-cog mr-1" />
             <label className="tb-lb-action">{i18n.t("action")}</label>

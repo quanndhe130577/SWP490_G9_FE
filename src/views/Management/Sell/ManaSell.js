@@ -160,14 +160,14 @@ const ManaSell = () => {
     return (
       <Row>
         <Col md="6" className="d-flex">
-          <h3 className="">{i18n.t("goodManagement")}</h3>
+          <h3 className="">{i18n.t("sellFish")}</h3>
         </Col>
         <Col md="6">
           <Button
             color="info"
             className="mb-2 pull-right"
             onClick={() => {
-              history.push("buyFish");
+              history.push("sell");
             }}
           >
             {i18n.t("newTransaction")}
