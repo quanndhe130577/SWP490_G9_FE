@@ -9,7 +9,7 @@ import session from "../../services/session";
 
 const Login = (props) => {
   const dispatch = useDispatch();
-  const [phoneNumber, setPhoneNumber] = useState("0357708915");
+  const [phoneNumber, setPhoneNumber] = useState("0312345678");
   const [password, setPassword] = useState("12345678");
   const [submitted, setSubmitted] = useState(false);
   const [loggingIn, setLoggingIn] = useState(false);
@@ -92,14 +92,19 @@ const Login = (props) => {
                     {loggingIn ? (
                       <>
                         {i18n.t("Login")}
-                        <span
-                          className="spinner-border spinner-border-sm ml-1"
-                        />
-
+                        <span className="spinner-border spinner-border-sm ml-1" />
                       </>
                     ) : (
                       <span>{i18n.t("Login")}</span>
                     )}
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      setPhoneNumber("0357708915");
+                      // handleSubmit(e);
+                    }}
+                  >
+                    trader
                   </button>
                   <div className="ml-3 d-flex align-items-base">
                     <label className="pb-0">{i18n.t("or")}</label>

@@ -37,6 +37,9 @@ const ModalBuy = ({
     handleShowClosePurchase(!isShowClosePurchase);
   };
   const handlePurchase = (name, val) => {
+    if (name === "commissionPercent") {
+      val = parseInt(val);
+    }
     setCurrentPurchase((pre) => ({ ...pre, [name]: val }));
   };
   const calculateData = () => {

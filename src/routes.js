@@ -1,9 +1,13 @@
-import { DatabaseTwoTone } from "@ant-design/icons";
+import { Spin } from "antd";
 import React from "react";
 import Loadable from "react-loadable";
 
 function Loading() {
-  return <div>Loading...</div>;
+  return (
+    <div>
+      <Spin />
+    </div>
+  );
 }
 const Home = Loadable({
   loader: () => import("./views/Home/index"),
@@ -13,7 +17,10 @@ const ManaBuy = Loadable({
   loader: () => import("./views/Management/BuyFish"),
   loading: Loading,
 });
-
+const ManaSell = Loadable({
+  loader: () => import("./views/Management/Sell"),
+  loading: Loading,
+});
 const BuyFish = Loadable({
   loader: () => import("./views/User/Traders/BuyFish/BuyFish"),
   loading: Loading,
@@ -73,6 +80,8 @@ const Debt = Loadable({
 });
 const EmployeeSalary = Loadable({
   loader: () => import("./views/User/Traders/EmployeeSalary/EmployeeSalary"),
+const Trader = Loadable({
+  loader: () => import("./views/User/WeightRecorder/Trader/Trader"),
   loading: Loading,
 });
 const routes = [
@@ -147,7 +156,7 @@ const routes = [
     component: Buyer,
   },
   {
-    path: "/sell",
+    path: "/sellF",
     name: "SellFish",
     component: SellFish,
   },
@@ -160,7 +169,17 @@ const routes = [
     path: "/salary",
     name: "EmployeeSalary",
     component: EmployeeSalary,
-  }
+  },
+  {
+    path: "/trader",
+    name: "Trader",
+    component: Trader,
+  },
+  {
+    path: "/sell",
+    name: "ManaSell",
+    component: ManaSell,
+  },
 ];
 
 export default routes;

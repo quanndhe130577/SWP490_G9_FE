@@ -1,6 +1,8 @@
 const initialState = {
   currentPurchase: {},
   purchase: [],
+  currentTransaction: {},
+  transaction: [],
 };
 
 export default function user(state = initialState, action) {
@@ -10,6 +12,12 @@ export default function user(state = initialState, action) {
         ...state,
         currentPurchase: action.currentPurchase,
         purchase: action.purchase,
+      };
+    case "SET_TRANSACTION":
+      return {
+        ...state,
+        currentTransaction: action.currentTransaction,
+        transaction: action.transaction,
       };
     default:
       return state;
