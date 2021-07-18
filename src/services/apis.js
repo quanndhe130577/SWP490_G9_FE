@@ -69,6 +69,7 @@ var path = {
   getTimeKeepingByTraderWithDate: "/api/timeKeeping/getByTrader/date",
   getTimeKeepingByTraderWithMonth: "/api/timeKeeping/getByTrader/month",
   deleteTimeKeepingByTrader: "/api/timeKeeping/delete",
+  paidTimeKeeping: "/api/timeKeeping/paid",
 
   //anhnbt
   getCostIncurred: "/api/costincurred/getall",

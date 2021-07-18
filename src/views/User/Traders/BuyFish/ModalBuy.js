@@ -66,8 +66,14 @@ const ModalBuy = ({
 
   // validate các trường required
   const validateData = () => {
-    let { weight, fishTypeId, truck, basketId } = transaction;
-    if (!weight || !fishTypeId || !truck || !basketId) {
+    let { weight, fishTypeId, truck, basketId, listDrumId } = transaction;
+    if (
+      !weight ||
+      !fishTypeId ||
+      !truck ||
+      !basketId ||
+      listDrumId.length <= 0
+    ) {
       return "fillAll*";
     } else {
       if (weight <= 0.1) {
@@ -180,7 +186,7 @@ const ModalBuy = ({
         {transaction.truck && loading && (
           <Col md="6" xs="12">
             <Widgets.SelectSearchMulti
-              // required={true}
+              required={true}
               label={i18n.t("drum")}
               value={transaction.listDrumId || transaction.listDrum || []}
               onChange={(e) => handleChangeTran("listDrumId", e)}
