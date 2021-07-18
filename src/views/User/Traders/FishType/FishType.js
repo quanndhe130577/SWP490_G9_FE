@@ -311,14 +311,7 @@ export default class FishType extends Component {
           />
         ),
       },
-      {
-        title: i18n.t("Pond Owner"),
-        dataIndex: "pondOwnerId",
-        key: "pondOwnerId",
-        ...this.getColumnSearchProps("pondOwnerId"),
-        sorter: (a, b) => a.pondOwnerId - b.pondOwnerId,
-        sortDirections: ["descend", "ascend"],
-      },
+      
       {
         title: "",
         dataIndex: "id",

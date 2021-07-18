@@ -9,13 +9,13 @@ import session from "../../../../services/session";
 import moment from "moment";
 
 const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
-  const [employee, setPO] = useState(currentEmp);
+  const [employee, setEmp] = useState(currentEmp);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     handleChangeEmployee(new Date(), "dob");
   }, []);
   const handleChangeEmployee = (val, name) => {
-    setPO((prevState) => ({
+    setEmp((prevState) => ({
       ...prevState,
       [name]: val,
     }));
@@ -118,7 +118,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
               onChange={(e) => handleChangeEmployee(e, "startDate")}
             />
           </Col>
-          {mode === "edit" && (
+          {/* {mode === "edit" && (
             <Col md="6" xs="12">
               <Widgets.DateTimePicker
                 type="date"
@@ -127,7 +127,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
                 onChange={(e) => handleChangeEmployee(e, "endDate")}
               />
             </Col>
-          )}
+          )} */}
         </Row>
       )}
     />

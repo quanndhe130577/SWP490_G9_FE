@@ -167,7 +167,7 @@ const ManaSell = () => {
             color="info"
             className="mb-2 pull-right"
             onClick={() => {
-              history.push("sell");
+              history.push("sellF");
             }}
           >
             {i18n.t("newTransaction")}
