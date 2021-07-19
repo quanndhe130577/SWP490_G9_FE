@@ -93,7 +93,7 @@ var path = {
   getDetailDebt: "",
   // fishType
   getOneFT: "api/fishtype/getone/{ddMMyyyy}/{pondOwnerId}",
-    updateAllFishType: "/api/fishtype/updatelist",
+  updateAllFishType: "/api/fishtype/updatelist",
   // Trader management for weight recorder
   findTraderByPhone: "/api/trader/find-trader-by-phone", //GET, param: phoneNumber
   suggestTDByPhone: "/api/wc/suggest-traders-by-phone",
@@ -104,6 +104,10 @@ var path = {
   createTransactions: "/api/transaction/createlist",
   getAllTransaction: "/api/transaction/getall", //GET
   getTransByDate: "api/transaction/getall", //GET param:date /{ddMMyyyy}
+
+  //anhnbt forget(reset password) 
+  getResetPassword: "/api/otp/reset-password",
+  resetPassword: "/api/user/reset-password"
 };
 
 Object.keys(path).forEach(function (key) {
