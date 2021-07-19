@@ -168,6 +168,8 @@ const routes = [
     component: Debt,
   },
   {
+  },
+  {
     path: "/trader",
     name: "Trader",
     component: Trader,
