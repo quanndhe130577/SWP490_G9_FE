@@ -132,5 +132,8 @@
   "confirmActive": "Xác nhận đi làm",
   "confirmDeactive": "Xác nhận nghỉ làm",
   "historySalary": "Lịch sử lương",
-  "historySalaryManagerment": "Quản lý lịch sử lương"
+  "historySalaryManagerment": "Quản lý lịch sử lương",
+  "advanceSalary": "Nợ lương",
+  "advanceSalaryManagerment": "Quản lý nợ lương",
+  "debt": "Nợ"
 }

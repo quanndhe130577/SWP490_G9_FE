@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { Table, Input, Space, Card, Dropdown, Menu } from "antd";
+import React, {Component} from "react";
+import {Table, Input, Space, Card, Dropdown, Menu} from "antd";
 // import Highlighter from "react-highlight-words";
-import { SearchOutlined } from "@ant-design/icons";
-import { Row, Col, Button } from "reactstrap";
+import {SearchOutlined} from "@ant-design/icons";
+import {Row, Col, Button} from "reactstrap";
 import i18n from "i18next";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import ModalForm from "./ModalForm";
-export default class HistorySlary extends Component {
+export default class HistorySalary extends Component {
   constructor(props) {
     super(props);
 
@@ -33,12 +33,12 @@ export default class HistorySlary extends Component {
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         console.log(rs)
-        this.setState({ data: rs.data, user, total: rs.data.length });
+        this.setState({data: rs.data, user, total: rs.data.length});
       }
     } catch (error) {
       console.log(error);
     } finally {
-      this.setState({ loading: false });
+      this.setState({loading: false});
     }
   }
 
@@ -49,7 +49,7 @@ export default class HistorySlary extends Component {
       confirm,
       clearFilters,
     }) => (
-      <div style={{ padding: 8 }}>
+      <div style={{padding: 8}}>
         <Input
           ref={(node) => {
             this.searchInput = node;
@@ -62,7 +62,7 @@ export default class HistorySlary extends Component {
           onPressEnter={() =>
             this.handleSearch(selectedKeys, confirm, dataIndex)
           }
-          style={{ marginBottom: 8, display: "block" }}
+          style={{marginBottom: 8, display: "block"}}
         />
         <Space>
           <Button
@@ -70,14 +70,14 @@ export default class HistorySlary extends Component {
             onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
             icon={<SearchOutlined />}
             size="small"
-            style={{ width: 90 }}
+            style={{width: 90}}
           >
             Search
           </Button>
           <Button
             onClick={() => this.handleReset(clearFilters)}
             size="small"
-            style={{ width: 90 }}
+            style={{width: 90}}
           >
             Reset
           </Button>
@@ -85,7 +85,7 @@ export default class HistorySlary extends Component {
             type="link"
             size="small"
             onClick={() => {
-              confirm({ closeDropdown: false });
+              confirm({closeDropdown: false});
               this.setState({
                 searchText: selectedKeys[0],
                 searchedColumn: dataIndex,
@@ -98,14 +98,14 @@ export default class HistorySlary extends Component {
       </div>
     ),
     filterIcon: (filtered) => (
-      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+      <SearchOutlined style={{color: filtered ? "#1890ff" : undefined}} />
     ),
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -136,11 +136,11 @@ export default class HistorySlary extends Component {
 
   handleReset = (clearFilters) => {
     clearFilters();
-    this.setState({ searchText: "" });
+    this.setState({searchText: ""});
   };
 
   renderTitle = () => {
-    let { total } = this.state || 0;
+    let {total} = this.state || 0;
     return (
       <Row>
         <Col md="6" className="d-flex">
@@ -153,7 +153,7 @@ export default class HistorySlary extends Component {
             color="info"
             className="pull-right"
             onClick={() => {
-              this.setState({ isShowModal: true, mode: "create" });
+              this.setState({isShowModal: true, mode: "create"});
             }}
           >
             <i className="fa fa-plus mr-1" />
@@ -167,14 +167,14 @@ export default class HistorySlary extends Component {
     if (refresh === true) {
       this.fetchBasket();
     }
-    this.setState({ isShowModal: false, mode: "", currentPO: {} });
+    this.setState({isShowModal: false, mode: "", currentPO: {}});
   };
   onClick(modeBtn, BasketID) {
-    let { currentPO, data } = this.state;
+    let {currentPO, data} = this.state;
 
     if (modeBtn === "edit") {
       currentPO = data.find((el) => el.id === BasketID);
-      this.setState({ currentPO, mode: "edit", isShowModal: true });
+      this.setState({currentPO, mode: "edit", isShowModal: true});
     } else if (modeBtn === "delete") {
       helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
         if (rs) {
@@ -215,8 +215,8 @@ export default class HistorySlary extends Component {
     );
   }
   render() {
-    let x=new Date();
-    const { isShowModal, mode, currentPO, data, loading } = this.state;
+    let x = new Date();
+    const {isShowModal, mode, currentPO, data, loading} = this.state;
     const columns = [
       {
         title: i18n.t("INDEX"),
@@ -240,7 +240,7 @@ export default class HistorySlary extends Component {
         ...this.getColumnSearchProps("startDate"),
         sorter: (a, b) => a.startDate - b.startDate,
         sortDirections: ["descend", "ascend"],
-        render:data=>(new Date(data)).toDateString()
+        render: data => (new Date(data)).toDateString()
       },
       {
         title: i18n.t("endDate"),
@@ -249,7 +249,7 @@ export default class HistorySlary extends Component {
         ...this.getColumnSearchProps("endDate"),
         sorter: (a, b) => a.endDate - b.endDate,
         sortDirections: ["descend", "ascend"],
-        render:data=>(new Date(data)).toDateString()
+        render: data => (new Date(data)).toDateString()
       },
       {
         title: "",
@@ -274,17 +274,17 @@ export default class HistorySlary extends Component {
             closeModal={this.closeModal}
             currentPO={currentPO || {}}
             empId={this.props.match.params.id}
-            // handleChangeBasket={handleChangeBasket}
+          // handleChangeBasket={handleChangeBasket}
           />
         )}
         <Row>
-          <Col style={{ overflowX: "auto" }}>
+          <Col style={{overflowX: "auto"}}>
             <Table
               bordered
               columns={columns}
               dataSource={data}
-              pagination={{ pageSize: 10 }}
-              scroll={{ y: 600 }}
+              pagination={{pageSize: 10}}
+              scroll={{y: 600}}
               loading={loading}
             />
           </Col>

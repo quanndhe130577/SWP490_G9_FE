@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {Row, Col} from "reactstrap";
+import {Checkbox} from "antd";
 import Modal from "../../../../containers/Antd/ModalCustom";
 import Widgets from "../../../../schema/Widgets";
 import i18n from "i18next";
@@ -20,22 +21,21 @@ const ModalEdit = ({isShow, closeModal, mode, currentPO, empId}) => {
   };
   const handleOk = async () => {
     try {
-      let date = moment()
-      if (basket.startdate === undefined) {
-        basket.startdate = date._d;
-      }
-      if (basket.enddate === undefined) {
-        basket.enddate = date._d;
-      }
+      console.log(basket.date === undefined)
       let rs;
+      let date = moment()
+      if (basket.date === undefined) {
+        basket.date = date;
+      }
       if (mode === "create") {
-        rs = await apis.createEmpSalary({
-          salary: basket.salary,
-          startdate: basket.startdate,
-          enddate: basket.enddate,
-        }, "POST", empId);
+        rs = await apis.createAdvanceSalary({
+          debt: basket.debt,
+          date: basket.date._d,
+          paid: basket.paid,
+          empId: empId
+        }, "POST");
       } else if (mode === "edit") {
-        rs = await apis.updateEmpSalary(basket, "POST", empId);
+        rs = await apis.updateAdvanceSalary(basket, "POST");
       }
       if (rs && rs.statusCode === 200) {
         closeModal(true);
@@ -56,31 +56,26 @@ const ModalEdit = ({isShow, closeModal, mode, currentPO, empId}) => {
           <Col md="6" xs="12">
             <Widgets.Text
               required={true}
-              label={i18n.t("salary")}
-              value={basket.salary || ""}
-              onChange={(e) => handleChange(e, "salary")}
+              label={i18n.t("debt")}
+              value={basket.debt || ""}
+              onChange={(e) => handleChange(e, "debt")}
             />
           </Col>
           <Col md="6" xs="12">
             <Widgets.DateTimePicker
               type="date"
-              label={i18n.t("startdate")}
+              label={i18n.t("date")}
               value={
-                moment(basket.startdate).format("DD/MM/YYYY") ||
+                moment(basket.date).format("DD/MM/YYYY") ||
                 moment(new Date()).format("DD/MM/YYYY")
               }
-              onChange={(e) => handleChange(e, "startdate")}
+              onChange={(e) => handleChange(e, "date")}
             />
           </Col>
           <Col md="6" xs="12">
-            <Widgets.DateTimePicker
-              type="date"
-              label={i18n.t("enddate")}
-              value={
-                moment(basket.enddate).format("DD/MM/YYYY") ||
-                moment(new Date()).format("DD/MM/YYYY")
-              }
-              onChange={(e) => handleChange(e, "enddate")}
+            <Widgets.Custom
+              label={i18n.t("paid")}
+              component={<Checkbox onChange={e=>handleChange(e.target.checked,"paid")} checked={basket.paid}/>}
             />
           </Col>
         </Row>

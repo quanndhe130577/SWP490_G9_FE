@@ -115,6 +115,14 @@ export default class Employee extends Component {
             </Link>
           </Button>
         </Menu.Item>
+        <Menu.Item key="6">
+          <Button color="info">
+            <Link to={`/advanceSalary/${id}`} className='text-white'>
+              <i className="fa fa-trash-o mr-1" />
+              {i18n.t("advanceSalary")}
+            </Link>
+          </Button>
+        </Menu.Item>
       </Menu>
     );
   }

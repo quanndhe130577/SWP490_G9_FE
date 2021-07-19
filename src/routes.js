@@ -86,8 +86,12 @@ const EmployeeSalary = Loadable({
   loader: () => import("./views/User/Traders/EmployeeSalary/EmployeeSalary"),
   loading: Loading,
 });
-const HistorySlary = Loadable({
-  loader: () => import("./views/User/Traders/HisotrySlary/HistorySlary"),
+const HistorySalary = Loadable({
+  loader: () => import("./views/User/Traders/HisotrySlary/HistorySalary"),
+  loading: Loading,
+});
+const AdvanceSalary = Loadable({
+  loader: () => import("./views/User/Traders/AdvanceSalary/AdvanceSalary"),
   loading: Loading,
 });
 const routes = [
@@ -188,8 +192,13 @@ const routes = [
   },
   {
     path: "/historySalary/:id",
-    name: "HistorySlary",
-    component: HistorySlary,
+    name: "HistorySalary",
+    component: HistorySalary,
+  },
+  {
+    path: "/advanceSalary/:id",
+    name: "AdvanceSalary",
+    component: AdvanceSalary,
   }
 ];
 
