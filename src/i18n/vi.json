@@ -130,5 +130,7 @@
   "deactive": "Nghỉ",
   "active": "Đi làm",
   "confirmActive": "Xác nhận đi làm",
-  "confirmDeactive": "Xác nhận nghỉ làm"
+  "confirmDeactive": "Xác nhận nghỉ làm",
+  "historySalary": "Lịch sử lương",
+  "historySalaryManagerment": "Quản lý lịch sử lương"
 }

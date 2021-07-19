@@ -71,6 +71,13 @@ var path = {
   deleteTimeKeepingByTrader: "/api/timeKeeping/delete",
   paidTimeKeeping: "/api/timeKeeping/paid",
 
+  //History salsry
+  getAllEmpSalary : "/api/salary/getall",
+  createEmpSalary : "/api/salary/create",
+  deleteEmpSalary : "/api/salary/delete",
+  updateEmpSalary : "/api/salary/update",
+  getEmpSalary : "/api/salary/getsalary",
+
   //anhnbt
   getCostIncurred: "/api/costincurred/getall",
   createCostIncurred: "/api/costincurred/create",
