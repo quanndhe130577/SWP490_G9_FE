@@ -3,6 +3,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Card, Dropdown, Input, Menu, Space, Table } from "antd";
 import i18n from "i18next";
 import React, { Component } from "react";
+import Moment from "react-moment";
 import NumberFormat from "react-number-format";
 import { Button, Col, Row } from "reactstrap";
 import apis from "../../../../services/apis";
@@ -199,9 +200,9 @@ export default class CostIncurred extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -239,15 +240,6 @@ export default class CostIncurred extends Component {
         sorter: (a, b) => a.name.length - b.name.length,
         sortDirections: ["descend", "ascend"],
       },
-      // {
-      //   title: i18n.t("dob"),
-      //   dataIndex: "dob",
-      //   key: "dob",
-      //   ...this.getColumnSearchProps("dob"),
-      //   sorter: (a, b) => a.dob.length - b.dob.length,
-      //   sortDirections: ["descend", "ascend"],
-      //   render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
-      // },
       {
         title: i18n.t("note"),
         dataIndex: "note",
@@ -271,7 +263,15 @@ export default class CostIncurred extends Component {
           />
         ),
       },
-
+      {
+        title: i18n.t("date"),
+        dataIndex: "date",
+        key: "date",
+        ...this.getColumnSearchProps("date"),
+        sorter: (a, b) => a.date.length - b.date.length,
+        sortDirections: ["descend", "ascend"],
+        render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
+      },
       {
         title: "",
         dataIndex: "id",
@@ -294,7 +294,7 @@ export default class CostIncurred extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentCostInc={currentCostInc || {}}
-            // handleChangePondOwner={handleChangePondOwner}
+          // handleChangePondOwner={handleChangePondOwner}
           />
         )}
         <Row>
