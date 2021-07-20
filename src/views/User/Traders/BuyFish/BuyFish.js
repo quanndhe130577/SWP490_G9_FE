@@ -517,7 +517,7 @@ const BuyFish = (props) => {
       setShowChoosePond(false);
 
       // Object.assign(tem, currentPurchasePROPS);
-      // Object.assign(tem, local.get("historyPurchase"));
+      Object.assign(tem, local.get("historyPurchase"));
 
       getAllPurchaseDetail(tem || query);
     } else {
