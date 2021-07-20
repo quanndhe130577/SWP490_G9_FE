@@ -18,7 +18,7 @@ var path = {
   updatePO: "/api/pondOwner/update",
   deletePO: "/api/pondOwner/delete",
 
-  getFTByTraderID: "/api/fishtype/getall",
+  getAllFT: "/api/fishtype/getall", // Method GET, neu co purchaseId thi get theo purchare id
   getLastAllFTByTraderID: "/api/fishtype/getlastall",
   createFT: "/api/fishtype/create", // method post need param
   getUserInfo: "/api/getUserInfo",
@@ -42,6 +42,7 @@ var path = {
   deletePurchase: "/api/purchase/delete",
   updatePurchase: "/api/purchase/update",
   closePurchase: "/api/purchase/chot-so",
+  getPurchasesById: "/api/purchase/getone", // method GET pram purchase id
 
   // purchase  detail
   createPurchaseDetail: "/api/purchasedetail/create",
@@ -72,17 +73,17 @@ var path = {
   paidTimeKeeping: "/api/timeKeeping/paid",
 
   //History salsry
-  getAllEmpSalary : "/api/salary/getall",
-  createEmpSalary : "/api/salary/create",
-  deleteEmpSalary : "/api/salary/delete",
-  updateEmpSalary : "/api/salary/update",
-  getEmpSalary : "/api/salary/getsalary",
+  getAllEmpSalary: "/api/salary/getall",
+  createEmpSalary: "/api/salary/create",
+  deleteEmpSalary: "/api/salary/delete",
+  updateEmpSalary: "/api/salary/update",
+  getEmpSalary: "/api/salary/getsalary",
 
- //Advance salsry
- getAllAdvanceSalary : "/api/advanceSalary/getall",
- createAdvanceSalary : "/api/advanceSalary/create",
- deleteAdvanceSalary : "/api/advanceSalary/delete",
- updateAdvanceSalary : "/api/advanceSalary/update",
+  //Advance salsry
+  getAllAdvanceSalary: "/api/advanceSalary/getall",
+  createAdvanceSalary: "/api/advanceSalary/create",
+  deleteAdvanceSalary: "/api/advanceSalary/delete",
+  updateAdvanceSalary: "/api/advanceSalary/update",
 
   //anhnbt
   getCostIncurred: "/api/costincurred/getall",
@@ -118,9 +119,9 @@ var path = {
   getAllTransaction: "/api/transaction/getall", //GET
   getTransByDate: "api/transaction/getall", //GET param:date /{ddMMyyyy}
 
-  //anhnbt forget(reset password) 
+  //anhnbt forget(reset password)
   getResetPassword: "/api/otp/reset-password",
-  resetPassword: "/api/user/reset-password"
+  resetPassword: "/api/user/reset-password",
 };
 
 Object.keys(path).forEach(function (key) {

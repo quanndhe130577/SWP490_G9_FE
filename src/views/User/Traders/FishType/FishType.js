@@ -32,7 +32,7 @@ export default class FishType extends Component {
     try {
       this.setState({ loading: true });
       let user = await session.get("user");
-      let rs = await apis.getFTByTraderID({}, "GET");
+      let rs = await apis.getAllFT({}, "GET");
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         this.setState({ data: rs.data, user, total: rs.data.length });
@@ -311,7 +311,7 @@ export default class FishType extends Component {
           />
         ),
       },
-      
+
       {
         title: "",
         dataIndex: "id",
