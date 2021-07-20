@@ -66,7 +66,7 @@ export default function Forgot() {
           <img src="assets/image/bannerVn.png" className="image" />
         </Col> */}
                   <Col md="12">
-                    <Widgets.Text
+                    <Widgets.Phone
                       required={true}
                       value={phone}
                       label={i18n.t("phoneNumber")}

@@ -9,6 +9,7 @@ import Custom from "./Custom";
 import Checkbox from "./CheckBox";
 import MoneyInput from "./MoneyInput";
 import SearchFetchApi from "./SearchFetchApi";
+import OTP from "./OTP"
 let Widgets = {
   Text,
   Select,
@@ -21,5 +22,6 @@ let Widgets = {
   Checkbox,
   MoneyInput,
   SearchFetchApi,
+  OTP
 };
 export default Widgets;

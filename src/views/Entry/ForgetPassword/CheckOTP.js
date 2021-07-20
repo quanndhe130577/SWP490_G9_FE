@@ -44,6 +44,7 @@ export default function CheckOTP() {
       }, "POST");
       if (rs && rs.statusCode === 200) {
         helper.toast("success", i18n.t(rs.message || "systemError"));
+        history.push("/login")
       }
     } catch (error) {
       helper.toast("error", i18n.t(rs.Message || "systemError"));
@@ -75,7 +76,7 @@ export default function CheckOTP() {
                 <Row>
 
                   <Col md="12">
-                    <Widgets.Text
+                    <Widgets.OTP
                       required={true}
                       label={i18n.t("OTP")}
                       value={OTP}
@@ -87,6 +88,7 @@ export default function CheckOTP() {
                   <Col md="12">
                     <Widgets.Text
                       required={true}
+                      type="password"
                       label={i18n.t("NewPassword")}
                       value={password}
                       onChange={onChangePassword}
@@ -97,6 +99,7 @@ export default function CheckOTP() {
                   <Col md="12">
                     <Widgets.Text
                       required={true}
+                      type="password"
                       label={i18n.t("Re-NewPassword")}
                       value={newPassword}
                       onChange={onChangeNewPassword}
