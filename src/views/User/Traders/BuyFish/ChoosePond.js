@@ -26,8 +26,8 @@ const ChoosePond = ({
   const handleOk = () => {
     setShowChoosePond(false);
     //updateAllFishType
-    console.log(dataChange)
     updateAllFishType(dataChange)
+    debugger
     // neu ko co id purchase thì tạo purchase mới
     if (createPurchase && !currentPurchase.id) {
       createPurchase();

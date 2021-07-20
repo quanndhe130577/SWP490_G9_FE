@@ -34,3 +34,4 @@ node_modules
 *.orig
 .DS_Store
 .idea/*
+src/services/config.js

@@ -118,7 +118,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
               onChange={(e) => handleChangeEmployee(e, "startDate")}
             />
           </Col>
-          {/* {mode === "edit" && (
+          {mode === "edit" && (
             <Col md="6" xs="12">
               <Widgets.DateTimePicker
                 type="date"
@@ -127,7 +127,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
                 onChange={(e) => handleChangeEmployee(e, "endDate")}
               />
             </Col>
-          )} */}
+          )}
         </Row>
       )}
     />
