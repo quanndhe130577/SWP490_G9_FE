@@ -86,7 +86,16 @@ const EmployeeSalary = Loadable({
   loader: () => import("./views/User/Traders/EmployeeSalary/EmployeeSalary"),
   loading: Loading,
 });
+const ForgetPassword = Loadable({
+  loader: () => import("./views/Entry/ForgetPassword/Forget"),
+  loading: Loading,
+});
+const CheckOTP = Loadable({
+  loader: () => import("./views/Entry/ForgetPassword/CheckOTP"),
+  loading: Loading,
+});
 const routes = [
+
   {
     path: "/home",
     name: "Home",
@@ -183,7 +192,13 @@ const routes = [
     path: "/salary",
     name: "EmployeeSalary",
     component: EmployeeSalary,
-  }
+  },
+  {
+    path: "/checkOTP",
+    name: "checkOTP_reset",
+    component: CheckOTP,
+  },
+
 ];
 
 export default routes;
