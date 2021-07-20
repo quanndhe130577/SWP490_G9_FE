@@ -99,7 +99,7 @@ var path = {
   getDetailBuyer: "/api/buyer/detail/{buyerId}",
 
   //Debt
-  getAllDebt: "",
+  getAllDebt: "/api/debt/getall",
   createDebt: "",
   updateDebt: "",
   deleteDebt: "",

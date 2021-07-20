@@ -282,7 +282,7 @@ export default class FishType extends Component {
         render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
       },
       {
-        title: i18n.t("buyPrice") + i18n.t("(suffix)"),
+        title: i18n.t("Buy Price") + i18n.t("(suffix)"),
         dataIndex: "price",
         key: "price",
         ...this.getColumnSearchProps("price"),
