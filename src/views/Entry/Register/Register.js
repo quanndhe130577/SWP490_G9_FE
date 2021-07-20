@@ -28,6 +28,7 @@ const Login = (props) => {
   };
 
   const handleSubmit = async () => {
+    debugger
     let rs
     try {
       setSubmitted(true);
@@ -40,15 +41,15 @@ const Login = (props) => {
           handleChange(rs.data.otpid, "otpid");
           helper.toast("success", i18n.t(rs.message || "systemError"));
         }
-        setStep(1);
+        //setStep(1);
 
       } else if (step === 1) {
         rs = await apis.checkOtp({ otpid: user.otpid, code: user.code, phoneNumber: user.phoneNumber }, "POST");
-        if (rs && rs.statusCode === 200) {
+        if (rs && rs.statusCode === 200 && rs.success) {
           setStep(2);
           helper.toast("success", i18n.t(rs.message || "systemError"));
         }
-        setStep(2);
+        //setStep(2);
 
       } else if (step === 2) {
         rs = await apis.register(user);
