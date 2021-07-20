@@ -243,15 +243,6 @@ export default class AdvanceSalary extends Component {
         render: data => (new Date(data)).toDateString()
       },
       {
-        title: i18n.t("paid"),
-        dataIndex: "paid",
-        key: "paid",
-        ...this.getColumnSearchProps("paid"),
-        sorter: (a, b) => a.paid,
-        sortDirections: ["descend", "ascend"],
-        render: data => data?"Đã trả":"Chưa trả"
-      },
-      {
         title: "",
         dataIndex: "id",
         key: "id",

@@ -9,8 +9,6 @@ import helper from "../../../../services/helper";
 import moment from "moment";
 
 const ModalEdit = ({isShow, closeModal, mode, currentPO, empId}) => {
-  // basket.startdate=basket.startdate?basket.startdate:moment()
-  // basket.enddate=basket.enddate?basket.enddate:moment()
   const [basket, setPO] = useState(currentPO);
 
   const handleChange = (val, name) => {
@@ -21,7 +19,6 @@ const ModalEdit = ({isShow, closeModal, mode, currentPO, empId}) => {
   };
   const handleOk = async () => {
     try {
-      console.log(basket.date === undefined)
       let rs;
       let date = moment()
       if (basket.date === undefined) {
@@ -31,7 +28,7 @@ const ModalEdit = ({isShow, closeModal, mode, currentPO, empId}) => {
         rs = await apis.createAdvanceSalary({
           debt: basket.debt,
           date: basket.date._d,
-          paid: basket.paid,
+          paid: true,
           empId: empId
         }, "POST");
       } else if (mode === "edit") {
@@ -70,12 +67,6 @@ const ModalEdit = ({isShow, closeModal, mode, currentPO, empId}) => {
                 moment(new Date()).format("DD/MM/YYYY")
               }
               onChange={(e) => handleChange(e, "date")}
-            />
-          </Col>
-          <Col md="6" xs="12">
-            <Widgets.Custom
-              label={i18n.t("paid")}
-              component={<Checkbox onChange={e=>handleChange(e.target.checked,"paid")} checked={basket.paid}/>}
             />
           </Col>
         </Row>
