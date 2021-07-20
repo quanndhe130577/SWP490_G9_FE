@@ -30,7 +30,10 @@ const ChoosePond = ({
     // neu ko co id purchase thì tạo purchase mới
     if (createPurchase && !currentPurchase.id) {
       let purchase = await createPurchase();
-      updateAllFishType({ purchaseId: purchase.id, listFishType: dataChange });
+      updateAllFishType(
+        { purchaseId: purchase.id, listFishType: dataChange },
+        purchase
+      );
     }
   };
 

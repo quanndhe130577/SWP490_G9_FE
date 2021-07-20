@@ -442,14 +442,15 @@ const BuyFish = (props) => {
   };
 
   // Update All fish type anhnbt
-  async function updateAllFishType(body) {
+  async function updateAllFishType(body, purchase) {
     try {
       setLoading(true);
       let rs = await apis.updateAllFishType(body, "POST");
       if (rs && rs.statusCode === 200) {
-        let tem = Object.assign({}, { arrFish: rs.data }, currentPurchase);
-        setCurrentPurchase(tem);
-        local.set("currentPurchase", tem);
+        debugger;
+        let temObj = { ...purchase, ...currentPurchase, arrFish: rs.data };
+        setCurrentPurchase(temObj);
+        local.set("currentPurchase", temObj);
         let newArr = _.cloneDeep(dataDf.fishType);
         mergeByProperty(newArr, rs.data, "id");
         setData((pre) => ({
