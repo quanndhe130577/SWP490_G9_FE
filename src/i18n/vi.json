@@ -135,5 +135,10 @@
   "EnterOTP": "Vui lòng nhập mã xác nhận",
   "Confirm": "Xác nhận",
   "NewPassword": "Nhập mật khẩu mới",
-  "Re-NewPassword": "Nhập lại mật khẩu mới"
+  "Re-NewPassword": "Nhập lại mật khẩu mới",
+  "historySalary": "Lịch sử lương",
+  "historySalaryManagerment": "Quản lý lịch sử lương",
+  "advanceSalary": "Nợ lương",
+  "advanceSalaryManagerment": "Quản lý nợ lương",
+  "debt": "Nợ"
 }

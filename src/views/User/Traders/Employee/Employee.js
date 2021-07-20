@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Table, Input, Space, Card, Dropdown, Menu } from "antd";
 // import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 import { Row, Col, Button } from "reactstrap";
 import i18n from "i18next";
 import apis from "../../../../services/apis";
@@ -106,6 +107,22 @@ export default class Employee extends Component {
             {i18n.t("active")}
           </Button>
         </Menu.Item>}
+        <Menu.Item key="5">
+          <Button color="info">
+            <Link to={`/historySalary/${id}`} className='text-white'>
+              <i className="fa fa-trash-o mr-1" />
+              {i18n.t("historySalary")}
+            </Link>
+          </Button>
+        </Menu.Item>
+        <Menu.Item key="6">
+          <Button color="info">
+            <Link to={`/advanceSalary/${id}`} className='text-white'>
+              <i className="fa fa-trash-o mr-1" />
+              {i18n.t("advanceSalary")}
+            </Link>
+          </Button>
+        </Menu.Item>
       </Menu>
     );
   }

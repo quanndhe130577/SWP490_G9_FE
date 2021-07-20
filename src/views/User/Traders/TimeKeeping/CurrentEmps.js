@@ -35,32 +35,48 @@ export default class CurrentEmps extends Component {
     );
     if (rs) {
       let list = [];
-      this.props.employees.filter(emp => {
+      let listCurrentEmps = this.props.employees.filter(emp => {
         let startDate = new Date(emp.startDate);
-        let endDate=null;
-        if(emp.endDate) {
-          endDate=new Date(emp.endDate);
+        let endDate = null;
+        if (emp.endDate) {
+          endDate = new Date(emp.endDate);
         }
-        return this.props.currentDate > startDate && endDate === null||(this.props.currentDate < endDate);
-      }).forEach((emp) => {
+        return this.props.currentDate > startDate && endDate === null || (this.props.currentDate < endDate);
+      })
+      for (let i = 0; i < listCurrentEmps.length; i++) {
+        let emp = listCurrentEmps[i];
         let filter = rs.data.filter((e) => e.empId === emp.id);
         if (filter.length > 0) {
           let data = filter[0];
           data.checked = true;
           list.push(filter[0]);
         } else {
+          // let d=new Date();
+          // d.toDateString()
+          let salaryRs = await apis.getEmpSalary({}, "GET", `${emp.id}/${this.props.currentDate.toDateString()}`);
+          let salary = salaryRs === undefined ? 1000000 : salaryRs.data.salary;
           list.push({
             empId: emp.id,
             empName: emp.name,
             id: 0,
-            money: 1000000,
+            money: salary,
             note: 0,
             status: 1,
             workDay: this.props.currentDate,
             checked: false,
           });
         }
-      });
+      }
+      // this.props.employees.filter(emp => {
+      //   let startDate = new Date(emp.startDate);
+      //   let endDate=null;
+      //   if(emp.endDate) {
+      //     endDate=new Date(emp.endDate);
+      //   }
+      //   return this.props.currentDate > startDate && endDate === null||(this.props.currentDate < endDate);
+      // }).forEach((emp) => {
+
+      // });
       this.setState({
         currentTimes: list,
       });
