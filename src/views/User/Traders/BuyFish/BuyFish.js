@@ -447,7 +447,6 @@ const BuyFish = (props) => {
       setLoading(true);
       let rs = await apis.updateAllFishType(body, "POST");
       if (rs && rs.statusCode === 200) {
-        debugger;
         let temObj = { ...purchase, ...currentPurchase, arrFish: rs.data };
         setCurrentPurchase(temObj);
         local.set("currentPurchase", temObj);
