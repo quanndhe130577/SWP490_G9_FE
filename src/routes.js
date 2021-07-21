@@ -142,7 +142,7 @@ const routes = [
   },
   {
     path: "/employee",
-    name: "EmployEE",
+    name: "Employee",
     component: Employee,
   },
   {

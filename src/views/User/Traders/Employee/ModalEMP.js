@@ -46,6 +46,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
           phoneNumber: employee.phoneNumber,
           dob: employee.dob,
           traderID: user.userID,
+          salary: employee.salary
         });
       } else if (mode === "edit") {
         rs = await apis.updateEmployee(employee);
@@ -116,6 +117,14 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
                 moment(new Date()).format("DD/MM/YYYY")
               }
               onChange={(e) => handleChangeEmployee(e, "startDate")}
+            />
+          </Col>
+          <Col md="6" xs="12">
+            <Widgets.MoneyInput
+              required={true}
+              label={i18n.t("salary")}
+              value={employee.salary}
+              onChange={(e) => handleChangeEmployee(e, "salary")}
             />
           </Col>
           {/* {mode === "edit" && (
