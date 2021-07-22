@@ -51,15 +51,10 @@ export default class CurrentEmps extends Component {
           data.checked = true;
           list.push(filter[0]);
         } else {
-          // let d=new Date();
-          // d.toDateString()
-          let salaryRs = await apis.getEmpSalary({}, "GET", `${emp.id}/${this.props.currentDate.toDateString()}`);
-          let salary = salaryRs === undefined ? 1000000 : salaryRs.data.salary;
           list.push({
             empId: emp.id,
             empName: emp.name,
             id: 0,
-            money: salary,
             note: 0,
             status: 1,
             workDay: this.props.currentDate,
@@ -130,17 +125,14 @@ export default class CurrentEmps extends Component {
               <Col md="2" xs="12" className="d-flex justify-content-center">
                 <b>Có đi làm</b>
               </Col>
-              <Col md="3" xs="12">
+              <Col md="4" xs="12">
                 <b>Tên</b>
               </Col>
-              <Col md="3" xs="12">
+              <Col md="4" xs="12">
                 <b>Công</b>
               </Col>
               <Col md="2" xs="12" className="d-flex justify-content-center">
                 <b>Thanh toán</b>
-              </Col>
-              <Col md="2" xs="12">
-                <b>Tiền công</b>
               </Col>
             </Row>
           </List.Item>
@@ -159,14 +151,14 @@ export default class CurrentEmps extends Component {
                       }
                     />
                   </Col>
-                  <Col md="3" xs="12">
+                  <Col md="4" xs="12">
                     <Widgets.Custom
                       label={item.empName}
                       value={this.state.note}
                       component={""}
                     />
                   </Col>
-                  <Col md="3" xs="12">
+                  <Col md="4" xs="12">
                     <Widgets.Custom
                       component={
                         <Radio.Group
@@ -202,13 +194,6 @@ export default class CurrentEmps extends Component {
                           }
                         />
                       }
-                    />
-                  </Col>
-                  <Col md="2" xs="12">
-                    <Widgets.Text
-                      isDisable={!item.checked}
-                      value={item.money}
-                      onChange={(e) => this.handleChange(e, item, "money")}
                     />
                   </Col>
                 </Row>
