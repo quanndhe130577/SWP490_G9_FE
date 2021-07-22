@@ -136,7 +136,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
                 onChange={(e) => handleChangeEmployee(e, "endDate")}
               />
             </Col>
-          )} */}
+          )}
         </Row>
       )}
     />

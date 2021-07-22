@@ -32,7 +32,6 @@ export default function Money({
         required={required}
         onChange={(e) => {
           if (onChange) {
-            console.log(e);
             onChange(e);
           }
         }}

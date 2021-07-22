@@ -17,20 +17,23 @@ const ChoosePond = ({
   setCurrentPurchase,
   dataDf,
   createPurchase,
-  updateAllFishType
+  updateAllFishType,
 }) => {
   let isChange = false;
   const history = useHistory();
 
   const [dataChange, setDataChange] = useState([]);
-  const handleOk = () => {
+  const handleOk = async () => {
     setShowChoosePond(false);
     //updateAllFishType
-    console.log(dataChange)
-    updateAllFishType(dataChange)
+    console.log(dataChange);
     // neu ko co id purchase thì tạo purchase mới
     if (createPurchase && !currentPurchase.id) {
-      createPurchase();
+      let purchase = await createPurchase();
+      updateAllFishType(
+        { purchaseId: purchase.id, listFishType: dataChange },
+        purchase
+      );
     }
   };
 

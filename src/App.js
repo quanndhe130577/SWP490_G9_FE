@@ -13,7 +13,8 @@ import { DefaultLayout } from "./containers";
 // Pages
 import Login from "./views/Entry/Login";
 import Register from "./views/Entry/Register/Register";
-
+import Forget from "./views/Entry/ForgetPassword/Forget";
+import CheckOTP from "./views/Entry/ForgetPassword/CheckOTP";
 class App extends Component {
   render() {
     return (
@@ -26,6 +27,18 @@ class App extends Component {
               path="/register"
               name="Register Page"
               component={Register}
+            />
+            <Route
+              exact
+              path="/forgetPassword"
+              name="Reset password"
+              component={Forget}
+            />
+            <Route
+              exact
+              path="/checkOTP"
+              name="Check OTP reset password"
+              component={CheckOTP}
             />
             <Route path="/" name="Home" component={DefaultLayout} />
           </Switch>
