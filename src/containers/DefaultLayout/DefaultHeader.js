@@ -204,13 +204,12 @@ const MENU = [
         title: "EmployeeSalary",
         role: "Thương lái",
       },
+      {
+        title: "Time keeping",
+        link: "/timeKeeping",
+        role: "Thương lái",
+      },
     ],
-  },
-  {
-    title: "MenuTimekeeping",
-    icon: <CalendarOutlined />,
-    link: "/timeKeeping",
-    role: "Thương lái",
   },
   {
     title: "CostIncurredManagement",
