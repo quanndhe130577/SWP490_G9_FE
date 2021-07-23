@@ -73,6 +73,9 @@ var path = {
   deleteTimeKeepingByTrader: "/api/timeKeeping/delete",
   paidTimeKeeping: "/api/timeKeeping/paid",
 
+//Base salsry
+  createBaseSalary: "/api/salary/create",
+
   //History salsry
   getAllEmpSalary: "/api/salary/getall",
   createEmpSalary: "/api/salary/create",

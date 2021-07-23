@@ -46,18 +46,26 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
           phoneNumber: employee.phoneNumber,
           dob: employee.dob,
           traderID: user.userID,
-          salary: employee.salary
+          salary: employee.salary,
+          startDate: employee.startDate
         });
       } else if (mode === "edit") {
         rs = await apis.updateEmployee(employee);
       }
 
       if (rs && rs.statusCode === 200) {
+        if(mode==='create') {
+          if(employee.salary) {
+            await apis.createBaseSalary({
+              startDate: employee.startDate,
+              salary: employee.salary
+            },"POST",rs.data.id);
+          }
+        }
         closeModal(true);
         helper.toast("success", i18n.t(rs.message || "success"));
       }
     } catch (error) {
-      console.log(error);
       helper.toast("error", i18n.t("systemError"));
     } finally {
       setLoading(false);

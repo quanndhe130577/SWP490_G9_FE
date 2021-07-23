@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import {Table, Card, Button, Row, Col} from 'antd';
-import helper from "../../../../services/helper";
-import Widgets from "../../../../schema/Widgets";
-import apis from "../../../../services/apis";
+import helper from "../../../../../services/helper";
+import Widgets from "../../../../../schema/Widgets";
+import apis from "../../../../../services/apis";
 import moment from "moment";
 import './EmployeeBaseSalary.scss';
 
@@ -46,10 +46,10 @@ export default class EmployeeBaseSalary extends Component {
       key: 'salary',
       render: data => <Widgets.NumberFormat neddFormGroup={false} displayType='text' value={data} />
     },
-    {
-      title:'Hành động',
-      render:data=> <Button onClick={()=>this.paidTk(data.empId)} type="primary" disabled={data.notPaid===0}>Thanh toán</Button>
-    }
+    // {
+    //   title:'Hành động',
+    //   render:data=> <Button onClick={()=>this.paidTk(data.empId)} type="primary" disabled={data.notPaid===0}>Thanh toán</Button>
+    // }
     ];
     return (
       <>
