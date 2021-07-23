@@ -5,8 +5,17 @@ const { Option } = Select;
 
 class Select2 extends Component {
   render() {
-    const { value, label, required, isDisable, submitted, onChange, items=[] } =
-      this.props;
+    const {
+      value,
+      label,
+      required,
+      isDisable,
+      submitted,
+      onChange,
+      items = [],
+      displayField = "name",
+      saveField = "id",
+    } = this.props;
     let valueTem = items.find((el) => el.value === value || el.id === value);
     return (
       <div className={"form-group" + (submitted && !value ? " has-error" : "")}>
@@ -32,8 +41,8 @@ class Select2 extends Component {
             {i18next.t("pleaseChoose")}
           </Option>
           {items.map((item, index) => (
-            <Option value={item.value || item.id} key={index}>
-              {item.label || item.name || item.type}
+            <Option value={item.value || item[saveField]} key={index}>
+              {item.label || item[displayField] || item.type}
             </Option>
           ))}
         </Select>

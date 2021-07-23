@@ -19,8 +19,6 @@ const ChooseTraders = ({
 
   const handleOk = async () => {
     setShowChooseTraders(false);
-    debugger;
-
     if (!currentTransaction.id) {
       // create transaction
       try {
