@@ -92,12 +92,13 @@ var path = {
   deleteCostIncurred: "/api/costincurred/delete",
   getDetailCostIncurred: "/api/costincurred/detail/{incurredId}",
 
-  //anhnbt
+  //anhnbt - Buyer
   getBuyers: "/api/buyer/getall",
   createBuyer: "/api/buyer/create",
   updateBuyer: "/api/buyer/update",
   deleteBuyer: "/api/buyer/delete",
   getDetailBuyer: "/api/buyer/detail/{buyerId}",
+  getBuyerByNameOrPhone: "/api/buyer/getbuyers", // Method "GET", param: name or phone
 
   //Debt
   getAllDebt: "",
@@ -122,6 +123,12 @@ var path = {
   //anhnbt forget(reset password)
   getResetPassword: "/api/otp/reset-password",
   resetPassword: "/api/user/reset-password",
+
+  // Transaction detail
+  createTranDetail: "/api/transactiondetail/create",
+  getAllTranDetail: "/api/transactiondetail/getall", // GET if has param: date {ddMMyyyy} will get by date
+
+  // api/transactiondetail/getall/{ddMMyyyy}
 };
 
 Object.keys(path).forEach(function (key) {

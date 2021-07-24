@@ -1,54 +1,82 @@
 import React from "react";
 import { Select, Spin } from "antd";
+import debounce from "lodash/debounce";
+import { apis } from "../services";
 const { Option } = Select;
-
-const Demo = ({
+function DebounceSelect({
   fetchOptions,
-  onChange,
+  api,
+  displayField,
+  saveField,
+  debounceTimeout = 800,
+  items,
+  ...props
+}) {
+  const [fetching, setFetching] = React.useState(false);
+  const [options, setOptions] = React.useState(items || []);
+  const fetchRef = React.useRef(0);
+  const debounceFetcher = React.useMemo(() => {
+    const loadOptions = async (value) => {
+      fetchRef.current += 1;
+      const fetchId = fetchRef.current;
+      setOptions([]);
+      setFetching(true);
+
+      let data = await fetchOptions(api, value);
+      if (data && data.length) {
+        if (fetchId !== fetchRef.current) {
+          // for fetch callback order
+          return;
+        }
+        setOptions(data);
+        setFetching(false);
+      }
+    };
+
+    return debounce(loadOptions, debounceTimeout);
+  }, [fetchOptions, debounceTimeout]);
+  return (
+    <Select
+      labelInValue
+      filterOption={false}
+      onSearch={debounceFetcher}
+      notFoundContent={fetching ? <Spin size="small" /> : null}
+      {...props}
+      // options={options}
+    >
+      {options.map((item) => (
+        <Option value={item.value || item[saveField]} key={item[saveField]}>
+          {item.label || item[displayField] || item.type}
+        </Option>
+      ))}
+    </Select>
+  );
+} // Usage of DebounceSelect
+
+async function fetchUserList(api, param) {
+  let rs = (await apis[api.url](api.body, api.method, param)) || [];
+
+  if (rs && rs.statusCode === 200) {
+    rs.data.map((el, idx) => (el.idx = idx + 1));
+  }
+  return rs.data;
+}
+
+const SearchFetchApi = ({
+  displayField = "name",
+  saveField = "id",
+  api = {},
+  onChange, // for multiple value
+  placeholder,
   value,
   label,
-  error,
-  required,
   submitted,
-  placeholder,
+  required,
+  error,
+  onSelect, // for 1 value
+  items = [],
 }) => {
-  const [fetching, setFetching] = React.useState(false);
-  const [options, setOptions] = React.useState([]);
-
-  const debounceFetcher = async (val) => {
-    if (val) {
-      setFetching(true);
-      let rs = await fetchOptions(val);
-      if (rs && rs.statusCode === 200) {
-        // eslint-disable-next-line array-callback-return
-        rs.data.map((el) => {
-          el.key = el.id;
-          el.label = el.lastname + " " + el.firstName + " - " + el.phoneNumber;
-        });
-        setOptions(rs.data);
-      }
-      setFetching(false);
-    } else {
-      setOptions([]);
-    }
-  };
-
-  // const Select2 = React.memo(props => (<Select
-  //   mode="multiple"
-  //   value={value}
-  //   placeholder={placeholder}
-  //   fetchOptions={fetchOptions}
-  //   onChange={onChange}
-  //   onSearch={debounceFetcher}
-  //   notFoundContent={fetching ? <Spin size="small" /> : null}
-  //   style={{
-  //     width: "100%",
-  //   }}
-  // >
-  //   {props.options2.map((d) => (
-  //     <Option key={d.key}>{d.label}</Option>
-  //   ))}
-  // </Select>));
+  // const [value, setValue] = React.useState([]);
   return (
     <div className={"form-group" + (submitted && !value ? " has-error" : "")}>
       {label && (
@@ -56,22 +84,29 @@ const Demo = ({
           {label} {required ? <span style={{ color: "red" }}>*</span> : ""}
         </label>
       )}
-      <Select
+      <DebounceSelect
         mode="multiple"
         value={value}
         placeholder={placeholder}
-        fetchOptions={fetchOptions}
-        onChange={onChange}
-        onSearch={debounceFetcher}
-        notFoundContent={fetching ? <Spin size="small" /> : null}
+        fetchOptions={fetchUserList}
+        onChange={(newValue) => {
+          // setValue(newValue);
+          if (onChange) {
+            onChange(newValue);
+          }
+        }}
+        onSelect={(value) => {
+          if (onSelect) {
+            onSelect(value);
+          }
+        }}
+        displayField={displayField}
+        saveField={saveField}
+        api={api}
         style={{
           width: "100%",
         }}
-      >
-        {options.map((d) => (
-          <Option key={d.key}>{d.label}</Option>
-        ))}
-      </Select>
+      />
       {submitted && !value && (
         <div className="help-block">{label} is required</div>
       )}
@@ -79,5 +114,4 @@ const Demo = ({
     </div>
   );
 };
-
-export default Demo;
+export default SearchFetchApi;
