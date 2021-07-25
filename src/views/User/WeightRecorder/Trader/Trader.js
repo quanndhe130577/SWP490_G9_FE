@@ -266,7 +266,6 @@ export default class Trader extends Component {
   };
   handleChangeSearchPhone = async (searchPhone) => {
     try {
-      debugger;
       this.setState({ searchPhone: [searchPhone] });
     } catch (error) {
       console.log(error);
@@ -313,7 +312,7 @@ export default class Trader extends Component {
               value={searchPhone || ""}
               placeholder={i18n.t("enterPhoneToFind")}
               api={API_FIND_TRADER}
-              displayField="lastname"
+              displayField={["lastname", "phoneNumber"]}
               saveField="id"
             />
           </Col>

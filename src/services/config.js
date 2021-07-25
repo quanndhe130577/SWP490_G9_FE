@@ -1,6 +1,6 @@
 let config = {
   // config host for be
-  host: "https://localhost:44310",
+  host: "http://localhost:5000",
 
   // debug: true,
 };
