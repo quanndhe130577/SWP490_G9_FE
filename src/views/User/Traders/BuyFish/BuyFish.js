@@ -357,6 +357,8 @@ const BuyFish = (props) => {
         setCurrentPurchase(tem);
         local.set("currentPurchase", tem);
         return tem;
+      }else{
+        helper.toast("error", rs.message);
       }
     } catch (error) {
       console.log(error);

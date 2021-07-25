@@ -11,7 +11,7 @@ export default function Money({
   submitted,
   onKeyDown,
 }) {
-  console.log("number " + value);
+  // console.log("number " + value);
   return (
     <div
       className={"form-group " + (submitted && !value ? " has-error" : "")}

@@ -181,6 +181,11 @@ const MENU = [
         title: "drum",
         role: "Thương lái",
       },
+      {
+        link: "/drum",
+        title: "drum",
+        role: "Thương lái",
+      },
       // {
       //   link: "/truck1",
       //   title: "truck",
@@ -200,17 +205,16 @@ const MENU = [
         role: "Thương lái",
       },
       {
-        link: "/salary",
-        title: "EmployeeSalary",
+        link: "/employeeBaseSalary",
+        title: "Employee Base Salary",
+        role: "Thương lái",
+      },
+      {
+        title: "Time keeping",
+        link: "/timeKeeping",
         role: "Thương lái",
       },
     ],
-  },
-  {
-    title: "MenuTimekeeping",
-    icon: <CalendarOutlined />,
-    link: "/timeKeeping",
-    role: "Thương lái",
   },
   {
     title: "CostIncurredManagement",

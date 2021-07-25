@@ -138,7 +138,16 @@
   "Re-NewPassword": "Nhập lại mật khẩu mới",
   "historySalary": "Lịch sử lương",
   "historySalaryManagerment": "Quản lý lịch sử lương",
-  "advanceSalary": "Nợ lương",
-  "advanceSalaryManagerment": "Quản lý nợ lương",
-  "debt": "Nợ"
+  "advanceSalary": "Lương ứng trước",
+  "advanceSalaryManagerment": "Quản lý lương ứng trước",
+  "debt": "Nợ",
+  "Employee Base Salary": "Lương Cơ Bản",
+  "Debt Management": "Quản lý nợ",
+  "Debtor": "Người nợ",
+  "Creditor": "Chủ nợ",
+  "Debt Money": "Tiền nợ",
+  "Date": "Ngày nợ",
+  "Fish Name": "Loại cá",
+  "Range of Weight": "Khoảng cân",
+  "Buy Price": "Giá mua"
 }

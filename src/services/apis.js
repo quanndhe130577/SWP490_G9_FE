@@ -63,6 +63,7 @@ var path = {
   updateEmployee: "/api/employee/update",
   deleteEmployee: "/api/employee/delete",
   getDetailEmployee: "/api/employee/detail/{empId}",
+  getSalaryDetailEmployee: "/api/employee/salaryDetail",
 
   //Time keeping
   updateTimeKeeping: "/api/timeKeeping/update",
@@ -71,6 +72,9 @@ var path = {
   getTimeKeepingByTraderWithMonth: "/api/timeKeeping/getByTrader/month",
   deleteTimeKeepingByTrader: "/api/timeKeeping/delete",
   paidTimeKeeping: "/api/timeKeeping/paid",
+
+//Base salsry
+  createBaseSalary: "/api/salary/create",
 
   //History salsry
   getAllEmpSalary: "/api/salary/getall",
@@ -101,7 +105,7 @@ var path = {
   getBuyerByNameOrPhone: "/api/buyer/getbuyers", // Method "GET", param: name or phone
 
   //Debt
-  getAllDebt: "",
+  getAllDebt: "/api/debt/getall",
   createDebt: "",
   updateDebt: "",
   deleteDebt: "",
@@ -109,6 +113,7 @@ var path = {
   // fishType
   getOneFT: "api/fishtype/getone/{ddMMyyyy}/{pondOwnerId}",
   updateAllFishType: "/api/fishtype/updatelist",
+
   // Trader management for weight recorder
   findTraderByPhone: "/api/trader/find-trader-by-phone", //GET, param: phoneNumber
   suggestTDByPhone: "/api/wc/suggest-traders-by-phone",

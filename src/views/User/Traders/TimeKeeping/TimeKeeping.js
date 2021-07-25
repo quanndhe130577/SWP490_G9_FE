@@ -103,10 +103,6 @@ export default class TimeKeeping extends Component {
               <UsergroupDeleteOutlined className="tnrss-ts-2 tnrss-text-danger px-1" />
               <p className="">{`${times.length}`}</p>
             </li>
-            <li key="status" className="d-flex">
-              <DollarCircleOutlined className="tnrss-ts-2 tnrss-text-warning px-1" />
-              <Widgets.NumberFormat displayType="text" value={money} />
-            </li>
           </ul>
         );
       }

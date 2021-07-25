@@ -46,17 +46,26 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
           phoneNumber: employee.phoneNumber,
           dob: employee.dob,
           traderID: user.userID,
+          salary: employee.salary,
+          startDate: employee.startDate
         });
       } else if (mode === "edit") {
         rs = await apis.updateEmployee(employee);
       }
 
       if (rs && rs.statusCode === 200) {
+        if(mode==='create') {
+          if(employee.salary) {
+            await apis.createBaseSalary({
+              startDate: employee.startDate,
+              salary: employee.salary
+            },"POST",rs.data.id);
+          }
+        }
         closeModal(true);
         helper.toast("success", i18n.t(rs.message || "success"));
       }
     } catch (error) {
-      console.log(error);
       helper.toast("error", i18n.t("systemError"));
     } finally {
       setLoading(false);
@@ -116,6 +125,14 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
                 moment(new Date()).format("DD/MM/YYYY")
               }
               onChange={(e) => handleChangeEmployee(e, "startDate")}
+            />
+          </Col>
+          <Col md="6" xs="12">
+            <Widgets.MoneyInput
+              required={true}
+              label={i18n.t("salary")}
+              value={employee.salary}
+              onChange={(e) => handleChangeEmployee(e, "salary")}
             />
           </Col>
           {mode === "edit" && (
