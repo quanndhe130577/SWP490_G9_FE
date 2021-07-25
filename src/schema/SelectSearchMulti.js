@@ -14,6 +14,8 @@ class SelectSearchMulti extends Component {
       onChange,
       onBlur,
       items = [],
+      displayField = "name",
+      saveField = "id",
     } = this.props;
 
     return (
@@ -39,7 +41,9 @@ class SelectSearchMulti extends Component {
           disabled={isDisable}
         >
           {items.map((it) => (
-            <Option key={it.value || it.id}>{it.label || it.name}</Option>
+            <Option key={it.value || it[saveField]}>
+              {it[displayField] || it.label}
+            </Option>
           ))}
         </Select>
       </div>

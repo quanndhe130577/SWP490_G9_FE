@@ -4,11 +4,12 @@ import { Row, Col } from "reactstrap";
 import i18n from "i18next";
 import Widgets from "../../../schema/Widgets";
 import helper from "../../../services/helper";
+import { apis, local } from "../../../services";
 
 const ModalSell = ({
-  isShowBuy,
-  setIsShowBuy,
-  currentPurchase,
+  isShowSell,
+  setShowSell,
+  currentTransaction,
   purchase,
   mode,
   dataDf,
@@ -17,7 +18,7 @@ const ModalSell = ({
   updatePurchaseDetail,
   suggestionPurchase,
 }) => {
-  const [transaction, setTransaction] = useState(currentPurchase); // transaction là 1 bản ghi của purchase
+  const [transaction, setTransaction] = useState(currentTransaction); // transaction là 1 bản ghi của purchase
   const [loading, setLoading] = useState(false);
 
   const handleOk = () => {
@@ -31,13 +32,13 @@ const ModalSell = ({
         tem.idx = purchase.length + 1;
         createPurchaseDetail(tem);
       }
-      setIsShowBuy(false);
+      setShowSell(false);
     } else if (mode === "edit") {
       updatePurchaseDetail(transaction);
     }
   };
   const handleCancel = () => {
-    setIsShowBuy(false);
+    setShowSell(false);
   };
   const handleChangeTran = async (name, value) => {
     // if(name === "drum"){
@@ -126,8 +127,23 @@ const ModalSell = ({
       setLoading(rs);
     }
   }
+  async function getBuyer() {
+    try {
+      let buyer = local.get("buyer");
+      if (!buyer) {
+        let rs = await apis.getBuyers({}, "GET");
+        if (rs && rs.statusCode === 200) {
+          buyer = rs.data;
+        }
+      }
+      setTransaction((pre) => ({ ...pre, listBuyer: buyer }));
+    } catch (error) {
+      console.log(error);
+    }
+  }
   useEffect(() => {
     convertDataInEditMode();
+    getBuyer();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
@@ -137,7 +153,7 @@ const ModalSell = ({
           ? i18n.t("createPurchaseDetail")
           : i18n.t("editPurchaseDetail")
       }
-      visible={isShowBuy}
+      visible={isShowSell}
       onOk={handleOk}
       onCancel={handleCancel}
     >
@@ -145,10 +161,30 @@ const ModalSell = ({
         <Col md="6" xs="12">
           <Widgets.Select
             required={true}
+            label={i18n.t("trader")}
+            value={transaction.trader || ""}
+            onChange={(e) => handleChangeTran("trader", e)}
+            items={dataDf.trader || []}
+          />
+        </Col>
+        <Col md="6" xs="12">
+          <Widgets.SearchFetchApi
+            required={true}
+            label={i18n.t("buyer")}
+            value={transaction.buyer || {}}
+            onSelect={(e) => handleChangeTran("buyer", e)}
+            items={transaction.listBuyer || []}
+            api={API_FIND_BUYER}
+          />
+        </Col>
+
+        <Col md="6" xs="12">
+          <Widgets.Select
+            required={true}
             label={i18n.t("typeOfFish")}
             value={transaction.fishTypeId || ""}
             onChange={(e) => handleChangeTran("fishTypeId", e)}
-            items={currentPurchase.arrFish || dataDf.arrFish || []}
+            items={currentTransaction.arrFish || dataDf.arrFish || []}
           />
         </Col>
         <Col md="6" xs="12">
@@ -160,23 +196,14 @@ const ModalSell = ({
           />
         </Col>
         <Col md="6" xs="12">
-          <Widgets.Select
+          <Widgets.MoneyInput
             required={true}
-            label={i18n.t("basket")}
-            value={transaction.basketId || ""}
-            onChange={(e) => handleChangeTran("basketId", e)}
-            items={dataDf.basket || []}
+            label={i18n.t("sellPrice")}
+            value={transaction.cost || ""}
+            onChange={(e) => handleChangeTran("cost", e)}
           />
         </Col>
-        <Col md="6" xs="12">
-          <Widgets.Select
-            required={true}
-            label={i18n.t("truck")}
-            value={transaction.truck || ""}
-            onChange={(e) => handleChangeTran("truck", e)}
-            items={dataDf.truck || []}
-          />
-        </Col>
+
         {transaction.truck && loading && (
           <Col md="6" xs="12">
             <Widgets.SelectSearchMulti
@@ -194,3 +221,9 @@ const ModalSell = ({
 };
 
 export default ModalSell;
+const API_FIND_BUYER = {
+  url: "getBuyerByNameOrPhone",
+  body: {},
+  method: "GET",
+  pram: "phone",
+};

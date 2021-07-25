@@ -109,7 +109,7 @@ class DefaultHeader extends Component {
               className="dropdown-toggle mt-2"
               size={45}
               icon={
-                session.get("user") == null ? (
+                session.get("user") === null ? (
                   <UserOutlined />
                 ) : (
                   <img src={session.get("user").avatar} alt="Preview" />
@@ -193,7 +193,7 @@ const MENU = [
     icon: <UsergroupAddOutlined />,
     link: "/employee",
     role: "Thương lái",
-    menu:[
+    menu: [
       {
         title: "EmployeeList",
         link: "/employee",
@@ -203,8 +203,8 @@ const MENU = [
         link: "/salary",
         title: "EmployeeSalary",
         role: "Thương lái",
-        }
-    ]
+      },
+    ],
   },
   {
     title: "MenuTimekeeping",

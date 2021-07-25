@@ -167,6 +167,7 @@ const ManaBuy = () => {
             color="info"
             className="mb-2 pull-right"
             onClick={() => {
+              local.set("currentPurchase", {});
               history.push("buyFish");
             }}
           >

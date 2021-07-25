@@ -18,7 +18,7 @@ const ManaSell = () => {
 
   async function onClick(mode, id) {
     if (mode === "edit") {
-      history.push("buyFish?id=" + id);
+      history.push("sellFish?id=" + id);
       local.set(
         "historyTransaction",
         transaction.find((e) => e.id === id)

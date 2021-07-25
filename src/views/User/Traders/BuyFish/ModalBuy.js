@@ -88,12 +88,12 @@ const ModalBuy = ({
     }
   };
 
-  function changeKey(arr) {
-    arr.forEach((el) => {
-      helper.renameKey(el, "number", "name");
-    });
-    return arr;
-  }
+  // function changeKey(arr) {
+  //   arr.forEach((el) => {
+  //     helper.renameKey(el, "number", "name");
+  //   });
+  //   return arr;
+  // }
   async function convertDataInEditMode() {
     // data to display in create mode and edit mode is difference, we need convert data
     if (mode === "edit") {
@@ -155,6 +155,8 @@ const ModalBuy = ({
             value={transaction.fishTypeId || ""}
             onChange={(e) => handleChangeTran("fishTypeId", e)}
             items={currentPurchase.arrFish || dataDf.arrFish || []}
+            displayField="fishName"
+            saveField="id"
           />
         </Col>
         <Col md="6" xs="12">
@@ -190,7 +192,9 @@ const ModalBuy = ({
               label={i18n.t("drum")}
               value={transaction.listDrumId || transaction.listDrum || []}
               onChange={(e) => handleChangeTran("listDrumId", e)}
-              items={changeKey(dataDf.drum || [])}
+              items={dataDf.drum || []}
+              displayField="number"
+              saveField="id"
             />
           </Col>
         )}
