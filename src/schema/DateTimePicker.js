@@ -26,11 +26,12 @@ export default function DateTimePicker({
       )}
 
       <DatePicker
+        // defaultValue={moment(value, dateFormat)}
         defaultValue={moment(value, dateFormat)}
-        //defaultValue={value}
-        // format={dateFormat}
+        format={dateFormat}
 
         onChange={(date, dateString) => {
+
           if (onChange) {
             onChange(date);
           }
