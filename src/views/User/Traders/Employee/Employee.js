@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Input, Space, Card, Dropdown, Menu } from "antd";
+import { Table, Input, Space, Card, Dropdown, Menu, DatePicker } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { Row, Col, Button } from "reactstrap";
 import i18n from "i18next";
@@ -195,7 +195,7 @@ export default class Employee extends Component {
     }
   }
 
-  getColumnSearchProps = (dataIndex) => ({
+  getColumnSearchProps = (dataIndex, isDate = false) => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -203,20 +203,37 @@ export default class Employee extends Component {
       clearFilters,
     }) => (
       <div style={{ padding: 8 }}>
-        <Input
-          ref={(node) => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() =>
-            this.handleSearch(selectedKeys, confirm, dataIndex)
-          }
-          style={{ marginBottom: 8, display: "block" }}
-        />
+        {isDate ?
+          <DatePicker
+            value={selectedKeys[0]}
+            onChange={(e) => {
+              let t = moment(e, 'DD/MM/YYYY');
+              setSelectedKeys(e ? [t] : [])
+              this.handleSearch(selectedKeys, confirm, dataIndex)
+            }}
+            onPressEnter={() => {
+              this.handleSearch(selectedKeys, confirm, dataIndex)
+            }
+            }
+            format={'DD/MM/YYYY'}
+            style={{ marginBottom: 8, display: "block" }}
+          /> :
+          <Input
+            ref={(node) => {
+              this.searchInput = node;
+            }}
+            placeholder={`Search ${dataIndex}`}
+            value={selectedKeys[0]}
+            onChange={(e) => {
+              setSelectedKeys(e.target.value ? [e.target.value] : [])
+            }
+            }
+            onPressEnter={() =>
+              this.handleSearch(selectedKeys, confirm, dataIndex)
+            }
+            style={{ marginBottom: 8, display: "block" }}
+          />
+        }
         <Space>
           <Button
             type="primary"
@@ -253,16 +270,26 @@ export default class Employee extends Component {
     filterIcon: (filtered) => (
       <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
-    onFilter: (value, record) =>
-      record[dataIndex]
-        ? record[dataIndex]
+    onFilter: (value, record) => {
+      if (isDate) {
+        let x = moment(moment(value).format('DD/MM/YYYY'), 'DD/MM/YYYY')
+        let y = moment(moment(record[dataIndex]).format('DD/MM/YYYY'), 'DD/MM/YYYY')
+
+        return record[dataIndex]
+          ? x.isSame(y, 'day')
+          : ""
+      } else {
+        return record[dataIndex]
+          ? record[dataIndex]
             .toString()
             .toLowerCase()
             .includes(value.toLowerCase())
-        : "",
+          : ""
+      }
+    },
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
-        setTimeout(() => this.searchInput.select(), 100);
+        // setTimeout(() => this.searchInput.select(), 100);
       }
     },
     render: (text) =>
@@ -328,7 +355,7 @@ export default class Employee extends Component {
         title: i18n.t("startDate"),
         dataIndex: "startDate",
         key: "startDate",
-        ...this.getColumnSearchProps("startDate"),
+        ...this.getColumnSearchProps("startDate", true),
         sorter: (a, b) =>
           moment(a.startDate).unix() - moment(b.startDate).unix(),
         sortDirections: ["descend", "ascend"],
@@ -364,7 +391,7 @@ export default class Employee extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentEmp={currentEmp || {}}
-            // handleChangePondOwner={handleChangePondOwner}
+          // handleChangePondOwner={handleChangePondOwner}
           />
         )}
         <Row>
