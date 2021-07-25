@@ -31,9 +31,12 @@ export default function Money({
         formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
         required={required}
         onChange={(e) => {
+          let value = e;
+          if (parseInt(value) < 0) {
+            value = 0;
+          }
           if (onChange) {
-            // console.log(e);
-            onChange(e);
+            onChange(value);
           }
         }}
       />

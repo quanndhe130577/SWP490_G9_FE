@@ -106,4 +106,65 @@ request.request = async (url, data, headers, method = "POST") => {
     throw err;
   }
 };
+request.fetch = async (url, data, headers, method = "POST") => {
+  url = `${Config.host}${url}`;
+  let option = {
+    method,
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json; charset=UTF-8",
+      Authorization: `Bearer ${session.get("session") || "customer"}`,
+    },
+  };
+  option.headers = Object.assign({}, option.headers, headers);
+  if (method === "GET") delete option.body;
+  if (Config.debug) console.log(`[${method}]`, url, option);
+  let res = await fetch(url, option);
+  try {
+    switch (res.status) {
+      case 401:
+        helper.toast("error", i18next.t("Unauthorized"));
+
+        session.clear();
+        window.location.href = "/";
+        break;
+      case 403:
+        Swal.fire({
+          title: i18next.t("forbidden"),
+          text: "You don't have permission",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+        break;
+      case 500:
+        helper.toast("error", i18next.t(res.message || "internalServerError"));
+        break;
+      case 200:
+        let rs = await res.json();
+        if (Config.debug) console.log(`[RESPONSE]`, url, rs);
+        if (rs && rs.statusCode === 200) {
+          return rs;
+        } else {
+          helper.toast(
+            "error",
+            i18next.t(rs.Message || rs.message || "internalServerError")
+          );
+          break;
+        }
+      case 404:
+        helper.toast("error", i18next.t("urlNotFound"));
+        break;
+      case 400:
+        let result = await res.json();
+        helper.toast("error", i18next.t(result.message || "badRequest"));
+        break;
+      default:
+        throw rs;
+    }
+  } catch (err) {
+    helper.toast("error", i18next.t("internalServerError"));
+    console.log("res", res, err);
+    throw err;
+  }
+};
 export default request;
