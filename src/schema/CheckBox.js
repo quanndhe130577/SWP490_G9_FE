@@ -5,7 +5,7 @@ export default function Checkbox1({
   value = false,
   label,
   error,
-  isDisable = false,
+  disabled = false,
   onChange,
   lblCheckbox,
   required = false,
@@ -22,7 +22,7 @@ export default function Checkbox1({
 
       <Checkbox
         checked={value}
-        disabled={isDisable}
+        disabled={disabled}
         onChange={(e) => {
           if (onChange) {
             onChange(e.target.checked);

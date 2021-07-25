@@ -334,6 +334,22 @@ const SellFish = (props) => {
 
                   // }}
                 />
+                <div>tam</div>
+                <Table
+                  columns={columns}
+                  dataSource={transaction}
+                  loading={isLoading}
+                  scroll={{ y: 420 }}
+                  pagination
+                />
+                <div>quana</div>
+                <Table
+                  columns={columns}
+                  dataSource={transaction}
+                  loading={isLoading}
+                  scroll={{ y: 420 }}
+                  pagination
+                />
               </Col>
             </Row>
           </Card>

@@ -7,6 +7,7 @@ import { Button, Col, Row } from "reactstrap";
 import services from "../../../../services";
 import ModalForm from "./ModalTrader";
 import Widgets from "../../../../schema/Widgets";
+import { API_FETCH } from "../../../../constant";
 
 const { apis, helper } = services;
 
@@ -311,7 +312,7 @@ export default class Trader extends Component {
               onSelect={this.handleChangeSearchPhone}
               value={searchPhone || ""}
               placeholder={i18n.t("enterPhoneToFind")}
-              api={API_FIND_TRADER}
+              api={API_FETCH.FIND_TRADER}
               displayField={["lastname", "phoneNumber"]}
               saveField="id"
             />
@@ -338,9 +339,3 @@ export default class Trader extends Component {
     );
   }
 }
-const API_FIND_TRADER = {
-  url: "suggestTDByPhone",
-  body: {},
-  method: "GET",
-  pram: "phone",
-};
