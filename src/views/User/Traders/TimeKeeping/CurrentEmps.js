@@ -1,6 +1,6 @@
-import React, {Component} from "react";
-import {Row, Col} from "reactstrap";
-import {Checkbox, Modal, List, Radio} from "antd";
+import React, { Component } from "react";
+import { Row, Col } from "reactstrap";
+import { Checkbox, Modal, List, Radio } from "antd";
 import Widgets from "../../../../schema/Widgets";
 import apis from "../../../../services/apis";
 
@@ -9,10 +9,10 @@ export default class CurrentEmps extends Component {
     super(props);
     this.state = {
       currentTimes: [],
-      employees: this.props.employees.filter(emp => {
+      employees: this.props.employees.filter((emp) => {
         let dateStart = new Date(emp.startDate);
         return this.props.currentDate > dateStart;
-      })
+      }),
     };
     this.getTimes = this.getTimes.bind(this);
     this.submit = this.submit.bind(this);
@@ -35,14 +35,18 @@ export default class CurrentEmps extends Component {
     );
     if (rs) {
       let list = [];
-      let listCurrentEmps = this.props.employees.filter(emp => {
+      let listCurrentEmps = this.props.employees.filter((emp) => {
         let startDate = new Date(emp.startDate);
         let endDate = null;
         if (emp.endDate) {
           endDate = new Date(emp.endDate);
         }
-        return this.props.currentDate > startDate && endDate === null || (this.props.currentDate < endDate);
-      })
+        // eslint-disable-next-line no-mixed-operators
+        return (
+          (this.props.currentDate > startDate && endDate === null) ||
+          this.props.currentDate < endDate
+        );
+      });
       for (let i = 0; i < listCurrentEmps.length; i++) {
         let emp = listCurrentEmps[i];
         let filter = rs.data.filter((e) => e.empId === emp.id);
@@ -82,7 +86,7 @@ export default class CurrentEmps extends Component {
     let data = currentTimes.filter((time) => time.empId === item.empId);
     if (data.length > 0) {
       data[0][name] = value;
-      this.setState({currentTimes: currentTimes});
+      this.setState({ currentTimes: currentTimes });
     }
   };
   load() {
@@ -114,7 +118,7 @@ export default class CurrentEmps extends Component {
       <Modal
         width="70%"
         title="Danh sách nhân viên trong ngày"
-        okText='Lưu'
+        okText="Lưu"
         visible={this.props.visible}
         onCancel={this.props.cancel}
         onOk={this.submit}
