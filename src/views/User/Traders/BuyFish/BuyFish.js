@@ -146,6 +146,18 @@ const BuyFish = (props) => {
       key: "weight",
     },
     {
+      title: i18n.t("basket"),
+      dataIndex: "basket",
+      key: "basket",
+      render: (basket) => (
+        <div>
+          {basket && (
+            <label>{basket.type + ": " + basket.weight + " (kg)"}</label>
+          )}
+        </div>
+      ),
+    },
+    {
       title: (
         <div>
           <label>{i18n.t("intoMoney")}</label>
@@ -160,12 +172,6 @@ const BuyFish = (props) => {
       },
     },
     {
-      title: i18n.t("basket"),
-      dataIndex: "basket",
-      key: "basket",
-      render: (basket) => <div>{basket && <label>{basket.type}</label>}</div>,
-    },
-    {
       title: i18n.t("drum"),
       dataIndex: "listDrum",
       key: "listDrum",
@@ -177,7 +183,6 @@ const BuyFish = (props) => {
       key: "truck",
       render: (truck) => <div>{truck && <label>{truck.name}</label>}</div>,
     },
-
     {
       title: i18n.t("action"),
       key: "id",
