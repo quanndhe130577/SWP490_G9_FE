@@ -9,13 +9,13 @@ import session from "../../../../services/session";
 import moment from "moment";
 
 const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
-  const [costInc, setPO] = useState(currentCostInc);
+  const [costInc, setCostInc] = useState(currentCostInc);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    handleChangeCostIncurred(new Date(), "date");
+    handleChangeCostIncurred(costInc ? costInc.date : new Date(), "date");
   }, []);
   const handleChangeCostIncurred = (val, name) => {
-    setPO((prevState) => ({
+    setCostInc((prevState) => ({
       ...prevState,
       [name]: val,
     }));
@@ -33,6 +33,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
       // }
 
       if (mode === "create") {
+
         rs = await apis.createCostIncurred({
           name: costInc.name,
           cost: costInc.cost,
