@@ -75,6 +75,7 @@ const SearchFetchApi = ({
   error,
   onSelect, // for 1 value
   items = [],
+  disabled,
 }) => {
   // const [value, setValue] = React.useState([]);
   return (
@@ -106,6 +107,7 @@ const SearchFetchApi = ({
         style={{
           width: "100%",
         }}
+        disabled={disabled}
       />
       {submitted && !value && (
         <div className="help-block">{label} is required</div>

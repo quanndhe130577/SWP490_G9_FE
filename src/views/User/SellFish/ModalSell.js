@@ -41,24 +41,26 @@ const ModalSell = ({
     setShowSell(false);
   };
   const handleChangeTran = async (name, value) => {
-    // if(name === "drum"){
-    //   let drums =purchase.drum
-    //   drums
-    // }
+    if (name === "isRetailCustomers" && !value) {
+      setTransaction((prevState) => ({
+        ...prevState,
+        buyer: "",
+      }));
+    }
     // if (name === "weight") {
     //   value = parseInt(value);
     // } else
-    if (name === "truck" && value !== transaction.truck) {
-      // neu khac xe thi call api lấy lại list drum và set lại listDrumId
-      let rs = await fetchDrumByTruck(value);
-      setTransaction((prevState) => ({
-        ...prevState,
-        listDrumId: [],
-      }));
-      setLoading(rs);
-    } else if (name === "listDrumId" && value.length > 0) {
-      value = value.map((el) => (el = parseInt(el)));
-    }
+    // if (name === "truck" && value !== transaction.truck) {
+    //   // neu khac xe thi call api lấy lại list drum và set lại listDrumId
+    //   let rs = await fetchDrumByTruck(value);
+    //   setTransaction((prevState) => ({
+    //     ...prevState,
+    //     listDrumId: [],
+    //   }));
+    //   setLoading(rs);
+    // } else if (name === "listDrumId" && value.length > 0) {
+    //   value = value.map((el) => (el = parseInt(el)));
+    // }
     setTransaction((prevState) => ({
       ...prevState,
       [name]: value,
@@ -156,6 +158,7 @@ const ModalSell = ({
       visible={isShowSell}
       onOk={handleOk}
       onCancel={handleCancel}
+      width={800}
     >
       <Row>
         <Col md="6" xs="12">
@@ -167,14 +170,26 @@ const ModalSell = ({
             items={dataDf.trader || []}
           />
         </Col>
-        <Col md="6" xs="12">
+
+        <Col md="4" xs="12">
           <Widgets.SearchFetchApi
             required={true}
             label={i18n.t("buyer")}
-            value={transaction.buyer || {}}
+            value={transaction.buyer || []}
             onSelect={(e) => handleChangeTran("buyer", e)}
             items={transaction.listBuyer || []}
             api={API_FIND_BUYER}
+            placeholder={i18n.t("enterNameToFindBuyer")}
+            disabled={transaction.isRetailCustomers || false}
+          />
+        </Col>
+
+        <Col md="2" xs="12">
+          <Widgets.Checkbox
+            label={i18n.t("Or")}
+            value={transaction.isRetailCustomers || false}
+            onChange={(e) => handleChangeTran("isRetailCustomers", e)}
+            lblCheckbox={i18n.t("retailCustomers")}
           />
         </Col>
 
