@@ -47,6 +47,7 @@ const ChoosePond = ({
       //     setShowChoosePond(false);
       //   }
       // }
+      // update fishtype khi ở trong page purchase detail
     } else if (currentPurchase.id) {
       updateAllFishType(
         { purchaseId: currentPurchase.id, listFishType: dataChange },
