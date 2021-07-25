@@ -98,6 +98,10 @@ const EmployeeBaseSalary = Loadable({
   loader: () => import("./views/User/Traders/Salary/EmployeeBaseSalary/EmployeeBaseSalary"),
   loading: Loading,
 });
+const EmployeeHistorySalary = Loadable({
+  loader: () => import("./views/User/Traders/Salary/EmployeeHistorySalary/EmployeeHistorySalary"),
+  loading: Loading,
+});
 const routes = [
 
   {
@@ -206,6 +210,11 @@ const routes = [
     path: "/employeeBaseSalary",
     name: "EmployeeBaseSalary",
     component: EmployeeBaseSalary,
+  },
+  {
+    path: "/employeeHistorySalary",
+    name: "EmployeeHistorySalary",
+    component: EmployeeHistorySalary,
   },
 ];
 

@@ -141,5 +141,11 @@
   "advanceSalary": "Lương ứng trước",
   "advanceSalaryManagerment": "Quản lý lương ứng trước",
   "debt": "Nợ",
-  "Employee Base Salary": "Lương Cơ Bản"
+  "salary": "Lương",
+  "Employee Base Salary": "Lương Cơ Bản",
+  "Employee Base Salary Manager": "Quản lý lương cơ bản",
+  "Employee History Salary": "Lịch Sử Lương",
+  "Employee History Salary Manager": "Quản lý lịch sử lương",
+  "Advance Salary": "Lương ứng trước",
+  "Advance Salary Manager": "Quản lý lương ứng trước"
 }

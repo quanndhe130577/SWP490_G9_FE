@@ -210,6 +210,16 @@ const MENU = [
         role: "Thương lái",
       },
       {
+        link: "/employeeHistorySalary",
+        title: "Employee History Salary",
+        role: "Thương lái",
+      },
+      {
+        link: "/employeeHistorySalary",
+        title: "Advance Salary",
+        role: "Thương lái",
+      },
+      {
         title: "Time keeping",
         link: "/timeKeeping",
         role: "Thương lái",

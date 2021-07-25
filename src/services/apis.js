@@ -74,6 +74,7 @@ var path = {
   paidTimeKeeping: "/api/timeKeeping/paid",
 
 //Base salsry
+  getAllbyTraderIdBaseSalary: "/api/salary/getallByTrader",
   createBaseSalary: "/api/salary/create",
 
   //History salsry
