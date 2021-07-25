@@ -273,7 +273,7 @@ export default class CostIncurred extends Component {
         dataIndex: "note",
         key: "note",
         ...this.getColumnSearchProps("note"),
-        sorter: (a, b) => a.note.length - b.note.length,
+        sorter: (a, b) => a.note ? a.note.length : 0 - b.note ? b.note.length : 0,
         sortDirections: ["descend", "ascend"],
       },
       {
