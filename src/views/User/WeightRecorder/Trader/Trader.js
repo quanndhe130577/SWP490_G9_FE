@@ -266,7 +266,8 @@ export default class Trader extends Component {
   };
   handleChangeSearchPhone = async (searchPhone) => {
     try {
-      this.setState({ searchPhone });
+      debugger;
+      this.setState({ searchPhone: [searchPhone] });
     } catch (error) {
       console.log(error);
     }
@@ -276,7 +277,7 @@ export default class Trader extends Component {
     try {
       if (this.state.searchPhone) {
         let rs = await apis.wrAddTrader({
-          traderId: parseInt(this.state.searchPhone),
+          traderId: parseInt(this.state.searchPhone[0].value),
         });
         if (rs && rs.statusCode === 200) {
           helper.toast("success", rs.message || i18n.t("success"));
@@ -308,16 +309,21 @@ export default class Trader extends Component {
             <Widgets.SearchFetchApi
               label={i18n.t("findTrader")}
               fetchOptions={this.fetchOptions}
-              onChange={this.handleChangeSearchPhone}
+              onSelect={this.handleChangeSearchPhone}
               value={searchPhone || ""}
               placeholder={i18n.t("enterPhoneToFind")}
+              api={API_FIND_TRADER}
+              displayField="lastname"
+              saveField="id"
             />
-            <Button onClick={this.handleAddTrader}>
+          </Col>
+          <Col md="6">
+            <Button className="mt-4" onClick={this.handleAddTrader}>
               {i18n.t("addTrader")}
             </Button>
           </Col>
         </Row>
-        <Row>
+        <Row className="mt-3">
           <Col style={{ overflowX: "auto" }}>
             <Table
               bordered
@@ -333,3 +339,9 @@ export default class Trader extends Component {
     );
   }
 }
+const API_FIND_TRADER = {
+  url: "suggestTDByPhone",
+  body: {},
+  method: "GET",
+  pram: "phone",
+};
