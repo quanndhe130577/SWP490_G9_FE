@@ -24,16 +24,19 @@ const ChoosePond = ({
 
   const [dataChange, setDataChange] = useState([]);
   const handleOk = async () => {
-    setShowChoosePond(false);
+    debugger;   
     //updateAllFishType
     console.log(dataChange);
     // neu ko co id purchase thì tạo purchase mới
     if (createPurchase && !currentPurchase.id) {
       let purchase = await createPurchase();
-      updateAllFishType(
-        { purchaseId: purchase.id, listFishType: dataChange },
-        purchase
-      );
+      if (purchase !== undefined) {
+        updateAllFishType(
+          { purchaseId: purchase.id, listFishType: dataChange },
+          purchase
+        );
+        setShowChoosePond(false);
+      }
     }
   };
 
