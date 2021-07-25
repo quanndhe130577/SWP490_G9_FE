@@ -23,7 +23,7 @@ const SellFish = (props) => {
   const [isShowSell, setShowSell] = useState(false);
   const [transaction, setTransaction] = useState([]);
   const [currentTransaction, setCurrentTrans] = useState({});
-  const [mode, setMode] = useState("");
+  // const [mode, setMode] = useState("");
   const [dataFetched, setDtFetched] = useState({}); // include trader by WR
 
   // const currentTransactionPROPS = useSelector(
@@ -37,7 +37,7 @@ const SellFish = (props) => {
       let tem = transaction.find((e) => e.id === id);
       if (tem) {
         tem.transactionDetailId = id;
-        setMode("edit");
+        // setMode("edit");
       }
     }
   };
@@ -55,7 +55,7 @@ const SellFish = (props) => {
           value={value}
           displayType={"text"}
           thousandSeparator={true}
-        // suffix={i18n.t("suffix")}
+          // suffix={i18n.t("suffix")}
         />
       );
     }
@@ -236,15 +236,16 @@ const SellFish = (props) => {
             currentTransaction={currentTransaction}
             handleChangeTrans={handleChangeTrans}
             setShowChooseTraders={(status) => setShowChooseTraders(status)}
-
           />
         )}
-        {isShowSell && (<ModalSell
-          isShowSell={isShowSell}
-          setShowSell={(state) => setShowSell(state)}
-          currentTransaction={currentTransaction || {}}
-          dataDf={[]}
-        />)}
+        {isShowSell && (
+          <ModalSell
+            isShowSell={isShowSell}
+            setShowSell={(state) => setShowSell(state)}
+            currentTransaction={currentTransaction || {}}
+            dataDf={[]}
+          />
+        )}
         {!isShowChooseTraders && (
           <Card title={renderTitle()}>
             <Row className="mb-2">
@@ -291,47 +292,47 @@ const SellFish = (props) => {
                   scroll={{ y: 420 }}
                   pagination={{ pageSize: 100 }}
                   bordered
-                // summary={(pageData) => {
-                //   let totalWeight = 0;
-                //   let totalAmount = 0;
-                //   pageData.forEach(({ weight, fishType, basket }) => {
-                //     totalWeight += weight;
-                //     totalAmount +=
-                //       fishType.price * (parseInt(weight) - basket.weight);
-                //   });
+                  // summary={(pageData) => {
+                  //   let totalWeight = 0;
+                  //   let totalAmount = 0;
+                  //   pageData.forEach(({ weight, fishType, basket }) => {
+                  //     totalWeight += weight;
+                  //     totalAmount +=
+                  //       fishType.price * (parseInt(weight) - basket.weight);
+                  //   });
 
-                //   return (
-                //     <Table.Summary fixed>
-                //       <Table.Summary.Row>
-                //         <Table.Summary.Cell
-                //           colSpan="2"
-                //           key="1"
-                //           className="bold"
-                //         >
-                //           {i18n.t("total")}
-                //         </Table.Summary.Cell>
-                //         <Table.Summary.Cell key="2">
-                //           <NumberFormat
-                //             value={totalWeight.toFixed(1)}
-                //             displayType={"text"}
-                //             thousandSeparator={true}
-                //             suffix=" Kg"
-                //           />
-                //         </Table.Summary.Cell>
-                //         <Table.Summary.Cell key="3">
-                //           <NumberFormat
-                //             value={totalAmount}
-                //             displayType={"text"}
-                //             thousandSeparator={true}
-                //             suffix={i18n.t("suffix")}
-                //           />
-                //         </Table.Summary.Cell>
-                //         <Table.Summary.Cell colSpan="4" key="4" />
-                //       </Table.Summary.Row>
-                //     </Table.Summary>
-                //   );
+                  //   return (
+                  //     <Table.Summary fixed>
+                  //       <Table.Summary.Row>
+                  //         <Table.Summary.Cell
+                  //           colSpan="2"
+                  //           key="1"
+                  //           className="bold"
+                  //         >
+                  //           {i18n.t("total")}
+                  //         </Table.Summary.Cell>
+                  //         <Table.Summary.Cell key="2">
+                  //           <NumberFormat
+                  //             value={totalWeight.toFixed(1)}
+                  //             displayType={"text"}
+                  //             thousandSeparator={true}
+                  //             suffix=" Kg"
+                  //           />
+                  //         </Table.Summary.Cell>
+                  //         <Table.Summary.Cell key="3">
+                  //           <NumberFormat
+                  //             value={totalAmount}
+                  //             displayType={"text"}
+                  //             thousandSeparator={true}
+                  //             suffix={i18n.t("suffix")}
+                  //           />
+                  //         </Table.Summary.Cell>
+                  //         <Table.Summary.Cell colSpan="4" key="4" />
+                  //       </Table.Summary.Row>
+                  //     </Table.Summary>
+                  //   );
 
-                // }}
+                  // }}
                 />
               </Col>
             </Row>

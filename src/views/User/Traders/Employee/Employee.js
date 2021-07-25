@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { Table, Input, Space, Card, Dropdown, Menu } from "antd";
-// import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
 import { Row, Col, Button } from "reactstrap";
 import i18n from "i18next";
 import apis from "../../../../services/apis";
@@ -94,19 +92,27 @@ export default class Employee extends Component {
             {i18n.t("delete")}
           </Button>
         </Menu.Item>
-        {emp.status === "Đang làm" ? 
-        <Menu.Item key="3">
-          <Button className="deactive" onClick={() => this.onClick("deactive", id)}>
-            <i className="fa fa-times mr-1" />
-            {i18n.t("deactive")}
-          </Button>
-        </Menu.Item> :
-        <Menu.Item key="4">
-          <Button className="active" onClick={() => this.onClick("active", id)}>
-            <i className="fa fa-check-square mr-1" />
-            {i18n.t("active")}
-          </Button>
-        </Menu.Item>}
+        {emp.status === "Đang làm" ? (
+          <Menu.Item key="3">
+            <Button
+              className="deactive"
+              onClick={() => this.onClick("deactive", id)}
+            >
+              <i className="fa fa-times mr-1" />
+              {i18n.t("deactive")}
+            </Button>
+          </Menu.Item>
+        ) : (
+          <Menu.Item key="4">
+            <Button
+              className="active"
+              onClick={() => this.onClick("active", id)}
+            >
+              <i className="fa fa-check-square mr-1" />
+              {i18n.t("active")}
+            </Button>
+          </Menu.Item>
+        )}
       </Menu>
     );
   }
@@ -152,10 +158,10 @@ export default class Employee extends Component {
           }
         }
       });
-    }else if(modeBtn == "deactive"){
-      helper.confirm(i18n.t("confirmDeactive")).then(async (rs) =>{
-        if(rs){
-          try{
+    } else if (modeBtn === "deactive") {
+      helper.confirm(i18n.t("confirmDeactive")).then(async (rs) => {
+        if (rs) {
+          try {
             currentEmp = data.find((el) => el.id === employeeId);
             currentEmp.endDate = new Date();
             let rs = await apis.updateEmployee(currentEmp);
@@ -163,24 +169,24 @@ export default class Employee extends Component {
               helper.toast("success", i18n.t("This Employee is deactive now"));
               this.fetchEmployee();
             }
-          }catch (error){
+          } catch (error) {
             console.log(error);
             helper.toast("error", i18n.t("systemError"));
           }
         }
       });
-    }else if(modeBtn == "active"){
-      helper.confirm(i18n.t("confirmActive")).then(async (rs) =>{
-        if(rs){
-          try{
+    } else if (modeBtn === "active") {
+      helper.confirm(i18n.t("confirmActive")).then(async (rs) => {
+        if (rs) {
+          try {
             currentEmp = data.find((el) => el.id === employeeId);
             currentEmp.endDate = null;
             let rs = await apis.updateEmployee(currentEmp);
             if (rs && rs.statusCode === 200) {
-              helper.toast("success",i18n.t("This Employee is active now"));
+              helper.toast("success", i18n.t("This Employee is active now"));
               this.fetchEmployee();
             }
-          }catch (error){
+          } catch (error) {
             console.log(error);
             helper.toast("error", i18n.t("systemError"));
           }
@@ -323,7 +329,8 @@ export default class Employee extends Component {
         dataIndex: "startDate",
         key: "startDate",
         ...this.getColumnSearchProps("startDate"),
-        sorter: (a, b) => moment(a.startDate).unix() - moment(b.startDate).unix(),
+        sorter: (a, b) =>
+          moment(a.startDate).unix() - moment(b.startDate).unix(),
         sortDirections: ["descend", "ascend"],
         render: (startDate) => <Moment format="DD/MM/YYYY">{startDate}</Moment>,
       },

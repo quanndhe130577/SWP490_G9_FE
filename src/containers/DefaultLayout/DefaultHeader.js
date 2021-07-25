@@ -6,17 +6,11 @@ import { Layout, Menu, Dropdown, Avatar } from "antd";
 import {
   LogoutOutlined,
   UserOutlined,
-  TableOutlined,
   SettingOutlined,
-  CarOutlined,
-  CalendarOutlined,
-  OrderedListOutlined,
-  UsergroupAddOutlined,
-  MoneyCollectOutlined,
-  DollarOutlined,
 } from "@ant-design/icons";
 import "../../css/antd.css";
 import i18n from "i18next";
+import { MENU } from "../../constant";
 const { Header, Sider } = Layout;
 const { SubMenu } = Menu;
 
@@ -130,113 +124,5 @@ class DefaultHeader extends Component {
 const mapStateToProps = (state) => {
   return { user: state.user };
 };
-const MENU = [
-  {
-    type: "subMenu",
-    title: "goodManagement",
-    icon: <SettingOutlined />,
-    menu: [
-      {
-        link: "/buy",
-        title: "buyGood",
-        role: "Thương lái",
-      },
-      {
-        link: "/sell",
-        title: "sellGood",
-      },
-    ],
-  },
-  {
-    title: "pondOwnerManagement",
-    icon: <UserOutlined />,
-    link: "/pondOwner",
-    role: "Thương lái",
-  },
-  {
-    title: "fishType",
-    icon: <OrderedListOutlined />,
-    link: "/fishType",
-  },
-
-  {
-    title: "basket",
-    icon: <TableOutlined />,
-    link: "/basket",
-    role: "Thương lái",
-  },
-  {
-    type: "subMenu",
-    title: "truck",
-    icon: <CarOutlined />,
-    role: "Thương lái",
-    menu: [
-      {
-        link: "/truck",
-        title: "truck",
-        role: "Thương lái",
-      },
-      {
-        link: "/drum",
-        title: "drum",
-        role: "Thương lái",
-      },
-      {
-        link: "/drum",
-        title: "drum",
-        role: "Thương lái",
-      },
-      // {
-      //   link: "/truck1",
-      //   title: "truck",
-      // },
-    ],
-  },
-  {
-    type: "subMenu",
-    title: "EmployeeManagement",
-    icon: <UsergroupAddOutlined />,
-    link: "/employee",
-    role: "Thương lái",
-    menu: [
-      {
-        title: "EmployeeList",
-        link: "/employee",
-        role: "Thương lái",
-      },
-      {
-        link: "/employeeBaseSalary",
-        title: "Employee Base Salary",
-        role: "Thương lái",
-      },
-      {
-        title: "Time keeping",
-        link: "/timeKeeping",
-        role: "Thương lái",
-      },
-    ],
-  },
-  {
-    title: "CostIncurredManagement",
-    icon: <MoneyCollectOutlined />,
-    link: "/costIncurred",
-  },
-  {
-    title: "Trader",
-    icon: <UserOutlined />,
-    link: "/trader",
-    role: "Chủ bến",
-  },
-  {
-    title: "Buyer",
-    icon: <DollarOutlined />,
-    link: "/buyer",
-  },
-  {
-    title: "Debt Management",
-    icon: <DollarOutlined />,
-    link: "/debt",
-  },
-];
 
 export default connect(mapStateToProps)(DefaultHeader);

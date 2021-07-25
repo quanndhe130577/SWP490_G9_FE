@@ -8,7 +8,7 @@ import services from "../../../../services";
 import ModalForm from "./ModalTrader";
 import Widgets from "../../../../schema/Widgets";
 
-const { session, apis, helper } = services;
+const { apis, helper } = services;
 
 export default class Trader extends Component {
   constructor(props) {

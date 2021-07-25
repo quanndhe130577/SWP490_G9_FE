@@ -30,8 +30,8 @@ const BuyFish = (props) => {
     fishType: [],
   }); // list data of basket, drum, truck,...
   const [isShowClosePurchase, setShowClosePurchase] = useState(false);
-  const [currentListFishTyppe, setCurrentListFishTyppe] = useState([]);
-  const [query, setQuery] = useState({});
+  // const [currentListFishTyppe, setCurrentListFishTyppe] = useState([]);
+  // const [query, setQuery] = useState({});
   const currentPurchasePROPS = useSelector(
     (state) => state.purchase.currentPurchase
   ); // data in redux
@@ -357,7 +357,7 @@ const BuyFish = (props) => {
         setCurrentPurchase(tem);
         local.set("currentPurchase", tem);
         return tem;
-      }else{
+      } else {
         helper.toast("error", rs.message);
       }
     } catch (error) {
@@ -499,7 +499,7 @@ const BuyFish = (props) => {
 
     if (query && query.id) {
       query.id = parseInt(query.id);
-      setQuery(query);
+      // setQuery(query);
     }
 
     let tem = local.get("currentPurchase") || query;

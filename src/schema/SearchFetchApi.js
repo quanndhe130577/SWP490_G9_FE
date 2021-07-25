@@ -34,6 +34,7 @@ function DebounceSelect({
     };
 
     return debounce(loadOptions, debounceTimeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchOptions, debounceTimeout]);
   return (
     <Select

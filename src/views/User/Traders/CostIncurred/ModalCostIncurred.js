@@ -13,6 +13,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     handleChangeCostIncurred(costInc ? costInc.date : new Date(), "date");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const handleChangeCostIncurred = (val, name) => {
     setCostInc((prevState) => ({
@@ -33,7 +34,6 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
       // }
 
       if (mode === "create") {
-
         rs = await apis.createCostIncurred({
           name: costInc.name,
           cost: costInc.cost,
