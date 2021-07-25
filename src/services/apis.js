@@ -105,7 +105,7 @@ var path = {
   getBuyerByNameOrPhone: "/api/buyer/getbuyers", // Method "GET", param: name or phone
 
   //Debt
-  getAllDebt: "",
+  getAllDebt: "/api/debt/getall",
   createDebt: "",
   updateDebt: "",
   deleteDebt: "",
