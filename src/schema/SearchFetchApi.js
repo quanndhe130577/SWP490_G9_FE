@@ -22,7 +22,7 @@ function DebounceSelect({
       setOptions([]);
       setFetching(true);
 
-      let data = await fetchOptions(api, value);
+      let data = await fetchOptions(api, value, displayField);
       if (data && data.length) {
         if (fetchId !== fetchRef.current) {
           // for fetch callback order
@@ -53,11 +53,23 @@ function DebounceSelect({
   );
 } // Usage of DebounceSelect
 
-async function fetchUserList(api, param) {
+async function fetchUserList(api, param, displayField) {
   let rs = (await apis[api.url](api.body, api.method, param)) || [];
 
   if (rs && rs.statusCode === 200) {
-    rs.data.map((el, idx) => (el.idx = idx + 1));
+    let idx = 0;
+    for (const ele of rs.data) {
+      ele.idx = idx + 1;
+      idx++;
+      // check  display field is array then convert to string
+      if (displayField && Array.isArray(displayField)) {
+        let temStr = "";
+        for (const field of displayField) {
+          temStr += ele[field] + "  ";
+        }
+        ele.label = temStr;
+      }
+    }
   }
   return rs.data;
 }
