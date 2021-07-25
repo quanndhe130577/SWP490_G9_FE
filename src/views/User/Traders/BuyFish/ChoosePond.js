@@ -24,7 +24,6 @@ const ChoosePond = ({
 
   const [dataChange, setDataChange] = useState([]);
   const handleOk = async () => {
-    debugger;   
     //updateAllFishType
     console.log(dataChange);
     // neu ko co id purchase thì tạo purchase mới
@@ -37,6 +36,23 @@ const ChoosePond = ({
         );
         setShowChoosePond(false);
       }
+      // if (purchase !== undefined) {
+      //   if (dataChange.length == 0) {
+      //     helper.toast("error", "Bạn hãy chọn loại cá !!!!");
+      //   } else {
+      //     updateAllFishType(
+      //       { purchaseId: purchase.id, listFishType: dataChange },
+      //       purchase
+      //     );
+      //     setShowChoosePond(false);
+      //   }
+      // }
+    } else if (currentPurchase.id) {
+      updateAllFishType(
+        { purchaseId: currentPurchase.id, listFishType: dataChange },
+        currentPurchase
+      );
+      setShowChoosePond(false);
     }
   };
 
