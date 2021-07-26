@@ -86,16 +86,17 @@ const EmployeeSalary = Loadable({
   loader: () => import("./views/User/Traders/EmployeeSalary/EmployeeSalary"),
   loading: Loading,
 });
-const ForgetPassword = Loadable({
-  loader: () => import("./views/Entry/ForgetPassword/Forget"),
-  loading: Loading,
-});
+// const ForgetPassword = Loadable({
+//   loader: () => import("./views/Entry/ForgetPassword/Forget"),
+//   loading: Loading,
+// });
 const CheckOTP = Loadable({
   loader: () => import("./views/Entry/ForgetPassword/CheckOTP"),
   loading: Loading,
 });
 const EmployeeBaseSalary = Loadable({
-  loader: () => import("./views/User/Traders/Salary/EmployeeBaseSalary/EmployeeBaseSalary"),
+  loader: () =>
+    import("./views/User/Traders/Salary/EmployeeBaseSalary/EmployeeBaseSalary"),
   loading: Loading,
 });
 const EmployeeHistorySalary = Loadable({
@@ -103,7 +104,6 @@ const EmployeeHistorySalary = Loadable({
   loading: Loading,
 });
 const routes = [
-
   {
     path: "/home",
     name: "Home",
@@ -184,8 +184,7 @@ const routes = [
     name: "Debt",
     component: Debt,
   },
-  {
-  },
+  {},
   {
     path: "/trader",
     name: "Trader",

@@ -9,13 +9,14 @@ import session from "../../../../services/session";
 import moment from "moment";
 
 const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
-  const [costInc, setPO] = useState(currentCostInc);
+  const [costInc, setCostInc] = useState(currentCostInc);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     handleChangeCostIncurred(new Date(), "date");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const handleChangeCostIncurred = (val, name) => {
-    setPO((prevState) => ({
+    setCostInc((prevState) => ({
       ...prevState,
       [name]: val,
     }));
@@ -31,7 +32,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
       //   helper.toast("error", valid.message);
       //   return;
       // }
-
+      debugger
       if (mode === "create") {
         rs = await apis.createCostIncurred({
           name: costInc.name,
@@ -93,8 +94,8 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
               type="date"
               label={i18n.t("date")}
               value={
-                moment(costInc.date).format("DD/MM/YYYY") ||
-                moment(new Date()).format("DD/MM/YYYY")
+                costInc ? moment(costInc.date).format("DD/MM/YYYY") :
+                  moment(new Date()).format("DD/MM/YYYY")
               }
               onChange={(e) => handleChangeCostIncurred(e, "date")}
             />

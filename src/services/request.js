@@ -29,9 +29,10 @@ let request = {};
 // };
 request.request = async (url, data, headers, method = "POST") => {
   url = `${Config.host}${url}`;
+  // console.log("data " + data);
   let option = {
     method,
-    body: JSON.stringify(data), // data can be `string` or {object}!
+    body: JSON.stringify(data),
     headers: {
       "Content-Type": "application/json; charset=UTF-8",
       Authorization: `Bearer ${session.get("session") || "customer"}`,
@@ -39,7 +40,8 @@ request.request = async (url, data, headers, method = "POST") => {
   };
   option.headers = Object.assign({}, option.headers, headers);
   if (method === "GET") delete option.body;
-  if (Config.debug) console.log(`[${method}]`, url, option);
+  // console.log("opt " + option);
+
   let res = await fetch(url, option);
   try {
     switch (res.status) {
@@ -108,6 +110,7 @@ request.request = async (url, data, headers, method = "POST") => {
 };
 request.fetch = async (url, data, headers, method = "POST") => {
   url = `${Config.host}${url}`;
+  console.log("data " + data);
   let option = {
     method,
     body: JSON.stringify(data),
@@ -118,7 +121,8 @@ request.fetch = async (url, data, headers, method = "POST") => {
   };
   option.headers = Object.assign({}, option.headers, headers);
   if (method === "GET") delete option.body;
-  if (Config.debug) console.log(`[${method}]`, url, option);
+  console.log("opt " + option);
+  debugger;
   let res = await fetch(url, option);
   try {
     switch (res.status) {
