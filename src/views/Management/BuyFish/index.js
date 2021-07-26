@@ -1,15 +1,25 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "reactstrap";
 import apis from "../../../services/apis";
 import helper from "../../../services/helper";
 import local from "../../../services/local";
-import { Card, DatePicker, Dropdown, Input, Menu, Space, Table, Tag } from "antd";
+import {
+  Card,
+  DatePicker,
+  Dropdown,
+  Input,
+  Menu,
+  Space,
+  Table,
+  Tag,
+} from "antd";
 import { useDispatch } from "react-redux";
 import i18n from "i18next";
 import { useHistory } from "react-router-dom";
 import Moment from "react-moment";
 import NumberFormat from "react-number-format";
-import moment from 'moment'
+import moment from "moment";
 import { SearchOutlined } from "@ant-design/icons";
 const ManaBuy = () => {
   let history = useHistory();
@@ -18,10 +28,10 @@ const ManaBuy = () => {
   const [purchase, setPurchase] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
-  const [isShowModal, setIsShowModal] = useState(false)
+  const [isShowModal, setIsShowModal] = useState(false);
   const [mode, setMode] = useState("");
   const [data, setData] = useState([]);
-  const [searchInput, setSearchInput] = useState("")
+  const [searchInput, setSearchInput] = useState("");
   // const [loading, setLoading] = useState(true);
 
   async function onClick(mode, id) {
@@ -55,7 +65,7 @@ const ManaBuy = () => {
   }
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
-    setSearchText(selectedKeys[0])
+    setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   };
 
@@ -81,37 +91,35 @@ const ManaBuy = () => {
       clearFilters,
     }) => (
       <div style={{ padding: 8 }}>
-        {isDate ?
+        {isDate ? (
           <DatePicker
             value={selectedKeys[0]}
             onChange={(e) => {
-              let t = moment(e, 'DD/MM/YYYY');
-              setSelectedKeys(e ? [t] : [])
-              handleSearch(selectedKeys, confirm, dataIndex)
+              let t = moment(e, "DD/MM/YYYY");
+              setSelectedKeys(e ? [t] : []);
+              handleSearch(selectedKeys, confirm, dataIndex);
             }}
             onPressEnter={() => {
-              handleSearch(selectedKeys, confirm, dataIndex)
-            }
-            }
-            format={'DD/MM/YYYY'}
+              handleSearch(selectedKeys, confirm, dataIndex);
+            }}
+            format={"DD/MM/YYYY"}
             style={{ marginBottom: 8, display: "block" }}
-          /> :
+          />
+        ) : (
           <Input
             ref={(node) => {
+              // eslint-disable-next-line no-const-assign
               searchInput = node;
             }}
             placeholder={`Search ${dataIndex}`}
             value={selectedKeys[0]}
             onChange={(e) => {
-              setSelectedKeys(e.target.value ? [e.target.value] : [])
-            }
-            }
-            onPressEnter={() =>
-              handleSearch(selectedKeys, confirm, dataIndex)
-            }
+              setSelectedKeys(e.target.value ? [e.target.value] : []);
+            }}
+            onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
             style={{ marginBottom: 8, display: "block" }}
           />
-        }
+        )}
         <Space>
           <Button
             type="primary"
@@ -134,8 +142,8 @@ const ManaBuy = () => {
             size="small"
             onClick={() => {
               confirm({ closeDropdown: false });
-              setSearchText(selectedKeys[0])
-              setSearchedColumn(dataIndex)
+              setSearchText(selectedKeys[0]);
+              setSearchedColumn(dataIndex);
               // this.setState({
               //   searchText: selectedKeys[0],
               //   searchedColumn: dataIndex,
@@ -152,19 +160,20 @@ const ManaBuy = () => {
     ),
     onFilter: (value, record) => {
       if (isDate) {
-        let x = moment(moment(value).format('DD/MM/YYYY'), 'DD/MM/YYYY')
-        let y = moment(moment(record[dataIndex]).format('DD/MM/YYYY'), 'DD/MM/YYYY')
+        let x = moment(moment(value).format("DD/MM/YYYY"), "DD/MM/YYYY");
+        let y = moment(
+          moment(record[dataIndex]).format("DD/MM/YYYY"),
+          "DD/MM/YYYY"
+        );
 
-        return record[dataIndex]
-          ? x.isSame(y, 'day')
-          : ""
+        return record[dataIndex] ? x.isSame(y, "day") : "";
       } else {
         return record[dataIndex]
           ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
-          : ""
+              .toString()
+              .toLowerCase()
+              .includes(value.toLowerCase())
+          : "";
       }
     },
     onFilterDropdownVisibleChange: (visible) => {
@@ -230,8 +239,8 @@ const ManaBuy = () => {
       key: "date",
       ...getColumnSearchProps("date", true),
       sorter: (a, b, sortDirections) => {
-        console.log(sortDirections)
-        return moment(a.date).unix() - moment(b.date).unix()
+        console.log(sortDirections);
+        return moment(a.date).unix() - moment(b.date).unix();
       },
       sortDirections: ["descend", "ascend"],
       render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
@@ -264,7 +273,7 @@ const ManaBuy = () => {
       dataIndex: "status",
       key: "status",
       render: (status) => {
-        console.log('here', status)
+        console.log("here", status);
         // status.map(tag => {
         //   let color = tag.length > 5 ? 'geekblue' : 'green';
         //   if (tag === 'loser') {
@@ -273,13 +282,13 @@ const ManaBuy = () => {
         let color = "";
         switch (status) {
           case "Completed":
-            color = 'green';
+            color = "green";
             break;
           case "Pending":
-            color = 'red';
+            color = "red";
             break;
           default:
-            color = 'red';
+            color = "red";
         }
 
         return (
@@ -292,8 +301,7 @@ const ManaBuy = () => {
         //   //     {status.toUpperCase()}
         //   //   </Tag>
         //   // );
-
-      }
+      },
     },
     {
       title: "",
