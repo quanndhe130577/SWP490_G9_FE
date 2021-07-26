@@ -30,8 +30,8 @@ const BuyFish = (props) => {
     fishType: [],
   }); // list data of basket, drum, truck,...
   const [isShowClosePurchase, setShowClosePurchase] = useState(false);
-  const [currentListFishTyppe, setCurrentListFishTyppe] = useState([]);
-  const [query, setQuery] = useState({});
+  // const [currentListFishTyppe, setCurrentListFishTyppe] = useState([]);
+  // const [query, setQuery] = useState({});
   const currentPurchasePROPS = useSelector(
     (state) => state.purchase.currentPurchase
   ); // data in redux
@@ -146,6 +146,18 @@ const BuyFish = (props) => {
       key: "weight",
     },
     {
+      title: i18n.t("basket"),
+      dataIndex: "basket",
+      key: "basket",
+      render: (basket) => (
+        <div>
+          {basket && (
+            <label>{basket.type + ": " + basket.weight + " (kg)"}</label>
+          )}
+        </div>
+      ),
+    },
+    {
       title: (
         <div>
           <label>{i18n.t("intoMoney")}</label>
@@ -160,12 +172,6 @@ const BuyFish = (props) => {
       },
     },
     {
-      title: i18n.t("basket"),
-      dataIndex: "basket",
-      key: "basket",
-      render: (basket) => <div>{basket && <label>{basket.type}</label>}</div>,
-    },
-    {
       title: i18n.t("drum"),
       dataIndex: "listDrum",
       key: "listDrum",
@@ -177,7 +183,6 @@ const BuyFish = (props) => {
       key: "truck",
       render: (truck) => <div>{truck && <label>{truck.name}</label>}</div>,
     },
-
     {
       title: i18n.t("action"),
       key: "id",
@@ -357,6 +362,8 @@ const BuyFish = (props) => {
         setCurrentPurchase(tem);
         local.set("currentPurchase", tem);
         return tem;
+      } else {
+        helper.toast("error", rs.message);
       }
     } catch (error) {
       console.log(error);
@@ -497,7 +504,7 @@ const BuyFish = (props) => {
 
     if (query && query.id) {
       query.id = parseInt(query.id);
-      setQuery(query);
+      // setQuery(query);
     }
 
     let tem = local.get("currentPurchase") || query;

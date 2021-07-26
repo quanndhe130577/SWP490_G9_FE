@@ -4,9 +4,14 @@ import Modal from "../../../containers/Antd/ModalCustom";
 import Widgets from "../../../schema/Widgets";
 import helper from "../../../services/helper";
 import i18n from "i18next";
-import apis from "../../../services/apis";
 
-const ModalEdit = ({ isShow, closeModal, mode, currentDebt,testHanldeEdit}) => {
+const ModalEdit = ({
+  isShow,
+  closeModal,
+  mode,
+  currentDebt,
+  testHanldeEdit,
+}) => {
   const [debt, setDebt] = useState(currentDebt);
 
   const handleChangeDebt = (val, name) => {
@@ -23,12 +28,9 @@ const ModalEdit = ({ isShow, closeModal, mode, currentDebt,testHanldeEdit}) => {
         // rs = await apis.createDebt({
         //   ...debt,
         // });
-
-
       } else if (mode === "edit") {
         // rs = await apis.updateDebt(debt);
-        testHanldeEdit(debt)
-        
+        testHanldeEdit(debt);
       }
 
       if (rs && rs.statusCode === 200) {
@@ -42,9 +44,8 @@ const ModalEdit = ({ isShow, closeModal, mode, currentDebt,testHanldeEdit}) => {
   };
   useEffect(() => {
     handleChangeDebt(new Date(), "date");
-  }, [])
+  }, []);
 
- 
   return (
     <Modal
       title={mode === "edit" ? i18n.t("edit") : i18n.t("create")}
@@ -97,7 +98,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentDebt,testHanldeEdit}) => {
           <Col md="6" xs="12">
             <Widgets.Checkbox
               label={i18n.t("Status")}
-              lblCheckbox = {i18n.t("isPaid")}
+              lblCheckbox={i18n.t("isPaid")}
               value={debt.isPaid || false}
               onChange={(val) => handleChangeDebt(val, "isPaid")}
             />

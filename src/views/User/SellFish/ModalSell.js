@@ -5,21 +5,21 @@ import i18n from "i18next";
 import Widgets from "../../../schema/Widgets";
 import helper from "../../../services/helper";
 import { apis, local } from "../../../services";
+import { API_FETCH } from "../../../constant";
 
 const ModalSell = ({
   isShowSell,
   setShowSell,
   currentTransaction,
-  purchase,
+  Trans,
   mode,
   dataDf,
-  createPurchaseDetail,
-  fetchDrumByTruck,
-  updatePurchaseDetail,
-  suggestionPurchase,
+  createTransDetail,
+  updateTransDetail,
+  suggestionTrans,
 }) => {
-  const [transaction, setTransaction] = useState(currentTransaction); // transaction là 1 bản ghi của purchase
-  const [loading, setLoading] = useState(false);
+  const [transaction, setTransaction] = useState(currentTransaction); // transaction là 1 bản ghi của Trans
+  // const [loading, setLoading] = useState(false);
 
   const handleOk = () => {
     let validate = validateData();
@@ -28,36 +28,25 @@ const ModalSell = ({
     }
     let tem = transaction;
     if (mode === "create") {
-      if (createPurchaseDetail) {
-        tem.idx = purchase.length + 1;
-        createPurchaseDetail(tem);
+      if (createTransDetail) {
+        tem.idx = Trans.length + 1;
+        createTransDetail(tem);
       }
       setShowSell(false);
     } else if (mode === "edit") {
-      updatePurchaseDetail(transaction);
+      updateTransDetail(transaction);
     }
   };
   const handleCancel = () => {
     setShowSell(false);
   };
   const handleChangeTran = async (name, value) => {
-    // if(name === "drum"){
-    //   let drums =purchase.drum
-    //   drums
-    // }
-    // if (name === "weight") {
-    //   value = parseInt(value);
-    // } else
-    if (name === "truck" && value !== transaction.truck) {
-      // neu khac xe thi call api lấy lại list drum và set lại listDrumId
-      let rs = await fetchDrumByTruck(value);
+    if (name === "isRetailCustomers" && !value) {
       setTransaction((prevState) => ({
         ...prevState,
-        listDrumId: [],
+        buyer: "",
+        isPaid: true,
       }));
-      setLoading(rs);
-    } else if (name === "listDrumId" && value.length > 0) {
-      value = value.map((el) => (el = parseInt(el)));
     }
     setTransaction((prevState) => ({
       ...prevState,
@@ -83,12 +72,6 @@ const ModalSell = ({
     }
   };
 
-  function changeKey(arr) {
-    arr.forEach((el) => {
-      helper.renameKey(el, "number", "name");
-    });
-    return arr;
-  }
   async function convertDataInEditMode() {
     // data to display in create mode and edit mode is difference, we need convert data
     if (mode === "edit") {
@@ -105,15 +88,12 @@ const ModalSell = ({
         truck,
         listDrumId,
       }));
-      // fetch Drum By Truck
-      let rs = await fetchDrumByTruck(truck);
-      setLoading(rs);
-    } else if (mode === "create" && suggestionPurchase) {
-      // purchase goi y khi mua
-      let fishTypeId = suggestionPurchase.fishTypeId;
-      let basketId = suggestionPurchase.basketId;
-      let truck = suggestionPurchase.truck;
-      let listDrumId = suggestionPurchase.listDrumId;
+    } else if (mode === "create" && suggestionTrans) {
+      // Trans goi y khi mua
+      let fishTypeId = suggestionTrans.fishTypeId;
+      let basketId = suggestionTrans.basketId;
+      let truck = suggestionTrans.truck;
+      let listDrumId = suggestionTrans.listDrumId;
 
       setTransaction((prevState) => ({
         ...prevState,
@@ -122,9 +102,6 @@ const ModalSell = ({
         truck,
         listDrumId,
       }));
-      // fetch Drum By Truck
-      let rs = await fetchDrumByTruck(truck);
-      setLoading(rs);
     }
   }
   async function getBuyer() {
@@ -150,12 +127,13 @@ const ModalSell = ({
     <Modal
       title={
         mode === "create"
-          ? i18n.t("createPurchaseDetail")
-          : i18n.t("editPurchaseDetail")
+          ? i18n.t("createTransDetail")
+          : i18n.t("editTransDetail")
       }
       visible={isShowSell}
       onOk={handleOk}
       onCancel={handleCancel}
+      width={800}
     >
       <Row>
         <Col md="6" xs="12">
@@ -167,14 +145,26 @@ const ModalSell = ({
             items={dataDf.trader || []}
           />
         </Col>
-        <Col md="6" xs="12">
+
+        <Col md="4" xs="12">
           <Widgets.SearchFetchApi
             required={true}
             label={i18n.t("buyer")}
-            value={transaction.buyer || {}}
+            value={transaction.buyer || []}
             onSelect={(e) => handleChangeTran("buyer", e)}
             items={transaction.listBuyer || []}
-            api={API_FIND_BUYER}
+            api={API_FETCH.API_FIND_BUYER}
+            placeholder={i18n.t("enterNameToFindBuyer")}
+            disabled={transaction.isRetailCustomers || false}
+          />
+        </Col>
+
+        <Col md="2" xs="12">
+          <Widgets.Checkbox
+            label={i18n.t("Or")}
+            value={transaction.isRetailCustomers || false}
+            onChange={(e) => handleChangeTran("isRetailCustomers", e)}
+            lblCheckbox={i18n.t("retailCustomers")}
           />
         </Col>
 
@@ -203,27 +193,26 @@ const ModalSell = ({
             onChange={(e) => handleChangeTran("cost", e)}
           />
         </Col>
-
-        {transaction.truck && loading && (
-          <Col md="6" xs="12">
-            <Widgets.SelectSearchMulti
-              // required={true}
-              label={i18n.t("drum")}
-              value={transaction.listDrumId || transaction.listDrum || []}
-              onChange={(e) => handleChangeTran("listDrumId", e)}
-              items={changeKey(dataDf.drum || [])}
-            />
-          </Col>
-        )}
+        <Col md="2" xs="12">
+          <Widgets.Checkbox
+            label={i18n.t("isPaid")}
+            value={transaction.isPaid || false}
+            onChange={(e) => handleChangeTran("isPaid", e)}
+            lblCheckbox={i18n.t("isPaid")}
+            disabled={transaction.isRetailCustomers || false}
+          />
+        </Col>
+        <Col md="6" xs="12">
+          <Widgets.MoneyInput
+            required={true}
+            label={i18n.t("intoMoney")}
+            value={transaction.intoMoney || ""}
+            // onChange={(e) => handleChangeTran("cost", e)}
+          />
+        </Col>
       </Row>
     </Modal>
   );
 };
 
 export default ModalSell;
-const API_FIND_BUYER = {
-  url: "getBuyerByNameOrPhone",
-  body: {},
-  method: "GET",
-  pram: "phone",
-};

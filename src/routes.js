@@ -86,24 +86,20 @@ const EmployeeSalary = Loadable({
   loader: () => import("./views/User/Traders/EmployeeSalary/EmployeeSalary"),
   loading: Loading,
 });
-const ForgetPassword = Loadable({
-  loader: () => import("./views/Entry/ForgetPassword/Forget"),
-  loading: Loading,
-});
+// const ForgetPassword = Loadable({
+//   loader: () => import("./views/Entry/ForgetPassword/Forget"),
+//   loading: Loading,
+// });
 const CheckOTP = Loadable({
   loader: () => import("./views/Entry/ForgetPassword/CheckOTP"),
   loading: Loading,
 });
-const HistorySalary = Loadable({
-  loader: () => import("./views/User/Traders/HisotrySlary/HistorySalary"),
-  loading: Loading,
-});
-const AdvanceSalary = Loadable({
-  loader: () => import("./views/User/Traders/AdvanceSalary/AdvanceSalary"),
+const EmployeeBaseSalary = Loadable({
+  loader: () =>
+    import("./views/User/Traders/Salary/EmployeeBaseSalary/EmployeeBaseSalary"),
   loading: Loading,
 });
 const routes = [
-
   {
     path: "/home",
     name: "Home",
@@ -151,7 +147,7 @@ const routes = [
   },
   {
     path: "/employee",
-    name: "EmployEE",
+    name: "Employee",
     component: Employee,
   },
   {
@@ -184,8 +180,7 @@ const routes = [
     name: "Debt",
     component: Debt,
   },
-  {
-  },
+  {},
   {
     path: "/trader",
     name: "Trader",
@@ -207,10 +202,10 @@ const routes = [
     component: CheckOTP,
   },
   {
-    path: "/advanceSalary/:id",
-    name: "AdvanceSalary",
-    component: AdvanceSalary,
-  }
+    path: "/employeeBaseSalary",
+    name: "EmployeeBaseSalary",
+    component: EmployeeBaseSalary,
+  },
 ];
 
 export default routes;

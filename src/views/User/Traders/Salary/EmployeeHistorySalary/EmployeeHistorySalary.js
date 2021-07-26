@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { Table, Button } from "antd";
+import { Table, Card, Button, Row, Col } from "antd";
 import helper from "../../../../services/helper";
 import Widgets from "../../../../schema/Widgets";
 import apis from "../../../../services/apis";
 import moment from "moment";
-import "./EmployeeSalary.scss";
+import "./EmployeeHistorySalary.scss";
 
-export default class EmployeeSalaryDetail extends Component {
+export default class EmployeeBaseSalary extends Component {
   constructor(props) {
     super(props);
     this.state = { times: [] };
@@ -45,33 +45,6 @@ export default class EmployeeSalaryDetail extends Component {
         key: "name",
       },
       {
-        title: "Số tiền đã trả",
-        dataIndex: "paid",
-        key: "paid",
-        render: (data) => {
-          console.log(data);
-          return (
-            <Widgets.NumberFormat
-              needFormGroup={false}
-              displayType="text"
-              value={data}
-            />
-          );
-        },
-      },
-      {
-        title: "Nợ",
-        dataIndex: "notPaid",
-        key: "notPaid",
-        render: (data) => (
-          <Widgets.NumberFormat
-            needFormGroup={false}
-            displayType="text"
-            value={data}
-          />
-        ),
-      },
-      {
         title: "Lương",
         dataIndex: "salary",
         key: "salary",
@@ -82,6 +55,11 @@ export default class EmployeeSalaryDetail extends Component {
             value={data}
           />
         ),
+      },
+      {
+        title: "Tháng",
+        dataIndex: "date",
+        key: "date",
       },
       {
         title: "Hành động",
@@ -99,23 +77,6 @@ export default class EmployeeSalaryDetail extends Component {
     return (
       <>
         <Table dataSource={this.state.times} columns={columns} bordered />
-        {/* <Row>
-          <Col span={8}>
-            <Card title='Tổng số tiền đã trả'>
-              <Widgets.NumberFormat displayType='text' className='py-2' value={paid} />
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card title='Tổng số tiền chưa trả'>
-              <Widgets.NumberFormat displayType='text' className='py-2' value={notPaid} />
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card title='Tổng lương'>
-              <Widgets.NumberFormat displayType='text' className='py-2' value={paid + notPaid} />
-            </Card>
-          </Col>
-        </Row> */}
       </>
     );
   }

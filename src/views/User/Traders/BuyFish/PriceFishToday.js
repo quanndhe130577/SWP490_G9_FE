@@ -90,7 +90,9 @@ const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
       onChange(arr);
     }
     setData(arr);
-    dataChange(arr);
+    if (temArr.length !== 0) {
+      dataChange(arr);
+    }
   };
   useEffect(() => {
     findList(listFishId);

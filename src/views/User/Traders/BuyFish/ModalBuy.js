@@ -95,8 +95,14 @@ const ModalBuy = ({
   //   return arr;
   // }
   async function convertDataInEditMode() {
+    if (mode === "create") {
+      setTransaction((prevState) => ({
+        ...prevState,
+        weight: 0,
+      }));
+    }
     // data to display in create mode and edit mode is difference, we need convert data
-    if (mode === "edit") {
+    else if (mode === "edit") {
       let fishTypeId = transaction.fishType.id;
       let basketId = transaction.basket.id;
       let truck = transaction.truck.id;
@@ -134,6 +140,9 @@ const ModalBuy = ({
   }
   useEffect(() => {
     convertDataInEditMode();
+    return () => {
+      setTransaction({});
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
@@ -163,7 +172,7 @@ const ModalBuy = ({
           <Widgets.WeightInput
             required={true}
             label={i18n.t("qtyOfFish(Kg)")}
-            value={transaction.weight || 0}
+            value={transaction.weight || ""}
             onChange={(e) => handleChangeTran("weight", e)}
           />
         </Col>
