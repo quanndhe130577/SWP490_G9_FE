@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Input, Table } from "antd";
 import i18n from "i18next";
+import { Button } from "reactstrap";
+import apis from "../../../../services/apis";
 
 const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
   const [dataS, setData] = useState([]);
 
   const onChangeWeight = (value, id, name) => {
     const newDatas = [...dataS];
-    const index = dataS.findIndex((x) => x.id === id);
+    const index = dataS.findIndex((x) => x && x.id == id);
     if (index !== -1) {
       const newItem = { ...newDatas[index], [name]: value };
       newDatas.splice(index, 1, newItem);
@@ -15,6 +17,26 @@ const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
       dataChange(newDatas);
     }
     // this.setData({ ...dataS[0], maxWeight: value }),
+  };
+
+  const onAddFish = async () => {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, "0");
+    var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = dd + mm + yyyy;
+
+    let rs = await apis.getNewFishType({}, "POST", today);
+
+    const newDatas = [...dataS];
+    const index = dataS.findIndex((x) => x.id === rs.data.id);
+    if (index === -1) {
+      rs.data.idx = newDatas.length + 1;
+      newDatas.push(rs.data);
+      setData(newDatas);
+      dataChange(newDatas);
+    }
   };
 
   const columns = [
@@ -28,6 +50,14 @@ const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
       title: "Tên cá",
       dataIndex: "fishName",
       key: "fishName",
+      render: (fishName, record) => (
+        <Input
+          defaultValue={fishName}
+          onChange={(e) =>
+            onChangeWeight(e.target.value, record.id, "fishName")
+          }
+        />
+      ),
     },
     {
       title: "Trọng lượng tối thiểu",
@@ -49,7 +79,9 @@ const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
       render: (maxWeight, record) => (
         <Input
           defaultValue={maxWeight}
-          onChange={(e) => onChangeWeight(e.target.value, record.id, maxWeight)}
+          onChange={(e) =>
+            onChangeWeight(e.target.value, record.id, "maxWeight")
+          }
         />
       ),
     },
@@ -75,6 +107,7 @@ const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
       ),
     },
   ];
+
   const findList = (temArr) => {
     let arr = [],
       count = 0;
@@ -100,7 +133,23 @@ const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
   }, [listFishId]);
   return (
     <div style={{ overflowX: "auto" }}>
-      <Table columns={columns} dataSource={dataS} />
+      <Table
+        columns={columns}
+        dataSource={dataS}
+        summary={(pageData) => {
+          return (
+            <Table.Summary fixed>
+              <Table.Summary.Row>
+                <Table.Summary.Cell colSpan="6" key="1">
+                  <Button color="info" className="w-100" onClick={onAddFish}>
+                    +
+                  </Button>
+                </Table.Summary.Cell>
+              </Table.Summary.Row>
+            </Table.Summary>
+          );
+        }}
+      />
     </div>
   );
 };

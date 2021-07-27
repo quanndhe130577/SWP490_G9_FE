@@ -12,6 +12,7 @@ import NumberFormat from "react-number-format";
 import { useSelector } from "react-redux";
 import Moment from "react-moment";
 import _ from "lodash";
+import { bool } from "prop-types";
 const { local, session, apis, helper } = services;
 
 const BuyFish = (props) => {
@@ -450,6 +451,7 @@ const BuyFish = (props) => {
 
   // Update All fish type anhnbt
   async function updateAllFishType(body, purchase) {
+    var success = false;
     try {
       setLoading(true);
       let rs = await apis.updateAllFishType(body, "POST");
@@ -463,11 +465,14 @@ const BuyFish = (props) => {
           ...pre,
           fishType: newArr || [],
         }));
+        success = true;
+        helper.toast("success", rs.message);
       }
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
+      return success;
     }
   }
 
@@ -593,6 +598,12 @@ const BuyFish = (props) => {
           currentPurchase={currentPurchase}
           setCurrentPurchase={setCurrentPurchase}
           dataDf={dataDf}
+          // setDataDf={(newDfFish) => {
+          //   setData((pre) => ({
+          //     ...pre,
+          //     fishType: newDfFish || [],
+          //   }));
+          // }}
           createPurchase={createPurchase}
           updateAllFishType={updateAllFishType}
         />

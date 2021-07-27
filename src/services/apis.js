@@ -73,7 +73,7 @@ var path = {
   deleteTimeKeepingByTrader: "/api/timeKeeping/delete",
   paidTimeKeeping: "/api/timeKeeping/paid",
 
-//Base salsry
+  //Base salsry
   createBaseSalary: "/api/salary/create",
 
   //History salsry
@@ -111,8 +111,9 @@ var path = {
   deleteDebt: "",
   getDetailDebt: "",
   // fishType
-  getOneFT: "api/fishtype/getone/{ddMMyyyy}/{pondOwnerId}",
+  getOneFT: "/api/fishtype/getone/{ddMMyyyy}/{pondOwnerId}",
   updateAllFishType: "/api/fishtype/updatelist",
+  getNewFishType: "/api/fishtype/getnew",
 
   // Trader management for weight recorder
   findTraderByPhone: "/api/trader/find-trader-by-phone", //GET, param: phoneNumber
