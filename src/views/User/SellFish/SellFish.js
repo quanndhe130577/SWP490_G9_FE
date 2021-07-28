@@ -334,7 +334,7 @@ const SellFish = (props) => {
 
                   // }}
                 />
-                <div>tam</div>
+                <div></div>
                 <Table
                   columns={columns}
                   dataSource={transaction}
@@ -342,7 +342,6 @@ const SellFish = (props) => {
                   scroll={{ y: 420 }}
                   pagination
                 />
-                <div>quana</div>
                 <Table
                   columns={columns}
                   dataSource={transaction}

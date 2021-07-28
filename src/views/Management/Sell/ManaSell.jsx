@@ -9,6 +9,7 @@ import i18n from "i18next";
 import { useHistory } from "react-router-dom";
 import Moment from "react-moment";
 import NumberFormat from "react-number-format";
+import moment from "moment";
 
 const ManaSell = () => {
   let history = useHistory();
@@ -140,7 +141,8 @@ const ManaSell = () => {
   async function fetchData() {
     try {
       setLoading(true);
-      let rs = await apis.getAllTransaction();
+      let date = moment(new Date()).format("DDMMYYYY");
+      let rs = await apis.getTransByDate({}, "GET", date);
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         setTransaction(rs.data);
