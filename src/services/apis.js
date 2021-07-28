@@ -73,7 +73,7 @@ var path = {
   deleteTimeKeepingByTrader: "/api/timeKeeping/delete",
   paidTimeKeeping: "/api/timeKeeping/paid",
 
-//Base salsry
+  //Base salsry
   createBaseSalary: "/api/salary/create",
 
   //History salsry
@@ -123,7 +123,7 @@ var path = {
   //Transaction
   createTransactions: "/api/transaction/createlist",
   getAllTransaction: "/api/transaction/getall", //GET
-  getTransByDate: "api/transaction/getall", //GET param:date /{ddMMyyyy}
+  getTransByDate: "/api/transaction/getall", //GET param:date /{ddMMyyyy}
 
   //anhnbt forget(reset password)
   getResetPassword: "/api/otp/reset-password",

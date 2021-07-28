@@ -60,5 +60,16 @@ helper.getDateFormat = (date) => {
 
   return [year, month, day].join("-");
 };
-
+helper.correctDate = (dateDf) => {
+  let date = dateDf;
+  if (!date) {
+    date = new Date();
+  }
+  date = new Date(date);
+  let hoursDiff = date.getHours() - date.getTimezoneOffset() / 60;
+  let minutesDiff = (date.getHours() - date.getTimezoneOffset()) % 60;
+  date.setHours(hoursDiff);
+  date.setMinutes(minutesDiff);
+  return date;
+};
 export default helper;
