@@ -9,9 +9,9 @@ import TradersToday from "./TradersToday";
 const ChooseTraders = ({
   isShowChooseTraders,
   setShowChooseTraders,
-  trader,
+  // trader,
   currentTransaction = {},
-  setCurrentTransaction,
+  // setCurrentTransaction,
   dataFetched,
   handleChangeTrans,
 }) => {
@@ -30,7 +30,7 @@ const ChooseTraders = ({
         if (rs && rs.statusCode === 200) {
           helper.toast("success", i18n.t(rs.message || "success"));
         }
-      } catch (error) {}
+      } catch (error) { }
     }
   };
 

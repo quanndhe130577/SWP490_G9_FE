@@ -12,7 +12,6 @@ import NumberFormat from "react-number-format";
 import { useSelector } from "react-redux";
 import Moment from "react-moment";
 import _ from "lodash";
-import { bool } from "prop-types";
 const { local, session, apis, helper } = services;
 
 const BuyFish = (props) => {
@@ -94,7 +93,7 @@ const BuyFish = (props) => {
           value={value}
           displayType={"text"}
           thousandSeparator={true}
-          // suffix={i18n.t("suffix")}
+        // suffix={i18n.t("suffix")}
         />
       );
     }

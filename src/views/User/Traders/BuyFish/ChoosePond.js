@@ -6,8 +6,7 @@ import Widgets from "../../../../schema/Widgets";
 import PriceFishToday from "./PriceFishToday";
 import services from "../../../../services";
 import { useHistory } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { toast } from "react-toastify";
+import { useState } from "react";
 
 const { local, helper } = services;
 const ChoosePond = ({
@@ -53,7 +52,7 @@ const ChoosePond = ({
     if (rs) {
       dataChange.forEach((element) => {
         var list = [...currentPurchase.listFishId];
-        if (list.find((item) => item == element.id) === undefined) {
+        if (list.find((item) => parseInt(item) === parseInt(element.id)) === undefined) {
           list.push(element.id + "");
           onChange(list, "listFishId");
         }

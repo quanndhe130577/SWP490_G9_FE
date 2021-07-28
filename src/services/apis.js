@@ -133,7 +133,7 @@ var path = {
   // Transaction detail
   createTranDetail: "/api/transactiondetail/create",
   getAllTranDetail: "/api/transactiondetail/getall", // GET if has param: date {ddMMyyyy} will get by date
-
+  getFTByTrader: "/api/fishtype/wc/getall", // GET, param: TraderID, use when selling
   // api/transactiondetail/getall/{ddMMyyyy}
 };
 
