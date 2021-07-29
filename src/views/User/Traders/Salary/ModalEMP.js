@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col } from "reactstrap";
-import Modal from "../../../../../containers/Antd/ModalCustom";
-import Widgets from "../../../../../schema/Widgets";
+import Modal from "../../../../containers/Antd/ModalCustom";
+import Widgets from "../../../../schema/Widgets";
 import i18n from "i18next";
-import apis from "../../../../../services/apis";
-import helper from "../../../../../services/helper";
-import session from "../../../../../services/session";
+import apis from "../../../../services/apis";
+import helper from "../../../../services/helper";
+import session from "../../../../services/session";
 import moment from "moment";
 
 const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
