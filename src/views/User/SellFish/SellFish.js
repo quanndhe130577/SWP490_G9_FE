@@ -212,9 +212,11 @@ const SellFish = (props) => {
       ignoreQueryPrefix: true,
     });
 
+    let date;
     if (query && query.date) {
-      fetchData(query.date);
+      date = query.date;
     }
+    fetchData(date);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props]);

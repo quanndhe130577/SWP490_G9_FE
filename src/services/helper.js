@@ -48,19 +48,17 @@ helper.confirm = (content) => {
     });
   });
 };
-helper.getDateFormat = (date, format = "yyyy-mm-dd") => {
+helper.getDateFormat = (date = new Date(), format = "yyyy-mm-dd") => {
   // format date as type yyyy-mm-dd
-  var d = new Date(date) || new Date();
+  var d = new Date(date);
   let month = "" + (d.getMonth() + 1),
     day = "" + d.getDate(),
     year = d.getFullYear();
 
   if (month.length < 2) month = "0" + month;
   if (day.length < 2) day = "0" + day;
-  if (format === "yyyy-mm-dd")
-    return [year, month, day].join("-");
-  else if (format === "ddmmyyyy")
-    return day + month + year
+  if (format === "yyyy-mm-dd") return [year, month, day].join("-");
+  else if (format === "ddmmyyyy") return day + month + year;
 };
 helper.correctDate = (dateDf) => {
   let date = dateDf;
