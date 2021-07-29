@@ -44,6 +44,7 @@ const BuyFish = (props) => {
         let tem = purchase.find((e) => e.id === id);
         if (tem) {
           tem.purchaseDetailId = id;
+          tem.purchaseId = currentPurchase.id;
           setMode("edit");
           setCurrentPurchase(Object.assign(currentPurchase, tem));
           setIsShowBuy(true);
@@ -93,7 +94,7 @@ const BuyFish = (props) => {
           value={value}
           displayType={"text"}
           thousandSeparator={true}
-        // suffix={i18n.t("suffix")}
+          // suffix={i18n.t("suffix")}
         />
       );
     }
@@ -399,17 +400,16 @@ const BuyFish = (props) => {
   async function updatePurchaseDetail(detail) {
     try {
       let { fishTypeId, basketId, weight, listDrumId = [] } = detail;
-
       let rs = await apis.updatePurchaseDetail({
         fishTypeId,
         basketId,
         weight,
         listDrumId,
         id: currentPurchase.purchaseDetailId,
-        purchaseId: currentPurchase.id,
+        purchaseId: currentPurchase.purchaseId,
       });
       if (rs && rs.statusCode === 200) {
-        getAllPurchaseDetail(detail);
+        getAllPurchaseDetail(currentPurchase);
         helper.toast("success", i18n.t(rs.message));
       }
     } catch (error) {
@@ -423,7 +423,11 @@ const BuyFish = (props) => {
   async function getAllPurchaseDetail(currentPurchase) {
     try {
       setLoading(true);
-      let rs = await apis.getAllPurchaseDetail({}, "GET", currentPurchase.id);
+      let rs = await apis.getAllPurchaseDetail(
+        {},
+        "GET",
+        currentPurchase.purchaseId || currentPurchase.id
+      );
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         setPurchase(rs.data);
