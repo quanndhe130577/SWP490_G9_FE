@@ -351,6 +351,7 @@ const BuyFish = (props) => {
 
   // create purchase
   async function createPurchase() {
+    debugger
     try {
       let traderId = session.get("user").userID;
       let pondOwnerID = currentPurchase.pondOwner;
@@ -451,6 +452,7 @@ const BuyFish = (props) => {
 
   // Update All fish type anhnbt
   async function updateAllFishType(body, purchase) {
+    debugger
     var success = false;
     try {
       setLoading(true);
