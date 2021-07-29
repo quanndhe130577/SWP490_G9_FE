@@ -16,6 +16,7 @@ const ChoosePond = ({
   currentPurchase,
   setCurrentPurchase,
   dataDf,
+  //setDataDf,
   createPurchase,
   updateAllFishType,
 }) => {
@@ -30,30 +31,34 @@ const ChoosePond = ({
     if (createPurchase && !currentPurchase.id) {
       let purchase = await createPurchase();
       if (purchase !== undefined) {
-        updateAllFishType(
-          { purchaseId: purchase.id, listFishType: dataChange },
-          purchase
-        );
-        setShowChoosePond(false);
+        await updateFishType(purchase, dataChange, false);
       }
-      // if (purchase !== undefined) {
-      //   if (dataChange.length == 0) {
-      //     helper.toast("error", "Bạn hãy chọn loại cá !!!!");
-      //   } else {
-      //     updateAllFishType(
-      //       { purchaseId: purchase.id, listFishType: dataChange },
-      //       purchase
-      //     );
-      //     setShowChoosePond(false);
-      //   }
-      // }
       // update fishtype khi ở trong page purchase detail
     } else if (currentPurchase.id) {
-      updateAllFishType(
-        { purchaseId: currentPurchase.id, listFishType: dataChange },
-        currentPurchase
-      );
-      setShowChoosePond(false);
+      await updateFishType(currentPurchase, dataChange, true);
+    }
+  };
+
+  //quannd
+  const updateFishType = async (
+    currentPurchase,
+    dataChange,
+    isShowModal = false
+  ) => {
+    var rs = await updateAllFishType(
+      { purchaseId: currentPurchase.id, listFishType: dataChange },
+      currentPurchase
+    );
+    if (rs) {
+      dataChange.forEach((element) => {
+        var list = [...currentPurchase.listFishId];
+        if (list.find((item) => parseInt(item) === parseInt(element.id)) === undefined) {
+          list.push(element.id + "");
+          onChange(list, "listFishId");
+        }
+      });
+
+      setShowChoosePond(isShowModal);
     }
   };
 
@@ -132,7 +137,9 @@ const ChoosePond = ({
             listFishId={currentPurchase.listFishId || []}
             onChange={(arr) => onChange(arr, "arrFish")}
             dataDf={dataDf}
-            dataChange={(data) => setDataChange(data)}
+            dataChange={(data) => {
+              setDataChange(data);
+            }}
           />
         </Col>
         <Col md="4" xs="12" />

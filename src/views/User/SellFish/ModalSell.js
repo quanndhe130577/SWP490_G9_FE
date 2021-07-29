@@ -47,6 +47,9 @@ const ModalSell = ({
         buyer: "",
         isPaid: true,
       }));
+    } else if (name === "trader") {
+      debugger;
+      getFTByTrader(value);
     }
     setTransaction((prevState) => ({
       ...prevState,
@@ -118,6 +121,18 @@ const ModalSell = ({
       console.log(error);
     }
   }
+  async function getFTByTrader(traderId) {
+    try {
+      let rs = await apis.getFTByTrader({}, "GET", traderId);
+      if (rs && rs.statusCode === 200) {
+        setTransaction((pre) => ({ ...pre, listFishType: rs.data }));
+        // return rs.data
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     convertDataInEditMode();
     getBuyer();
@@ -143,6 +158,7 @@ const ModalSell = ({
             value={transaction.trader || ""}
             onChange={(e) => handleChangeTran("trader", e)}
             items={dataDf.trader || []}
+            displayField={"lastname"}
           />
         </Col>
 
@@ -153,7 +169,7 @@ const ModalSell = ({
             value={transaction.buyer || []}
             onSelect={(e) => handleChangeTran("buyer", e)}
             items={transaction.listBuyer || []}
-            api={API_FETCH.API_FIND_BUYER}
+            api={API_FETCH.FIND_BUYER}
             placeholder={i18n.t("enterNameToFindBuyer")}
             disabled={transaction.isRetailCustomers || false}
           />
@@ -174,7 +190,7 @@ const ModalSell = ({
             label={i18n.t("typeOfFish")}
             value={transaction.fishTypeId || ""}
             onChange={(e) => handleChangeTran("fishTypeId", e)}
-            items={currentTransaction.arrFish || dataDf.arrFish || []}
+            items={transaction.listFishType || dataDf.arrFish || []}
           />
         </Col>
         <Col md="6" xs="12">

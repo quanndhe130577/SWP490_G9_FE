@@ -9,9 +9,9 @@ import TradersToday from "./TradersToday";
 const ChooseTraders = ({
   isShowChooseTraders,
   setShowChooseTraders,
-  trader,
+  // trader,
   currentTransaction = {},
-  setCurrentTransaction,
+  // setCurrentTransaction,
   dataFetched,
   handleChangeTrans,
 }) => {
@@ -23,13 +23,14 @@ const ChooseTraders = ({
       // create transaction
       try {
         let rs = await apis.createTransactions({
-          date: helper.getDateFormat(),
+          // date: helper.getDateFormat(),
+          date: helper.correctDate(),
           listTraderId: currentTransaction.listTraderId,
         });
         if (rs && rs.statusCode === 200) {
           helper.toast("success", i18n.t(rs.message || "success"));
         }
-      } catch (error) {}
+      } catch (error) { }
     }
   };
 

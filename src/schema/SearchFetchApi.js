@@ -55,24 +55,28 @@ function DebounceSelect({
 } // Usage of DebounceSelect
 
 async function fetchUserList(api, param, displayField) {
-  let rs = (await apis[api.url](api.body, api.method, param)) || [];
+  if (api && api.url) {
+    let rs = (await apis[api.url](api.body, api.method, param)) || [];
 
-  if (rs && rs.statusCode === 200) {
-    let idx = 0;
-    for (const ele of rs.data) {
-      ele.idx = idx + 1;
-      idx++;
-      // check  display field is array then convert to string
-      if (displayField && Array.isArray(displayField)) {
-        let temStr = "";
-        for (const field of displayField) {
-          temStr += ele[field] + "  ";
+    if (rs && rs.statusCode === 200) {
+      let idx = 0;
+      for (const ele of rs.data) {
+        ele.idx = idx + 1;
+        idx++;
+        // check  display field is array then convert to string
+        if (displayField && Array.isArray(displayField)) {
+          let temStr = "";
+          for (const field of displayField) {
+            temStr += ele[field] + "  ";
+          }
+          ele.label = temStr;
         }
-        ele.label = temStr;
       }
     }
+    return rs.data;
+  } else {
+    console.log("Error: api not define");
   }
-  return rs.data;
 }
 
 const SearchFetchApi = ({

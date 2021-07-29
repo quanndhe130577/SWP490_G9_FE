@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "reactstrap";
-import apis from "../../../services/apis";
-import helper from "../../../services/helper";
-import local from "../../../services/local";
+import { apis, local, helper } from "../../../services";
 import { Card, Dropdown, Menu, Table } from "antd";
 import { useDispatch } from "react-redux";
 import i18n from "i18next";
 import { useHistory } from "react-router-dom";
 import Moment from "react-moment";
 import NumberFormat from "react-number-format";
+// import moment from "moment";
 
 const ManaSell = () => {
   let history = useHistory();
@@ -16,9 +15,9 @@ const ManaSell = () => {
   const [isLoading, setLoading] = useState(true);
   const [transaction, setTransaction] = useState([]);
 
-  async function onClick(mode, id) {
+  async function onClickBtn(mode, id, row) {
     if (mode === "edit") {
-      history.push("sellFish?id=" + id);
+      history.push("sellF?date=" + helper.getDateFormat(row.date, "ddmmyyyy"));
       local.set(
         "historyTransaction",
         transaction.find((e) => e.id === id)
@@ -46,21 +45,21 @@ const ManaSell = () => {
     }
   }
 
-  function renderBtnAction(id) {
+  function renderBtnAction(id, row) {
     return (
       <Menu>
         <Menu.Item key="1">
           <Button
             color="info"
             className="mr-2"
-            onClick={() => onClick("edit", id)}
+            onClick={() => onClickBtn("edit", id, row)}
           >
             <i className="fa fa-pencil-square-o mr-1" />
             {i18n.t("edit")}
           </Button>
         </Menu.Item>
         <Menu.Item key="2">
-          <Button color="danger" onClick={() => onClick("delete", id)}>
+          <Button color="danger" onClick={() => onClickBtn("delete", id, row)}>
             <i className="fa fa-trash-o mr-1" />
             {i18n.t("delete")}
           </Button>
@@ -126,8 +125,8 @@ const ManaSell = () => {
       title: "",
       dataIndex: "id",
       key: "id",
-      render: (id) => (
-        <Dropdown overlay={renderBtnAction(id)}>
+      render: (id, row) => (
+        <Dropdown overlay={renderBtnAction(id, row)}>
           <Button>
             <i className="fa fa-cog mr-1" />
             <label className="tb-lb-action">{i18n.t("action")}</label>
@@ -140,7 +139,10 @@ const ManaSell = () => {
   async function fetchData() {
     try {
       setLoading(true);
-      let rs = await apis.getAllTransaction();
+      // let date = moment(new Date()).format("DDMMYYYY");
+      // let rs = await apis.getTransByDate({}, "GET", date);
+      let rs = await apis.getAllTransaction({}, "GET");
+
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         setTransaction(rs.data);

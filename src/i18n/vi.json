@@ -154,5 +154,7 @@
   "Buy Price": "Giá mua",
   "enterNameToFindBuyer": "Nhập tên người mua để tìm",
   "retailCustomers": "Khách lẻ",
-  "Or": "Hoặc"
+  "Or": "Hoặc",
+  "createTransDetail": "Tạo mã bán",
+  "editTransDetail": "Sửa mã bán"
 }

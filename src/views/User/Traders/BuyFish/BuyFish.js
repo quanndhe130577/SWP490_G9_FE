@@ -93,7 +93,7 @@ const BuyFish = (props) => {
           value={value}
           displayType={"text"}
           thousandSeparator={true}
-          // suffix={i18n.t("suffix")}
+        // suffix={i18n.t("suffix")}
         />
       );
     }
@@ -450,6 +450,7 @@ const BuyFish = (props) => {
 
   // Update All fish type anhnbt
   async function updateAllFishType(body, purchase) {
+    var success = false;
     try {
       setLoading(true);
       let rs = await apis.updateAllFishType(body, "POST");
@@ -463,11 +464,14 @@ const BuyFish = (props) => {
           ...pre,
           fishType: newArr || [],
         }));
+        success = true;
+        helper.toast("success", rs.message);
       }
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
+      return success;
     }
   }
 
@@ -593,6 +597,12 @@ const BuyFish = (props) => {
           currentPurchase={currentPurchase}
           setCurrentPurchase={setCurrentPurchase}
           dataDf={dataDf}
+          // setDataDf={(newDfFish) => {
+          //   setData((pre) => ({
+          //     ...pre,
+          //     fishType: newDfFish || [],
+          //   }));
+          // }}
           createPurchase={createPurchase}
           updateAllFishType={updateAllFishType}
         />
