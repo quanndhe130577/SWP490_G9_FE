@@ -45,7 +45,7 @@ const BuyFish = (props) => {
         if (tem) {
           tem.id = currentPurchase.id;
           tem.purchaseDetailId = id;
-          tem.purchaseId = currentPurchase.id;
+          //tem.purchaseId = currentPurchase.id;
           setMode("edit");
           setCurrentPurchase(Object.assign(currentPurchase, tem));
           setIsShowBuy(true);
@@ -352,7 +352,6 @@ const BuyFish = (props) => {
 
   // create purchase
   async function createPurchase() {
-    debugger
     try {
       let traderId = session.get("user").userID;
       let pondOwnerID = currentPurchase.pondOwner;
@@ -408,7 +407,7 @@ const BuyFish = (props) => {
         weight,
         listDrumId,
         id: currentPurchase.purchaseDetailId,
-        purchaseId: currentPurchase.purchaseId,
+        purchaseId: currentPurchase.id,
       });
       if (rs && rs.statusCode === 200) {
         getAllPurchaseDetail(currentPurchase);
@@ -456,7 +455,6 @@ const BuyFish = (props) => {
 
   // Update All fish type anhnbt
   async function updateAllFishType(body, purchase) {
-    debugger
     var success = false;
     try {
       setLoading(true);
@@ -473,7 +471,7 @@ const BuyFish = (props) => {
         }));
         success = true;
         helper.toast("success", rs.message);
-        await getAllPurchaseDetail(currentPurchase);
+        await getAllPurchaseDetail(purchase);
       }
     } catch (error) {
       console.log(error);
