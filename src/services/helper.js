@@ -48,16 +48,28 @@ helper.confirm = (content) => {
     });
   });
 };
-helper.getCurrentDate = () => {
-  var d = new Date(),
-    month = "" + (d.getMonth() + 1),
+helper.getDateFormat = (date = new Date(), format = "yyyy-mm-dd") => {
+  // format date as type yyyy-mm-dd
+  var d = new Date(date);
+  let month = "" + (d.getMonth() + 1),
     day = "" + d.getDate(),
     year = d.getFullYear();
 
   if (month.length < 2) month = "0" + month;
   if (day.length < 2) day = "0" + day;
-
-  return [year, month, day].join("-");
+  if (format === "yyyy-mm-dd") return [year, month, day].join("-");
+  else if (format === "ddmmyyyy") return day + month + year;
 };
-
+helper.correctDate = (dateDf) => {
+  let date = dateDf;
+  if (!date) {
+    date = new Date();
+  }
+  date = new Date(date);
+  let hoursDiff = date.getHours() - date.getTimezoneOffset() / 60;
+  let minutesDiff = (date.getHours() - date.getTimezoneOffset()) % 60;
+  date.setHours(hoursDiff);
+  date.setMinutes(minutesDiff);
+  return date;
+};
 export default helper;

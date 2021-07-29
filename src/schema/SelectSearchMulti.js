@@ -14,13 +14,15 @@ class SelectSearchMulti extends Component {
       onChange,
       onBlur,
       items = [],
+      displayField = "name",
+      saveField = "id",
     } = this.props;
 
     return (
       <div className={"form-group" + (submitted && !value ? " has-error" : "")}>
         {label && (
-          <label className="bold">
-            {label} {required ? <span>*</span> : ""}
+          <label className="bold red">
+            {label} {required ? <span style={{ color: "red" }}>*</span> : ""}
           </label>
         )}
 
@@ -32,17 +34,16 @@ class SelectSearchMulti extends Component {
           defaultValue={value}
           value={value}
           onChange={(e) => {
-            console.log("a" + e);
-
             let a = Array.from(new Set(e));
-            console.log("a1" + a);
             onChange(a);
           }}
           onBlur={onBlur}
           disabled={isDisable}
         >
           {items.map((it) => (
-            <Option key={it.value || it.id}>{it.label || it.name}</Option>
+            <Option key={it.value || it[saveField]}>
+              {it[displayField] || it.label}
+            </Option>
           ))}
         </Select>
       </div>

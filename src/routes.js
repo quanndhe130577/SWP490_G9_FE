@@ -1,9 +1,13 @@
-import { DatabaseTwoTone } from "@ant-design/icons";
+import { Spin } from "antd";
 import React from "react";
 import Loadable from "react-loadable";
 
 function Loading() {
-  return <div>Loading...</div>;
+  return (
+    <div>
+      <Spin />
+    </div>
+  );
 }
 const Home = Loadable({
   loader: () => import("./views/Home/index"),
@@ -13,7 +17,10 @@ const ManaBuy = Loadable({
   loader: () => import("./views/Management/BuyFish"),
   loading: Loading,
 });
-
+const ManaSell = Loadable({
+  loader: () => import("./views/Management/Sell"),
+  loading: Loading,
+});
 const BuyFish = Loadable({
   loader: () => import("./views/User/Traders/BuyFish/BuyFish"),
   loading: Loading,
@@ -71,8 +78,25 @@ const Debt = Loadable({
   loader: () => import("./views/User/Debt/Debt"),
   loading: Loading,
 });
+const Trader = Loadable({
+  loader: () => import("./views/User/WeightRecorder/Trader/Trader"),
+  loading: Loading,
+});
 const EmployeeSalary = Loadable({
   loader: () => import("./views/User/Traders/EmployeeSalary/EmployeeSalary"),
+  loading: Loading,
+});
+// const ForgetPassword = Loadable({
+//   loader: () => import("./views/Entry/ForgetPassword/Forget"),
+//   loading: Loading,
+// });
+const CheckOTP = Loadable({
+  loader: () => import("./views/Entry/ForgetPassword/CheckOTP"),
+  loading: Loading,
+});
+const EmployeeBaseSalary = Loadable({
+  loader: () =>
+    import("./views/User/Traders/Salary/EmployeeBaseSalary/EmployeeBaseSalary"),
   loading: Loading,
 });
 const routes = [
@@ -123,7 +147,7 @@ const routes = [
   },
   {
     path: "/employee",
-    name: "EmployEE",
+    name: "Employee",
     component: Employee,
   },
   {
@@ -147,7 +171,7 @@ const routes = [
     component: Buyer,
   },
   {
-    path: "/sell",
+    path: "/sellF",
     name: "SellFish",
     component: SellFish,
   },
@@ -156,11 +180,32 @@ const routes = [
     name: "Debt",
     component: Debt,
   },
+  {},
+  {
+    path: "/trader",
+    name: "Trader",
+    component: Trader,
+  },
+  {
+    path: "/sell",
+    name: "ManaSell",
+    component: ManaSell,
+  },
   {
     path: "/salary",
     name: "EmployeeSalary",
     component: EmployeeSalary,
-  }
+  },
+  {
+    path: "/checkOTP",
+    name: "checkOTP_reset",
+    component: CheckOTP,
+  },
+  {
+    path: "/employeeBaseSalary",
+    name: "EmployeeBaseSalary",
+    component: EmployeeBaseSalary,
+  },
 ];
 
 export default routes;

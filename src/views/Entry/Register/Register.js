@@ -12,7 +12,7 @@ const Login = (props) => {
     OTPID: 3,
     DOB: "1999-10-21",
     Avatar: null,
-    roleNormalizedName: "TRADER"
+    roleNormalizedName: "TRADER",
   });
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
@@ -28,7 +28,7 @@ const Login = (props) => {
   };
 
   const handleSubmit = async () => {
-    let rs
+    let rs;
     try {
       setSubmitted(true);
       if (!user.phoneNumber) {
@@ -40,16 +40,17 @@ const Login = (props) => {
           handleChange(rs.data.otpid, "otpid");
           helper.toast("success", i18n.t(rs.message || "systemError"));
         }
-        setStep(1);
-
+        //setStep(1);
       } else if (step === 1) {
-        rs = await apis.checkOtp({ otpid: user.otpid, code: user.code, phoneNumber: user.phoneNumber }, "POST");
-        if (rs && rs.statusCode === 200) {
+        rs = await apis.checkOtp(
+          { otpid: user.otpid, code: user.code, phoneNumber: user.phoneNumber },
+          "POST"
+        );
+        if (rs && rs.statusCode === 200 && rs.success) {
           setStep(2);
           helper.toast("success", i18n.t(rs.message || "systemError"));
         }
-        setStep(2);
-
+        //setStep(2);
       } else if (step === 2) {
         rs = await apis.register(user);
         if (rs && rs.statusCode === 200) {
@@ -94,11 +95,11 @@ const Login = (props) => {
     return i18n.t(msg);
   };
   const _handleKeyDown = (e) => {
-    console.log(e.key)
-    if (e.key === 'Enter') {
-      handleSubmit()
+    console.log(e.key);
+    if (e.key === "Enter") {
+      handleSubmit();
     }
-  }
+  };
   return (
     <div className="jumbotron">
       <div className="div-login pt-0">
@@ -111,10 +112,7 @@ const Login = (props) => {
             />
           </div>
 
-          <div className="con-login  border container"
-
-          >
-
+          <div className="con-login  border container">
             <div className="col-sm-6 col-md-6 ">
               <h2 style={{ textAlign: "center" }}> {textHeaders()}</h2>
               <div name="form">
@@ -125,7 +123,12 @@ const Login = (props) => {
                     onKeyDown={_handleKeyDown}
                   />
                 )}
-                {step === 1 && <Step1 phoneNumber={user.phoneNumber} onChange={(e) => handleChange(e, "code")} />}
+                {step === 1 && (
+                  <Step1
+                    phoneNumber={user.phoneNumber}
+                    onChange={(e) => handleChange(e, "code")}
+                  />
+                )}
 
                 {step === 2 && (
                   <>

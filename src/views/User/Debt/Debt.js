@@ -18,15 +18,15 @@ export default class Debt extends Component {
         searchedColumn: "",
         isShowModal: false,
         mode: "",
-        data: dataTest,
+        data: [],
         loading: true,
       };
       this.testHanldeEdit  = this.testHanldeEdit.bind(this);
     }
 
     componentDidMount() {
-      this.setState({loading:false})
-      // this.fetchDebt();
+      //this.setState({loading:false})
+      this.fetchDebt();
     }
     testHanldeEdit(editedDebt){
       let temArr= this.state.data;
@@ -228,69 +228,48 @@ export default class Debt extends Component {
             render: (text) => <label>{text}</label>,
           },
           {
-            title: i18n.t("Debtor Name"),
-            dataIndex: "debtorname",
-            key: "debtorname",
-            ...this.getColumnSearchProps("debtorname"),
-            sorter: (a, b) => a.debtorname.length - b.debtorname.length,
+            title: i18n.t("Debtor"),
+            dataIndex: "debtor",
+            key: "debtor",
+            ...this.getColumnSearchProps("debtor"),
+            sorter: (a, b) => a.debtor.length - b.debtor.length,
             sortDirections: ["descend", "ascend"],
           },
           {
-            title: i18n.t("Note"),
-            dataIndex: "note",
-            key: "note",
-            ...this.getColumnSearchProps("note"),
-            sorter: (a, b) => a.note.length - b.note.length,
+            title: i18n.t("Creditor"),
+            dataIndex: "creditors",
+            key: "creditors",
+            ...this.getColumnSearchProps("creditors"),
+            sorter: (a, b) => a.creditors.length - b.creditors.length,
             sortDirections: ["descend", "ascend"],
           },
           {
-            title: i18n.t("Money"),
-            dataIndex: "money",
-            key: "money",
-            ...this.getColumnSearchProps("money"),
-            sorter: (a, b) => a.money - b.money,
+            title: i18n.t("Debt Money") + i18n.t("(suffix)"),
+            dataIndex: "debtMoney",
+            key: "debtMoney",
+            ...this.getColumnSearchProps("debtMoney"),
+            sorter: (a, b) => a.debtMoney - b.debtMoney,
             sortDirections: ["descend", "ascend"],
-            render: (money) => (
+            render: (debtMoney) => (
               <NumberFormat
-                value={money}
+                value={debtMoney}
                 displayType={"text"}
                 thousandSeparator={true}
               />
             ),
           },
           {
-            title: i18n.t("Created Date"),
-            dataIndex: "createdDate",
-            key: "createdDate",
-            ...this.getColumnSearchProps("createdDate"),
-            sorter: (a, b) => a.createdDate.length - b.createdDate.length,
+            title: i18n.t("Date"),
+            dataIndex: "date",
+            key: "date",
+            ...this.getColumnSearchProps("date"),
+            sorter: (a, b) => a.date.length - b.date.length,
             sortDirections: ["descend", "ascend"],
-            render: (createdDate) => (
+            render: (date) => (
               <Moment format="DD/MM/YYYY">
-                {createdDate}
+                {date}
               </Moment>
             ),
-          },
-          {
-            title: i18n.t("Deadline"),
-            dataIndex: "deadline",
-            key: "deadline",
-            ...this.getColumnSearchProps("deadline"),
-            sorter: (a, b) => a.deadline.length - b.deadline.length,
-            sortDirections: ["descend", "ascend"],
-            render: (deadline) => (
-              <Moment format="DD/MM/YYYY">
-                {deadline}
-              </Moment>
-            ),
-          },
-          {
-            title: i18n.t("Status"),
-            dataIndex: "status",
-            key: "status",
-            ...this.getColumnSearchProps("status"),
-            sorter: (a, b) => a.status.length - b.status.length,
-            sortDirections: ["descend", "ascend"],
           },
           {
             title: "",
@@ -314,9 +293,7 @@ export default class Debt extends Component {
                 mode={mode}
                 closeModal={this.closeModal}
                 currentDebt={currentDebt || {}}
-                loading={loading}
-                testHanldeEdit={this.testHanldeEdit}
-                
+                loading={loading}                
               />
             )}
             <Row>
@@ -335,25 +312,3 @@ export default class Debt extends Component {
         );
     }
 }
-const dataTest = [
-  {
-    id: 1,
-    idx: "0",
-    debtorname: "Quan",
-    note: "tien ca",
-    money: 10000,
-    createdDate: "2021-09-05",
-    deadline: "2021-09-12",
-    status: "đã trả"
-  },
-  {
-    id: 2,
-    idx: "1",
-    debtorname: "Tam",
-    note: "tien ca",
-    money: 120000,
-    createdDate: "2021-06-05",
-    deadline: "2021-06-12",
-    status: "chưa trả"
-  }
-]

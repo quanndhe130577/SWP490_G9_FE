@@ -18,7 +18,7 @@ var path = {
   updatePO: "/api/pondOwner/update",
   deletePO: "/api/pondOwner/delete",
 
-  getFTByTraderID: "/api/fishtype/getall",
+  getAllFT: "/api/fishtype/getall", // Method GET, neu co purchaseId thi get theo purchare id
   getLastAllFTByTraderID: "/api/fishtype/getlastall",
   createFT: "/api/fishtype/create", // method post need param
   getUserInfo: "/api/getUserInfo",
@@ -42,6 +42,7 @@ var path = {
   deletePurchase: "/api/purchase/delete",
   updatePurchase: "/api/purchase/update",
   closePurchase: "/api/purchase/chot-so",
+  getPurchasesById: "/api/purchase/getone", // method GET pram purchase id
 
   // purchase  detail
   createPurchaseDetail: "/api/purchasedetail/create",
@@ -62,6 +63,7 @@ var path = {
   updateEmployee: "/api/employee/update",
   deleteEmployee: "/api/employee/delete",
   getDetailEmployee: "/api/employee/detail/{empId}",
+  getSalaryDetailEmployee: "/api/employee/salaryDetail",
 
   //Time keeping
   updateTimeKeeping: "/api/timeKeeping/update",
@@ -69,6 +71,23 @@ var path = {
   getTimeKeepingByTraderWithDate: "/api/timeKeeping/getByTrader/date",
   getTimeKeepingByTraderWithMonth: "/api/timeKeeping/getByTrader/month",
   deleteTimeKeepingByTrader: "/api/timeKeeping/delete",
+  paidTimeKeeping: "/api/timeKeeping/paid",
+
+  //Base salsry
+  createBaseSalary: "/api/salary/create",
+
+  //History salsry
+  getAllEmpSalary: "/api/salary/getall",
+  createEmpSalary: "/api/salary/create",
+  deleteEmpSalary: "/api/salary/delete",
+  updateEmpSalary: "/api/salary/update",
+  getEmpSalary: "/api/salary/getsalary",
+
+  //Advance salsry
+  getAllAdvanceSalary: "/api/advanceSalary/getall",
+  createAdvanceSalary: "/api/advanceSalary/create",
+  deleteAdvanceSalary: "/api/advanceSalary/delete",
+  updateAdvanceSalary: "/api/advanceSalary/update",
 
   //anhnbt
   getCostIncurred: "/api/costincurred/getall",
@@ -77,21 +96,45 @@ var path = {
   deleteCostIncurred: "/api/costincurred/delete",
   getDetailCostIncurred: "/api/costincurred/detail/{incurredId}",
 
-  //anhnbt
+  //anhnbt - Buyer
   getBuyers: "/api/buyer/getall",
   createBuyer: "/api/buyer/create",
   updateBuyer: "/api/buyer/update",
   deleteBuyer: "/api/buyer/delete",
   getDetailBuyer: "/api/buyer/detail/{buyerId}",
+  getBuyerByNameOrPhone: "/api/buyer/getbuyers", // Method "GET", param: name or phone
 
   //Debt
-  getAllDebt: "",
+  getAllDebt: "/api/debt/getall",
   createDebt: "",
   updateDebt: "",
   deleteDebt: "",
   getDetailDebt: "",
   // fishType
-  getOneFT: "api/fishtype/getone/{ddMMyyyy}/{pondOwnerId}",
+  getOneFT: "/api/fishtype/getone/{ddMMyyyy}/{pondOwnerId}",
+  updateAllFishType: "/api/fishtype/updatelist",
+  getNewFishType: "/api/fishtype/getnew",
+
+  // Trader management for weight recorder
+  findTraderByPhone: "/api/trader/find-trader-by-phone", //GET, param: phoneNumber
+  suggestTDByPhone: "/api/wc/suggest-traders-by-phone",
+  wrAddTrader: "/api/wc/add-trader",
+  getTraderByWR: "/api/wc/get-all-trader", // GET
+
+  //Transaction
+  createTransactions: "/api/transaction/createlist",
+  getAllTransaction: "/api/transaction/getall", //GET
+  getTransByDate: "/api/transaction/getall", //GET param:date /{ddMMyyyy}
+
+  //anhnbt forget(reset password)
+  getResetPassword: "/api/otp/reset-password",
+  resetPassword: "/api/user/reset-password",
+
+  // Transaction detail
+  createTranDetail: "/api/transactiondetail/create",
+  getAllTranDetail: "/api/transactiondetail/getall", // GET if has param: date {ddMMyyyy} will get by date
+  getFTByTrader: "/api/fishtype/wc/getall", // GET, param: TraderID, use when selling
+  // api/transactiondetail/getall/{ddMMyyyy}
 };
 
 Object.keys(path).forEach(function (key) {

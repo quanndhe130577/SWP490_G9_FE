@@ -11,6 +11,7 @@ import services from "../../../../services";
 import NumberFormat from "react-number-format";
 import { useSelector } from "react-redux";
 import Moment from "react-moment";
+import _ from "lodash";
 const { local, session, apis, helper } = services;
 
 const BuyFish = (props) => {
@@ -22,9 +23,15 @@ const BuyFish = (props) => {
   const [mode, setMode] = useState("");
   const [currentPurchase, setCurrentPurchase] = useState({});
   const [suggestionPurchase, setSuggestionPurchase] = useState(null); //purchase dung de goi y khi them purchase detail
-  const [dataDf, setData] = useState({ basket: [], drum: [], truck: [] }); // list data of basket, drum, truck,...
+  const [dataDf, setData] = useState({
+    basket: [],
+    drum: [],
+    truck: [],
+    fishType: [],
+  }); // list data of basket, drum, truck,...
   const [isShowClosePurchase, setShowClosePurchase] = useState(false);
-
+  // const [currentListFishTyppe, setCurrentListFishTyppe] = useState([]);
+  // const [query, setQuery] = useState({});
   const currentPurchasePROPS = useSelector(
     (state) => state.purchase.currentPurchase
   ); // data in redux
@@ -37,6 +44,7 @@ const BuyFish = (props) => {
         let tem = purchase.find((e) => e.id === id);
         if (tem) {
           tem.purchaseDetailId = id;
+          tem.purchaseId = currentPurchase.id;
           setMode("edit");
           setCurrentPurchase(Object.assign(currentPurchase, tem));
           setIsShowBuy(true);
@@ -139,6 +147,18 @@ const BuyFish = (props) => {
       key: "weight",
     },
     {
+      title: i18n.t("basket"),
+      dataIndex: "basket",
+      key: "basket",
+      render: (basket) => (
+        <div>
+          {basket && (
+            <label>{basket.type + ": " + basket.weight + " (kg)"}</label>
+          )}
+        </div>
+      ),
+    },
+    {
       title: (
         <div>
           <label>{i18n.t("intoMoney")}</label>
@@ -153,12 +173,6 @@ const BuyFish = (props) => {
       },
     },
     {
-      title: i18n.t("basket"),
-      dataIndex: "basket",
-      key: "basket",
-      render: (basket) => <div>{basket && <label>{basket.type}</label>}</div>,
-    },
-    {
       title: i18n.t("drum"),
       dataIndex: "listDrum",
       key: "listDrum",
@@ -170,7 +184,6 @@ const BuyFish = (props) => {
       key: "truck",
       render: (truck) => <div>{truck && <label>{truck.name}</label>}</div>,
     },
-
     {
       title: i18n.t("action"),
       key: "id",
@@ -202,15 +215,19 @@ const BuyFish = (props) => {
   };
 
   // fetch data
-  async function fetchData() {
+  async function fetchData(query) {
     try {
       setLoading(true);
-
       let user = session.get("user");
       getPondOwnerByTraderId(user.userID);
-      getFTByTraderID();
+      if (query && query.id) {
+        getFTByPurchaseId(query.id);
+      } else {
+        getLastAllFTByTraderID();
+      }
       getTruckByTraderID();
       getBasketByTraderId();
+      if (query && query.id) getPurchasesById(query.id);
     } catch (error) {
       console.log(error);
     } finally {
@@ -232,11 +249,35 @@ const BuyFish = (props) => {
     }
   }
 
-  async function getFTByTraderID() {
+  async function getLastAllFTByTraderID() {
     try {
       //get fish type trader id
       let rs = await apis.getLastAllFTByTraderID({}, "GET");
       if (rs && rs.statusCode === 200) {
+        setData((pre) => ({
+          ...pre,
+          fishType: rs.data || [],
+        }));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getFTByPurchaseId(purchaseId) {
+    try {
+      //get fish type by purchase id
+      let rs = await apis.getAllFT({}, "GET", purchaseId);
+      if (rs && rs.statusCode === 200) {
+        let temListFish = [];
+        rs.data.map((el) => temListFish.push(el.id + ""));
+        let temObj = Object.assign(currentPurchase, {
+          listFishId: temListFish,
+          arrFish: rs.data,
+        });
+        setCurrentPurchase(temObj);
+        local.set("currentPurchase", temObj);
+
         setData((pre) => ({
           ...pre,
           fishType: rs.data || [],
@@ -293,12 +334,27 @@ const BuyFish = (props) => {
     }
   }
 
+  async function getPurchasesById(purchaseId) {
+    try {
+      let rs = await apis.getPurchasesById({}, "GET", purchaseId);
+      if (rs && rs.statusCode === 200) {
+        let tem = rs.data;
+        tem = Object.assign(tem, currentPurchase);
+        setCurrentPurchase(tem);
+        local.set("currentPurchase", tem);
+      }
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
+
   // create purchase
   async function createPurchase() {
     try {
       let traderId = session.get("user").userID;
       let pondOwnerID = currentPurchase.pondOwner;
-      let date = helper.getCurrentDate();
+      let date = helper.getDateFormat();
 
       let rs = await apis.createPurchase({ traderId, pondOwnerID, date });
       if (rs && rs.statusCode === 200) {
@@ -306,6 +362,9 @@ const BuyFish = (props) => {
         tem = Object.assign(tem, currentPurchase);
         setCurrentPurchase(tem);
         local.set("currentPurchase", tem);
+        return tem;
+      } else {
+        helper.toast("error", rs.message);
       }
     } catch (error) {
       console.log(error);
@@ -341,17 +400,16 @@ const BuyFish = (props) => {
   async function updatePurchaseDetail(detail) {
     try {
       let { fishTypeId, basketId, weight, listDrumId = [] } = detail;
-
       let rs = await apis.updatePurchaseDetail({
         fishTypeId,
         basketId,
         weight,
         listDrumId,
         id: currentPurchase.purchaseDetailId,
-        purchaseId: currentPurchase.id,
+        purchaseId: currentPurchase.purchaseId,
       });
       if (rs && rs.statusCode === 200) {
-        getAllPurchaseDetail(detail);
+        getAllPurchaseDetail(currentPurchase);
         helper.toast("success", i18n.t(rs.message));
       }
     } catch (error) {
@@ -365,7 +423,11 @@ const BuyFish = (props) => {
   async function getAllPurchaseDetail(currentPurchase) {
     try {
       setLoading(true);
-      let rs = await apis.getAllPurchaseDetail({}, "GET", currentPurchase.id);
+      let rs = await apis.getAllPurchaseDetail(
+        {},
+        "GET",
+        currentPurchase.purchaseId || currentPurchase.id
+      );
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         setPurchase(rs.data);
@@ -376,6 +438,44 @@ const BuyFish = (props) => {
       console.log(error);
     } finally {
       setLoading(false);
+    }
+  }
+
+  const mergeByProperty = (target, source, prop) => {
+    source.forEach((sourceElement) => {
+      let targetElement = target.find((targetElement) => {
+        return sourceElement[prop] === targetElement[prop];
+      });
+      targetElement
+        ? Object.assign(targetElement, sourceElement)
+        : target.push(sourceElement);
+    });
+  };
+
+  // Update All fish type anhnbt
+  async function updateAllFishType(body, purchase) {
+    var success = false;
+    try {
+      setLoading(true);
+      let rs = await apis.updateAllFishType(body, "POST");
+      if (rs && rs.statusCode === 200) {
+        let temObj = { ...purchase, ...currentPurchase, arrFish: rs.data };
+        setCurrentPurchase(temObj);
+        local.set("currentPurchase", temObj);
+        let newArr = _.cloneDeep(dataDf.fishType);
+        mergeByProperty(newArr, rs.data, "id");
+        setData((pre) => ({
+          ...pre,
+          fishType: newArr || [],
+        }));
+        success = true;
+        helper.toast("success", rs.message);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+      return success;
     }
   }
 
@@ -412,13 +512,14 @@ const BuyFish = (props) => {
 
     if (query && query.id) {
       query.id = parseInt(query.id);
+      // setQuery(query);
     }
 
     let tem = local.get("currentPurchase") || query;
     if (tem.pondOwner) {
       tem.pondOwner = parseInt(tem.pondOwner);
     }
-
+    // khi tao moi purchase
     if (tem.status === "Pending" && !query.id) {
       tem = {};
       local.set("currentPurchase", tem);
@@ -440,7 +541,7 @@ const BuyFish = (props) => {
     setData((pre) => ({ ...pre, arrFish: tem.arrFish }));
     setCurrentPurchase(tem);
 
-    fetchData();
+    fetchData(query);
     // eslint-disable-next-line
   }, [props, currentPurchasePROPS]);
 
@@ -500,7 +601,14 @@ const BuyFish = (props) => {
           currentPurchase={currentPurchase}
           setCurrentPurchase={setCurrentPurchase}
           dataDf={dataDf}
+          // setDataDf={(newDfFish) => {
+          //   setData((pre) => ({
+          //     ...pre,
+          //     fishType: newDfFish || [],
+          //   }));
+          // }}
           createPurchase={createPurchase}
+          updateAllFishType={updateAllFishType}
         />
       )}
       {!isShowChoosePond && (

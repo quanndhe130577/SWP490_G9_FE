@@ -1,15 +1,16 @@
 // import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
-import { Card, Dropdown, Input, Menu, Space, Table } from "antd";
+import { Card, DatePicker, Dropdown, Input, Menu, Space, Table } from "antd";
 import i18n from "i18next";
 import React, { Component } from "react";
+import Moment from "react-moment";
 import NumberFormat from "react-number-format";
 import { Button, Col, Row } from "reactstrap";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import ModalForm from "./ModalCostIncurred";
-
+import moment from 'moment'
 export default class CostIncurred extends Component {
   constructor(props) {
     super(props);
@@ -95,11 +96,12 @@ export default class CostIncurred extends Component {
     );
   }
   handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
+
     this.setState({
       searchText: selectedKeys[0],
       searchedColumn: dataIndex,
     });
+    confirm();
   };
 
   handleReset = (clearFilters) => {
@@ -138,7 +140,7 @@ export default class CostIncurred extends Component {
     }
   }
 
-  getColumnSearchProps = (dataIndex) => ({
+  getColumnSearchProps = (dataIndex, isDate = false) => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -146,20 +148,37 @@ export default class CostIncurred extends Component {
       clearFilters,
     }) => (
       <div style={{ padding: 8 }}>
-        <Input
-          ref={(node) => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() =>
-            this.handleSearch(selectedKeys, confirm, dataIndex)
-          }
-          style={{ marginBottom: 8, display: "block" }}
-        />
+        {isDate ?
+          <DatePicker
+            value={selectedKeys[0]}
+            onChange={(e) => {
+              let t = moment(e, 'DD/MM/YYYY');
+              setSelectedKeys(e ? [t] : [])
+              this.handleSearch(selectedKeys, confirm, dataIndex)
+            }}
+            onPressEnter={() => {
+              this.handleSearch(selectedKeys, confirm, dataIndex)
+            }
+            }
+            format={'DD/MM/YYYY'}
+            style={{ marginBottom: 8, display: "block" }}
+          /> :
+          <Input
+            ref={(node) => {
+              this.searchInput = node;
+            }}
+            placeholder={`Search ${dataIndex}`}
+            value={selectedKeys[0]}
+            onChange={(e) => {
+              setSelectedKeys(e.target.value ? [e.target.value] : [])
+            }
+            }
+            onPressEnter={() =>
+              this.handleSearch(selectedKeys, confirm, dataIndex)
+            }
+            style={{ marginBottom: 8, display: "block" }}
+          />
+        }
         <Space>
           <Button
             type="primary"
@@ -196,16 +215,26 @@ export default class CostIncurred extends Component {
     filterIcon: (filtered) => (
       <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
-    onFilter: (value, record) =>
-      record[dataIndex]
-        ? record[dataIndex]
+    onFilter: (value, record) => {
+      if (isDate) {
+        let x = moment(moment(value).format('DD/MM/YYYY'), 'DD/MM/YYYY')
+        let y = moment(moment(record[dataIndex]).format('DD/MM/YYYY'), 'DD/MM/YYYY')
+
+        return record[dataIndex]
+          ? x.isSame(y, 'day')
+          : ""
+      } else {
+        return record[dataIndex]
+          ? record[dataIndex]
             .toString()
             .toLowerCase()
             .includes(value.toLowerCase())
-        : "",
+          : ""
+      }
+    },
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
-        setTimeout(() => this.searchInput.select(), 100);
+        // setTimeout(() => this.searchInput.select(), 100);
       }
     },
     render: (text) =>
@@ -239,21 +268,12 @@ export default class CostIncurred extends Component {
         sorter: (a, b) => a.name.length - b.name.length,
         sortDirections: ["descend", "ascend"],
       },
-      // {
-      //   title: i18n.t("dob"),
-      //   dataIndex: "dob",
-      //   key: "dob",
-      //   ...this.getColumnSearchProps("dob"),
-      //   sorter: (a, b) => a.dob.length - b.dob.length,
-      //   sortDirections: ["descend", "ascend"],
-      //   render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
-      // },
       {
         title: i18n.t("note"),
         dataIndex: "note",
         key: "note",
         ...this.getColumnSearchProps("note"),
-        sorter: (a, b) => a.note.length - b.note.length,
+        sorter: (a, b) => a.note ? a.note.length : 0 - b.note ? b.note.length : 0,
         sortDirections: ["descend", "ascend"],
       },
       {
@@ -271,7 +291,15 @@ export default class CostIncurred extends Component {
           />
         ),
       },
-
+      {
+        title: i18n.t("date"),
+        dataIndex: "date",
+        key: "date",
+        ...this.getColumnSearchProps("date", true),
+        sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
+        sortDirections: ["descend", "ascend"],
+        render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
+      },
       {
         title: "",
         dataIndex: "id",
@@ -294,7 +322,7 @@ export default class CostIncurred extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentCostInc={currentCostInc || {}}
-            // handleChangePondOwner={handleChangePondOwner}
+          // handleChangePondOwner={handleChangePondOwner}
           />
         )}
         <Row>

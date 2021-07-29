@@ -66,8 +66,14 @@ const ModalBuy = ({
 
   // validate các trường required
   const validateData = () => {
-    let { weight, fishTypeId, truck, basketId } = transaction;
-    if (!weight || !fishTypeId || !truck || !basketId) {
+    let { weight, fishTypeId, truck, basketId, listDrumId } = transaction;
+    if (
+      !weight ||
+      !fishTypeId ||
+      !truck ||
+      !basketId ||
+      listDrumId.length <= 0
+    ) {
       return "fillAll*";
     } else {
       if (weight <= 0.1) {
@@ -82,15 +88,21 @@ const ModalBuy = ({
     }
   };
 
-  function changeKey(arr) {
-    arr.forEach((el) => {
-      helper.renameKey(el, "number", "name");
-    });
-    return arr;
-  }
+  // function changeKey(arr) {
+  //   arr.forEach((el) => {
+  //     helper.renameKey(el, "number", "name");
+  //   });
+  //   return arr;
+  // }
   async function convertDataInEditMode() {
+    if (mode === "create") {
+      setTransaction((prevState) => ({
+        ...prevState,
+        weight: 0,
+      }));
+    }
     // data to display in create mode and edit mode is difference, we need convert data
-    if (mode === "edit") {
+    else if (mode === "edit") {
       let fishTypeId = transaction.fishType.id;
       let basketId = transaction.basket.id;
       let truck = transaction.truck.id;
@@ -128,6 +140,9 @@ const ModalBuy = ({
   }
   useEffect(() => {
     convertDataInEditMode();
+    return () => {
+      setTransaction({});
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
@@ -149,13 +164,15 @@ const ModalBuy = ({
             value={transaction.fishTypeId || ""}
             onChange={(e) => handleChangeTran("fishTypeId", e)}
             items={currentPurchase.arrFish || dataDf.arrFish || []}
+            displayField="fishName"
+            saveField="id"
           />
         </Col>
         <Col md="6" xs="12">
           <Widgets.WeightInput
             required={true}
             label={i18n.t("qtyOfFish(Kg)")}
-            value={transaction.weight || 0}
+            value={transaction.weight || ""}
             onChange={(e) => handleChangeTran("weight", e)}
           />
         </Col>
@@ -180,11 +197,13 @@ const ModalBuy = ({
         {transaction.truck && loading && (
           <Col md="6" xs="12">
             <Widgets.SelectSearchMulti
-              // required={true}
+              required={true}
               label={i18n.t("drum")}
               value={transaction.listDrumId || transaction.listDrum || []}
               onChange={(e) => handleChangeTran("listDrumId", e)}
-              items={changeKey(dataDf.drum || [])}
+              items={dataDf.drum || []}
+              displayField="number"
+              saveField="id"
             />
           </Col>
         )}

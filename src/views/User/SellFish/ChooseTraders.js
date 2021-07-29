@@ -3,39 +3,47 @@ import { Modal } from "antd";
 import { Row, Col } from "reactstrap";
 import i18n from "i18next";
 import Widgets from "../../../schema/Widgets";
-import local from "../../../services/local";
-import helper from "../../../services/helper";
-import PriceFishToday from "./PriceFishToday";
+import { local, helper, apis } from "../../../services";
+import TradersToday from "./TradersToday";
 
-const ChoosePond = ({
-  isShowChoosePond,
-  setShowChoosePond,
-  trader,
-  currentPurchase,
-  setCurrentPurchase,
-  dataDf,
-  createPurchase,
+const ChooseTraders = ({
+  isShowChooseTraders,
+  setShowChooseTraders,
+  // trader,
+  currentTransaction = {},
+  // setCurrentTransaction,
+  dataFetched,
+  handleChangeTrans,
 }) => {
   let isChange = false;
 
-  const handleOk = () => {
-    setShowChoosePond(false);
-    // neu ko co id purchase thì tạo purchase mới
-    if (createPurchase && !currentPurchase.id) {
-      createPurchase();
+  const handleOk = async () => {
+    setShowChooseTraders(false);
+    if (!currentTransaction.id) {
+      // create transaction
+      try {
+        let rs = await apis.createTransactions({
+          // date: helper.getDateFormat(),
+          date: helper.correctDate(),
+          listTraderId: currentTransaction.listTraderId,
+        });
+        if (rs && rs.statusCode === 200) {
+          helper.toast("success", i18n.t(rs.message || "success"));
+        }
+      } catch (error) { }
     }
   };
 
   const handleCancel = () => {
     if (!isChange) {
       // history.push("/home");
-      setShowChoosePond(false);
+      setShowChooseTraders(false);
     } else {
       // if trader null cant close modal
-      let check = validate(currentPurchase, "trader");
+      let check = validate(currentTransaction, "trader");
       if (!check) {
-        onChange(currentPurchase.trader, "trader");
-        setShowChoosePond(false);
+        onChange(currentTransaction.trader, "trader");
+        setShowChooseTraders(false);
       } else {
         helper.toast("error", i18n.t(check));
       }
@@ -51,56 +59,50 @@ const ChoosePond = ({
 
   const onChange = (val, prop) => {
     if (!(prop === "arrFish" && val.length === 0)) {
-      let tem = currentPurchase;
+      let tem = currentTransaction;
       if (prop === "trader") {
         tem.trader = val + "";
       } else {
         tem[prop] = val;
       }
 
-      local.set("currentPurchase", tem);
-      setCurrentPurchase((prevState) => ({
-        ...prevState,
-        [prop]: val,
-      }));
+      local.set("currentTransaction", tem);
+      handleChangeTrans(prop, val);
+      // setCurrentTransaction((prevState) => ({
+      //   ...prevState,
+      //   [prop]: val,
+      // }));
     }
   };
-  function addField(arr, newField, oldField) {
-    arr.map((el) => (el[newField] = el[oldField]));
+  function convertField(arr) {
+    arr.map((el) => (el.name = el.firstName + " " + el.lastname));
     return arr;
   }
 
   return (
     <Modal
-      title={i18n.t("choosePond")}
+      title={i18n.t("choseTrader")}
       centered
-      visible={isShowChoosePond}
+      visible={isShowChooseTraders}
       onOk={handleOk}
       onCancel={handleCancel}
       width={1000}
     >
       <Row>
         <Col md="4" xs="12">
-          <Widgets.Select
-            label={i18n.t("trader")}
-            value={parseInt(trader || currentPurchase.trader)}
-            items={dataDf.trader}
-            isDisable={currentPurchase.trader ? true : false}
-            onChange={(vl) => onChange(vl, "trader")}
-          />
           <Widgets.SelectSearchMulti
-            label={i18n.t("chooseFish")}
-            value={currentPurchase.listFishId}
-            items={addField(dataDf.fishType || [], "name", "fishName")}
-            onChange={(vl) => onChange(vl, "listFishId")}
+            label={i18n.t("choseTrader")}
+            value={currentTransaction.listTraderId || []}
+            items={convertField(dataFetched.traders || [])}
+            onChange={(vl) => onChange(vl, "listTraderId")}
           />
         </Col>
         <Col md="8" xs="12">
-          <label className="bold">{i18n.t("fishesInPond")}</label>
-          <PriceFishToday
-            listFishId={currentPurchase.listFishId || []}
+          <label className="bold">{i18n.t("listTrader")}</label>
+          <TradersToday
+            listTraderId={currentTransaction.listTraderId || []}
             onChange={(arr) => onChange(arr, "arrFish")}
-            dataDf={dataDf}
+            dataFetched={dataFetched}
           />
         </Col>
         <Col md="4" xs="12" />
@@ -109,4 +111,4 @@ const ChoosePond = ({
   );
 };
 
-export default ChoosePond;
+export default ChooseTraders;

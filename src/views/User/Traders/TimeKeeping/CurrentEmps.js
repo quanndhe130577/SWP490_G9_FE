@@ -1,6 +1,6 @@
-import React, {Component} from "react";
-import {Row, Col} from "reactstrap";
-import {Checkbox, Modal, List, Radio} from "antd";
+import React, { Component } from "react";
+import { Row, Col } from "reactstrap";
+import { Checkbox, Modal, List, Radio } from "antd";
 import Widgets from "../../../../schema/Widgets";
 import apis from "../../../../services/apis";
 
@@ -9,10 +9,10 @@ export default class CurrentEmps extends Component {
     super(props);
     this.state = {
       currentTimes: [],
-      employees: this.props.employees.filter(emp => {
+      employees: this.props.employees.filter((emp) => {
         let dateStart = new Date(emp.startDate);
         return this.props.currentDate > dateStart;
-      })
+      }),
     };
     this.getTimes = this.getTimes.bind(this);
     this.submit = this.submit.bind(this);
@@ -35,14 +35,20 @@ export default class CurrentEmps extends Component {
     );
     if (rs) {
       let list = [];
-      this.props.employees.filter(emp => {
+      let listCurrentEmps = this.props.employees.filter((emp) => {
         let startDate = new Date(emp.startDate);
-        let endDate=null;
-        if(emp.endDate) {
-          endDate=new Date(emp.endDate);
+        let endDate = null;
+        if (emp.endDate) {
+          endDate = new Date(emp.endDate);
         }
-        return this.props.currentDate > startDate && endDate === null||(this.props.currentDate < endDate);
-      }).forEach((emp) => {
+        // eslint-disable-next-line no-mixed-operators
+        return (
+          (this.props.currentDate > startDate && endDate === null) ||
+          this.props.currentDate < endDate
+        );
+      });
+      for (let i = 0; i < listCurrentEmps.length; i++) {
+        let emp = listCurrentEmps[i];
         let filter = rs.data.filter((e) => e.empId === emp.id);
         if (filter.length > 0) {
           let data = filter[0];
@@ -53,14 +59,23 @@ export default class CurrentEmps extends Component {
             empId: emp.id,
             empName: emp.name,
             id: 0,
-            money: 1000000,
             note: 0,
             status: 1,
             workDay: this.props.currentDate,
             checked: false,
           });
         }
-      });
+      }
+      // this.props.employees.filter(emp => {
+      //   let startDate = new Date(emp.startDate);
+      //   let endDate=null;
+      //   if(emp.endDate) {
+      //     endDate=new Date(emp.endDate);
+      //   }
+      //   return this.props.currentDate > startDate && endDate === null||(this.props.currentDate < endDate);
+      // }).forEach((emp) => {
+
+      // });
       this.setState({
         currentTimes: list,
       });
@@ -71,7 +86,7 @@ export default class CurrentEmps extends Component {
     let data = currentTimes.filter((time) => time.empId === item.empId);
     if (data.length > 0) {
       data[0][name] = value;
-      this.setState({currentTimes: currentTimes});
+      this.setState({ currentTimes: currentTimes });
     }
   };
   load() {
@@ -103,7 +118,7 @@ export default class CurrentEmps extends Component {
       <Modal
         width="70%"
         title="Danh sách nhân viên trong ngày"
-        okText='Lưu'
+        okText="Lưu"
         visible={this.props.visible}
         onCancel={this.props.cancel}
         onOk={this.submit}
@@ -111,21 +126,18 @@ export default class CurrentEmps extends Component {
         <List>
           <List.Item>
             <Row key="header" className="w-100 tnrss-time-keeping-border pb-4">
-              <Col md="2" xs="12" className="d-flex justify-content-center">
+              <Col md="3" xs="12" className="d-flex justify-content-center">
                 <b>Có đi làm</b>
               </Col>
-              <Col md="3" xs="12">
+              <Col md="4" xs="12">
                 <b>Tên</b>
               </Col>
-              <Col md="3" xs="12">
+              <Col md="5" xs="12">
                 <b>Công</b>
               </Col>
-              <Col md="2" xs="12" className="d-flex justify-content-center">
+              {/* <Col md="2" xs="12" className="d-flex justify-content-center">
                 <b>Thanh toán</b>
-              </Col>
-              <Col md="2" xs="12">
-                <b>Tiền công</b>
-              </Col>
+              </Col> */}
             </Row>
           </List.Item>
         </List>
@@ -135,7 +147,7 @@ export default class CurrentEmps extends Component {
             <>
               <List.Item>
                 <Row key={item.id} className="w-100">
-                  <Col md="2" xs="12" className="d-flex justify-content-center">
+                  <Col md="3" xs="12" className="d-flex justify-content-center">
                     <Checkbox
                       checked={item.checked}
                       onChange={(event) =>
@@ -143,14 +155,14 @@ export default class CurrentEmps extends Component {
                       }
                     />
                   </Col>
-                  <Col md="3" xs="12">
+                  <Col md="4" xs="12">
                     <Widgets.Custom
                       label={item.empName}
                       value={this.state.note}
                       component={""}
                     />
                   </Col>
-                  <Col md="3" xs="12">
+                  <Col md="5" xs="12">
                     <Widgets.Custom
                       component={
                         <Radio.Group
@@ -171,7 +183,7 @@ export default class CurrentEmps extends Component {
                     />
                   </Col>
 
-                  <Col md="2" xs="12" className="d-flex justify-content-center">
+                  {/* <Col md="2" xs="12" className="d-flex justify-content-center">
                     <Widgets.Custom
                       component={
                         <Checkbox
@@ -187,14 +199,7 @@ export default class CurrentEmps extends Component {
                         />
                       }
                     />
-                  </Col>
-                  <Col md="2" xs="12">
-                    <Widgets.Text
-                      isDisable={!item.checked}
-                      value={item.money}
-                      onChange={(e) => this.handleChange(e, item, "money")}
-                    />
-                  </Col>
+                  </Col> */}
                 </Row>
               </List.Item>
             </>

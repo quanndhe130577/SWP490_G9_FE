@@ -1,73 +1,121 @@
-import React, {Component} from "react";
-import {Calendar, Card} from "antd";
-import {Row, Col} from "reactstrap";
-import {Modal} from "antd";
+import React, { Component } from "react";
+import { Table, Button } from "antd";
+import helper from "../../../../services/helper";
+import Widgets from "../../../../schema/Widgets";
+import apis from "../../../../services/apis";
 import moment from "moment";
-import i18n from "i18next";
-import EmployeeSalaryDetail from './EmployeeSalaryDetail'
-import './EmployeeSalary.scss';
+import "./EmployeeSalary.scss";
 
-export default class EmployeeSalary extends Component {
+export default class EmployeeSalaryDetail extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isShow: false,
-      times: [],
-      currentDate: moment(),
-    };
-    this.onChange = this.onChange.bind(this);
+    this.state = { times: [] };
   }
-
-  onChange(value) {
-    if (this.state.currentDate._d.getYear() === value._d.getYear()) {
-      this.setState({
-        currentDate: value,
-        isShow: true,
-      });
-    } else {
-      this.setState({
-        currentDate: value,
-      });
+  componentDidMount() {
+    this.getTimes();
+  }
+  componentDidUpdate(props) {
+    if (props.date !== this.props.date) {
+      this.getTimes();
     }
   }
-  renderTitle = () => {
-    let {total} = this.state || 0;
-    return (
-      <Row>
-        <Col md="6" className="d-flex">
-          <h3 className="">{i18n.t("EmployeeSalary")}</h3>
-          <label className="hd-total">{total ? "(" + total + ")" : ""}</label>
-        </Col>
-      </Row>
+  async getTimes() {
+    let date = moment()._d;
+    let rs = await apis.getSalaryDetailEmployee({}, "GET", date.toDateString());
+    console.log(rs);
+    if (rs) {
+      this.setState({ times: rs.data });
+    }
+  }
+  async paidTk(id) {
+    let rs = await apis.paidTimeKeeping(
+      { empId: id, workDay: this.props.date },
+      "POST"
     );
-  };
-  onCancel = () => {
-    this.setState({isShow: false});
-  };
+    helper.toast("success", rs.message);
+    if (rs) {
+      this.getTimes();
+    }
+  }
   render() {
+    let columns = [
+      {
+        title: "Nhân Viên",
+        dataIndex: "name",
+        key: "name",
+      },
+      {
+        title: "Số tiền đã trả",
+        dataIndex: "paid",
+        key: "paid",
+        render: (data) => {
+          console.log(data);
+          return (
+            <Widgets.NumberFormat
+              needFormGroup={false}
+              displayType="text"
+              value={data}
+            />
+          );
+        },
+      },
+      {
+        title: "Nợ",
+        dataIndex: "notPaid",
+        key: "notPaid",
+        render: (data) => (
+          <Widgets.NumberFormat
+            needFormGroup={false}
+            displayType="text"
+            value={data}
+          />
+        ),
+      },
+      {
+        title: "Lương",
+        dataIndex: "salary",
+        key: "salary",
+        render: (data) => (
+          <Widgets.NumberFormat
+            needFormGroup={false}
+            displayType="text"
+            value={data}
+          />
+        ),
+      },
+      {
+        title: "Hành động",
+        render: (data) => (
+          <Button
+            onClick={() => this.paidTk(data.empId)}
+            type="primary"
+            disabled={data.notPaid === 0}
+          >
+            Thanh toán
+          </Button>
+        ),
+      },
+    ];
     return (
       <>
-        <Modal
-          width={675}
-          title="Quản lý lương"
-          footer={null}
-          visible={this.state.isShow}
-          onCancel={this.onCancel}
-        >
-          <EmployeeSalaryDetail date={this.state.currentDate} />
-        </Modal>
-        <Card title={this.renderTitle()}>
-          <Row>
-            <Col style={{overflowX: "auto"}}>
-              <Calendar
-                mode='year'
-                validRange={[moment("01-01-2020", "MM-DD-YYYY"), moment()]}
-                onSelect={this.onChange}
-                value={this.state.currentDate}
-              />
-            </Col>
-          </Row>
-        </Card>
+        <Table dataSource={this.state.times} columns={columns} bordered />
+        {/* <Row>
+          <Col span={8}>
+            <Card title='Tổng số tiền đã trả'>
+              <Widgets.NumberFormat displayType='text' className='py-2' value={paid} />
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Card title='Tổng số tiền chưa trả'>
+              <Widgets.NumberFormat displayType='text' className='py-2' value={notPaid} />
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Card title='Tổng lương'>
+              <Widgets.NumberFormat displayType='text' className='py-2' value={paid + notPaid} />
+            </Card>
+          </Col>
+        </Row> */}
       </>
     );
   }

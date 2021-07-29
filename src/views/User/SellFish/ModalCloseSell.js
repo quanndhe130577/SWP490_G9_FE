@@ -5,7 +5,7 @@ import i18n from "i18next";
 import Widgets from "../../../schema/Widgets";
 import Moment from "react-moment";
 
-const ModalBuy = ({
+const ModalCloseSell = ({
   isShowClosePurchase,
   purchase,
   prCurrentPurchase,
@@ -77,4 +77,4 @@ const ModalBuy = ({
   );
 };
 
-export default ModalBuy;
+export default ModalCloseSell;

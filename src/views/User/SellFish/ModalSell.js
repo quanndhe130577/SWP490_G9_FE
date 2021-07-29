@@ -4,21 +4,22 @@ import { Row, Col } from "reactstrap";
 import i18n from "i18next";
 import Widgets from "../../../schema/Widgets";
 import helper from "../../../services/helper";
+import { apis, local } from "../../../services";
+import { API_FETCH } from "../../../constant";
 
 const ModalSell = ({
-  isShowBuy,
-  setIsShowBuy,
-  currentPurchase,
-  purchase,
+  isShowSell,
+  setShowSell,
+  currentTransaction,
+  Trans,
   mode,
   dataDf,
-  createPurchaseDetail,
-  fetchDrumByTruck,
-  updatePurchaseDetail,
-  suggestionPurchase,
+  createTransDetail,
+  updateTransDetail,
+  suggestionTrans,
 }) => {
-  const [transaction, setTransaction] = useState(currentPurchase); // transaction là 1 bản ghi của purchase
-  const [loading, setLoading] = useState(false);
+  const [transaction, setTransaction] = useState(currentTransaction); // transaction là 1 bản ghi của Trans
+  // const [loading, setLoading] = useState(false);
 
   const handleOk = () => {
     let validate = validateData();
@@ -27,36 +28,28 @@ const ModalSell = ({
     }
     let tem = transaction;
     if (mode === "create") {
-      if (createPurchaseDetail) {
-        tem.idx = purchase.length + 1;
-        createPurchaseDetail(tem);
+      if (createTransDetail) {
+        tem.idx = Trans.length + 1;
+        createTransDetail(tem);
       }
-      setIsShowBuy(false);
+      setShowSell(false);
     } else if (mode === "edit") {
-      updatePurchaseDetail(transaction);
+      updateTransDetail(transaction);
     }
   };
   const handleCancel = () => {
-    setIsShowBuy(false);
+    setShowSell(false);
   };
   const handleChangeTran = async (name, value) => {
-    // if(name === "drum"){
-    //   let drums =purchase.drum
-    //   drums
-    // }
-    // if (name === "weight") {
-    //   value = parseInt(value);
-    // } else
-    if (name === "truck" && value !== transaction.truck) {
-      // neu khac xe thi call api lấy lại list drum và set lại listDrumId
-      let rs = await fetchDrumByTruck(value);
+    if (name === "isRetailCustomers" && !value) {
       setTransaction((prevState) => ({
         ...prevState,
-        listDrumId: [],
+        buyer: "",
+        isPaid: true,
       }));
-      setLoading(rs);
-    } else if (name === "listDrumId" && value.length > 0) {
-      value = value.map((el) => (el = parseInt(el)));
+    } else if (name === "trader") {
+      debugger;
+      getFTByTrader(value);
     }
     setTransaction((prevState) => ({
       ...prevState,
@@ -82,12 +75,6 @@ const ModalSell = ({
     }
   };
 
-  function changeKey(arr) {
-    arr.forEach((el) => {
-      helper.renameKey(el, "number", "name");
-    });
-    return arr;
-  }
   async function convertDataInEditMode() {
     // data to display in create mode and edit mode is difference, we need convert data
     if (mode === "edit") {
@@ -104,15 +91,12 @@ const ModalSell = ({
         truck,
         listDrumId,
       }));
-      // fetch Drum By Truck
-      let rs = await fetchDrumByTruck(truck);
-      setLoading(rs);
-    } else if (mode === "create" && suggestionPurchase) {
-      // purchase goi y khi mua
-      let fishTypeId = suggestionPurchase.fishTypeId;
-      let basketId = suggestionPurchase.basketId;
-      let truck = suggestionPurchase.truck;
-      let listDrumId = suggestionPurchase.listDrumId;
+    } else if (mode === "create" && suggestionTrans) {
+      // Trans goi y khi mua
+      let fishTypeId = suggestionTrans.fishTypeId;
+      let basketId = suggestionTrans.basketId;
+      let truck = suggestionTrans.truck;
+      let listDrumId = suggestionTrans.listDrumId;
 
       setTransaction((prevState) => ({
         ...prevState,
@@ -121,34 +105,92 @@ const ModalSell = ({
         truck,
         listDrumId,
       }));
-      // fetch Drum By Truck
-      let rs = await fetchDrumByTruck(truck);
-      setLoading(rs);
     }
   }
+  async function getBuyer() {
+    try {
+      let buyer = local.get("buyer");
+      if (!buyer) {
+        let rs = await apis.getBuyers({}, "GET");
+        if (rs && rs.statusCode === 200) {
+          buyer = rs.data;
+        }
+      }
+      setTransaction((pre) => ({ ...pre, listBuyer: buyer }));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async function getFTByTrader(traderId) {
+    try {
+      let rs = await apis.getFTByTrader({}, "GET", traderId);
+      if (rs && rs.statusCode === 200) {
+        setTransaction((pre) => ({ ...pre, listFishType: rs.data }));
+        // return rs.data
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     convertDataInEditMode();
+    getBuyer();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <Modal
       title={
         mode === "create"
-          ? i18n.t("createPurchaseDetail")
-          : i18n.t("editPurchaseDetail")
+          ? i18n.t("createTransDetail")
+          : i18n.t("editTransDetail")
       }
-      visible={isShowBuy}
+      visible={isShowSell}
       onOk={handleOk}
       onCancel={handleCancel}
+      width={800}
     >
       <Row>
+        <Col md="6" xs="12">
+          <Widgets.Select
+            required={true}
+            label={i18n.t("trader")}
+            value={transaction.trader || ""}
+            onChange={(e) => handleChangeTran("trader", e)}
+            items={dataDf.trader || []}
+            displayField={"lastname"}
+          />
+        </Col>
+
+        <Col md="4" xs="12">
+          <Widgets.SearchFetchApi
+            required={true}
+            label={i18n.t("buyer")}
+            value={transaction.buyer || []}
+            onSelect={(e) => handleChangeTran("buyer", e)}
+            items={transaction.listBuyer || []}
+            api={API_FETCH.FIND_BUYER}
+            placeholder={i18n.t("enterNameToFindBuyer")}
+            disabled={transaction.isRetailCustomers || false}
+          />
+        </Col>
+
+        <Col md="2" xs="12">
+          <Widgets.Checkbox
+            label={i18n.t("Or")}
+            value={transaction.isRetailCustomers || false}
+            onChange={(e) => handleChangeTran("isRetailCustomers", e)}
+            lblCheckbox={i18n.t("retailCustomers")}
+          />
+        </Col>
+
         <Col md="6" xs="12">
           <Widgets.Select
             required={true}
             label={i18n.t("typeOfFish")}
             value={transaction.fishTypeId || ""}
             onChange={(e) => handleChangeTran("fishTypeId", e)}
-            items={currentPurchase.arrFish || dataDf.arrFish || []}
+            items={transaction.listFishType || dataDf.arrFish || []}
           />
         </Col>
         <Col md="6" xs="12">
@@ -160,34 +202,30 @@ const ModalSell = ({
           />
         </Col>
         <Col md="6" xs="12">
-          <Widgets.Select
+          <Widgets.MoneyInput
             required={true}
-            label={i18n.t("basket")}
-            value={transaction.basketId || ""}
-            onChange={(e) => handleChangeTran("basketId", e)}
-            items={dataDf.basket || []}
+            label={i18n.t("sellPrice")}
+            value={transaction.cost || ""}
+            onChange={(e) => handleChangeTran("cost", e)}
+          />
+        </Col>
+        <Col md="2" xs="12">
+          <Widgets.Checkbox
+            label={i18n.t("isPaid")}
+            value={transaction.isPaid || false}
+            onChange={(e) => handleChangeTran("isPaid", e)}
+            lblCheckbox={i18n.t("isPaid")}
+            disabled={transaction.isRetailCustomers || false}
           />
         </Col>
         <Col md="6" xs="12">
-          <Widgets.Select
+          <Widgets.MoneyInput
             required={true}
-            label={i18n.t("truck")}
-            value={transaction.truck || ""}
-            onChange={(e) => handleChangeTran("truck", e)}
-            items={dataDf.truck || []}
+            label={i18n.t("intoMoney")}
+            value={transaction.intoMoney || ""}
+            // onChange={(e) => handleChangeTran("cost", e)}
           />
         </Col>
-        {transaction.truck && loading && (
-          <Col md="6" xs="12">
-            <Widgets.SelectSearchMulti
-              // required={true}
-              label={i18n.t("drum")}
-              value={transaction.listDrumId || transaction.listDrum || []}
-              onChange={(e) => handleChangeTran("listDrumId", e)}
-              items={changeKey(dataDf.drum || [])}
-            />
-          </Col>
-        )}
       </Row>
     </Modal>
   );
