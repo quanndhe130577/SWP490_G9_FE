@@ -43,6 +43,7 @@ const BuyFish = (props) => {
       } else {
         let tem = purchase.find((e) => e.id === id);
         if (tem) {
+          tem.id = currentPurchase.id;
           tem.purchaseDetailId = id;
           setMode("edit");
           setCurrentPurchase(Object.assign(currentPurchase, tem));
@@ -93,7 +94,7 @@ const BuyFish = (props) => {
           value={value}
           displayType={"text"}
           thousandSeparator={true}
-        // suffix={i18n.t("suffix")}
+          // suffix={i18n.t("suffix")}
         />
       );
     }
@@ -172,16 +173,16 @@ const BuyFish = (props) => {
       },
     },
     {
-      title: i18n.t("drum"),
-      dataIndex: "listDrum",
-      key: "listDrum",
-      render: (listDrum) => renderDrum(listDrum),
-    },
-    {
       title: i18n.t("truck"),
       dataIndex: "truck",
       key: "truck",
       render: (truck) => <div>{truck && <label>{truck.name}</label>}</div>,
+    },
+    {
+      title: i18n.t("drum"),
+      dataIndex: "listDrum",
+      key: "listDrum",
+      render: (listDrum) => renderDrum(listDrum),
     },
     {
       title: i18n.t("action"),
@@ -466,6 +467,7 @@ const BuyFish = (props) => {
         }));
         success = true;
         helper.toast("success", rs.message);
+        await getAllPurchaseDetail(currentPurchase);
       }
     } catch (error) {
       console.log(error);
@@ -680,7 +682,7 @@ const BuyFish = (props) => {
                         >
                           {i18n.t("total")}
                         </Table.Summary.Cell>
-                        <Table.Summary.Cell key="2">
+                        <Table.Summary.Cell key="2" colSpan="2">
                           <NumberFormat
                             value={totalWeight.toFixed(1)}
                             displayType={"text"}
@@ -696,7 +698,7 @@ const BuyFish = (props) => {
                             suffix={i18n.t("suffix")}
                           />
                         </Table.Summary.Cell>
-                        <Table.Summary.Cell colSpan="4" key="4" />
+                        <Table.Summary.Cell colSpan="3" key="4" />
                       </Table.Summary.Row>
                     </Table.Summary>
                   );

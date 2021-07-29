@@ -36,9 +36,11 @@ const ModalBuy = ({
       updatePurchaseDetail(transaction);
     }
   };
+
   const handleCancel = () => {
     setIsShowBuy(false);
   };
+
   const handleChangeTran = async (name, value) => {
     // if(name === "drum"){
     //   let drums =purchase.drum
