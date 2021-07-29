@@ -19,7 +19,6 @@ const ModalBuy = ({
 }) => {
   const [transaction, setTransaction] = useState(currentPurchase); // transaction là 1 bản ghi của purchase
   const [loading, setLoading] = useState(false);
-
   const handleOk = () => {
     let validate = validateData();
     if (validate) {
@@ -58,7 +57,8 @@ const ModalBuy = ({
       }));
       setLoading(rs);
     } else if (name === "listDrumId" && value.length > 0) {
-      value = value.map((el) => (el = parseInt(el)));
+      //value = value.map((el) => (el = parseInt(el)));
+      value = value.map((el) => (el = "" + el));
     }
     setTransaction((prevState) => ({
       ...prevState,
@@ -110,7 +110,7 @@ const ModalBuy = ({
       let truck = transaction.truck.id;
       let listDrumId = [];
       // get list drum id
-      transaction.listDrum.forEach((el) => listDrumId.push(el.id || ""));
+      transaction.listDrum.forEach((el) => listDrumId.push("" + el.id || ""));
       setTransaction((prevState) => ({
         ...prevState,
         fishTypeId,
@@ -118,15 +118,18 @@ const ModalBuy = ({
         truck,
         listDrumId,
       }));
-      // fetch Drum By Truck
+      // // fetch Drum By Truck
       let rs = await fetchDrumByTruck(truck);
       setLoading(rs);
+      //setLoading(true);
     } else if (mode === "create" && suggestionPurchase) {
       // purchase goi y khi mua
       let fishTypeId = suggestionPurchase.fishTypeId;
       let basketId = suggestionPurchase.basketId;
       let truck = suggestionPurchase.truck;
-      let listDrumId = suggestionPurchase.listDrumId;
+      let listDrumId = suggestionPurchase.listDrumId.forEach((el) =>
+        listDrumId.push("" + el.id || "")
+      );
 
       setTransaction((prevState) => ({
         ...prevState,
@@ -138,6 +141,7 @@ const ModalBuy = ({
       // fetch Drum By Truck
       let rs = await fetchDrumByTruck(truck);
       setLoading(rs);
+      //setLoading(true);
     }
   }
   useEffect(() => {
@@ -199,9 +203,10 @@ const ModalBuy = ({
         {transaction.truck && loading && (
           <Col md="6" xs="12">
             <Widgets.SelectSearchMulti
-              required={true}
+              //required={true}
               label={i18n.t("drum")}
-              value={transaction.listDrumId || transaction.listDrum || []}
+              value={transaction.listDrumId || []}
+              //value={transaction.listDrumId || transaction.listDrum || []}
               onChange={(e) => handleChangeTran("listDrumId", e)}
               items={dataDf.drum || []}
               displayField="number"

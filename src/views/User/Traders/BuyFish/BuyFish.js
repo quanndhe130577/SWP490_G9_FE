@@ -227,6 +227,7 @@ const BuyFish = (props) => {
         getLastAllFTByTraderID();
       }
       getTruckByTraderID();
+      //fetchDrumByTruck(dataDf.truck.id);
       getBasketByTraderId();
       if (query && query.id) getPurchasesById(query.id);
     } catch (error) {

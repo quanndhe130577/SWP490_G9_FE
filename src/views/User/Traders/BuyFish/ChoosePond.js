@@ -52,7 +52,10 @@ const ChoosePond = ({
     if (rs) {
       dataChange.forEach((element) => {
         var list = [...currentPurchase.listFishId];
-        if (list.find((item) => parseInt(item) === parseInt(element.id)) === undefined) {
+        if (
+          list.find((item) => parseInt(item) === parseInt(element.id)) ===
+          undefined
+        ) {
           list.push(element.id + "");
           onChange(list, "listFishId");
         }
