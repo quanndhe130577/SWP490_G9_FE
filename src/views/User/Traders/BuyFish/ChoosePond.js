@@ -114,7 +114,7 @@ const ChoosePond = ({
       visible={isShowChoosePond}
       onOk={handleOk}
       onCancel={handleCancel}
-      width={1000}
+      width={1200}
     >
       <Row>
         <Col md="4" xs="12">

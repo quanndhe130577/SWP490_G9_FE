@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { InputNumber } from "antd";
 
 export default function Money({
@@ -9,12 +9,19 @@ export default function Money({
   onChange,
   required = false,
   submitted,
+  min = 0,
   onKeyDown,
+  placeholder = 0,
+  step = 100,
 }) {
   // console.log("number " + value);
+  const [inputValue, setInputValue] = useState(value);
+
   return (
     <div
-      className={"form-group " + (submitted && !value ? " has-error" : "")}
+      className={
+        label && "form-group " + (submitted && !value ? " has-error" : "")
+      }
       style={{ display: "flex", flexDirection: "column" }}
     >
       {label && (
@@ -27,14 +34,19 @@ export default function Money({
         style={{ width: "100%" }}
         disabled={isDisable}
         defaultValue={value}
-        step="100"
+        step={step}
+        value={inputValue}
         formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
         required={required}
+        min={min}
+        placeholder={placeholder}
         onChange={(e) => {
           let value = e;
-          if (parseInt(value) < 0) {
+          if (parseInt(value) < 0 || value == null) {
             value = 0;
           }
+
+          setInputValue(value);
           if (onChange) {
             onChange(value);
           }
