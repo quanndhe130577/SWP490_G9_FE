@@ -48,6 +48,8 @@ const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
       newDatas.splice(index, 1);
       setData(newDatas);
       dataChange(newDatas);
+
+      // chưa cập nhật lại được listFishId ở chosePond
     }
   };
 
@@ -146,8 +148,8 @@ const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
   ];
 
   const findList = (temArr) => {
-    let arr = [],
-      count = 0;
+    let arr = [];
+    let count = 0;
     temArr.forEach((el) => {
       let tem = dataDf.fishType.find((ft) => ft.id === parseInt(el));
       if (tem) {
