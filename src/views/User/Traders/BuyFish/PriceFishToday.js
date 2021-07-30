@@ -9,7 +9,7 @@ const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
 
   const onChangeWeight = (value, id, name) => {
     const newDatas = [...dataS];
-    const index = dataS.findIndex((x) => x && x.id == id);
+    const index = dataS.findIndex((x) => x && parseInt(x.id) === parseInt(id));
     if (index !== -1) {
       const newItem = { ...newDatas[index], [name]: value };
       newDatas.splice(index, 1, newItem);
