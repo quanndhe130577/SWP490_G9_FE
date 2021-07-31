@@ -225,7 +225,7 @@ export default class Trader extends Component {
       // sorter: (a, b) => a.name.length - b.name.length,
       // sortDirections: ["descend", "ascend"],
       render: (firstName, record) => (
-        <label>{firstName + " " + record.lastname}</label>
+        <label>{firstName + " " + record.lastName}</label>
       ),
     },
     {
@@ -313,7 +313,7 @@ export default class Trader extends Component {
               value={searchPhone || ""}
               placeholder={i18n.t("enterPhoneToFind")}
               api={API_FETCH.FIND_TRADER}
-              displayField={["lastname", "phoneNumber"]}
+              displayField={["lastName", "phoneNumber"]}
               saveField="id"
             />
           </Col>

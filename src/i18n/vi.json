@@ -111,7 +111,7 @@
   "Status": "Trạng thái",
   "isPaid": "Đã trả",
   "Sell Date FT": "Ngày bán",
-  "Transaction Price": "Giá bán (VND)",
+  "sellPrice(VND)": "Giá bán (VND)",
   "Pond Owner": "Chủ ao",
   "buyPrice": "Giá mua",
   "Trader": "Thương lái",
@@ -154,5 +154,9 @@
   "retailCustomers": "Khách lẻ",
   "Or": "Hoặc",
   "createTransDetail": "Tạo mã bán",
-  "editTransDetail": "Sửa mã bán"
+  "editTransDetail": "Sửa mã bán",
+  "qtyOfFish(Kg-onlyFish)": "Khối lượng cá (Kg)",
+  "statusPaid": "Trạng thái thanh toán",
+  "notPaid": "Chưa trả",
+  "totalWR": "Tổng số mã"
 }
