@@ -8,7 +8,7 @@ import ChooseTraders from "./ChooseTraders";
 import ModalSell from "./ModalSell";
 import queryString from "qs";
 
-import { apis, session } from "../../../services";
+import { apis, helper, session } from "../../../services";
 
 import NumberFormat from "react-number-format";
 import Moment from "react-moment";
@@ -21,6 +21,7 @@ const SellFish = (props) => {
   const [isShowSell, setShowSell] = useState(false);
   // data
   const [listTransDetail, setListTransDetail] = useState([]);
+  // const [listTrans, setListTrans] = useState([]);
   const [currentTransaction, setCurrentTrans] = useState({});
   const [mode, setMode] = useState("create");
 
@@ -157,7 +158,18 @@ const SellFish = (props) => {
       ),
     },
   ];
-
+  //create purchase detail
+  async function createTransDetail(data) {
+    try {
+      let rs = await apis.createTranDetail(data);
+      if (rs && rs.statusCode === 200) {
+        helper.toast("success", i18n.t(rs.message));
+      }
+    } catch (error) {
+      console.log(error);
+      helper.toast("error", error);
+    }
+  }
   // fetch data
   async function fetchData(date) {
     try {
@@ -193,10 +205,11 @@ const SellFish = (props) => {
         // setListTransDetail(rs.data);
         let tem = [];
         for (const trans of rs.data) {
-          trans.trader.purchaseId = trans.id;
+          trans.trader.transId = trans.id;
           tem.push(trans.trader);
         }
         // setTraderInDate(tem);
+
         setDtFetched((pro) => ({ ...pro, trader: tem }));
       }
     } catch (error) {
@@ -261,6 +274,7 @@ const SellFish = (props) => {
             currentTransaction={currentTransaction || {}}
             dataDf={dataFetched || []}
             mode={mode}
+            createTransDetail={createTransDetail}
           />
         )}
         {!isShowChooseTraders && (
