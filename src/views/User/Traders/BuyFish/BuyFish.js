@@ -12,6 +12,7 @@ import NumberFormat from "react-number-format";
 import { useSelector } from "react-redux";
 import Moment from "react-moment";
 import _ from "lodash";
+import Item from "antd/lib/list/Item";
 const { local, session, apis, helper } = services;
 
 const BuyFish = (props) => {
@@ -455,24 +456,41 @@ const BuyFish = (props) => {
   };
 
   // Update All fish type anhnbt
-  async function updateAllFishType(body, purchase) {
+  async function updateAllFishType(body, purchase, onlyFe = false) {
     var success = false;
     try {
       setLoading(true);
-      let rs = await apis.updateAllFishType(body, "POST");
-      if (rs && rs.statusCode === 200) {
-        let temObj = { ...purchase, ...currentPurchase, arrFish: rs.data };
+      if (!onlyFe) {
+        let rs = await apis.updateAllFishType(body, "POST");
+        if (rs && rs.statusCode === 200) {
+          let temObj = { ...purchase, ...currentPurchase, arrFish: rs.data };
+          setCurrentPurchase(temObj);
+          local.set("currentPurchase", temObj);
+          let newArr = _.cloneDeep(dataDf.fishType);
+          mergeByProperty(newArr, rs.data, "id");
+          setData((pre) => ({
+            ...pre,
+            fishType: newArr || [],
+          }));
+          success = true;
+          helper.toast("success", rs.message);
+          await getAllPurchaseDetail(purchase);
+        }
+      } else {
+        let temObj = {
+          ...purchase,
+          ...currentPurchase,
+          arrFish: body.listFishType,
+        };
         setCurrentPurchase(temObj);
         local.set("currentPurchase", temObj);
         let newArr = _.cloneDeep(dataDf.fishType);
-        mergeByProperty(newArr, rs.data, "id");
+        mergeByProperty(newArr, body.listFishType, "id");
         setData((pre) => ({
           ...pre,
           fishType: newArr || [],
         }));
         success = true;
-        helper.toast("success", rs.message);
-        await getAllPurchaseDetail(purchase);
       }
     } catch (error) {
       console.log(error);
@@ -542,6 +560,9 @@ const BuyFish = (props) => {
       setShowChoosePond(true);
     }
     setData((pre) => ({ ...pre, arrFish: tem.arrFish }));
+    if (tem.listFishId === undefined) {
+      tem = { ...tem, listFishId: [] };
+    }
     setCurrentPurchase(tem);
 
     fetchData(query);
@@ -669,6 +690,7 @@ const BuyFish = (props) => {
                 scroll={{ y: 420 }}
                 pagination={{ pageSize: 100 }}
                 bordered
+                rowKey="idx"
                 summary={(pageData) => {
                   let totalWeight = 0;
                   let totalAmount = 0;

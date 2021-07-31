@@ -3,10 +3,17 @@ import { Input, Table } from "antd";
 import i18n from "i18next";
 import { Button } from "reactstrap";
 import apis from "../../../../services/apis";
+import Widgets from "../../../../schema/Widgets";
 
-const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
+const PriceFishToday = ({
+  listFishId,
+  onChange,
+  dataDf,
+  dataChange,
+  updateOnlyFe,
+  removeFishType,
+}) => {
   const [dataS, setData] = useState([]);
-
   const onChangeWeight = (value, id, name) => {
     const newDatas = [...dataS];
     const index = dataS.findIndex((x) => x && parseInt(x.id) === parseInt(id));
@@ -34,9 +41,19 @@ const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
     if (index === -1) {
       rs.data.idx = newDatas.length + 1;
       newDatas.push(rs.data);
-      setData(newDatas);
+      setData([...newDatas]);
       dataChange(newDatas);
+      updateOnlyFe(newDatas);
     }
+  };
+
+  const onRemoveFish = (id) => {
+    //const newDatas = dataS.filter((x) => x.id !== id);
+    //setData([...newDatas]);
+    //dataChange(newDatas);
+    removeFishType(id);
+    //   // chưa cập nhật lại được listFishId ở chosePond
+    // }
   };
 
   const columns = [
@@ -44,12 +61,14 @@ const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
       title: "STT",
       dataIndex: "idx",
       key: "idx",
+      width: "5%",
       render: (text) => <label>{text}</label>,
     },
     {
       title: "Tên cá",
       dataIndex: "fishName",
       key: "fishName",
+      width: "20%",
       render: (fishName, record) => (
         <Input
           defaultValue={fishName}
@@ -63,6 +82,7 @@ const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
       title: "Trọng lượng tối thiểu",
       dataIndex: "minWeight",
       key: "minWeight",
+      width: "12%",
       render: (minWeight, record) => (
         <Input
           defaultValue={minWeight}
@@ -76,6 +96,7 @@ const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
       title: "Trọng lượng tối đa",
       dataIndex: "maxWeight",
       key: "maxWeight",
+      width: "12%",
       render: (maxWeight, record) => (
         <Input
           defaultValue={maxWeight}
@@ -86,31 +107,52 @@ const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
       ),
     },
     {
-      title: "Giá (VND/kg)",
+      title: "Giá mua\n(VND/kg)",
       dataIndex: "price",
       key: "price",
+      width: "18%",
       render: (price, record) => (
-        <Input
-          defaultValue={price}
-          onChange={(e) => onChangeWeight(e.target.value, record.id, "price")}
+        <Widgets.MoneyInput
+          value={price}
+          onChange={(e) => onChangeWeight(e, record.id, "price")}
         />
       ),
     },
-
+    {
+      title: "Giá bán\n(VND/kg)",
+      dataIndex: "transactionPrice",
+      key: "transactionPrice",
+      width: "18%",
+      render: (transactionPrice, record) => (
+        <Widgets.MoneyInput
+          value={transactionPrice}
+          onChange={(e) => onChangeWeight(e, record.id, "transactionPrice")}
+        />
+      ),
+    },
     {
       title: "Hành động",
       key: "action",
+      //width: "10%",
       render: (text, record) => (
         <div size="middle">
-          <label>{i18n.t("edit")}</label>
+          {/* <label>{i18n.t("edit")}</label> */}
+          <Button
+            color="danger"
+            size="sm"
+            className="w-25"
+            onClick={() => onRemoveFish(record.id)}
+          >
+            x
+          </Button>
         </div>
       ),
     },
   ];
 
   const findList = (temArr) => {
-    let arr = [],
-      count = 0;
+    let arr = [];
+    let count = 0;
     temArr.forEach((el) => {
       let tem = dataDf.fishType.find((ft) => ft.id === parseInt(el));
       if (tem) {
@@ -127,6 +169,7 @@ const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
       dataChange(arr);
     }
   };
+
   useEffect(() => {
     findList(listFishId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -136,11 +179,12 @@ const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
       <Table
         columns={columns}
         dataSource={dataS}
+        rowKey="idx"
         summary={(pageData) => {
           return (
             <Table.Summary fixed>
               <Table.Summary.Row>
-                <Table.Summary.Cell colSpan="6" key="1">
+                <Table.Summary.Cell colSpan="7" key="1">
                   <Button color="info" className="w-100" onClick={onAddFish}>
                     +
                   </Button>

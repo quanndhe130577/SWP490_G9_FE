@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Modal } from "antd";
 import { Row, Col } from "reactstrap";
 import i18n from "i18next";
@@ -22,7 +22,6 @@ const ChoosePond = ({
 }) => {
   let isChange = false;
   const history = useHistory();
-
   const [dataChange, setDataChange] = useState([]);
   const handleOk = async () => {
     //updateAllFishType
@@ -43,11 +42,13 @@ const ChoosePond = ({
   const updateFishType = async (
     currentPurchase,
     dataChange,
-    isShowModal = false
+    isShowModal = false,
+    onlyFe = false
   ) => {
     var rs = await updateAllFishType(
       { purchaseId: currentPurchase.id, listFishType: dataChange },
-      currentPurchase
+      currentPurchase,
+      onlyFe
     );
     if (rs) {
       dataChange.forEach((element) => {
@@ -107,6 +108,12 @@ const ChoosePond = ({
     }
   };
 
+  // useEffect(() => {
+  //   if (currentPurchase.listFishId === undefined) {
+  //     onChange([], "listFishId");
+  //   }
+  // }, []);
+
   return (
     <Modal
       title={i18n.t("choosePond")}
@@ -114,7 +121,7 @@ const ChoosePond = ({
       visible={isShowChoosePond}
       onOk={handleOk}
       onCancel={handleCancel}
-      width={1000}
+      width={1200}
     >
       <Row>
         <Col md="4" xs="12">
@@ -142,6 +149,15 @@ const ChoosePond = ({
             dataDf={dataDf}
             dataChange={(data) => {
               setDataChange(data);
+            }}
+            removeFishType={(id) => {
+              var newListFishId = currentPurchase.listFishId.filter(
+                (x) => x != id
+              );
+              onChange(newListFishId, "listFishId");
+            }}
+            updateOnlyFe={async (arr) => {
+              updateFishType(currentPurchase, arr, true, true);
             }}
           />
         </Col>
