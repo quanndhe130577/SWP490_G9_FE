@@ -373,7 +373,12 @@ const ManaBuy = () => {
       {/*>*/}
       {/*  {i18n.t("continueToBuy")}*/}
       {/*</Button>*/}
-      <Table columns={columns} dataSource={purchase} loading={isLoading} />
+      <Table
+        columns={columns}
+        dataSource={purchase}
+        loading={isLoading}
+        rowKey="id"
+      />
     </Card>
   );
 };

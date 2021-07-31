@@ -5,9 +5,15 @@ import { Button } from "reactstrap";
 import apis from "../../../../services/apis";
 import Widgets from "../../../../schema/Widgets";
 
-const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
+const PriceFishToday = ({
+  listFishId,
+  onChange,
+  dataDf,
+  dataChange,
+  updateOnlyFe,
+  removeFishType,
+}) => {
   const [dataS, setData] = useState([]);
-
   const onChangeWeight = (value, id, name) => {
     const newDatas = [...dataS];
     const index = dataS.findIndex((x) => x && parseInt(x.id) === parseInt(id));
@@ -35,22 +41,19 @@ const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
     if (index === -1) {
       rs.data.idx = newDatas.length + 1;
       newDatas.push(rs.data);
-      setData(newDatas);
+      setData([...newDatas]);
       dataChange(newDatas);
+      updateOnlyFe(newDatas);
     }
   };
 
   const onRemoveFish = (id) => {
-    const newDatas = [...dataS];
-    const index = dataS.findIndex((x) => x.id === id);
-    if (index !== -1) {
-      // rs.data.idx = newDatas.length + 1;
-      newDatas.splice(index, 1);
-      setData(newDatas);
-      dataChange(newDatas);
-
-      // chưa cập nhật lại được listFishId ở chosePond
-    }
+    //const newDatas = dataS.filter((x) => x.id !== id);
+    //setData([...newDatas]);
+    //dataChange(newDatas);
+    removeFishType(id);
+    //   // chưa cập nhật lại được listFishId ở chosePond
+    // }
   };
 
   const columns = [
@@ -166,6 +169,7 @@ const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
       dataChange(arr);
     }
   };
+
   useEffect(() => {
     findList(listFishId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -175,6 +179,7 @@ const PriceFishToday = ({ listFishId, onChange, dataDf, dataChange }) => {
       <Table
         columns={columns}
         dataSource={dataS}
+        rowKey="idx"
         summary={(pageData) => {
           return (
             <Table.Summary fixed>
