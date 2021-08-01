@@ -6,6 +6,7 @@ const { Option } = Select;
 class Select2 extends Component {
   render() {
     const {
+      width = "100%",
       value,
       label,
       required,
@@ -15,6 +16,7 @@ class Select2 extends Component {
       items = [],
       displayField = "name",
       saveField = "id",
+      needPleaseChose = true,
     } = this.props;
     let valueTem = items.find((el) => el.value === value || el.id === value);
     return (
@@ -24,10 +26,11 @@ class Select2 extends Component {
             {label} {required ? <span style={{ color: "red" }}>*</span> : ""}
           </label>
         )}
+        &nbsp;
         <Select
           // defaultValue={value}
           value={valueTem && (valueTem.value || valueTem.id || "")}
-          style={{ width: "100%" }}
+          style={{ width: width }}
           disabled={isDisable}
           onChange={(v) => {
             let val = v;
@@ -37,9 +40,11 @@ class Select2 extends Component {
             }
           }}
         >
-          <Option value="" key="-1">
-            {i18next.t("pleaseChoose")}
-          </Option>
+          {needPleaseChose && (
+            <Option value="" key="-1">
+              {i18next.t("pleaseChoose")}
+            </Option>
+          )}
           {items.map((item, index) => (
             <Option value={item.value || item[saveField]} key={index}>
               {item.label || item[displayField] || item.type}

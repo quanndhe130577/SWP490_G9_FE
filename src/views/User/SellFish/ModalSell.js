@@ -11,7 +11,7 @@ const ModalSell = ({
   isShowSell,
   setShowSell,
   currentTransaction,
-  Trans,
+  // Trans,
   mode,
   dataDf,
   createTransDetail,
@@ -26,13 +26,24 @@ const ModalSell = ({
     if (validate) {
       return helper.toast("error", i18n.t(validate));
     }
-    let tem = transaction;
+    // let tem = transaction;
     if (mode === "create") {
       if (createTransDetail) {
-        tem.idx = Trans.length + 1;
-        createTransDetail(tem);
+        // tem.idx = Trans.length + 1;
+        const trader = dataDf.trader.find(
+          (el) => el.id === transaction.traderId
+        );
+        createTransDetail({
+          fishTypeId: transaction.fishTypeId,
+          buyerId: transaction.buyer.key,
+          isPaid: transaction.isPaid,
+          traderId: trader.id,
+          transId: trader.transId,
+          sellPrice: transaction.sellPrice,
+          weight: parseFloat(transaction.weight),
+        });
       }
-      setShowSell(false);
+      // setShowSell(false);
     } else if (mode === "edit") {
       updateTransDetail(transaction);
     }
@@ -41,15 +52,28 @@ const ModalSell = ({
     setShowSell(false);
   };
   const handleChangeTran = async (name, value) => {
-    if (name === "isRetailCustomers" && !value) {
+    if (name === "isRetailCustomers" && value) {
       setTransaction((prevState) => ({
         ...prevState,
-        buyer: "",
+        buyer: { key: null },
         isPaid: true,
       }));
-    } else if (name === "trader") {
-      debugger;
+    } else if (name === "traderId") {
       getFTByTrader(value);
+    } else if (name === "fishTypeId") {
+      console.log(transaction);
+      let currentFT = transaction.listFishType.find(
+        (ft) => ft.id === parseInt(value)
+      );
+      if (!currentFT) {
+        return helper.toast("error", i18n("fishTypeInvalid"));
+      }
+      setTransaction((prevState) => ({
+        ...prevState,
+        sellPrice: currentFT.transactionPrice,
+        selectedFT: currentFT,
+      }));
+      // handleChangeTran("sellPrice", currentFT.transactionPrice);
     }
     setTransaction((prevState) => ({
       ...prevState,
@@ -59,8 +83,8 @@ const ModalSell = ({
 
   // validate các trường required
   const validateData = () => {
-    let { weight, fishTypeId, truck, basketId } = transaction;
-    if (!weight || !fishTypeId || !truck || !basketId) {
+    let { weight, fishTypeId, traderId, sellPrice, buyer } = transaction;
+    if (!weight || !fishTypeId || !traderId || !sellPrice || !buyer) {
       return "fillAll*";
     } else {
       if (weight <= 0.1) {
@@ -155,10 +179,10 @@ const ModalSell = ({
           <Widgets.Select
             required={true}
             label={i18n.t("trader")}
-            value={transaction.trader || ""}
-            onChange={(e) => handleChangeTran("trader", e)}
+            value={transaction.traderId || ""}
+            onChange={(e) => handleChangeTran("traderId", e)}
             items={dataDf.trader || []}
-            displayField={"lastname"}
+            displayField={"lastName"}
           />
         </Col>
 
@@ -184,48 +208,53 @@ const ModalSell = ({
           />
         </Col>
 
-        <Col md="6" xs="12">
-          <Widgets.Select
-            required={true}
-            label={i18n.t("typeOfFish")}
-            value={transaction.fishTypeId || ""}
-            onChange={(e) => handleChangeTran("fishTypeId", e)}
-            items={transaction.listFishType || dataDf.arrFish || []}
-          />
-        </Col>
-        <Col md="6" xs="12">
-          <Widgets.WeightInput
-            required={true}
-            label={i18n.t("qtyOfFish(Kg)")}
-            value={transaction.weight || 0}
-            onChange={(e) => handleChangeTran("weight", e)}
-          />
-        </Col>
-        <Col md="6" xs="12">
-          <Widgets.MoneyInput
-            required={true}
-            label={i18n.t("sellPrice")}
-            value={transaction.cost || ""}
-            onChange={(e) => handleChangeTran("cost", e)}
-          />
-        </Col>
-        <Col md="2" xs="12">
-          <Widgets.Checkbox
-            label={i18n.t("isPaid")}
-            value={transaction.isPaid || false}
-            onChange={(e) => handleChangeTran("isPaid", e)}
-            lblCheckbox={i18n.t("isPaid")}
-            disabled={transaction.isRetailCustomers || false}
-          />
-        </Col>
-        <Col md="6" xs="12">
-          <Widgets.MoneyInput
-            required={true}
-            label={i18n.t("intoMoney")}
-            value={transaction.intoMoney || ""}
-            // onChange={(e) => handleChangeTran("cost", e)}
-          />
-        </Col>
+        {transaction.traderId && (
+          <>
+            <Col md="6" xs="12">
+              <Widgets.Select
+                required={true}
+                label={i18n.t("typeOfFish")}
+                value={transaction.fishTypeId || ""}
+                onChange={(e) => handleChangeTran("fishTypeId", e)}
+                items={transaction.listFishType || dataDf.arrFish || []}
+                displayField="fishName"
+              />
+            </Col>
+            <Col md="6" xs="12">
+              <Widgets.WeightInput
+                required={true}
+                label={i18n.t("qtyOfFish(Kg)")}
+                value={transaction.weight || 0}
+                onChange={(e) => handleChangeTran("weight", e)}
+              />
+            </Col>
+            <Col md="6" xs="12">
+              <Widgets.MoneyInput
+                required={true}
+                label={i18n.t("sellPrice")}
+                value={transaction.sellPrice || 0}
+                onChange={(e) => handleChangeTran("sellPrice", e)}
+              />
+            </Col>
+            <Col md="2" xs="12">
+              <Widgets.Checkbox
+                label={i18n.t("isPaid")}
+                value={transaction.isPaid || false}
+                onChange={(e) => handleChangeTran("isPaid", e)}
+                lblCheckbox={i18n.t("isPaid")}
+                disabled={transaction.isRetailCustomers || false}
+              />
+            </Col>
+            <Col md="6" xs="12">
+              <Widgets.MoneyInput
+                disabled
+                label={i18n.t("intoMoney")}
+                value={transaction.intoMoney || ""}
+                // onChange={(e) => handleChangeTran("sellPrice", e)}
+              />
+            </Col>
+          </>
+        )}
       </Row>
     </Modal>
   );

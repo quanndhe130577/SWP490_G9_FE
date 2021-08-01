@@ -36,12 +36,14 @@ const ModalBuy = ({
   const handleCancel = () => {
     handleShowClosePurchase(!isShowClosePurchase);
   };
+
   const handlePurchase = (name, val) => {
     if (name === "commissionPercent") {
       val = parseInt(val);
     }
     setCurrentPurchase((pre) => ({ ...pre, [name]: val }));
   };
+
   const calculateData = () => {
     let totalWeight = 0,
       totalAmount = 0,
@@ -82,6 +84,7 @@ const ModalBuy = ({
     });
     // setFishInPurchase(fishInPurchase);
   };
+
   useEffect(() => {
     calculateData();
     handlePurchase("commissionPercent", 0);
@@ -91,6 +94,7 @@ const ModalBuy = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <Modal
       title={i18n.t("closePurchase")}
@@ -109,12 +113,14 @@ const ModalBuy = ({
               </Moment>
             </label>
           </Col>
-          <Col md="6">
+          <Col md="4">
             <Widgets.Select
-              label={i18n.t("pondOwner")}
-              value={parseInt(currentPurchase.pondOwner)}
+              label={i18n.t("pondOwner") + ": "}
+              value={parseInt(currentPurchase.pondOwnerId)}
               items={dataDf.pondOwner}
-              isDisable={currentPurchase.pondOwner ? true : false}
+              isDisable={currentPurchase.pondOwnerId ? true : false}
+              displayField="name"
+              saveField="id"
             />
           </Col>
           <Col md="12">
@@ -182,7 +188,7 @@ const ModalBuy = ({
           </Col>
           <Col md="6">
             <Widgets.NumberFormat
-              label={i18n.t("percent") + ":  "}
+              label={i18n.t("percent") + ":"}
               value={
                 (objPurchase.totalAmount * currentPurchase.commissionPercent) /
                   100 || ""
@@ -223,13 +229,15 @@ const columns = [
     key: "fishName",
   },
   {
-    title: "Giá (VND/kg)",
+    title: "Đơn giá (VND/kg)",
     dataIndex: "price",
     key: "price",
-    render: (price) => <Widgets.NumberFormat value={price} />,
+    render: (price) => (
+      <Widgets.NumberFormat needSuffix={false} value={price} />
+    ),
   },
   {
-    title: "Tổng khối lượng",
+    title: "Tổng khối lượng (kg)",
     dataIndex: "totalWeight",
     key: "totalWeight",
   },
@@ -244,7 +252,10 @@ const columns = [
     dataIndex: "id",
     key: "id",
     render: (id, row) => (
-      <Widgets.NumberFormat value={row.price * parseFloat(row.totalWeight)} />
+      <Widgets.NumberFormat
+        needSuffix={false}
+        value={row.price * parseFloat(row.totalWeight)}
+      />
     ),
   },
 ];

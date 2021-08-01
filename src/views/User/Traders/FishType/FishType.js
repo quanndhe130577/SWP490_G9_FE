@@ -10,7 +10,7 @@ import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import ModalForm from "./ModalFishType";
 import Moment from "react-moment";
-import moment from 'moment'
+import moment from "moment";
 export default class FishType extends Component {
   constructor(props) {
     super(props);
@@ -53,21 +53,21 @@ export default class FishType extends Component {
       clearFilters,
     }) => (
       <div style={{ padding: 8 }}>
-        {isDate ?
+        {isDate ? (
           <DatePicker
             value={selectedKeys[0]}
             onChange={(e) => {
-              let t = moment(e, 'DD/MM/YYYY');
-              setSelectedKeys(e ? [t] : [])
-              this.handleSearch(selectedKeys, confirm, dataIndex)
+              let t = moment(e, "DD/MM/YYYY");
+              setSelectedKeys(e ? [t] : []);
+              this.handleSearch(selectedKeys, confirm, dataIndex);
             }}
             onPressEnter={() => {
-              this.handleSearch(selectedKeys, confirm, dataIndex)
-            }
-            }
-            format={'DD/MM/YYYY'}
+              this.handleSearch(selectedKeys, confirm, dataIndex);
+            }}
+            format={"DD/MM/YYYY"}
             style={{ marginBottom: 8, display: "block" }}
-          /> :
+          />
+        ) : (
           <Input
             ref={(node) => {
               this.searchInput = node;
@@ -75,15 +75,14 @@ export default class FishType extends Component {
             placeholder={`Search ${dataIndex}`}
             value={selectedKeys[0]}
             onChange={(e) => {
-              setSelectedKeys(e.target.value ? [e.target.value] : [])
-            }
-            }
+              setSelectedKeys(e.target.value ? [e.target.value] : []);
+            }}
             onPressEnter={() =>
               this.handleSearch(selectedKeys, confirm, dataIndex)
             }
             style={{ marginBottom: 8, display: "block" }}
           />
-        }
+        )}
         <Space>
           <Button
             type="primary"
@@ -122,19 +121,20 @@ export default class FishType extends Component {
     ),
     onFilter: (value, record) => {
       if (isDate) {
-        let x = moment(moment(value).format('DD/MM/YYYY'), 'DD/MM/YYYY')
-        let y = moment(moment(record[dataIndex]).format('DD/MM/YYYY'), 'DD/MM/YYYY')
+        let x = moment(moment(value).format("DD/MM/YYYY"), "DD/MM/YYYY");
+        let y = moment(
+          moment(record[dataIndex]).format("DD/MM/YYYY"),
+          "DD/MM/YYYY"
+        );
 
-        return record[dataIndex]
-          ? x.isSame(y, 'day')
-          : ""
+        return record[dataIndex] ? x.isSame(y, "day") : "";
       } else {
         return record[dataIndex]
           ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
-          : ""
+              .toString()
+              .toLowerCase()
+              .includes(value.toLowerCase())
+          : "";
       }
     },
     onFilterDropdownVisibleChange: (visible) => {
@@ -270,7 +270,12 @@ export default class FishType extends Component {
         dataIndex: "fishName",
         key: "fishName",
         ...this.getColumnSearchProps("fishName"),
-        sorter: (a, b) => a.fishName ? a.fishName.length : 0 - b.fishName.length ? b.fishName.length : 0,
+        sorter: (a, b) =>
+          a.fishName
+            ? a.fishName.length
+            : 0 - b.fishName.length
+            ? b.fishName.length
+            : 0,
         sortDirections: ["descend", "ascend"],
       },
       // {
@@ -335,11 +340,16 @@ export default class FishType extends Component {
         ),
       },
       {
-        title: i18n.t("Transaction Price"),
+        title: i18n.t("sellPrice(VND)"),
         dataIndex: "transactionPrice",
         key: "transactionPrice",
         ...this.getColumnSearchProps("transactionPrice"),
-        sorter: (a, b) => a.transactionprice ? a.transactionprice : 0 - b.transactionprice ? b.transactionprice : 0,
+        sorter: (a, b) =>
+          a.transactionprice
+            ? a.transactionprice
+            : 0 - b.transactionprice
+            ? b.transactionprice
+            : 0,
         sortDirections: ["descend", "ascend"],
         render: (transactionprice) => (
           <NumberFormat
@@ -373,7 +383,7 @@ export default class FishType extends Component {
             closeModal={this.closeModal}
             currentFT={currentFT || {}}
             loading={loading}
-          // handleChangeFishType={handleChangeFishType}
+            // handleChangeFishType={handleChangeFishType}
           />
         )}
         <Row>

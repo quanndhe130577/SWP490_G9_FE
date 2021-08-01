@@ -12,7 +12,7 @@ class ChangeUserInfo extends Component {
     super(props);
     this.state = {
       firstname: "demo",
-      lastname: "demo",
+      lastName: "demo",
       dob: new Date("01/01/1999"),
       identifyCode: "030099005068",
       avatar: "https://via.placeholder.com/150",

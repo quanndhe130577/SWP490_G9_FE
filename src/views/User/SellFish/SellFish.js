@@ -8,7 +8,7 @@ import ChooseTraders from "./ChooseTraders";
 import ModalSell from "./ModalSell";
 import queryString from "qs";
 
-import { apis, session } from "../../../services";
+import { apis, helper, session } from "../../../services";
 
 import NumberFormat from "react-number-format";
 import Moment from "react-moment";
@@ -21,6 +21,8 @@ const SellFish = (props) => {
   const [isShowSell, setShowSell] = useState(false);
   // data
   const [listTransDetail, setListTransDetail] = useState([]);
+  const [date, setDate] = useState("");
+  // const [listTrans, setListTrans] = useState([]);
   const [currentTransaction, setCurrentTrans] = useState({});
   const [mode, setMode] = useState("create");
 
@@ -42,21 +44,14 @@ const SellFish = (props) => {
   const handleChangeTrans = (pro, value) => {
     setCurrentTrans((preStates) => ({ ...preStates, [pro]: value }));
   };
-  const calculateIntoMoney = (id) => {
-    let tem = listTransDetail.find((e) => e.id === id);
-    if (tem && tem.fishType) {
-      let value =
-        tem.fishType.price * (parseInt(tem.weight) - tem.basket.weight);
-      return (
-        <NumberFormat
-          value={value}
-          displayType={"text"}
-          thousandSeparator={true}
-          // suffix={i18n.t("suffix")}
-        />
-      );
-    }
-  };
+  const calculateIntoMoney = ({ sellPrice, weight }) => (
+    <NumberFormat
+      value={sellPrice * weight}
+      displayType={"text"}
+      thousandSeparator={true}
+      // suffix={i18n.t("suffix")}
+    />
+  );
 
   // render button action like: edit, delete
   const renderBtnAction = (id) => {
@@ -86,10 +81,10 @@ const SellFish = (props) => {
   const columns = [
     {
       title: "STT",
-      dataIndex: "idx",
-      key: "idx",
       width: 60,
-      render: (idx) => <label className="antd-tb-idx">{idx}</label>,
+      render: (el, row, idx) => (
+        <label className="antd-tb-idx">{idx + 1}</label>
+      ),
     },
     {
       title: i18n.t("typeOfFish"),
@@ -100,46 +95,42 @@ const SellFish = (props) => {
       ),
     },
     {
-      title: i18n.t("qtyOfFish(Kg)"),
+      title: i18n.t("qtyOfFish(Kg-onlyFish)"),
       dataIndex: "weight",
       key: "weight",
     },
     {
-      title: i18n.t("sellPrice"),
+      title: i18n.t("sellPrice(VND)"),
       dataIndex: "sellPrice",
       key: "sellPrice",
+      render: (sellPrice) => (
+        <NumberFormat
+          value={sellPrice}
+          displayType={"text"}
+          thousandSeparator={true}
+        />
+      ),
     },
     {
-      title: i18n.t("isPaid"),
+      title: i18n.t("statusPaid"),
       dataIndex: "isPaid",
       key: "isPaid",
-    },
-    {
-      title: (
-        <div>
-          <label>{i18n.t("intoMoney")}</label>
-          <label>({i18n.t("temporary")})</label>
-        </div>
-      ),
-      dataIndex: "id",
-      key: "id",
-      responsive: ["md", "lg"],
-      render: (id) => {
-        return <div>{id && <label>{calculateIntoMoney(id)}</label>}</div>;
-      },
+      render: (isPaid) => <span>{i18n.t(isPaid ? "isPaid" : "notPaid")}</span>,
     },
 
     {
-      title: i18n.t("trader"),
-      dataIndex: "trader",
-      key: "trader",
+      title: i18n.t("intoMoney"),
+      render: (el, row) => <label>{calculateIntoMoney(row)}</label>,
     },
+
     {
       title: i18n.t("buyer"),
       dataIndex: "buyer",
       key: "buyer",
       render: (buyer) => {
-        return <div>{buyer && <label>{buyer.name}</label>}</div>;
+        return (
+          <div>{buyer && buyer ? buyer.name : i18n.t("retailCustomers")}</div>
+        );
       },
     },
 
@@ -157,7 +148,19 @@ const SellFish = (props) => {
       ),
     },
   ];
-
+  //create purchase detail
+  async function createTransDetail(data) {
+    try {
+      let rs = await apis.createTranDetail(data);
+      if (rs && rs.statusCode === 200) {
+        helper.toast("success", i18n.t(rs.message));
+        getAllTransByDate(date);
+      }
+    } catch (error) {
+      console.log(error);
+      helper.toast("error", error);
+    }
+  }
   // fetch data
   async function fetchData(date) {
     try {
@@ -193,10 +196,12 @@ const SellFish = (props) => {
         // setListTransDetail(rs.data);
         let tem = [];
         for (const trans of rs.data) {
-          trans.trader.purchaseId = trans.id;
+          trans.trader.transId = trans.id;
           tem.push(trans.trader);
         }
         // setTraderInDate(tem);
+        setListTransDetail(rs.data);
+
         setDtFetched((pro) => ({ ...pro, trader: tem }));
       }
     } catch (error) {
@@ -215,6 +220,7 @@ const SellFish = (props) => {
     let date;
     if (query && query.date) {
       date = query.date;
+      setDate(date);
     }
     fetchData(date);
 
@@ -261,10 +267,11 @@ const SellFish = (props) => {
             currentTransaction={currentTransaction || {}}
             dataDf={dataFetched || []}
             mode={mode}
+            createTransDetail={createTransDetail}
           />
         )}
         {!isShowChooseTraders && (
-          <Card title={renderTitle()}>
+          <Card title={renderTitle()} style={{ minHeight: "80vh" }}>
             <Row className="mb-2">
               <Col md="6">
                 <label className="mr-2">
@@ -304,14 +311,24 @@ const SellFish = (props) => {
               <Col style={{ overflowX: "auto" }}>
                 {listTransDetail.map((trans, idx) => (
                   <div>
-                    key={idx}
+                    <b>
+                      <span className="mr-2">
+                        {i18n.t("trader")}:{" "}
+                        {trans.trader && trans.trader.lastName}.
+                      </span>
+                      {trans.transactionDetails.length > 0 && (
+                        <span className="mr-2">
+                          {i18n.t("totalWR")}: {trans.transactionDetails.length}
+                        </span>
+                      )}
+                    </b>
                     <Table
-                      key={idx}
+                      key={idx + trans.id}
                       columns={columns}
-                      dataSource={trans || []}
+                      dataSource={trans.transactionDetails || []}
                       loading={isLoading}
                       scroll={{ y: 420 }}
-                      pagination={{ pageSize: 100 }}
+                      pagination={{ pageSize: 10 }}
                       bordered
                       // summary={(pageData) => {
                       //   let totalWeight = 0;
