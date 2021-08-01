@@ -131,6 +131,7 @@ const ChoosePond = ({
             items={dataDf.pondOwner}
             // isDisable={currentPurchase.pondOwner ? true : false}
             onChange={(vl) => onChange(vl, "pondOwnerId")}
+            needPleaseChose={false}
           />
           <Widgets.SelectSearchMulti
             label={i18n.t("chooseFish")}

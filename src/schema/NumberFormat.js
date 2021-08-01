@@ -14,6 +14,7 @@ export default function NumberFormat2({
   prefix = "",
   needFormGroup = true,
   className = "",
+  needSuffix = true,
 }) {
   function onValueChange(e) {
     if (onChange && !isDisable) onChange(e);
@@ -27,13 +28,13 @@ export default function NumberFormat2({
           {label} {required ? <span style={{ color: "red" }}>*</span> : ""}
         </label>
       )}
-
+      &nbsp;
       <NumberFormat
         prefix={prefix}
         value={value || 0}
         displayType={displayType}
         thousandSeparator={true}
-        suffix={"VND"}
+        suffix={needSuffix ? " VND" : ""}
         onValueChange={onValueChange}
       />
       {submitted && !value && (
