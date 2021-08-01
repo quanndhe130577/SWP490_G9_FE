@@ -115,21 +115,22 @@ const ModalSell = ({
         truck,
         listDrumId,
       }));
-    } else if (mode === "create" && suggestionTrans) {
-      // Trans goi y khi mua
-      let fishTypeId = suggestionTrans.fishTypeId;
-      let basketId = suggestionTrans.basketId;
-      let truck = suggestionTrans.truck;
-      let listDrumId = suggestionTrans.listDrumId;
-
-      setTransaction((prevState) => ({
-        ...prevState,
-        fishTypeId,
-        basketId,
-        truck,
-        listDrumId,
-      }));
     }
+    // else if (mode === "create" && suggestionTrans) {
+    //   // Trans goi y khi mua
+    //   let fishTypeId = suggestionTrans.fishTypeId;
+    //   let basketId = suggestionTrans.basketId;
+    //   let truck = suggestionTrans.truck;
+    //   let listDrumId = suggestionTrans.listDrumId;
+
+    //   setTransaction((prevState) => ({
+    //     ...prevState,
+    //     fishTypeId,
+    //     basketId,
+    //     truck,
+    //     listDrumId,
+    //   }));
+    // }
   }
   async function getBuyer() {
     try {
@@ -181,7 +182,7 @@ const ModalSell = ({
             label={i18n.t("trader")}
             value={transaction.traderId || ""}
             onChange={(e) => handleChangeTran("traderId", e)}
-            items={dataDf.trader || []}
+            items={dataDf.traders || []}
             displayField={"lastName"}
           />
         </Col>
@@ -247,9 +248,9 @@ const ModalSell = ({
             </Col>
             <Col md="6" xs="12">
               <Widgets.MoneyInput
-                disabled
+                disabled={true}
                 label={i18n.t("intoMoney")}
-                value={transaction.intoMoney || ""}
+                value={transaction.weight * transaction.sellPrice || ""}
                 // onChange={(e) => handleChangeTran("sellPrice", e)}
               />
             </Col>

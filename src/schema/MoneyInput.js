@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { InputNumber } from "antd";
 
 export default function Money({
@@ -6,7 +6,7 @@ export default function Money({
   value = null,
   label,
   error,
-  isDisable = false,
+  disabled = false,
   onChange,
   required = false,
   submitted,
@@ -33,7 +33,7 @@ export default function Money({
 
       <InputNumber
         style={{ width: "100%" }}
-        disabled={isDisable}
+        disabled={disabled}
         defaultValue={defaultValue}
         step={step}
         //value={inputValue}

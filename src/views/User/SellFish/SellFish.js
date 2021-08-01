@@ -168,9 +168,9 @@ const SellFish = (props) => {
       let user = session.get("user");
       setDtFetched((preProps) => ({ ...preProps, currentWR: user }));
       if (date) {
-        getAllTransByDate(date);
+        await getAllTransByDate(date);
       } else {
-        getTraderByWR();
+        await getTraderByWR();
       }
 
       setLoading(false);
@@ -202,7 +202,7 @@ const SellFish = (props) => {
         // setTraderInDate(tem);
         setListTransDetail(rs.data);
 
-        setDtFetched((pro) => ({ ...pro, trader: tem }));
+        setDtFetched((pro) => ({ ...pro, traders: tem }));
       }
     } catch (error) {
       console.log(error);
