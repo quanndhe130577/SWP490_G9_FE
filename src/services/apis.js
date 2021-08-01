@@ -40,6 +40,7 @@ var path = {
   createPurchase: "/api/purchase/create",
   getPurchases: "/api/purchase/getall", // GET
   deletePurchase: "/api/purchase/delete",
+  updatePondOwnerInPurchase: "/api/purchase/updatepo",
   updatePurchase: "/api/purchase/update",
   closePurchase: "/api/purchase/chot-so",
   getPurchasesById: "/api/purchase/getone", // method GET pram purchase id
