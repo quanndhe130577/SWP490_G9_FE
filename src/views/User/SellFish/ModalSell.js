@@ -40,7 +40,7 @@ const ModalSell = ({
           traderId: trader.id,
           transId: trader.transId,
           sellPrice: transaction.sellPrice,
-          weight: parseInt(transaction.weight),
+          weight: parseFloat(transaction.weight),
         });
       }
       // setShowSell(false);
@@ -52,10 +52,10 @@ const ModalSell = ({
     setShowSell(false);
   };
   const handleChangeTran = async (name, value) => {
-    if (name === "isRetailCustomers" && !value) {
+    if (name === "isRetailCustomers" && value) {
       setTransaction((prevState) => ({
         ...prevState,
-        buyer: "",
+        buyer: { key: null },
         isPaid: true,
       }));
     } else if (name === "traderId") {
@@ -83,8 +83,8 @@ const ModalSell = ({
 
   // validate các trường required
   const validateData = () => {
-    let { weight, fishTypeId } = transaction;
-    if (!weight || !fishTypeId) {
+    let { weight, fishTypeId, traderId, sellPrice, buyer } = transaction;
+    if (!weight || !fishTypeId || !traderId || !sellPrice || !buyer) {
       return "fillAll*";
     } else {
       if (weight <= 0.1) {
@@ -182,7 +182,7 @@ const ModalSell = ({
             value={transaction.traderId || ""}
             onChange={(e) => handleChangeTran("traderId", e)}
             items={dataDf.trader || []}
-            displayField={"lastname"}
+            displayField={"lastName"}
           />
         </Col>
 
@@ -247,7 +247,7 @@ const ModalSell = ({
             </Col>
             <Col md="6" xs="12">
               <Widgets.MoneyInput
-                required={true}
+                disabled
                 label={i18n.t("intoMoney")}
                 value={transaction.intoMoney || ""}
                 // onChange={(e) => handleChangeTran("sellPrice", e)}

@@ -30,7 +30,7 @@ const ChooseTraders = ({
         if (rs && rs.statusCode === 200) {
           helper.toast("success", i18n.t(rs.message || "success"));
         }
-      } catch (error) { }
+      } catch (error) {}
     }
   };
 
@@ -75,7 +75,7 @@ const ChooseTraders = ({
     }
   };
   function convertField(arr) {
-    arr.map((el) => (el.name = el.firstName + " " + el.lastname));
+    arr.map((el) => (el.name = el.firstName + " " + el.lastName));
     return arr;
   }
 

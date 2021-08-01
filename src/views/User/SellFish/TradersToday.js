@@ -17,7 +17,7 @@ const TradersToday = ({ listTraderId, onChange, dataFetched }) => {
       key: "firstName",
 
       render: (firstName, record) => (
-        <label>{firstName + " " + record.lastname}</label>
+        <label>{firstName + " " + record.lastName}</label>
       ),
     },
     {

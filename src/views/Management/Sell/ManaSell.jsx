@@ -80,7 +80,7 @@ const ManaSell = () => {
       dataIndex: "trader",
       key: "trader",
       render: (trader) => (
-        <label>{trader.firstName + " " + trader.lastname}</label>
+        <label>{trader.firstName + " " + trader.lastName}</label>
       ),
     },
     {

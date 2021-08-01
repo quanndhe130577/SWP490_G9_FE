@@ -12,6 +12,9 @@ import NumberFormat from "react-number-format";
 import { useSelector } from "react-redux";
 import Moment from "react-moment";
 import _ from "lodash";
+import Item from "antd/lib/list/Item";
+import Widgets from "../../../../schema/Widgets";
+
 const { local, session, apis, helper } = services;
 
 const BuyFish = (props) => {
@@ -455,24 +458,41 @@ const BuyFish = (props) => {
   };
 
   // Update All fish type anhnbt
-  async function updateAllFishType(body, purchase) {
+  async function updateAllFishType(body, purchase, onlyFe = false) {
     var success = false;
     try {
       setLoading(true);
-      let rs = await apis.updateAllFishType(body, "POST");
-      if (rs && rs.statusCode === 200) {
-        let temObj = { ...purchase, ...currentPurchase, arrFish: rs.data };
+      if (!onlyFe) {
+        let rs = await apis.updateAllFishType(body, "POST");
+        if (rs && rs.statusCode === 200) {
+          let temObj = { ...purchase, ...currentPurchase, arrFish: rs.data };
+          setCurrentPurchase(temObj);
+          local.set("currentPurchase", temObj);
+          let newArr = _.cloneDeep(dataDf.fishType);
+          mergeByProperty(newArr, rs.data, "id");
+          setData((pre) => ({
+            ...pre,
+            fishType: newArr || [],
+          }));
+          success = true;
+          helper.toast("success", rs.message);
+          await getAllPurchaseDetail(purchase);
+        }
+      } else {
+        let temObj = {
+          ...purchase,
+          ...currentPurchase,
+          arrFish: body.listFishType,
+        };
         setCurrentPurchase(temObj);
         local.set("currentPurchase", temObj);
         let newArr = _.cloneDeep(dataDf.fishType);
-        mergeByProperty(newArr, rs.data, "id");
+        mergeByProperty(newArr, body.listFishType, "id");
         setData((pre) => ({
           ...pre,
           fishType: newArr || [],
         }));
         success = true;
-        helper.toast("success", rs.message);
-        await getAllPurchaseDetail(purchase);
       }
     } catch (error) {
       console.log(error);
@@ -506,6 +526,23 @@ const BuyFish = (props) => {
   function handleBack() {
     history.push("/buy");
   }
+
+  const onChangePondOwner = async (value) => {
+    var rs = await apis.updatePondOwnerInPurchase(
+      {
+        purchaseId: currentPurchase.id,
+        pondOwnerId: currentPurchase.pondOwnerId,
+      },
+      "POST"
+    );
+    if (rs && rs.statusCode === 200) {
+      var newPur = { ...currentPurchase };
+      newPur.pondOwnerId = value;
+      var pO = dataDf.pondOwner.find((x) => x.id == value);
+      newPur.pondOwnerName = pO ? pO.name : "";
+      setCurrentPurchase(newPur);
+    }
+  };
 
   useEffect(() => {
     // lấy id trên address bar
@@ -542,6 +579,12 @@ const BuyFish = (props) => {
       setShowChoosePond(true);
     }
     setData((pre) => ({ ...pre, arrFish: tem.arrFish }));
+    if (tem.listFishId === undefined) {
+      tem = { ...tem, listFishId: [] };
+    }
+    if (tem.status === undefined) {
+      tem = { ...tem, status: "Pending" };
+    }
     setCurrentPurchase(tem);
 
     fetchData(query);
@@ -618,17 +661,34 @@ const BuyFish = (props) => {
         <Card title={renderTitle()}>
           <Row className="mb-2">
             <Col md="6">
-              <label className="mr-2">
-                <b>{i18n.t("date")}:</b>
-                <Moment format="DD/MM/YYYY" className="ml-2">
-                  {currentPurchase.date}
-                </Moment>
-              </label>
-              <label>
-                <b className="mr-2">{i18n.t("pondOwner")}:</b>
-                {/* /!* nếu ko có id thì dùng hàm findPO  *!/ */}
-                {(findPO() && findPO().name) || currentPurchase.pondOwnerName}
-              </label>
+              <Row>
+                <Col md="2">
+                  <label className="mt-1">
+                    <b>{i18n.t("date")}:</b>
+                    <Moment format="DD/MM/YYYY" className="ml-2">
+                      {currentPurchase.date}
+                    </Moment>
+                  </label>
+                </Col>
+                <Col md="4">
+                  <Widgets.Select
+                    label={i18n.t("pondOwner") + ": "}
+                    value={parseInt(currentPurchase.pondOwnerId)}
+                    items={dataDf.pondOwner}
+                    displayField="name"
+                    saveField="id"
+                    isDisable={currentPurchase.status === "Completed"}
+                    onChange={(value) => onChangePondOwner(value)}
+                    needPleaseChose={false}
+                    width={"75%"}
+                  />
+                </Col>
+                {/* <label>
+                  <b className="mr-2">{i18n.t("pondOwner")}:</b>
+                  { //nếu ko có id thì dùng hàm findPO  }
+                  {(findPO() && findPO().name) || currentPurchase.pondOwnerName}
+                </label> */}
+              </Row>
             </Col>
             <Col md="6">
               {/* nếu status khac Pending thì ko show btn thêm */}
@@ -669,6 +729,7 @@ const BuyFish = (props) => {
                 scroll={{ y: 420 }}
                 pagination={{ pageSize: 100 }}
                 bordered
+                rowKey="idx"
                 summary={(pageData) => {
                   let totalWeight = 0;
                   let totalAmount = 0;
@@ -693,6 +754,7 @@ const BuyFish = (props) => {
                             displayType={"text"}
                             thousandSeparator={true}
                             suffix=" Kg"
+                            className="bold"
                           />
                         </Table.Summary.Cell>
                         <Table.Summary.Cell key="3">
@@ -701,6 +763,7 @@ const BuyFish = (props) => {
                             displayType={"text"}
                             thousandSeparator={true}
                             suffix={i18n.t("suffix")}
+                            className="bold"
                           />
                         </Table.Summary.Cell>
                         <Table.Summary.Cell colSpan="3" key="4" />
