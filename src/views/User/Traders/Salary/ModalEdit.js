@@ -52,6 +52,7 @@ const ModalEdit = ({isShow, closeModal, mode, currentEmp}) => {
               required={true}
               label={i18n.t("salary")}
               value={employee.baseSalary}
+              defaultValue={employee.baseSalary}
               onChange={(e) => handleChangeEmployee(e, "baseSalary")}
             />
           </Col>

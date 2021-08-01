@@ -53,4 +53,4 @@ const ModalCalculateSalaries = ({isShow, closeModal,baseSalaries}) => {
   );
 };
 
-export default ModalHistorySalaries;
+export default ModalCalculateSalaries;

@@ -8,6 +8,7 @@ import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import ModalBaseSalaries from "./ModalBaseSalaries";
 import ModalEdit from "./ModalEdit";
+import ModalCalculateSalaries from "./ModalCalculateSalaries";
 import moment from "moment";
 import Widgets from "../../../../schema/Widgets";
 
@@ -54,10 +55,11 @@ export default class EmployeeSalary extends Component {
 
   renderTitle = () => {
     let {total} = this.state || 0;
+    let date=moment();
     return (
       <Row>
         <Col md="6" className="d-flex">
-          <h3 className="">{i18n.t("employeeSalaryMangerment")}</h3>
+          <h3 className="">{i18n.t("Employee Salary Mangerment")}</h3>
           <label className="hd-total">{total ? "(" + total + ")" : ""}</label>
         </Col>
 
@@ -67,11 +69,10 @@ export default class EmployeeSalary extends Component {
               color="info"
               className="pull-right"
               onClick={() => {
-                this.setState({isShowModal: true, mode: "create"});
+                this.setState({isShowModal: true, mode: "calculate"});
               }}
             >
-              <i className="fa fa-plus mr-1" />
-              {i18n.t("create")}
+              {i18n.t("Calculate Salary")}
             </Button>
             <DatePicker disabledDate={(date) => date.isAfter(moment())}
               picker="month"
@@ -276,31 +277,31 @@ export default class EmployeeSalary extends Component {
         sortDirections: ["descend", "ascend"],
       },
       {
-        title: i18n.t("Base Salary"),
+        title: i18n.t("Base Salary")+"(VND)",
         dataIndex: "baseSalary",
         key: "baseSalary",
         ...this.getColumnSearchProps("baseSalary"),
         sorter: (a, b) => a.baseSalary - b.baseSalary,
         sortDirections: ["descend", "ascend"],
-        render: (salary) => salary !== null ? <Widgets.NumberFormat value={salary} /> : "Không có thông tin",
+        render: (salary) => salary !== null ? <Widgets.NumberFormat value={salary} needSuffix={false}  /> : "Không có thông tin",
       },
       {
-        title: i18n.t("Advance Salary"),
+        title: i18n.t("Advance Salary")+"(VND)",
         dataIndex: "advanceSalary",
         key: "advanceSalary",
         ...this.getColumnSearchProps("advanceSalary"),
         sorter: (a, b) => a.baseSalary - b.baseSalary,
         sortDirections: ["descend", "ascend"],
-        render: (salary) => salary !== null ? <Widgets.NumberFormat value={salary} /> : "Không có thông tin",
+        render: (salary) => salary !== null ? <Widgets.NumberFormat value={salary} needSuffix={false} /> : "Không có thông tin",
       },
       {
-        title: i18n.t("salary-tk"),
+        title: i18n.t("salary-tk")+"(VND)",
         dataIndex: "salary",
         key: "salary",
         ...this.getColumnSearchProps("salary", true),
         sorter: (a, b) => a > b,
         sortDirections: ["descend", "ascend"],
-        render: (salary) => salary !== null ? <Widgets.NumberFormat value={salary} /> : "Không có thông tin",
+        render: (salary) => salary !== null ? <Widgets.NumberFormat value={salary} needSuffix={false} /> : "Không có thông tin",
       },
       {
         title: "",
