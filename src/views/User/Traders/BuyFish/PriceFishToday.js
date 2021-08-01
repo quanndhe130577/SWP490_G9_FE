@@ -72,6 +72,7 @@ const PriceFishToday = ({
       render: (fishName, record) => (
         <Input
           defaultValue={fishName}
+          value={fishName}
           onChange={(e) =>
             onChangeWeight(e.target.value, record.id, "fishName")
           }
@@ -86,6 +87,7 @@ const PriceFishToday = ({
       render: (minWeight, record) => (
         <Input
           defaultValue={minWeight}
+          value={minWeight}
           onChange={(e) =>
             onChangeWeight(e.target.value, record.id, "minWeight")
           }
@@ -100,6 +102,7 @@ const PriceFishToday = ({
       render: (maxWeight, record) => (
         <Input
           defaultValue={maxWeight}
+          value={maxWeight}
           onChange={(e) =>
             onChangeWeight(e.target.value, record.id, "maxWeight")
           }

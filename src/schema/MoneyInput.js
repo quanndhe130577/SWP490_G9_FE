@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { InputNumber } from "antd";
 
 export default function Money({
+  defaultValue = 0,
   value = null,
   label,
   error,
@@ -15,7 +16,7 @@ export default function Money({
   step = 100,
 }) {
   // console.log("number " + value);
-  const [inputValue, setInputValue] = useState(value);
+  //const [inputValue, setInputValue] = useState(value);
 
   return (
     <div
@@ -33,9 +34,10 @@ export default function Money({
       <InputNumber
         style={{ width: "100%" }}
         disabled={isDisable}
-        defaultValue={value}
+        defaultValue={defaultValue}
         step={step}
-        value={inputValue}
+        //value={inputValue}
+        value={value}
         formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
         required={required}
         min={min}
@@ -46,7 +48,7 @@ export default function Money({
             value = 0;
           }
 
-          setInputValue(value);
+          //setInputValue(value);
           if (onChange) {
             onChange(value);
           }
