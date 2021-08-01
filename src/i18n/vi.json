@@ -158,5 +158,6 @@
   "qtyOfFish(Kg-onlyFish)": "Khối lượng cá (Kg)",
   "statusPaid": "Trạng thái thanh toán",
   "notPaid": "Chưa trả",
-  "totalWR": "Tổng số mã"
+  "totalWR": "Tổng số mã",
+  "weightRecorder": "Chủ bến"
 }

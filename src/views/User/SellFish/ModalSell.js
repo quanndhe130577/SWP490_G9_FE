@@ -4,7 +4,7 @@ import { Row, Col } from "reactstrap";
 import i18n from "i18next";
 import Widgets from "../../../schema/Widgets";
 import helper from "../../../services/helper";
-import { apis, local } from "../../../services";
+import { apis, local, session } from "../../../services";
 import { API_FETCH } from "../../../constant";
 
 const ModalSell = ({
@@ -20,6 +20,7 @@ const ModalSell = ({
 }) => {
   const [transaction, setTransaction] = useState(currentTransaction); // transaction là 1 bản ghi của Trans
   // const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState();
 
   const handleOk = () => {
     let validate = validateData();
@@ -161,6 +162,8 @@ const ModalSell = ({
   useEffect(() => {
     convertDataInEditMode();
     getBuyer();
+    setUser(session.get("user") || null);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
@@ -175,88 +178,172 @@ const ModalSell = ({
       onCancel={handleCancel}
       width={800}
     >
-      <Row>
-        <Col md="6" xs="12">
-          <Widgets.Select
-            required={true}
-            label={i18n.t("trader")}
-            value={transaction.traderId || ""}
-            onChange={(e) => handleChangeTran("traderId", e)}
-            items={dataDf.traders || []}
-            displayField={"lastName"}
-          />
-        </Col>
+      {user && user.roleDisplayName === "Thương lái" ? (
+        <Row>
+          <Col md="6" xs="12">
+            <Widgets.Select
+              label={i18n.t("weightRecorder")}
+              value={transaction.weightRecorderId || ""}
+              onChange={(e) => handleChangeTran("weightRecorderId", e)}
+              items={dataDf.weightRecorderId || []}
+              displayField={"lastName"}
+            />
+          </Col>
 
-        <Col md="4" xs="12">
-          <Widgets.SearchFetchApi
-            required={true}
-            label={i18n.t("buyer")}
-            value={transaction.buyer || []}
-            onSelect={(e) => handleChangeTran("buyer", e)}
-            items={transaction.listBuyer || []}
-            api={API_FETCH.FIND_BUYER}
-            placeholder={i18n.t("enterNameToFindBuyer")}
-            disabled={transaction.isRetailCustomers || false}
-          />
-        </Col>
+          <Col md="4" xs="12">
+            <Widgets.SearchFetchApi
+              required={true}
+              label={i18n.t("buyer")}
+              value={transaction.buyer || []}
+              onSelect={(e) => handleChangeTran("buyer", e)}
+              items={transaction.listBuyer || []}
+              api={API_FETCH.FIND_BUYER}
+              placeholder={i18n.t("enterNameToFindBuyer")}
+              disabled={transaction.isRetailCustomers || false}
+            />
+          </Col>
 
-        <Col md="2" xs="12">
-          <Widgets.Checkbox
-            label={i18n.t("Or")}
-            value={transaction.isRetailCustomers || false}
-            onChange={(e) => handleChangeTran("isRetailCustomers", e)}
-            lblCheckbox={i18n.t("retailCustomers")}
-          />
-        </Col>
+          <Col md="2" xs="12">
+            <Widgets.Checkbox
+              label={i18n.t("Or")}
+              value={transaction.isRetailCustomers || false}
+              onChange={(e) => handleChangeTran("isRetailCustomers", e)}
+              lblCheckbox={i18n.t("retailCustomers")}
+            />
+          </Col>
 
-        {transaction.traderId && (
-          <>
-            <Col md="6" xs="12">
-              <Widgets.Select
-                required={true}
-                label={i18n.t("typeOfFish")}
-                value={transaction.fishTypeId || ""}
-                onChange={(e) => handleChangeTran("fishTypeId", e)}
-                items={transaction.listFishType || dataDf.arrFish || []}
-                displayField="fishName"
-              />
-            </Col>
-            <Col md="6" xs="12">
-              <Widgets.WeightInput
-                required={true}
-                label={i18n.t("qtyOfFish(Kg)")}
-                value={transaction.weight || 0}
-                onChange={(e) => handleChangeTran("weight", e)}
-              />
-            </Col>
-            <Col md="6" xs="12">
-              <Widgets.MoneyInput
-                required={true}
-                label={i18n.t("sellPrice")}
-                value={transaction.sellPrice || 0}
-                onChange={(e) => handleChangeTran("sellPrice", e)}
-              />
-            </Col>
-            <Col md="2" xs="12">
-              <Widgets.Checkbox
-                label={i18n.t("isPaid")}
-                value={transaction.isPaid || false}
-                onChange={(e) => handleChangeTran("isPaid", e)}
-                lblCheckbox={i18n.t("isPaid")}
-                disabled={transaction.isRetailCustomers || false}
-              />
-            </Col>
-            <Col md="6" xs="12">
-              <Widgets.MoneyInput
-                disabled={true}
-                label={i18n.t("intoMoney")}
-                value={transaction.weight * transaction.sellPrice || ""}
-                // onChange={(e) => handleChangeTran("sellPrice", e)}
-              />
-            </Col>
-          </>
-        )}
-      </Row>
+          {/* {transaction.traderId && (
+            <> */}
+          <Col md="6" xs="12">
+            <Widgets.Select
+              required={true}
+              label={i18n.t("typeOfFish")}
+              value={transaction.fishTypeId || ""}
+              onChange={(e) => handleChangeTran("fishTypeId", e)}
+              items={transaction.listFishType || dataDf.arrFish || []}
+              displayField="fishName"
+            />
+          </Col>
+          <Col md="6" xs="12">
+            <Widgets.WeightInput
+              required={true}
+              label={i18n.t("qtyOfFish(Kg)")}
+              value={transaction.weight || 0}
+              onChange={(e) => handleChangeTran("weight", e)}
+            />
+          </Col>
+          <Col md="6" xs="12">
+            <Widgets.MoneyInput
+              required={true}
+              label={i18n.t("sellPrice")}
+              value={transaction.sellPrice || 0}
+              onChange={(e) => handleChangeTran("sellPrice", e)}
+            />
+          </Col>
+          <Col md="2" xs="12">
+            <Widgets.Checkbox
+              label={i18n.t("isPaid")}
+              value={transaction.isPaid || false}
+              onChange={(e) => handleChangeTran("isPaid", e)}
+              lblCheckbox={i18n.t("isPaid")}
+              disabled={transaction.isRetailCustomers || false}
+            />
+          </Col>
+          <Col md="6" xs="12">
+            <Widgets.MoneyInput
+              disabled={true}
+              label={i18n.t("intoMoney")}
+              value={transaction.weight * transaction.sellPrice || ""}
+              // onChange={(e) => handleChangeTran("sellPrice", e)}
+            />
+          </Col>
+          {/* </>
+          )} */}
+        </Row>
+      ) : (
+        <Row>
+          <Col md="6" xs="12">
+            <Widgets.Select
+              required={true}
+              label={i18n.t("trader")}
+              value={transaction.traderId || ""}
+              onChange={(e) => handleChangeTran("traderId", e)}
+              items={dataDf.traders || []}
+              displayField={"lastName"}
+            />
+          </Col>
+
+          <Col md="4" xs="12">
+            <Widgets.SearchFetchApi
+              required={true}
+              label={i18n.t("buyer")}
+              value={transaction.buyer || []}
+              onSelect={(e) => handleChangeTran("buyer", e)}
+              items={transaction.listBuyer || []}
+              api={API_FETCH.FIND_BUYER}
+              placeholder={i18n.t("enterNameToFindBuyer")}
+              disabled={transaction.isRetailCustomers || false}
+            />
+          </Col>
+
+          <Col md="2" xs="12">
+            <Widgets.Checkbox
+              label={i18n.t("Or")}
+              value={transaction.isRetailCustomers || false}
+              onChange={(e) => handleChangeTran("isRetailCustomers", e)}
+              lblCheckbox={i18n.t("retailCustomers")}
+            />
+          </Col>
+
+          {transaction.traderId && (
+            <>
+              <Col md="6" xs="12">
+                <Widgets.Select
+                  required={true}
+                  label={i18n.t("typeOfFish")}
+                  value={transaction.fishTypeId || ""}
+                  onChange={(e) => handleChangeTran("fishTypeId", e)}
+                  items={transaction.listFishType || dataDf.arrFish || []}
+                  displayField="fishName"
+                />
+              </Col>
+              <Col md="6" xs="12">
+                <Widgets.WeightInput
+                  required={true}
+                  label={i18n.t("qtyOfFish(Kg)")}
+                  value={transaction.weight || 0}
+                  onChange={(e) => handleChangeTran("weight", e)}
+                />
+              </Col>
+              <Col md="6" xs="12">
+                <Widgets.MoneyInput
+                  required={true}
+                  label={i18n.t("sellPrice")}
+                  value={transaction.sellPrice || 0}
+                  onChange={(e) => handleChangeTran("sellPrice", e)}
+                />
+              </Col>
+              <Col md="2" xs="12">
+                <Widgets.Checkbox
+                  label={i18n.t("isPaid")}
+                  value={transaction.isPaid || false}
+                  onChange={(e) => handleChangeTran("isPaid", e)}
+                  lblCheckbox={i18n.t("isPaid")}
+                  disabled={transaction.isRetailCustomers || false}
+                />
+              </Col>
+              <Col md="6" xs="12">
+                <Widgets.MoneyInput
+                  disabled={true}
+                  label={i18n.t("intoMoney")}
+                  value={transaction.weight * transaction.sellPrice || ""}
+                  // onChange={(e) => handleChangeTran("sellPrice", e)}
+                />
+              </Col>
+            </>
+          )}
+        </Row>
+      )}
     </Modal>
   );
 };
