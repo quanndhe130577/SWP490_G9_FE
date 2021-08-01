@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Row, Col } from "reactstrap";
+import React, {useState, useEffect} from "react";
+import {Row, Col} from "reactstrap";
 import Modal from "../../../../containers/Antd/ModalCustom";
 import Widgets from "../../../../schema/Widgets";
 import i18n from "i18next";
@@ -8,7 +8,7 @@ import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import moment from "moment";
 
-const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
+const ModalEdit = ({isShow, closeModal, mode, currentEmp}) => {
   const [employee, setEmp] = useState(currentEmp);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -20,27 +20,12 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
       [name]: val,
     }));
   };
-
-  const checkValidate = (data) => {
-    const phoneNumberVNRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
-    if (!phoneNumberVNRegex.test(data)) {
-      return { isValid: false, message: "Số điện thoại không đúng" };
-    }
-    return { isValid: true, message: "" };
-  };
+  let rs;
   const handleOk = async () => {
     try {
       setLoading(true);
-      let user = session.get("user"),
-        rs;
-      let valid = checkValidate(employee.phoneNumber);
-      if (!valid.isValid) {
-        helper.toast("error", valid.message);
-        return;
-      }
-
       if (mode === "edit") {
-        rs = await apis.updateEmployee(employee);
+        rs = await apis.updateEmployeeBaseSalary({salary:employee.baseSalary,empId:employee.id});
       }
 
       if (rs && rs.statusCode === 200) {
@@ -66,8 +51,8 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
             <Widgets.MoneyInput
               required={true}
               label={i18n.t("salary")}
-              value={employee.salary}
-              onChange={(e) => handleChangeEmployee(e, "salary")}
+              value={employee.baseSalary}
+              onChange={(e) => handleChangeEmployee(e, "baseSalary")}
             />
           </Col>
         </Row>

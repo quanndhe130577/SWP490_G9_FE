@@ -65,6 +65,8 @@ var path = {
   deleteEmployee: "/api/employee/delete",
   getDetailEmployee: "/api/employee/detail/{empId}",
   getSalaryDetailEmployee: "/api/employee/salaryDetail",
+  getBaseSalariesByEmployeeId: "/api/baseSalary/getall",
+  updateEmployeeBaseSalary: "/api/employee/updateBaseSalary",
 
   //Time keeping
   updateTimeKeeping: "/api/timeKeeping/update",
