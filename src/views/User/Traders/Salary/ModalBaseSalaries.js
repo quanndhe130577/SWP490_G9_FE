@@ -3,7 +3,7 @@ import {Table,Modal} from "antd";
 import Widgets from "../../../../schema/Widgets";
 import i18n from "i18next";
 
-const ModalBaseSalaries = ({isShow, closeModal,baseSalaries}) => {
+const ModalBaseSalaries = ({isShow, closeModal,baseSalaries,name}) => {
   const [loading, setLoading] = useState(false);
   const handleOk = async () => {
     setLoading(false);
@@ -36,7 +36,7 @@ const ModalBaseSalaries = ({isShow, closeModal,baseSalaries}) => {
   ];
   return (
     <Modal
-      title="Demo"
+      title={"Lương "+" của "+name}
       footer=""
       visible={isShow}
       onCancel={closeModal}

@@ -4,9 +4,9 @@ import {SearchOutlined} from "@ant-design/icons";
 import {Row, Col, Button} from "reactstrap";
 import i18n from "i18next";
 import apis from "../../../../services/apis";
-import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import ModalBaseSalaries from "./ModalBaseSalaries";
+import ModalHistorySalaries from "./ModalHistorySalaries";
 import ModalEdit from "./ModalEdit";
 import ModalAdvanceSalaries from "./ModalAdvanceSalaries";
 import ModalCalculateSalaries from "./ModalCalculateSalaries";
@@ -26,7 +26,11 @@ export default class EmployeeSalary extends Component {
       data: [],
       baseSalaries: [],
       advanceSalaries: [],
+      historySalaries: [],
       loading: true,
+      employeeId: 0,
+      employeeName: "",
+      canCalculate: false
     };
   }
 
@@ -34,14 +38,14 @@ export default class EmployeeSalary extends Component {
     this.fetchEmployee();
   }
 
-  async fetchEmployee() {
+  fetchEmployee = async () => {
     try {
       let user = await session.get("user");
       let rs = await apis.getSalaryDetailEmployee({}, "GET", this.state.date._d.toDateString());
 
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
-        this.setState({data: rs.data, user, total: rs.data.length});
+        this.setState({data: rs.data, user, total: rs.data.length, canCalculate: rs.data.filter(item => item.salary === null && item.baseSalary !== null).length > 0});
       }
     } catch (error) {
       console.log(error);
@@ -50,16 +54,25 @@ export default class EmployeeSalary extends Component {
     }
   }
 
-  async getBaseSalaries(id) {
+  getBaseSalaries = async (id) => {
     let rs = await apis.getBaseSalariesByEmployeeId({}, "GET", id);
-    this.setState({baseSalaries: rs.data})
+    if (rs) {
+      this.setState({baseSalaries: rs.data})
+    }
   }
 
-  async getAdvanceSalaries(id) {
+  getAdvanceSalaries = async (id) => {
     let rs = await apis.getAllAdvanceSalary({}, "GET", id);
-    this.setState({advanceSalaries: rs.data})
+    if (rs) {
+      this.setState({advanceSalaries: rs.data})
+    }
   }
-
+  getHistorySalaries = async (id) => {
+    let rs = await apis.getAllEmpHistorySalary({}, "GET", id);
+    if (rs) {
+      this.setState({historySalaries: rs.data})
+    }
+  }
   renderTitle = () => {
     let {total} = this.state || 0;
     return (
@@ -71,15 +84,17 @@ export default class EmployeeSalary extends Component {
 
         <Col md="6">
           <div className='d-flex flex-row-reverse'>
-            <Button
-              color="info"
-              className="pull-right"
-              onClick={() => {
-                this.setState({isShowModal: true, mode: "calculate"});
-              }}
-            >
-              {i18n.t("Calculate Salary")}
-            </Button>
+            {
+              this.state.canCalculate && <Button
+                color="info"
+                className="pull-right"
+                onClick={() => {
+                  this.setState({isShowModal: true, mode: "calculate"});
+                }}
+              >
+                {i18n.t("Calculate Salary")}
+              </Button>
+            }
             <DatePicker disabledDate={(date) => date.isAfter(moment())}
               picker="month"
               className='mr-2'
@@ -93,30 +108,30 @@ export default class EmployeeSalary extends Component {
     );
   };
 
-  renderBtnAction(id) {
+  renderBtnAction(id, name) {
     return (
       <Menu>
         <Menu.Item key="1">
           <Button
             color="info"
             className="mr-2"
-            onClick={() => this.onClick("edit", id)}
+            onClick={() => this.onClick("edit", id, name)}
           >
             {i18n.t("Edit Salary")}
           </Button>
         </Menu.Item>
         <Menu.Item key="2">
-          <Button color="success" onClick={() => this.onClick("advance", id)}>
+          <Button color="success" onClick={() => this.onClick("advance", id, name)}>
             {i18n.t("Advance Salary")}
           </Button>
         </Menu.Item>
         <Menu.Item key="3">
-          <Button color="danger" onClick={() => this.onClick("history", id)}>
+          <Button color="danger" onClick={() => this.onClick("history", id, name)}>
             {i18n.t("History Salary")}
           </Button>
         </Menu.Item>
         <Menu.Item key="4">
-          <Button onClick={() => this.onClick("fluctuations", id)}>
+          <Button onClick={() => this.onClick("fluctuations", id, name)}>
             {i18n.t("Employee Base Salary Fluctuations")}
           </Button>
         </Menu.Item>
@@ -143,18 +158,21 @@ export default class EmployeeSalary extends Component {
     }
     this.setState({isShowModal: false, mode: "", currentEmp: {}});
   };
-  async onClick(modeBtn, employeeId) {
+  async onClick(modeBtn, employeeId, employeeName) {
     let {currentEmp, data} = this.state;
 
     if (modeBtn === "edit") {
       currentEmp = data.find((el) => el.id === employeeId);
-      this.setState({currentEmp, mode: "edit", isShowModal: true});
+      this.setState({currentEmp, mode: "edit", isShowModal: true, employeeName: employeeName});
     } else if (modeBtn === "fluctuations") {
       this.getBaseSalaries(employeeId);
-      this.setState({mode: "fluctuations", isShowModal: true});
+      this.setState({mode: "fluctuations", isShowModal: true, employeeName: employeeName});
     } else if (modeBtn === "advance") {
       this.getAdvanceSalaries(employeeId);
-      this.setState({mode: "advance", isShowModal: true});
+      this.setState({mode: "advance", isShowModal: true, employeeId: employeeId, employeeName: employeeName});
+    } else if (modeBtn === "history") {
+      this.getHistorySalaries(employeeId);
+      this.setState({mode: "history", isShowModal: true, employeeId: employeeId, employeeName: employeeName});
     }
   }
 
@@ -319,10 +337,8 @@ export default class EmployeeSalary extends Component {
       },
       {
         title: "",
-        dataIndex: "id",
-        key: "id",
-        render: (id) => (
-          <Dropdown overlay={this.renderBtnAction(id)}>
+        render: (data) => (
+          <Dropdown overlay={this.renderBtnAction(data.id, data.name)}>
             <Button>
               <i className="fa fa-cog mr-1" />
               <label className="tb-lb-action">{i18n.t("action")}</label>
@@ -336,27 +352,37 @@ export default class EmployeeSalary extends Component {
         {isShowModal && mode !== "" && (
           this.state.mode === "edit" ?
             <ModalEdit
+              name={this.state.employeeName}
               isShow={isShowModal}
               mode={mode}
               closeModal={this.closeModal}
               currentEmp={currentEmp || {}}
             /> : this.state.mode === "fluctuations" ?
               <ModalBaseSalaries
+                name={this.state.employeeName}
                 isShow={isShowModal}
                 closeModal={this.closeModal}
                 baseSalaries={this.state.baseSalaries}
               /> : this.state.mode === "calculate" ?
                 <ModalCalculateSalaries
+                  name={this.state.employeeName}
                   data={this.state.data}
                   isShow={isShowModal}
                   closeModal={this.closeModal}
+                  date={this.state.date}
                 /> : this.state.mode === "advance" ?
                   <ModalAdvanceSalaries
-                    data={this.state.advanceSalaries}
+                    name={this.state.employeeName}
                     isShow={isShowModal}
                     closeModal={this.closeModal}
-                    getAdvanceSalaries={this.getAdvanceSalaries}
-                  /> : ""
+                    employeeId={this.state.employeeId}
+                  /> : this.state.mode === "history" ?
+                    <ModalHistorySalaries
+                      name={this.state.employeeName}
+                      isShow={isShowModal}
+                      closeModal={this.closeModal}
+                      historySalaries={this.state.historySalaries}
+                    /> : ""
         )}
         <Row>
           <Col style={{overflowX: "auto"}}>

@@ -1,13 +1,30 @@
 import React, {useState, useEffect} from "react";
-import {Table, Modal, Input} from "antd";
+import {Table, Modal, Button} from "antd";
+import session from "../../../../services/session";
 import Widgets from "../../../../schema/Widgets";
 import i18n from "i18next";
+import moment from "moment";
+import apis from "../../../../services/apis";
 
-const ModalCalculateSalaries = ({isShow, closeModal, data}) => {
-  console.log(data)
-  const [loading, setLoading] = useState(false);
+const ModalCalculateSalaries = ({isShow, closeModal,data, date = moment()}) => {
+  const [calculate, setCalculate] = useState(data.filter(item=>item.salary===null&&item.baseSalary!==null).map(item => {
+    item.salary = item.baseSalary * item.status - item.advanceSalary
+    return item;
+  }));
+  console.log(calculate)
+  const handleChange = (id, value) => {
+    let salary = calculate.find(item => item.id === id);
+    salary.salary = value;
+    setCalculate(calculate);
+  };
   const handleOk = async () => {
-    setLoading(false);
+    let list = [];
+    for (let i = 0; i < calculate.length; i++) {
+      let item = calculate[i];
+      list.push({dateStart: date._d, salary: item.salary, empId: item.id})
+    }
+    await apis.createEmpHistorySalary(list, "POST");
+    closeModal(true);
   };
   const columns = [
     {
@@ -34,22 +51,23 @@ const ModalCalculateSalaries = ({isShow, closeModal, data}) => {
     },
     {
       title: i18n.t("salary-tk") + "(VND)",
-      render: (data) => <Widgets.MoneyInput value={data.baseSalary * data.status - data.advanceSalary} />,
+      render: (data) => {
+        return <Widgets.MoneyInput defaultValue={data.salary} value={data.salary} onChange={(e) => handleChange(data.id, e)} />
+      },
     },
   ];
   return (
     <Modal
       width={900}
-      title="Demo"
-      footer=""
+      title="Tính lương"
+      footer={<Button type='primary' onClick={handleOk}>Lưu</Button>}
       visible={isShow}
-      onCancel={closeModal}
-      loading={loading}
+      onCancel={()=>closeModal(true)}
     >
       <Table
         bordered
         columns={columns}
-        dataSource={data}
+        dataSource={calculate}
         pagination={{pageSize: 10}}
         scroll={{y: 600}}
       />

@@ -150,6 +150,7 @@
   "Employee Base Salary": "Lương Cơ Bản",
   "Calculate Salary": "Tính Lương",
   "Employee Base Salary Fluctuations": "Biến Động Lương",
+  "Amount": "Số tiền",
   "Debt Management": "Quản lý nợ",
   "Debtor": "Người nợ",
   "Creditor": "Chủ nợ",
@@ -167,5 +168,6 @@
   "statusPaid": "Trạng thái thanh toán",
   "notPaid": "Chưa trả",
   "totalWR": "Tổng số mã",
-  "weightRecorder": "Chủ bến"
+  "weightRecorder": "Chủ bến",
+  "month":"Tháng"
 }

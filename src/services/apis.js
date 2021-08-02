@@ -81,11 +81,8 @@ var path = {
   createBaseSalary: "/api/salary/create",
 
   //History salsry
-  getAllEmpSalary: "/api/salary/getall",
-  createEmpSalary: "/api/salary/create",
-  deleteEmpSalary: "/api/salary/delete",
-  updateEmpSalary: "/api/salary/update",
-  getEmpSalary: "/api/salary/getsalary",
+  getAllEmpHistorySalary: "/api/historysalary/getall",
+  createEmpHistorySalary: "/api/historysalary/create",
 
   //Advance salsry
   getAllAdvanceSalary: "/api/advanceSalary/getall",

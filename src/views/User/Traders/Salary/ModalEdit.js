@@ -8,7 +8,7 @@ import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import moment from "moment";
 
-const ModalEdit = ({isShow, closeModal, mode, currentEmp}) => {
+const ModalEdit = ({isShow, closeModal, mode, currentEmp,name}) => {
   const [employee, setEmp] = useState(currentEmp);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -40,7 +40,7 @@ const ModalEdit = ({isShow, closeModal, mode, currentEmp}) => {
   };
   return (
     <Modal
-      title={mode === "edit" ? i18n.t("edit") : i18n.t("create")}
+      title={i18n.t("edit")}
       visible={isShow}
       onOk={handleOk}
       onCancel={closeModal}
