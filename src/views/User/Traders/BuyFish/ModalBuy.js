@@ -98,10 +98,30 @@ const ModalBuy = ({
   // }
   async function convertDataInEditMode() {
     if (mode === "create") {
-      setTransaction((prevState) => ({
-        ...prevState,
-        weight: 0,
-      }));
+      if (suggestionPurchase) {
+        // purchase goi y khi mua
+        let fishTypeId = suggestionPurchase.fishTypeId;
+        let basketId = suggestionPurchase.basketId;
+        let truck = suggestionPurchase.truck;
+        let listDrumId = [...suggestionPurchase.listDrumId];
+
+        setTransaction((prevState) => ({
+          ...prevState,
+          fishTypeId,
+          basketId,
+          truck,
+          listDrumId,
+        }));
+        // fetch Drum By Truck
+        let rs = await fetchDrumByTruck(truck);
+        setLoading(rs);
+        //setLoading(true);
+      } else {
+        setTransaction((prevState) => ({
+          ...prevState,
+          weight: 0,
+        }));
+      }
     }
     // data to display in create mode and edit mode is difference, we need convert data
     else if (mode === "edit") {
@@ -119,26 +139,6 @@ const ModalBuy = ({
         listDrumId,
       }));
       // // fetch Drum By Truck
-      let rs = await fetchDrumByTruck(truck);
-      setLoading(rs);
-      //setLoading(true);
-    } else if (mode === "create" && suggestionPurchase) {
-      // purchase goi y khi mua
-      let fishTypeId = suggestionPurchase.fishTypeId;
-      let basketId = suggestionPurchase.basketId;
-      let truck = suggestionPurchase.truck;
-      let listDrumId = suggestionPurchase.listDrumId.forEach((el) =>
-        listDrumId.push("" + el.id || "")
-      );
-
-      setTransaction((prevState) => ({
-        ...prevState,
-        fishTypeId,
-        basketId,
-        truck,
-        listDrumId,
-      }));
-      // fetch Drum By Truck
       let rs = await fetchDrumByTruck(truck);
       setLoading(rs);
       //setLoading(true);
@@ -203,7 +203,7 @@ const ModalBuy = ({
         {transaction.truck && loading && (
           <Col md="6" xs="12">
             <Widgets.SelectSearchMulti
-              //required={true}
+              required={true}
               label={i18n.t("drum")}
               value={transaction.listDrumId || []}
               //value={transaction.listDrumId || transaction.listDrum || []}
