@@ -274,9 +274,12 @@ const SellFish = (props) => {
               <Col md="6">
                 <label className="mr-2">
                   <b>{i18n.t("date")}:</b>
-                  <Moment format="DD/MM/YYYY" className="ml-2"></Moment>
+                  <Moment format="DD/MM/YYYY" className="ml-2">
+                    {listTransDetail.length > 0
+                      ? listTransDetail[0].date
+                      : new Date()}
+                  </Moment>
                 </label>
-                <label></label>
               </Col>
               <Col md="6">
                 <div className="float-right">

@@ -162,7 +162,13 @@ const ModalSell = ({
   useEffect(() => {
     convertDataInEditMode();
     getBuyer();
-    setUser(session.get("user") || null);
+    let user = session.get("user") || null;
+    if (user) {
+      setUser(user);
+      if (user.roleName === "Trader") {
+        getFTByTrader(user.userID);
+      }
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -179,6 +185,7 @@ const ModalSell = ({
       width={800}
     >
       {user && user.roleDisplayName === "Thương lái" ? (
+        // for trader
         <Row>
           <Col md="6" xs="12">
             <Widgets.Select
@@ -261,6 +268,7 @@ const ModalSell = ({
           )} */}
         </Row>
       ) : (
+        //for weight recorder
         <Row>
           <Col md="6" xs="12">
             <Widgets.Select
