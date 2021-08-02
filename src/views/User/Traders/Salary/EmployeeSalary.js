@@ -8,6 +8,7 @@ import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import ModalBaseSalaries from "./ModalBaseSalaries";
 import ModalEdit from "./ModalEdit";
+import ModalAdvanceSalaries from "./ModalAdvanceSalaries";
 import ModalCalculateSalaries from "./ModalCalculateSalaries";
 import moment from "moment";
 import Widgets from "../../../../schema/Widgets";
@@ -23,7 +24,8 @@ export default class EmployeeSalary extends Component {
       isShowModal: false,
       mode: "",
       data: [],
-      baseSalaries:[],
+      baseSalaries: [],
+      advanceSalaries: [],
       loading: true,
     };
   }
@@ -50,12 +52,16 @@ export default class EmployeeSalary extends Component {
 
   async getBaseSalaries(id) {
     let rs = await apis.getBaseSalariesByEmployeeId({}, "GET", id);
-    this.setState({baseSalaries:rs.data})
+    this.setState({baseSalaries: rs.data})
+  }
+
+  async getAdvanceSalaries(id) {
+    let rs = await apis.getAllAdvanceSalary({}, "GET", id);
+    this.setState({advanceSalaries: rs.data})
   }
 
   renderTitle = () => {
     let {total} = this.state || 0;
-    let date=moment();
     return (
       <Row>
         <Col md="6" className="d-flex">
@@ -100,11 +106,16 @@ export default class EmployeeSalary extends Component {
           </Button>
         </Menu.Item>
         <Menu.Item key="2">
+          <Button color="success" onClick={() => this.onClick("advance", id)}>
+            {i18n.t("Advance Salary")}
+          </Button>
+        </Menu.Item>
+        <Menu.Item key="3">
           <Button color="danger" onClick={() => this.onClick("history", id)}>
             {i18n.t("History Salary")}
           </Button>
         </Menu.Item>
-        <Menu.Item key="2">
+        <Menu.Item key="4">
           <Button onClick={() => this.onClick("fluctuations", id)}>
             {i18n.t("Employee Base Salary Fluctuations")}
           </Button>
@@ -138,9 +149,12 @@ export default class EmployeeSalary extends Component {
     if (modeBtn === "edit") {
       currentEmp = data.find((el) => el.id === employeeId);
       this.setState({currentEmp, mode: "edit", isShowModal: true});
-    }else if(modeBtn==="fluctuations") {
+    } else if (modeBtn === "fluctuations") {
       this.getBaseSalaries(employeeId);
       this.setState({mode: "fluctuations", isShowModal: true});
+    } else if (modeBtn === "advance") {
+      this.getAdvanceSalaries(employeeId);
+      this.setState({mode: "advance", isShowModal: true});
     }
   }
 
@@ -277,16 +291,16 @@ export default class EmployeeSalary extends Component {
         sortDirections: ["descend", "ascend"],
       },
       {
-        title: i18n.t("Base Salary")+"(VND)",
+        title: i18n.t("Base Salary") + "(VND)",
         dataIndex: "baseSalary",
         key: "baseSalary",
         ...this.getColumnSearchProps("baseSalary"),
         sorter: (a, b) => a.baseSalary - b.baseSalary,
         sortDirections: ["descend", "ascend"],
-        render: (salary) => salary !== null ? <Widgets.NumberFormat value={salary} needSuffix={false}  /> : "Không có thông tin",
+        render: (salary) => salary !== null ? <Widgets.NumberFormat value={salary} needSuffix={false} /> : "Không có thông tin",
       },
       {
-        title: i18n.t("Advance Salary")+"(VND)",
+        title: i18n.t("Advance Salary") + "(VND)",
         dataIndex: "advanceSalary",
         key: "advanceSalary",
         ...this.getColumnSearchProps("advanceSalary"),
@@ -295,7 +309,7 @@ export default class EmployeeSalary extends Component {
         render: (salary) => salary !== null ? <Widgets.NumberFormat value={salary} needSuffix={false} /> : "Không có thông tin",
       },
       {
-        title: i18n.t("salary-tk")+"(VND)",
+        title: i18n.t("salary-tk") + "(VND)",
         dataIndex: "salary",
         key: "salary",
         ...this.getColumnSearchProps("salary", true),
@@ -320,18 +334,29 @@ export default class EmployeeSalary extends Component {
     return (
       <Card title={this.renderTitle()}>
         {isShowModal && mode !== "" && (
-          this.state.mode==="edit"?
-          <ModalEdit
-            isShow={isShowModal}
-            mode={mode}
-            closeModal={this.closeModal}
-            currentEmp={currentEmp || {}}
-          />:this.state.mode==="fluctuations"?
-          <ModalBaseSalaries
-            isShow={isShowModal}
-            closeModal={this.closeModal}
-            baseSalaries={this.state.baseSalaries}
-          />:""
+          this.state.mode === "edit" ?
+            <ModalEdit
+              isShow={isShowModal}
+              mode={mode}
+              closeModal={this.closeModal}
+              currentEmp={currentEmp || {}}
+            /> : this.state.mode === "fluctuations" ?
+              <ModalBaseSalaries
+                isShow={isShowModal}
+                closeModal={this.closeModal}
+                baseSalaries={this.state.baseSalaries}
+              /> : this.state.mode === "calculate" ?
+                <ModalCalculateSalaries
+                  data={this.state.data}
+                  isShow={isShowModal}
+                  closeModal={this.closeModal}
+                /> : this.state.mode === "advance" ?
+                  <ModalAdvanceSalaries
+                    data={this.state.advanceSalaries}
+                    isShow={isShowModal}
+                    closeModal={this.closeModal}
+                    getAdvanceSalaries={this.getAdvanceSalaries}
+                  /> : ""
         )}
         <Row>
           <Col style={{overflowX: "auto"}}>
