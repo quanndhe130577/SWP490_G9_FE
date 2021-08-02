@@ -16,7 +16,6 @@ const ModalSell = ({
   dataDf,
   createTransDetail,
   updateTransDetail,
-  suggestionTrans,
 }) => {
   const [transaction, setTransaction] = useState(currentTransaction); // transaction là 1 bản ghi của Trans
   // const [loading, setLoading] = useState(false);
@@ -30,8 +29,8 @@ const ModalSell = ({
     // let tem = transaction;
     if (mode === "create") {
       if (createTransDetail) {
-        // tem.idx = Trans.length + 1;
-        const trader = dataDf.trader.find(
+        debugger;
+        const trader = dataDf.traders.find(
           (el) => el.id === transaction.traderId
         );
         createTransDetail({
@@ -85,6 +84,13 @@ const ModalSell = ({
   // validate các trường required
   const validateData = () => {
     let { weight, fishTypeId, traderId, sellPrice, buyer } = transaction;
+    if (user.roleName === "Trader") {
+      traderId = user.userID;
+      setTransaction((prevState) => ({
+        ...prevState,
+        traderId: traderId,
+      }));
+    }
     if (!weight || !fishTypeId || !traderId || !sellPrice || !buyer) {
       return "fillAll*";
     } else {
@@ -187,16 +193,6 @@ const ModalSell = ({
       {user && user.roleDisplayName === "Thương lái" ? (
         // for trader
         <Row>
-          <Col md="6" xs="12">
-            <Widgets.Select
-              label={i18n.t("weightRecorder")}
-              value={transaction.weightRecorderId || ""}
-              onChange={(e) => handleChangeTran("weightRecorderId", e)}
-              items={dataDf.weightRecorderId || []}
-              displayField={"lastName"}
-            />
-          </Col>
-
           <Col md="4" xs="12">
             <Widgets.SearchFetchApi
               required={true}
@@ -247,21 +243,24 @@ const ModalSell = ({
               onChange={(e) => handleChangeTran("sellPrice", e)}
             />
           </Col>
-          <Col md="2" xs="12">
-            <Widgets.Checkbox
-              label={i18n.t("isPaid")}
-              value={transaction.isPaid || false}
-              onChange={(e) => handleChangeTran("isPaid", e)}
-              lblCheckbox={i18n.t("isPaid")}
-              disabled={transaction.isRetailCustomers || false}
-            />
-          </Col>
+
           <Col md="6" xs="12">
             <Widgets.MoneyInput
               disabled={true}
               label={i18n.t("intoMoney")}
               value={transaction.weight * transaction.sellPrice || ""}
               // onChange={(e) => handleChangeTran("sellPrice", e)}
+            />
+          </Col>
+
+          <Col md="6" xs="12">
+            <Widgets.Checkbox
+              label={i18n.t("payStatus")}
+              value={transaction.isPaid || false}
+              onChange={(e) => handleChangeTran("isPaid", e)}
+              lblChecked={i18n.t("isPaid")}
+              lblCheckbox={i18n.t("isNotPaid")}
+              disabled={transaction.isRetailCustomers || false}
             />
           </Col>
           {/* </>
@@ -331,12 +330,13 @@ const ModalSell = ({
                   onChange={(e) => handleChangeTran("sellPrice", e)}
                 />
               </Col>
-              <Col md="2" xs="12">
+              <Col md="6" xs="12">
                 <Widgets.Checkbox
-                  label={i18n.t("isPaid")}
+                  label={i18n.t("payStatus")}
                   value={transaction.isPaid || false}
                   onChange={(e) => handleChangeTran("isPaid", e)}
-                  lblCheckbox={i18n.t("isPaid")}
+                  lblChecked={i18n.t("isPaid")}
+                  lblCheckbox={i18n.t("isNotPaid")}
                   disabled={transaction.isRetailCustomers || false}
                 />
               </Col>
