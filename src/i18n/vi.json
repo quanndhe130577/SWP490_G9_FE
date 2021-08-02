@@ -159,5 +159,6 @@
   "statusPaid": "Trạng thái thanh toán",
   "notPaid": "Chưa trả",
   "totalWR": "Tổng số mã",
-  "weightRecorder": "Chủ bến"
+  "weightRecorder": "Chủ bến",
+  "remain": "Còn lại "
 }

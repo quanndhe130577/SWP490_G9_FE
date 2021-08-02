@@ -16,6 +16,7 @@ const ModalSell = ({
   dataDf,
   createTransDetail,
   updateTransDetail,
+  date,
 }) => {
   const [transaction, setTransaction] = useState(currentTransaction); // transaction là 1 bản ghi của Trans
   // const [loading, setLoading] = useState(false);
@@ -29,7 +30,7 @@ const ModalSell = ({
     // let tem = transaction;
     if (mode === "create") {
       if (createTransDetail) {
-        debugger;
+        // debugger;
         const trader = dataDf.traders.find(
           (el) => el.id === transaction.traderId
         );
@@ -155,7 +156,11 @@ const ModalSell = ({
   }
   async function getFTByTrader(traderId) {
     try {
-      let rs = await apis.getFTByTrader({}, "GET", traderId);
+      let param = traderId;
+      if (date) {
+        param += "/" + date;
+      }
+      let rs = await apis.getFTByTrader({}, "GET", param);
       if (rs && rs.statusCode === 200) {
         setTransaction((pre) => ({ ...pre, listFishType: rs.data }));
         // return rs.data
@@ -224,7 +229,8 @@ const ModalSell = ({
               value={transaction.fishTypeId || ""}
               onChange={(e) => handleChangeTran("fishTypeId", e)}
               items={transaction.listFishType || dataDf.arrFish || []}
-              displayField="fishName"
+              displayField={["fishName", "remainWeight"]}
+              containLbl={containLbl}
             />
           </Col>
           <Col md="6" xs="12">
@@ -311,13 +317,14 @@ const ModalSell = ({
                   value={transaction.fishTypeId || ""}
                   onChange={(e) => handleChangeTran("fishTypeId", e)}
                   items={transaction.listFishType || dataDf.arrFish || []}
-                  displayField="fishName"
+                  displayField={["fishName", "remainWeight"]}
+                  containLbl={containLbl}
                 />
               </Col>
               <Col md="6" xs="12">
                 <Widgets.WeightInput
                   required={true}
-                  label={i18n.t("qtyOfFish(Kg)")}
+                  label={i18n.t("qtyOfFish(Kg-onlyFish)")}
                   value={transaction.weight || 0}
                   onChange={(e) => handleChangeTran("weight", e)}
                 />
@@ -357,3 +364,8 @@ const ModalSell = ({
 };
 
 export default ModalSell;
+const containLbl = {
+  text: i18n.t("remain"),
+  field: "remainWeight",
+  suffix: " Kg",
+};

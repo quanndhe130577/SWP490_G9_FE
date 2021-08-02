@@ -265,6 +265,7 @@ const SellFish = (props) => {
             dataDf={dataFetched || []}
             mode={mode}
             createTransDetail={createTransDetail}
+            date={date}
           />
         )}
         {!isShowChooseTraders && (
