@@ -595,7 +595,8 @@ const BuyFish = (props) => {
     return (
       <Row>
         <Col md="6">
-          <h3 className="mr-5">{i18n.t("buyGood")}</h3>
+          {/* <h3 className="mr-5">{i18n.t("buyGood")}</h3> */}
+          <h3 className="mr-5">Chi tiết đơn mua</h3>
         </Col>
         <Col md="6">
           <Button
@@ -662,15 +663,15 @@ const BuyFish = (props) => {
           <Row className="mb-2">
             <Col md="6">
               <Row>
-                <Col md="2">
+                <Col md="4">
                   <label className="mt-1">
-                    <b>{i18n.t("date")}:</b>
-                    <Moment format="DD/MM/YYYY" className="ml-2">
+                    <b>{i18n.t("date")}:</b>&nbsp;
+                    <Moment format="DD/MM/YYYY">
                       {currentPurchase.date}
                     </Moment>
                   </label>
                 </Col>
-                <Col md="4">
+                <Col md="8">
                   <Widgets.Select
                     label={i18n.t("pondOwner") + ": "}
                     value={parseInt(currentPurchase.pondOwnerId)}

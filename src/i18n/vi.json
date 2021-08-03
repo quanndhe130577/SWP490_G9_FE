@@ -25,11 +25,13 @@
   "seller": "Người bán",
   "qtyOfFish(Kg)": "Khối lượng(tính cả rổ) (Kg) ",
   "basket": "Rổ",
+  "basketManagement": "Quản lý rổ",
   "pondOwner": "Chủ ao",
   "choosePond": "Chọn ao",
   "fillPondOwner": "Vui lòng chọn chủ ao",
   "drum": "Lồ",
   "truck": "Xe tải",
+  "truckManagement":"Quản lý xe tải",
   "pleaseSelect": "Vui lòng chọn",
   "chooseFish": "Chọn các loại cá",
   "edit": "Sửa",
@@ -58,7 +60,6 @@
   "type": "Loại",
   "fishTypeManagement": "Phân loại cá",
   "intoMoney": "Thành tiền (VND)",
-  "truckManagement": "Quản lý xe tải",
   "loginSuccess": "Đăng nhập thành công",
   "licensePlate": "Biển số",
   "pondOwnerName": "Tên chủ ao",
@@ -160,5 +161,6 @@
   "notPaid": "Chưa trả",
   "totalWR": "Tổng số mã",
   "weightRecorder": "Chủ bến",
-  "remain": "Còn lại "
+  "remain": "Còn lại ",
+  "modal.title.createnNewPurchase": "Tạo mới đơn mua"
 }
