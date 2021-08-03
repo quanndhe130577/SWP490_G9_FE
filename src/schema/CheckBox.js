@@ -10,8 +10,16 @@ export default function Checkbox1({
   lblCheckbox,
   required = false,
   submitted,
-  onKeyDown,
+  lblChecked,
 }) {
+  function renderLabe(valueC, lblCheckedC, txt) {
+    if (lblChecked) {
+      if (valueC) {
+        txt = lblCheckedC;
+      }
+    }
+    return txt;
+  }
   return (
     <div className={"form-group" + (submitted && !value ? " has-error" : "")}>
       {label && (
@@ -29,7 +37,7 @@ export default function Checkbox1({
           }
         }}
       >
-        {lblCheckbox || label}
+        {renderLabe(value, lblChecked, lblCheckbox || label)}
       </Checkbox>
       {submitted && !value && (
         <div className="help-block">{label} is required</div>

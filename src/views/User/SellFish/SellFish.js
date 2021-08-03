@@ -7,7 +7,6 @@ import LoadingCustom from "../../../containers/Antd/LoadingCustom";
 import ChooseTraders from "./ChooseTraders";
 import ModalSell from "./ModalSell";
 import queryString from "qs";
-
 import { apis, helper, session } from "../../../services";
 
 import NumberFormat from "react-number-format";
@@ -33,6 +32,7 @@ const SellFish = (props) => {
     if (action === "delete") {
       // deletetransactionDetail(id);
     } else {
+      debugger;
       let tem = listTransDetail.find((e) => e.id === id);
       if (tem) {
         tem.transactionDetailId = id;
@@ -49,7 +49,6 @@ const SellFish = (props) => {
       value={sellPrice * weight}
       displayType={"text"}
       thousandSeparator={true}
-      // suffix={i18n.t("suffix")}
     />
   );
 
@@ -266,6 +265,7 @@ const SellFish = (props) => {
             dataDf={dataFetched || []}
             mode={mode}
             createTransDetail={createTransDetail}
+            date={date}
           />
         )}
         {!isShowChooseTraders && (
@@ -281,7 +281,7 @@ const SellFish = (props) => {
                   </Moment>
                 </label>
               </Col>
-              <Col md="6">
+              {/* <Col md="6">
                 <div className="float-right">
                   <Button
                     color="info"
@@ -305,13 +305,41 @@ const SellFish = (props) => {
                     {i18n.t("Thêm Mã")}
                   </Button>
                 </div>
+              </Col> */}
+              <Col md="2" xs="6">
+                <Button
+                  color="info"
+                  // onClick={() => handleClosetransaction()}
+                  className="float-right"
+                >
+                  {i18n.t("close transaction")}
+                </Button>
+              </Col>
+              <Col md="2" xs="6">
+                <Button
+                  color="info"
+                  onClick={() => setShowChooseTraders(true)}
+                  className="float-right"
+                >
+                  {i18n.t("choseTrader")}
+                </Button>
+              </Col>
+
+              <Col md="2" xs="6">
+                <Button
+                  color="info"
+                  onClick={() => setShowSell(true)}
+                  className="float-right"
+                >
+                  {i18n.t("Thêm Mã Bán")}
+                </Button>
               </Col>
             </Row>
 
             <Row>
               <Col style={{ overflowX: "auto" }}>
                 {listTransDetail.map((trans, idx) => (
-                  <div>
+                  <div className="mb-5">
                     <b>
                       <span className="mr-2">
                         {i18n.t("trader")}:{" "}
@@ -354,7 +382,6 @@ const SellFish = (props) => {
                                   value={totalWeight.toFixed(1)}
                                   displayType={"text"}
                                   thousandSeparator={true}
-                                  // suffix=" Kg"
                                 />
                               </Table.Summary.Cell>
                               <Table.Summary.Cell key="3" />
@@ -363,11 +390,9 @@ const SellFish = (props) => {
                                   value={totalAmount}
                                   displayType={"text"}
                                   thousandSeparator={true}
-                                  // suffix={i18n.t("suffix")}
                                 />
                               </Table.Summary.Cell>
                               <Table.Summary.Cell key="5" />
-
                               <Table.Summary.Cell colSpan="4" key="4" />
                             </Table.Summary.Row>
                           </Table.Summary>

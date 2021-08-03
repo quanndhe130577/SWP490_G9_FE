@@ -77,11 +77,25 @@ const ManaSell = () => {
     },
     {
       title: i18n.t("traderName"),
-      dataIndex: "trader",
-      key: "trader",
-      render: (trader) => (
-        <label>{trader.firstName + " " + trader.lastName}</label>
-      ),
+      dataIndex: "listTrader",
+      key: "listTrader",
+      render: (listTrader) => {
+        let name = "";
+        // for (const trader of listTrader) {
+        //   if (trader) {
+        //     name += trader.lastName + " " + trader.firstName;
+        //   }
+        // }
+        listTrader.forEach((trader, idx) => {
+          if (trader) {
+            name += trader.firstName + " " + trader.lastName;
+          }
+          if (idx < listTrader.length - 1) {
+            name += ", ";
+          }
+        });
+        return <span>{name}</span>;
+      },
     },
     {
       title: i18n.t("Ngày tạo"),
@@ -93,7 +107,7 @@ const ManaSell = () => {
       render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
     },
     {
-      title: i18n.t("totalWeight"),
+      title: i18n.t("totalWeight") + " (Kg)",
       dataIndex: "totalWeight",
       key: "totalWeight",
       // ...this.getColumnSearchProps("totalWeight"),
@@ -102,9 +116,8 @@ const ManaSell = () => {
     },
     {
       title: i18n.t("totalAmount (VND)"),
-      dataIndex: "totalAmount",
-      key: "totalAmount",
-      // ...this.getColumnSearchProps("totalAmount"),
+      dataIndex: "totalMoney",
+      key: "totalMoney",
       sorter: (a, b) => a.totalAmount - b.totalAmount,
       sortDirections: ["descend", "ascend"],
       render: (totalAmount) => (
@@ -116,10 +129,18 @@ const ManaSell = () => {
       ),
     },
     {
-      title: i18n.t("status"),
-      dataIndex: "status",
-      key: "status",
-      // ...this.getColumnSearchProps("totalAmount"),
+      title: i18n.t("debt") + " (VND)",
+      dataIndex: "totalDebt",
+      key: "totalDebt",
+      sorter: (a, b) => a.totalAmount - b.totalAmount,
+      sortDirections: ["descend", "ascend"],
+      render: (totalDebt) => (
+        <NumberFormat
+          value={totalDebt}
+          displayType={"text"}
+          thousandSeparator={true}
+        />
+      ),
     },
     {
       title: "",
@@ -141,15 +162,15 @@ const ManaSell = () => {
       setLoading(true);
       // let date = moment(new Date()).format("DDMMYYYY");
       // let rs = await apis.getTransByDate({}, "GET", date);
-      let rs = await apis.getAllTransaction({}, "GET");
+      let rs = await apis.getGeneralTrans({}, "GET");
 
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         setTransaction(rs.data);
-        dispatch({
-          type: "SET_TRANSACTION",
-          transaction: rs.data,
-        });
+        // dispatch({
+        //   type: "SET_TRANSACTION",
+        //   transaction: rs.data,
+        // });
       }
     } catch (error) {
       console.log(error);

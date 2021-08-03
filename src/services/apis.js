@@ -103,7 +103,7 @@ var path = {
   updateBuyer: "/api/buyer/update",
   deleteBuyer: "/api/buyer/delete",
   getDetailBuyer: "/api/buyer/detail/{buyerId}",
-  getBuyerByNameOrPhone: "/api/buyer/getbuyers", // Method "GET", param: name or phone
+  getBuyerByNameOrPhone: "/api/buyer/getBuyers", // Method "GET", param: name or phone
 
   //Debt
   getAllDebt: "/api/debt/getall",
@@ -112,9 +112,9 @@ var path = {
   deleteDebt: "",
   getDetailDebt: "",
   // fishType
-  getOneFT: "/api/fishtype/getone/{ddMMyyyy}/{pondOwnerId}",
-  updateAllFishType: "/api/fishtype/updatelist",
-  getNewFishType: "/api/fishtype/getnew",
+  getOneFT: "/api/fishtype/getOne/{ddMMyyyy}/{pondOwnerId}",
+  updateAllFishType: "/api/fishtype/updateList",
+  getNewFishType: "/api/fishtype/getNew",
 
   // Trader management for weight recorder
   findTraderByPhone: "/api/trader/find-trader-by-phone", //GET, param: phoneNumber
@@ -123,7 +123,7 @@ var path = {
   getTraderByWR: "/api/wc/get-all-trader", // GET
 
   //Transaction
-  createTransactions: "/api/transaction/createlist",
+  createTransactions: "/api/transaction/createList",
   getAllTransaction: "/api/transaction/getall", //GET
   getTransByDate: "/api/transaction/getall", //GET param:date /{ddMMyyyy}
 
@@ -132,10 +132,10 @@ var path = {
   resetPassword: "/api/user/reset-password",
 
   // Transaction detail
-  createTranDetail: "/api/transactiondetail/create",
-  getAllTranDetail: "/api/transactiondetail/getall", // GET if has param: date {ddMMyyyy} will get by date
+  createTranDetail: "/api/transactionDetail/create",
+  getAllTranDetail: "/api/transactionDetail/getall", // GET if has param: date {ddMMyyyy} will get by date
   getFTByTrader: "/api/fishtype/wc/getall", // GET, param: TraderID, use when selling
-  // api/transactiondetail/getall/{ddMMyyyy}
+  getGeneralTrans: "/api/transaction/getGeneral", // GET
 };
 
 Object.keys(path).forEach(function (key) {
