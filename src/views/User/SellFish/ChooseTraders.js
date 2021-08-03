@@ -6,6 +6,8 @@ import Widgets from "../../../schema/Widgets";
 import { local, helper, apis } from "../../../services";
 import TradersToday from "./TradersToday";
 
+import { useHistory } from "react-router-dom";
+
 const ChooseTraders = ({
   isShowChooseTraders,
   setShowChooseTraders,
@@ -16,6 +18,7 @@ const ChooseTraders = ({
   handleChangeTrans,
 }) => {
   let isChange = false;
+  const history = useHistory();
 
   const handleOk = async () => {
     setShowChooseTraders(false);
@@ -29,8 +32,13 @@ const ChooseTraders = ({
         });
         if (rs && rs.statusCode === 200) {
           helper.toast("success", i18n.t(rs.message || "success"));
+          history.push(
+            "sellF?date=" + helper.getDateFormat(new Date(), "ddmmyyyy")
+          );
         }
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -105,7 +113,6 @@ const ChooseTraders = ({
             dataFetched={dataFetched}
           />
         </Col>
-        <Col md="4" xs="12" />
       </Row>
     </Modal>
   );

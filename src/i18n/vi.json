@@ -97,7 +97,7 @@
   "percent": "Phần trăm",
   "payStatus": "Trạng thái thanh toán",
   "paid": "Đã thanh toán",
-  "hasn'tPaid": "Chưa thanh toán",
+  "isNotPaid": "Chưa thanh toán",
   "(suffix)": " (VND)",
   "sellGood": "Bán hàng",
   "trader": "Thương lái",
@@ -109,7 +109,7 @@
   "Money": "Tiền nợ (VND)",
   "Deadline": "Ngày hẹn trả",
   "Status": "Trạng thái",
-  "isPaid": "Đã trả",
+  "isPaid": "Đã thanh toán",
   "Sell Date FT": "Ngày bán",
   "sellPrice(VND)": "Giá bán (VND)",
   "Pond Owner": "Chủ ao",
@@ -158,5 +158,7 @@
   "qtyOfFish(Kg-onlyFish)": "Khối lượng cá (Kg)",
   "statusPaid": "Trạng thái thanh toán",
   "notPaid": "Chưa trả",
-  "totalWR": "Tổng số mã"
+  "totalWR": "Tổng số mã",
+  "weightRecorder": "Chủ bến",
+  "remain": "Còn lại "
 }
