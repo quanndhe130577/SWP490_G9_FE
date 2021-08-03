@@ -1,12 +1,11 @@
-import React, {useState} from "react";
-import {Row, Col} from "reactstrap";
+import React, { useState } from "react";
+import { Row, Col } from "reactstrap";
 import Modal from "../../../../containers/Antd/ModalCustom";
 import Widgets from "../../../../schema/Widgets";
 import i18n from "i18next";
-import apis from "../../../../services/apis";
-import helper from "../../../../services/helper";
+import { apis, helper } from "../../../../services";
 
-const ModalEdit = ({isShow, closeModal, mode, currentPO}) => {
+const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
   const [basket, setPO] = useState(currentPO);
 
   const handleChangePondOwner = (val, name) => {
@@ -17,9 +16,9 @@ const ModalEdit = ({isShow, closeModal, mode, currentPO}) => {
   };
   const handleOk = async () => {
     try {
-      console.log(parseInt(basket.weight))
+      console.log(parseInt(basket.weight));
       if (parseInt(basket.weight) <= 0) {
-        helper.toast('error', 'Cân nặng phải lớn hơn 0');
+        helper.toast("error", "Cân nặng phải lớn hơn 0");
         return;
       }
       let rs;
@@ -58,10 +57,9 @@ const ModalEdit = ({isShow, closeModal, mode, currentPO}) => {
             />
           </Col>
           <Col md="6" xs="12">
-            <Widgets.Text
+            <Widgets.WeightInput
               required={true}
               label={i18n.t("weight")}
-              type="text"
               value={basket.weight || ""}
               onChange={(e) => handleChangePondOwner(e, "weight")}
             />

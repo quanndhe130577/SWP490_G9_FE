@@ -18,7 +18,10 @@ const ModalSell = ({
   updateTransDetail,
   date,
 }) => {
-  const [transaction, setTransaction] = useState(currentTransaction); // transaction là 1 bản ghi của Trans
+  const [transaction, setTransaction] = useState({
+    ...currentTransaction,
+    isPaid: false,
+  }); // transaction là 1 bản ghi của Trans
   // const [loading, setLoading] = useState(false);
   const [user, setUser] = useState();
 
@@ -107,10 +110,8 @@ const ModalSell = ({
     // data to display in create mode and edit mode is difference, we need convert data
     if (mode === "edit") {
       let fishTypeId = transaction.fishType.id,
-        // buyer = { key: transaction.buyer.id, label, value: r },
         isPaid = transaction.isPaid,
         traderId = transaction.trader.id,
-        // transId: trader.transId,
         sellPrice = transaction.sellPrice,
         weight = parseFloat(transaction.weight);
       let buyer = {
@@ -122,8 +123,6 @@ const ModalSell = ({
       if (traderId) {
         getFTByTrader(traderId);
       }
-
-      // transaction.listDrum.forEach((el) => listDrumId.push(el.id || ""));
       setTransaction((prevState) => ({
         ...prevState,
         fishTypeId,
@@ -198,7 +197,8 @@ const ModalSell = ({
               required={true}
               label={i18n.t("buyer")}
               value={transaction.buyer || []}
-              onSelect={(e) => handleChangeTran("buyer", e)}
+              onChange={(e) => handleChangeTran("buyer", e)}
+              // onSelect={(e) => handleChangeTran("buyer", e)}
               items={transaction.listBuyer || []}
               api={API_FETCH.FIND_BUYER}
               placeholder={i18n.t("enterNameToFindBuyer")}
@@ -287,8 +287,10 @@ const ModalSell = ({
             <Widgets.SearchFetchApi
               required={true}
               label={i18n.t("buyer")}
+              onChange={(e) => handleChangeTran("buyer", e)}
+              isOne={true}
               value={transaction.buyer || []}
-              onSelect={(e) => handleChangeTran("buyer", e)}
+              // onSelect={(e) => handleChangeTran("buyer", e)}
               items={transaction.listBuyer || []}
               api={API_FETCH.FIND_BUYER}
               placeholder={i18n.t("enterNameToFindBuyer")}

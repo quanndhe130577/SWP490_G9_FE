@@ -3,9 +3,7 @@ import { Row, Col } from "reactstrap";
 import Modal from "../../../../containers/Antd/ModalCustom";
 import Widgets from "../../../../schema/Widgets";
 import i18n from "i18next";
-import apis from "../../../../services/apis";
-import helper from "../../../../services/helper";
-import session from "../../../../services/session";
+import { apis, session, helper } from "../../../../services";
 import moment from "moment";
 
 const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
@@ -47,19 +45,23 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
           dob: employee.dob,
           traderID: user.userID,
           salary: employee.salary,
-          startDate: employee.startDate
+          startDate: employee.startDate,
         });
       } else if (mode === "edit") {
         rs = await apis.updateEmployee(employee);
       }
 
       if (rs && rs.statusCode === 200) {
-        if(mode==='create') {
-          if(employee.salary) {
-            await apis.createBaseSalary({
-              startDate: employee.startDate,
-              salary: employee.salary
-            },"POST",rs.data.id);
+        if (mode === "create") {
+          if (employee.salary) {
+            await apis.createBaseSalary(
+              {
+                startDate: employee.startDate,
+                salary: employee.salary,
+              },
+              "POST",
+              rs.data.id
+            );
           }
         }
         closeModal(true);
@@ -70,6 +72,12 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
     } finally {
       setLoading(false);
     }
+  };
+  const checkDisable = () => {
+    if (mode === "view") {
+      return true;
+    }
+    return false;
   };
   return (
     <Modal
@@ -82,6 +90,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
         <Row>
           <Col md="6" xs="12">
             <Widgets.Text
+              isDisable={checkDisable()}
               required={true}
               label={i18n.t("name")}
               value={employee.name || ""}
@@ -90,6 +99,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
           </Col>
           <Col md="6" xs="12">
             <Widgets.Text
+              isDisable={checkDisable()}
               label={i18n.t("address")}
               value={employee.address || ""}
               onChange={(e) => handleChangeEmployee(e, "address")}
@@ -97,6 +107,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
           </Col>
           <Col md="6" xs="12">
             <Widgets.Phone
+              isDisable={checkDisable()}
               required={true}
               type="text"
               label={i18n.t("phone")}
@@ -106,6 +117,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
           </Col>
           <Col md="6" xs="12">
             <Widgets.DateTimePicker
+              isDisable={checkDisable()}
               type="date"
               label={i18n.t("dob")}
               value={
@@ -117,6 +129,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
           </Col>
           <Col md="6" xs="12">
             <Widgets.DateTimePicker
+              isDisable={checkDisable()}
               required={true}
               type="date"
               label={i18n.t("startDate")}
@@ -130,17 +143,19 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
           <Col md="6" xs="12">
             <Widgets.MoneyInput
               required={true}
+              disabled={checkDisable()}
               label={i18n.t("salary")}
               value={employee.salary}
               onChange={(e) => handleChangeEmployee(e, "salary")}
             />
           </Col>
-          {mode === "edit" && (
+          {mode === "edit" && employee && employee.endDate && (
             <Col md="6" xs="12">
               <Widgets.DateTimePicker
+                isDisable={checkDisable()}
                 type="date"
                 label={i18n.t("endDate")}
-                value={moment(employee.endDate || new Date()).format("DD/MM/YYYY")}
+                value={moment(employee.endDate).format("DD/MM/YYYY")}
                 onChange={(e) => handleChangeEmployee(e, "endDate")}
               />
             </Col>
