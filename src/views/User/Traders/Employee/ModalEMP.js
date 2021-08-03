@@ -54,14 +54,6 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
       }
 
       if (rs && rs.statusCode === 200) {
-        if(mode==='create') {
-          if(employee.salary) {
-            await apis.createBaseSalary({
-              startDate: employee.startDate,
-              salary: employee.salary
-            },"POST",rs.data.id);
-          }
-        }
         closeModal(true);
         helper.toast("success", i18n.t(rs.message || "success"));
       }
@@ -127,14 +119,6 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
               onChange={(e) => handleChangeEmployee(e, "startDate")}
             />
           </Col>
-          <Col md="6" xs="12">
-            <Widgets.MoneyInput
-              required={true}
-              label={i18n.t("salary")}
-              value={employee.salary}
-              onChange={(e) => handleChangeEmployee(e, "salary")}
-            />
-          </Col>
           {mode === "edit" && (
             <Col md="6" xs="12">
               <Widgets.DateTimePicker
@@ -145,6 +129,14 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
               />
             </Col>
           )}
+          {/* <Col md="6" xs="12">
+            <Widgets.MoneyInput
+              required={true}
+              label={i18n.t("salary")}
+              value={employee.salary}
+              onChange={(e) => handleChangeEmployee(e, "salary")}
+            />
+          </Col> */}
         </Row>
       )}
     />

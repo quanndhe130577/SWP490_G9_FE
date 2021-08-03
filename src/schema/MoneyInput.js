@@ -15,7 +15,7 @@ export default function Money({
   placeholder = 0,
   step = 100,
 }) {
-  // console.log("number " + value);
+  //  console.log("number " + value);
   //const [inputValue, setInputValue] = useState(value);
 
   return (

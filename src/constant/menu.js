@@ -81,8 +81,8 @@ const MENU = [
         role: "Thương lái",
       },
       {
-        link: "/employeeBaseSalary",
-        title: "Employee Base Salary",
+        link: "/employeeSalary",
+        title: "salary",
         role: "Thương lái",
       },
       {
