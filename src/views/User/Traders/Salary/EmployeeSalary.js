@@ -45,7 +45,7 @@ export default class EmployeeSalary extends Component {
 
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
-        this.setState({data: rs.data, user, total: rs.data.length, canCalculate: rs.data.filter(item => item.salary === null && item.baseSalary !== null).length > 0});
+        this.setState({data: rs.data, user, total: rs.data.length, canCalculate: rs.data.filter(item => item.baseSalary !== null).length > 0});
       }
     } catch (error) {
       console.log(error);
@@ -284,12 +284,6 @@ export default class EmployeeSalary extends Component {
     const {isShowModal, mode, currentEmp, data, loading} = this.state;
     const columns = [
       {
-        title: i18n.t("INDEX"),
-        dataIndex: "idx",
-        key: "idx",
-        render: (text) => <label>{text}</label>,
-      },
-      {
         title: i18n.t("name"),
         dataIndex: "name",
         key: "name",
@@ -327,6 +321,24 @@ export default class EmployeeSalary extends Component {
         render: (salary) => salary !== null ? <Widgets.NumberFormat value={salary} needSuffix={false} /> : "Không có thông tin",
       },
       {
+        title: i18n.t("bonus") + "(VND)",
+        dataIndex: "bonus",
+        key: "bonus",
+        ...this.getColumnSearchProps("bonus", true),
+        sorter: (a, b) => a > b,
+        sortDirections: ["descend", "ascend"],
+        render: (salary) => salary !== null ? <Widgets.NumberFormat value={salary} needSuffix={false} /> : "Không có thông tin",
+      },
+      {
+        title: i18n.t("punish") + "(VND)",
+        dataIndex: "punish",
+        key: "punish",
+        ...this.getColumnSearchProps("punish", true),
+        sorter: (a, b) => a > b,
+        sortDirections: ["descend", "ascend"],
+        render: (salary) => salary !== null ? <Widgets.NumberFormat value={salary} needSuffix={false} /> : "Không có thông tin",
+      },
+      {
         title: i18n.t("salary-tk") + "(VND)",
         dataIndex: "salary",
         key: "salary",
@@ -336,12 +348,11 @@ export default class EmployeeSalary extends Component {
         render: (salary) => salary !== null ? <Widgets.NumberFormat value={salary} needSuffix={false} /> : "Không có thông tin",
       },
       {
-        title: "",
+        title: i18n.t("action"),
         render: (data) => (
           <Dropdown overlay={this.renderBtnAction(data.id, data.name)}>
             <Button>
               <i className="fa fa-cog mr-1" />
-              <label className="tb-lb-action">{i18n.t("action")}</label>
             </Button>
           </Dropdown>
         ),
@@ -366,7 +377,6 @@ export default class EmployeeSalary extends Component {
               /> : this.state.mode === "calculate" ?
                 <ModalCalculateSalaries
                   name={this.state.employeeName}
-                  data={this.state.data}
                   isShow={isShowModal}
                   closeModal={this.closeModal}
                   date={this.state.date}

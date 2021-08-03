@@ -170,5 +170,7 @@
   "totalWR": "Tổng số mã",
   "weightRecorder": "Chủ bến",
   "month":"Tháng",
-  "remain": "Còn lại "
+  "remain": "Còn lại",
+  "bonus":"Thưởng",
+  "punish":"Phạt"
 }
