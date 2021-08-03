@@ -173,7 +173,10 @@
   "remain": "Còn lại ",
   "modal.title.createnNewPurchase": "Tạo mới đơn mua",
   "month":"Tháng",
-  "remain": "Còn lại",
   "bonus":"Thưởng",
-  "punish":"Phạt"
+  "punish":"Phạt",
+  "action.purchase.detail":"Chi tiết",
+  "transaction.continueSelling":"Tiếp tục bán",
+  "transactionDetail.Title": "Đơn bán",
+  "transaction.action.continue": "Bán tiếp"
 }

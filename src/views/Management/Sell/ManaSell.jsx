@@ -50,16 +50,18 @@ const ManaSell = () => {
       <Menu>
         <Menu.Item key="1">
           <Button
+            style={{ width: "100%" }}
             color="info"
             className="mr-2"
             onClick={() => onClickBtn("edit", id, row)}
           >
             <i className="fa fa-pencil-square-o mr-1" />
-            {i18n.t("edit")}
+            {/* {i18n.t("edit")} */}
+            {i18n.t("transaction.action.continue")}
           </Button>
         </Menu.Item>
         <Menu.Item key="2">
-          <Button color="danger" onClick={() => onClickBtn("delete", id, row)}>
+          <Button color="danger" onClick={() => onClickBtn("delete", id, row)} style={{ width: "100%" }}>
             <i className="fa fa-trash-o mr-1" />
             {i18n.t("delete")}
           </Button>
@@ -74,6 +76,15 @@ const ManaSell = () => {
       dataIndex: "idx",
       key: "idx",
       render: (text) => <label>{text}</label>,
+    },
+    {
+      title: i18n.t("Ngày tạo"),
+      dataIndex: "date",
+      key: "date",
+      // ...this.getColumnSearchProps("date"),
+      sorter: (a, b) => a.date.length - b.date.length,
+      sortDirections: ["descend", "ascend"],
+      render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
     },
     {
       title: i18n.t("traderName"),
@@ -96,15 +107,6 @@ const ManaSell = () => {
         });
         return <span>{name}</span>;
       },
-    },
-    {
-      title: i18n.t("Ngày tạo"),
-      dataIndex: "date",
-      key: "date",
-      // ...this.getColumnSearchProps("date"),
-      sorter: (a, b) => a.date.length - b.date.length,
-      sortDirections: ["descend", "ascend"],
-      render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
     },
     {
       title: i18n.t("totalWeight") + " (Kg)",
@@ -193,7 +195,8 @@ const ManaSell = () => {
               history.push("sellF");
             }}
           >
-            {i18n.t("newTransaction")}
+            {/* {i18n.t("newTransaction")} */}
+            {i18n.t("transaction.continueSelling")}    
           </Button>
         </Col>
       </Row>

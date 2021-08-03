@@ -206,7 +206,7 @@ const ManaBuy = () => {
             onClick={() => onClick("edit", id)}
           >
             <i className="fa fa-pencil-square-o mr-1" />
-            {i18n.t(record.status === "Pending" ? "buyContinue" : "edit")}
+            {i18n.t(record.status === "Pending" ? "buyContinue" : "action.purchase.detail")}
           </Button>
         </Menu.Item>
         <Menu.Item key="2">
