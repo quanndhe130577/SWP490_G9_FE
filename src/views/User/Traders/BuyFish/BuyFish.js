@@ -192,14 +192,15 @@ const BuyFish = (props) => {
       title: i18n.t("action"),
       key: "id",
       dataIndex: "id",
-      render: (id) => (
-        <Dropdown overlay={renderBtnAction(id)}>
-          <Button>
-            <i className="fa fa-cog mr-1" />
-            <label className="tb-lb-action">{i18n.t("action")}</label>
-          </Button>
-        </Dropdown>
-      ),
+      render: (id) =>
+        currentPurchase.status == "Pending" && (
+          <Dropdown overlay={renderBtnAction(id)}>
+            <Button>
+              <i className="fa fa-cog mr-1" />
+              <label className="tb-lb-action">{i18n.t("action")}</label>
+            </Button>
+          </Dropdown>
+        ),
     },
   ];
 
@@ -393,12 +394,14 @@ const BuyFish = (props) => {
         // purchase goi y
         setSuggestionPurchase(detail);
         helper.toast("success", i18n.t(rs.message));
+        setIsShowBuy(false);
       }
     } catch (error) {
       console.log(error);
-    } finally {
-      setIsShowBuy(false);
     }
+    //  finally {
+    //   setIsShowBuy(false);
+    // }
   }
 
   // updatePurchaseDetail
@@ -416,12 +419,14 @@ const BuyFish = (props) => {
       if (rs && rs.statusCode === 200) {
         getAllPurchaseDetail(currentPurchase);
         helper.toast("success", i18n.t(rs.message));
+        setIsShowBuy(false);
       }
     } catch (error) {
       console.log(error);
-    } finally {
-      setIsShowBuy(false);
     }
+    // finally {
+    //   setIsShowBuy(false);
+    // }
   }
 
   // Get all purchase detail
@@ -667,9 +672,7 @@ const BuyFish = (props) => {
                 <Col md="4">
                   <label className="mt-1">
                     <b>{i18n.t("date")}:</b>&nbsp;
-                    <Moment format="DD/MM/YYYY">
-                      {currentPurchase.date}
-                    </Moment>
+                    <Moment format="DD/MM/YYYY">{currentPurchase.date}</Moment>
                   </label>
                 </Col>
                 <Col md="8">
