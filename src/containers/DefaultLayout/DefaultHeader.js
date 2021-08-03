@@ -106,7 +106,10 @@ class DefaultHeader extends Component {
                 session.get("user") === null ? (
                   <UserOutlined />
                 ) : (
-                  <img src={session.get("user").avatar} alt="Preview" />
+                  <img
+                    src={session.get("user").avatar || "assets/logo.png"}
+                    alt="Preview"
+                  />
                 )
               }
               id="dropdownMenuButton"

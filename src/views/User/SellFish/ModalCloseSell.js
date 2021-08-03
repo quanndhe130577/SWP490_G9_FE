@@ -67,7 +67,7 @@ const ModalCloseSell = ({
               value={currentPurchase.isPaid}
               onChange={(val) => handlePurchase("isPaid", val)}
               lblCheckbox={
-                currentPurchase.isPaid ? i18n.t("paid") : i18n.t("hasn'tPaid")
+                currentPurchase.isPaid ? i18n.t("paid") : i18n.t("isNotPaid")
               }
             />
           </Col>
