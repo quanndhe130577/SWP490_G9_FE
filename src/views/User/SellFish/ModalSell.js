@@ -27,26 +27,22 @@ const ModalSell = ({
     if (validate) {
       return helper.toast("error", i18n.t(validate));
     }
-    // let tem = transaction;
+    const trader = dataDf.traders.find((el) => el.id === transaction.traderId);
+    let data = {
+      fishTypeId: transaction.fishTypeId,
+      buyerId: transaction.buyer.key,
+      isPaid: transaction.isPaid,
+      traderId: trader.id,
+      transId: trader.transId,
+      sellPrice: transaction.sellPrice,
+      weight: parseFloat(transaction.weight),
+    };
     if (mode === "create") {
       if (createTransDetail) {
-        // debugger;
-        const trader = dataDf.traders.find(
-          (el) => el.id === transaction.traderId
-        );
-        createTransDetail({
-          fishTypeId: transaction.fishTypeId,
-          buyerId: transaction.buyer.key,
-          isPaid: transaction.isPaid,
-          traderId: trader.id,
-          transId: trader.transId,
-          sellPrice: transaction.sellPrice,
-          weight: parseFloat(transaction.weight),
-        });
+        createTransDetail(data);
       }
-      // setShowSell(false);
     } else if (mode === "edit") {
-      updateTransDetail(transaction);
+      updateTransDetail({ ...data, id: transaction.id });
     }
   };
   const handleCancel = () => {
@@ -110,35 +106,34 @@ const ModalSell = ({
   async function convertDataInEditMode() {
     // data to display in create mode and edit mode is difference, we need convert data
     if (mode === "edit") {
-      let fishTypeId = transaction.fishType.id;
-      let basketId = transaction.basket.id;
-      let truck = transaction.truck.id;
-      let listDrumId = [];
-      // get list drum id
-      transaction.listDrum.forEach((el) => listDrumId.push(el.id || ""));
+      let fishTypeId = transaction.fishType.id,
+        // buyer = { key: transaction.buyer.id, label, value: r },
+        isPaid = transaction.isPaid,
+        traderId = transaction.trader.id,
+        // transId: trader.transId,
+        sellPrice = transaction.sellPrice,
+        weight = parseFloat(transaction.weight);
+      let buyer = {
+        key: transaction.buyer.id,
+        label: transaction.buyer.name,
+        value: transaction.buyer.id,
+      };
+
+      if (traderId) {
+        getFTByTrader(traderId);
+      }
+
+      // transaction.listDrum.forEach((el) => listDrumId.push(el.id || ""));
       setTransaction((prevState) => ({
         ...prevState,
         fishTypeId,
-        basketId,
-        truck,
-        listDrumId,
+        isPaid,
+        traderId,
+        buyer,
+        weight,
+        sellPrice,
       }));
     }
-    // else if (mode === "create" && suggestionTrans) {
-    //   // Trans goi y khi mua
-    //   let fishTypeId = suggestionTrans.fishTypeId;
-    //   let basketId = suggestionTrans.basketId;
-    //   let truck = suggestionTrans.truck;
-    //   let listDrumId = suggestionTrans.listDrumId;
-
-    //   setTransaction((prevState) => ({
-    //     ...prevState,
-    //     fishTypeId,
-    //     basketId,
-    //     truck,
-    //     listDrumId,
-    //   }));
-    // }
   }
   async function getBuyer() {
     try {
@@ -208,6 +203,8 @@ const ModalSell = ({
               api={API_FETCH.FIND_BUYER}
               placeholder={i18n.t("enterNameToFindBuyer")}
               disabled={transaction.isRetailCustomers || false}
+              displayField="name"
+              saveField="id"
             />
           </Col>
 

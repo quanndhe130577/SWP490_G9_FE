@@ -19,6 +19,7 @@ const SellFish = (props) => {
   const [isShowChooseTraders, setShowChooseTraders] = useState(false);
   const [isShowSell, setShowSell] = useState(false);
   // data
+  const [listTransaction, setListTransaction] = useState([]);
   const [listTransDetail, setListTransDetail] = useState([]);
   const [date, setDate] = useState("");
   // const [listTrans, setListTrans] = useState([]);
@@ -32,10 +33,11 @@ const SellFish = (props) => {
     if (action === "delete") {
       // deletetransactionDetail(id);
     } else {
-      debugger;
+      console.log(currentTransaction);
       let tem = listTransDetail.find((e) => e.id === id);
       if (tem) {
-        tem.transactionDetailId = id;
+        setCurrentTrans(tem);
+        setShowSell(true);
         setMode("edit");
       }
     }
@@ -150,8 +152,22 @@ const SellFish = (props) => {
     try {
       let rs = await apis.createTranDetail(data);
       if (rs && rs.statusCode === 200) {
-        helper.toast("success", i18n.t(rs.message));
         getAllTransByDate(date);
+        setShowSell(false);
+        helper.toast("success", i18n.t(rs.message || "success"));
+      }
+    } catch (error) {
+      console.log(error);
+      helper.toast("error", error);
+    }
+  }
+  async function updateTransDetail(data) {
+    try {
+      let rs = await apis.updateTransDetail(data);
+      if (rs && rs.statusCode === 200) {
+        getAllTransByDate(date);
+        setShowSell(false);
+        helper.toast("success", i18n.t(rs.message || "success"));
       }
     } catch (error) {
       console.log(error);
@@ -190,14 +206,18 @@ const SellFish = (props) => {
     try {
       let rs = await apis.getTransByDate({}, "GET", date);
       if (rs && rs.statusCode === 200) {
-        // setListTransDetail(rs.data);
-        let tem = [];
+        // setListTransaction(rs.data);
+        let tem = [],
+          temTransDetail = [];
         for (const trans of rs.data) {
+          trans.transactionDetails.map((el) => (el.trader = trans.trader));
+          temTransDetail = temTransDetail.concat(trans.transactionDetails);
           trans.trader.transId = trans.id;
           tem.push(trans.trader);
         }
         // setTraderInDate(tem);
-        setListTransDetail(rs.data);
+        setListTransDetail(temTransDetail);
+        setListTransaction(rs.data);
 
         setDtFetched((pro) => ({ ...pro, traders: tem }));
       }
@@ -265,6 +285,7 @@ const SellFish = (props) => {
             dataDf={dataFetched || []}
             mode={mode}
             createTransDetail={createTransDetail}
+            updateTransDetail={updateTransDetail}
             date={date}
           />
         )}
@@ -275,8 +296,8 @@ const SellFish = (props) => {
                 <label className="mr-2">
                   <b>{i18n.t("date")}:</b>
                   <Moment format="DD/MM/YYYY" className="ml-2">
-                    {listTransDetail.length > 0
-                      ? listTransDetail[0].date
+                    {listTransaction.length > 0
+                      ? listTransaction[0].date
                       : new Date()}
                   </Moment>
                 </label>
@@ -328,7 +349,11 @@ const SellFish = (props) => {
               <Col md="2" xs="6">
                 <Button
                   color="info"
-                  onClick={() => setShowSell(true)}
+                  onClick={() => {
+                    setShowSell(true);
+                    setCurrentTrans({});
+                    setMode("create");
+                  }}
                   className="float-right"
                 >
                   {i18n.t("Thêm Mã Bán")}
@@ -338,7 +363,7 @@ const SellFish = (props) => {
 
             <Row>
               <Col style={{ overflowX: "auto" }}>
-                {listTransDetail.map((trans, idx) => (
+                {listTransaction.map((trans, idx) => (
                   <div className="mb-5">
                     <b>
                       <span className="mr-2">
@@ -393,7 +418,7 @@ const SellFish = (props) => {
                                 />
                               </Table.Summary.Cell>
                               <Table.Summary.Cell key="5" />
-                              <Table.Summary.Cell colSpan="4" key="4" />
+                              <Table.Summary.Cell colSpan="4" key="6" />
                             </Table.Summary.Row>
                           </Table.Summary>
                         );
