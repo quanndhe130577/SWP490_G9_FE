@@ -1,6 +1,9 @@
 {
   "name": "SWP490_G9_FE",
   "version": "2.0.6",
+  "engines": {
+    "node": "12.x"
+  },
   "description": "Fish Trader & Weight Recorder Support System",
   "author": "SWP490_G9",
   "homepage": "",
@@ -42,7 +45,7 @@
     "yarn": "^1.22.10"
   },
   "scripts": {
-    "start": "set PORT=3010 && react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
