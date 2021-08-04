@@ -183,10 +183,11 @@ const SellFish = (props) => {
       // if (date) {
       //   await getAllTransByDate(date);
       // } else {
-      //   await getTraderByWR();
+      // await getTraderByWR();
       // }
 
       await getAllTransByDate(date);
+      await getTraderByWR();
 
       setLoading(false);
     } catch (error) {
@@ -209,7 +210,7 @@ const SellFish = (props) => {
       let rs = await apis.getTransByDate({}, "GET", date);
       if (rs && rs.statusCode === 200) {
         if (rs.data.length === 0) {
-          await getTraderByWR();
+          // await getTraderByWR();
           setShowChooseTraders(true);
         } else {
           let tem = [],
@@ -257,6 +258,11 @@ const SellFish = (props) => {
         )}
       </b>
     );
+  };
+  const calculateColumns = (col, trans) => {
+    let user = session.get("user") || {};
+    if (trans && trans.weightRecorder && user.roleName === "Trader") col.pop();
+    return col;
   };
   useEffect(() => {
     let query = queryString.parse(props.location.search, {
@@ -398,7 +404,7 @@ const SellFish = (props) => {
 
                     <Table
                       key={idx + trans.id}
-                      columns={columns}
+                      columns={calculateColumns(columns, trans)}
                       dataSource={trans.transactionDetails || []}
                       loading={isLoading}
                       scroll={{ y: 420 }}
