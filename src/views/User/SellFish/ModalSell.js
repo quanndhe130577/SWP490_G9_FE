@@ -3,8 +3,7 @@ import ModalCustom from "../../../containers/Antd/ModalCustom";
 import { Row, Col } from "reactstrap";
 import i18n from "i18next";
 import Widgets from "../../../schema/Widgets";
-import helper from "../../../services/helper";
-import { apis, local, session } from "../../../services";
+import { apis, local, session, helper } from "../../../services";
 import { API_FETCH } from "../../../constant";
 
 const ModalSell = ({
@@ -45,6 +44,9 @@ const ModalSell = ({
     };
     if (mode === "create") {
       if (createTransDetail) {
+        if (user.roleName === "Trader" && data.transId) {
+          delete data.transId;
+        }
         await createTransDetail(data);
       }
     } else if (mode === "edit") {
@@ -65,7 +67,6 @@ const ModalSell = ({
     } else if (name === "traderId") {
       getFTByTrader(value);
     } else if (name === "fishTypeId") {
-      console.log(transaction);
       let currentFT = transaction.listFishType.find(
         (ft) => ft.id === parseInt(value)
       );
