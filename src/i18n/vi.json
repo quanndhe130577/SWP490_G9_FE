@@ -141,9 +141,9 @@
   "Advance Salary": "Lương ứng trước",
   "salary": "Lương",
   "salary-tk": "Lương thực nhận",
-  "Base Salary": "Lương cơ bản",
+  "Base Salary": "Lương trên ngày",
   "status-tk": "Số công",
-  "Employee Salary Mangerment":"Quản Lý Lương Nhân Viên",
+  "Employee Salary Mangerment": "Quản Lý Lương Nhân Viên",
   "dateStart": "Ngày bắt đầu",
   "dateEnd": "Ngày kết thúc",
   "debt": "Nợ",
@@ -169,8 +169,8 @@
   "notPaid": "Chưa trả",
   "totalWR": "Tổng số mã",
   "weightRecorder": "Chủ bến",
-  "month":"Tháng",
+  "month": "Tháng",
   "remain": "Còn lại",
-  "bonus":"Thưởng",
-  "punish":"Phạt"
+  "bonus": "Thưởng",
+  "punish": "Phạt"
 }

@@ -1,15 +1,16 @@
-import React, {useState} from "react";
-import {Table, Modal, Row, Col, Button} from "antd";
+import React, { useState } from "react";
+import { Table, Modal, Button } from "antd";
+import { Row, Col } from "reactstrap";
 import Widgets from "../../../../schema/Widgets";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import moment from "moment";
 import i18n from "i18next";
 
-const ModalAdvanceSalaries = ({isShow, closeModal, employeeId,name}) => {
-  const [loading,setLoading]=useState(true);
+const ModalAdvanceSalaries = ({ isShow, closeModal, employeeId, name }) => {
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const [advanceSalary, setAdvance] = useState({date: moment()._d, amount: 1000});
+  const [advanceSalary, setAdvance] = useState({ date: moment()._d, amount: 1000 });
   console.log(data);
   const handleChange = (val, name) => {
     setAdvance((prevState) => ({
@@ -45,7 +46,7 @@ const ModalAdvanceSalaries = ({isShow, closeModal, employeeId,name}) => {
     setData(rs.data)
   }
   let submit = async () => {
-    let rs = await apis.createAdvanceSalary({amount: advanceSalary.amount, empId: employeeId, date: advanceSalary.date}, "POST");
+    let rs = await apis.createAdvanceSalary({ amount: advanceSalary.amount, empId: employeeId, date: advanceSalary.date }, "POST");
     if (rs) {
       helper.toast("success", i18n.t(rs.message));
       getAdvanceSalaries();
@@ -58,28 +59,28 @@ const ModalAdvanceSalaries = ({isShow, closeModal, employeeId,name}) => {
       getAdvanceSalaries();
     }
   }
-  if(loading) {
+  if (loading) {
     setLoading(false);
     getAdvanceSalaries();
   }
   return (
     <Modal
-      title={i18n.t("Advance Salary")+" của "+name}
+      title={i18n.t("Advance Salary") + " của " + name}
       footer=""
       visible={isShow}
       onCancel={closeModal}
     >
-      <Row>
-        <Col span={8}><Widgets.MoneyInput defaultValue={advanceSalary.amount} value={advanceSalary.amount} onChange={value => handleChange(value, 'amount')} /></Col>
-        <Col span={8}><Widgets.DateTimePicker value={advanceSalary.date} onChange={value => handleChange(new Date(value), 'date')} /></Col>
-        <Col span={8}><Button block type="primary" onClick={submit}>Tạo mới</Button></Col>
+      <Row className="pb-2">
+        <Col md="6" xs="12"><Widgets.MoneyInput label="Số tiền" defaultValue={advanceSalary.amount} value={advanceSalary.amount} onChange={value => handleChange(value, 'amount')} /></Col>
+        <Col md="6" xs="12"><Widgets.DateTimePicker label="Ngày" value={advanceSalary.date} onChange={value => handleChange(new Date(value), 'date')} /></Col>
+        <Col md="12" xs="12" className="d-flex justify-content-center"><Button type="primary" onClick={submit}>Tạo mới</Button></Col>
       </Row>
       <Table
         bordered
         columns={columns}
         dataSource={data}
-        pagination={{pageSize: 10}}
-        scroll={{y: 600}}
+        pagination={{ pageSize: 10 }}
+        scroll={{ y: 600 }}
       />
     </Modal>
   );
