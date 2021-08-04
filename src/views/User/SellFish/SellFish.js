@@ -248,7 +248,8 @@ const SellFish = (props) => {
     return (
       <Row>
         <Col md="6">
-          <h3 className="mr-5">{i18n.t("sellGood")}</h3>
+          {/* <h3 className="mr-5">{i18n.t("sellGood")}</h3> */}
+          <h3 className="mr-5">{i18n.t("transactionDetail.Title")}</h3>
         </Col>
         <Col md="6">
           <Button

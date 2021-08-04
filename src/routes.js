@@ -82,21 +82,13 @@ const Trader = Loadable({
   loader: () => import("./views/User/WeightRecorder/Trader/Trader"),
   loading: Loading,
 });
-const EmployeeSalary = Loadable({
-  loader: () => import("./views/User/Traders/EmployeeSalary/EmployeeSalary"),
-  loading: Loading,
-});
-// const ForgetPassword = Loadable({
-//   loader: () => import("./views/Entry/ForgetPassword/Forget"),
-//   loading: Loading,
-// });
 const CheckOTP = Loadable({
   loader: () => import("./views/Entry/ForgetPassword/CheckOTP"),
   loading: Loading,
 });
-const EmployeeBaseSalary = Loadable({
+const EmployeeSalary = Loadable({
   loader: () =>
-    import("./views/User/Traders/Salary/EmployeeBaseSalary/EmployeeBaseSalary"),
+    import("./views/User/Traders/Salary/EmployeeSalary"),
   loading: Loading,
 });
 const routes = [
@@ -192,19 +184,14 @@ const routes = [
     component: ManaSell,
   },
   {
-    path: "/salary",
-    name: "EmployeeSalary",
-    component: EmployeeSalary,
-  },
-  {
     path: "/checkOTP",
     name: "checkOTP_reset",
     component: CheckOTP,
   },
   {
-    path: "/employeeBaseSalary",
-    name: "EmployeeBaseSalary",
-    component: EmployeeBaseSalary,
+    path: "/employeeSalary",
+    name: "EmployeeSalary",
+    component: EmployeeSalary,
   },
 ];
 

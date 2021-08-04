@@ -41,14 +41,14 @@ const MENU = [
   },
 
   {
-    title: "basket",
+    title: "basketManagement",
     icon: <TableOutlined />,
     link: "/basket",
     role: "Thương lái",
   },
   {
     type: "subMenu",
-    title: "truck",
+    title: "truckManagement",
     icon: <CarOutlined />,
     role: "Thương lái",
     menu: [
@@ -81,8 +81,8 @@ const MENU = [
         role: "Thương lái",
       },
       {
-        link: "/employeeBaseSalary",
-        title: "Employee Base Salary",
+        link: "/employeeSalary",
+        title: "salary",
         role: "Thương lái",
       },
       {

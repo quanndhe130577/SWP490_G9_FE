@@ -206,7 +206,7 @@ const ManaBuy = () => {
             onClick={() => onClick("edit", id)}
           >
             <i className="fa fa-pencil-square-o mr-1" />
-            {i18n.t(record.status === "Pending" ? "buyContinue" : "edit")}
+            {i18n.t(record.status === "Pending" ? "buyContinue" : "action.purchase.detail")}
           </Button>
         </Menu.Item>
         <Menu.Item key="2">
@@ -346,7 +346,8 @@ const ManaBuy = () => {
     return (
       <Row>
         <Col md="6" className="d-flex">
-          <h3 className="">{i18n.t("goodManagement")}</h3>
+          {/* <h3 className="">{i18n.t("goodManagement")}</h3> */}
+          <h3 className="">Đơn mua</h3>
         </Col>
         <Col md="6">
           <Button

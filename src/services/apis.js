@@ -65,6 +65,8 @@ var path = {
   deleteEmployee: "/api/employee/delete",
   getDetailEmployee: "/api/employee/detail/{empId}",
   getSalaryDetailEmployee: "/api/employee/salaryDetail",
+  getBaseSalariesByEmployeeId: "/api/baseSalary/getall",
+  updateEmployeeBaseSalary: "/api/employee/updateBaseSalary",
 
   //Time keeping
   updateTimeKeeping: "/api/timeKeeping/update",
@@ -75,14 +77,12 @@ var path = {
   paidTimeKeeping: "/api/timeKeeping/paid",
 
   //Base salsry
+  getAllbyTraderIdBaseSalary: "/api/salary/getallByTrader",
   createBaseSalary: "/api/salary/create",
 
   //History salsry
-  getAllEmpSalary: "/api/salary/getall",
-  createEmpSalary: "/api/salary/create",
-  deleteEmpSalary: "/api/salary/delete",
-  updateEmpSalary: "/api/salary/update",
-  getEmpSalary: "/api/salary/getsalary",
+  getAllEmpHistorySalary: "/api/historysalary/getall",
+  createEmpHistorySalary: "/api/historysalary/create",
 
   //Advance salsry
   getAllAdvanceSalary: "/api/advanceSalary/getall",
