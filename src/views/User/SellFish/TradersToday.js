@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import i18n from "i18next";
-// import Widgets from "../../../schema/Widgets";
 
 const TradersToday = ({ listTraderId, onChange, dataFetched }) => {
   const columns = [

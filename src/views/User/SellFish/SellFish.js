@@ -25,7 +25,7 @@ const SellFish = (props) => {
   // const [listTrans, setListTrans] = useState([]);
   const [currentTransaction, setCurrentTrans] = useState({});
   const [mode, setMode] = useState("create");
-
+  const [user, setUser] = useState(session.get("user"));
   // const [traderInDate, setTraderInDate] = useState([]);
   const [dataFetched, setDtFetched] = useState({}); // include trader by WR
 
@@ -177,8 +177,8 @@ const SellFish = (props) => {
   async function fetchData(date) {
     try {
       setLoading(true);
-      let user = session.get("user");
-      setDtFetched((preProps) => ({ ...preProps, currentWR: user }));
+      // let user = session.get("user");
+      // setDtFetched((preProps) => ({ ...preProps, currentWR: user }));
 
       if (user.roleName !== "Trader") {
         await getTraderByWR();
@@ -235,30 +235,29 @@ const SellFish = (props) => {
   }
 
   const renderTitleTable = (trans) => {
-    let user = session.get("user");
+    // let user = session.get("user");
 
     let client = "trader";
     if (user.roleName === "Trader") {
       client = "weightRecorder";
     }
     return (
-      <b>
-        <span className="mr-2">
-          {i18n.t(client)}:{" "}
+      <div className="mb-2">
+        <span className="mr-3">
+          <b>{i18n.t(client)}: </b>
           {trans[client] &&
             trans[client].firstName + " " + trans[client].lastName}
-          .
         </span>
         {trans.transactionDetails.length > 0 && (
-          <span className="mr-2">
-            {i18n.t("totalWR")}: {trans.transactionDetails.length}
+          <span className="mr-3">
+            <b> {i18n.t("totalWR")}:</b> {trans.transactionDetails.length}
           </span>
         )}
-      </b>
+      </div>
     );
   };
   const calculateColumns = (col, trans) => {
-    let user = session.get("user") || {};
+    // let user = session.get("user") || {};
     if (trans && trans.weightRecorder && user.roleName === "Trader") col.pop();
     return col;
   };
@@ -360,6 +359,7 @@ const SellFish = (props) => {
                   </Button>
                 </div>
               </Col> */}
+              {user.roleName === "Trader" && <Col md="2"></Col>}
               <Col md="2" xs="6">
                 <Button
                   color="info"
@@ -369,15 +369,17 @@ const SellFish = (props) => {
                   {i18n.t("close transaction")}
                 </Button>
               </Col>
-              <Col md="2" xs="6">
-                <Button
-                  color="info"
-                  onClick={() => setShowChooseTraders(true)}
-                  className="float-right"
-                >
-                  {i18n.t("choseTrader")}
-                </Button>
-              </Col>
+              {user.roleName !== "Trader" && (
+                <Col md="2" xs="6">
+                  <Button
+                    color="info"
+                    onClick={() => setShowChooseTraders(true)}
+                    className="float-right"
+                  >
+                    {i18n.t("choseTrader")}
+                  </Button>
+                </Col>
+              )}
 
               <Col md="2" xs="6">
                 <Button
@@ -426,7 +428,7 @@ const SellFish = (props) => {
                               >
                                 {i18n.t("total")}
                               </Table.Summary.Cell>
-                              <Table.Summary.Cell key="2">
+                              <Table.Summary.Cell key="2" className="bold">
                                 <NumberFormat
                                   value={totalWeight.toFixed(1)}
                                   displayType={"text"}
@@ -434,7 +436,7 @@ const SellFish = (props) => {
                                 />
                               </Table.Summary.Cell>
                               <Table.Summary.Cell key="3" />
-                              <Table.Summary.Cell key="4">
+                              <Table.Summary.Cell key="4" className="bold">
                                 <NumberFormat
                                   value={totalAmount}
                                   displayType={"text"}
