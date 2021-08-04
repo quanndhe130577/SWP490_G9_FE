@@ -68,7 +68,7 @@ const ModalAdvanceSalaries = ({ isShow, closeModal, employeeId, name }) => {
       title={i18n.t("Advance Salary") + " của " + name}
       footer=""
       visible={isShow}
-      onCancel={closeModal}
+      onCancel={() => closeModal(true)}
     >
       <Row className="pb-2">
         <Col md="6" xs="12"><Widgets.MoneyInput label="Số tiền" defaultValue={advanceSalary.amount} value={advanceSalary.amount} onChange={value => handleChange(value, 'amount')} /></Col>
