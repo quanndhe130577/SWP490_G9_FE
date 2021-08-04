@@ -313,7 +313,7 @@ export default class Trader extends Component {
               value={searchPhone || ""}
               placeholder={i18n.t("enterPhoneToFind")}
               api={API_FETCH.FIND_TRADER}
-              displayField={["lastName", "phoneNumber"]}
+              displayField={["firstName", "lastName", "phoneNumber"]}
               saveField="id"
             />
           </Col>

@@ -115,6 +115,11 @@ const SearchFetchApi = ({
             onChange(arr);
           }
         }}
+        onSelect={(value) => {
+          if (onSelect) {
+            onSelect(value);
+          }
+        }}
         displayField={displayField}
         saveField={saveField}
         api={api}

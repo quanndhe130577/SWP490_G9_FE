@@ -180,11 +180,13 @@ const SellFish = (props) => {
       setLoading(true);
       let user = session.get("user");
       setDtFetched((preProps) => ({ ...preProps, currentWR: user }));
-      if (date) {
-        await getAllTransByDate(date);
-      } else {
-        await getTraderByWR();
-      }
+      // if (date) {
+      //   await getAllTransByDate(date);
+      // } else {
+      //   await getTraderByWR();
+      // }
+
+      await getAllTransByDate(date);
 
       setLoading(false);
     } catch (error) {
@@ -206,20 +208,24 @@ const SellFish = (props) => {
     try {
       let rs = await apis.getTransByDate({}, "GET", date);
       if (rs && rs.statusCode === 200) {
-        // setListTransaction(rs.data);
-        let tem = [],
-          temTransDetail = [];
-        for (const trans of rs.data) {
-          trans.transactionDetails.map((el) => (el.trader = trans.trader));
-          temTransDetail = temTransDetail.concat(trans.transactionDetails);
-          trans.trader.transId = trans.id;
-          tem.push(trans.trader);
-        }
-        // setTraderInDate(tem);
-        setListTransDetail(temTransDetail);
-        setListTransaction(rs.data);
+        if (rs.data.length === 0) {
+          await getTraderByWR();
+          setShowChooseTraders(true);
+        } else {
+          let tem = [],
+            temTransDetail = [];
+          for (const trans of rs.data) {
+            trans.transactionDetails.map((el) => (el.trader = trans.trader));
+            temTransDetail = temTransDetail.concat(trans.transactionDetails);
+            trans.trader.transId = trans.id;
+            tem.push(trans.trader);
+          }
+          // setTraderInDate(tem);
+          setListTransDetail(temTransDetail);
+          setListTransaction(rs.data);
 
-        setDtFetched((pro) => ({ ...pro, traders: tem }));
+          setDtFetched((pro) => ({ ...pro, traders: tem }));
+        }
       }
     } catch (error) {
       console.log(error);
@@ -229,6 +235,29 @@ const SellFish = (props) => {
     history.push("/sell");
   }
 
+  const renderTitleTable = (trans) => {
+    let user = session.get("user");
+
+    let client = "trader";
+    if (user.roleName === "Trader") {
+      client = "weightRecorder";
+    }
+    return (
+      <b>
+        <span className="mr-2">
+          {i18n.t(client)}:{" "}
+          {trans[client] &&
+            trans[client].firstName + " " + trans[client].lastName}
+          .
+        </span>
+        {trans.transactionDetails.length > 0 && (
+          <span className="mr-2">
+            {i18n.t("totalWR")}: {trans.transactionDetails.length}
+          </span>
+        )}
+      </b>
+    );
+  };
   useEffect(() => {
     let query = queryString.parse(props.location.search, {
       ignoreQueryPrefix: true,
@@ -248,7 +277,6 @@ const SellFish = (props) => {
     return (
       <Row>
         <Col md="6">
-          {/* <h3 className="mr-5">{i18n.t("sellGood")}</h3> */}
           <h3 className="mr-5">{i18n.t("transactionDetail.Title")}</h3>
         </Col>
         <Col md="6">
@@ -366,17 +394,8 @@ const SellFish = (props) => {
               <Col style={{ overflowX: "auto" }}>
                 {listTransaction.map((trans, idx) => (
                   <div className="mb-5">
-                    <b>
-                      <span className="mr-2">
-                        {i18n.t("trader")}:{" "}
-                        {trans.trader && trans.trader.lastName}.
-                      </span>
-                      {trans.transactionDetails.length > 0 && (
-                        <span className="mr-2">
-                          {i18n.t("totalWR")}: {trans.transactionDetails.length}
-                        </span>
-                      )}
-                    </b>
+                    {renderTitleTable(trans)}
+
                     <Table
                       key={idx + trans.id}
                       columns={columns}
