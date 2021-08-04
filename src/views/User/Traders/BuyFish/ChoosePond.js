@@ -30,7 +30,10 @@ const ChoosePond = ({
     if (createPurchase && !currentPurchase.id) {
       let purchase = await createPurchase();
       if (purchase !== undefined) {
-        await updateFishType(purchase, dataChange, false);
+        var rs = await updateFishType(purchase, dataChange, false);
+        if (rs) {
+          helper.toast("success", "Tạo đơn mua thành công");
+        }
       }
       // update fishtype khi ở trong page purchase detail
     } else if (currentPurchase.id) {
@@ -63,7 +66,9 @@ const ChoosePond = ({
       });
 
       setShowChoosePond(isShowModal);
+      return true;
     }
+    return false;
   };
 
   const handleCancel = () => {
@@ -116,7 +121,7 @@ const ChoosePond = ({
 
   return (
     <Modal
-      title={i18n.t("choosePond")}
+      title={i18n.t("modal.title.createnNewPurchase")}
       centered
       visible={isShowChoosePond}
       onOk={handleOk}

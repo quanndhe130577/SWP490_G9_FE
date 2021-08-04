@@ -41,14 +41,14 @@ const MENU = [
   },
 
   {
-    title: "basket",
+    title: "basketManagement",
     icon: <TableOutlined />,
     link: "/basket",
     role: "Thương lái",
   },
   {
     type: "subMenu",
-    title: "truck",
+    title: "truckManagement",
     icon: <CarOutlined />,
     role: "Thương lái",
     menu: [

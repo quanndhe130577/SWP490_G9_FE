@@ -136,6 +136,7 @@ var path = {
   getAllTranDetail: "/api/transactionDetail/getall", // GET if has param: date {ddMMyyyy} will get by date
   getFTByTrader: "/api/fishtype/wc/getall", // GET, param: TraderID, use when selling
   getGeneralTrans: "/api/transaction/getGeneral", // GET
+  updateTransDetail: "/api/transactiondetail/update",
 };
 
 Object.keys(path).forEach(function (key) {

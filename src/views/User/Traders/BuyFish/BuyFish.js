@@ -192,14 +192,15 @@ const BuyFish = (props) => {
       title: i18n.t("action"),
       key: "id",
       dataIndex: "id",
-      render: (id) => (
-        <Dropdown overlay={renderBtnAction(id)}>
-          <Button>
-            <i className="fa fa-cog mr-1" />
-            <label className="tb-lb-action">{i18n.t("action")}</label>
-          </Button>
-        </Dropdown>
-      ),
+      render: (id) =>
+        currentPurchase.status == "Pending" && (
+          <Dropdown overlay={renderBtnAction(id)}>
+            <Button>
+              <i className="fa fa-cog mr-1" />
+              <label className="tb-lb-action">{i18n.t("action")}</label>
+            </Button>
+          </Dropdown>
+        ),
     },
   ];
 
@@ -393,12 +394,14 @@ const BuyFish = (props) => {
         // purchase goi y
         setSuggestionPurchase(detail);
         helper.toast("success", i18n.t(rs.message));
+        setIsShowBuy(false);
       }
     } catch (error) {
       console.log(error);
-    } finally {
-      setIsShowBuy(false);
     }
+    //  finally {
+    //   setIsShowBuy(false);
+    // }
   }
 
   // updatePurchaseDetail
@@ -416,12 +419,14 @@ const BuyFish = (props) => {
       if (rs && rs.statusCode === 200) {
         getAllPurchaseDetail(currentPurchase);
         helper.toast("success", i18n.t(rs.message));
+        setIsShowBuy(false);
       }
     } catch (error) {
       console.log(error);
-    } finally {
-      setIsShowBuy(false);
     }
+    // finally {
+    //   setIsShowBuy(false);
+    // }
   }
 
   // Get all purchase detail
@@ -517,6 +522,7 @@ const BuyFish = (props) => {
       });
       if (rs && rs.statusCode === 200) {
         helper.toast("success", i18n.t(rs.message));
+        setCurrentPurchase((pre) => ({ ...pre, status: "Completed" }));
       }
     } catch (error) {
       console.log(error);
@@ -595,7 +601,8 @@ const BuyFish = (props) => {
     return (
       <Row>
         <Col md="6">
-          <h3 className="mr-5">{i18n.t("buyGood")}</h3>
+          {/* <h3 className="mr-5">{i18n.t("buyGood")}</h3> */}
+          <h3 className="mr-5">Chi tiết đơn mua</h3>
         </Col>
         <Col md="6">
           <Button
@@ -662,15 +669,13 @@ const BuyFish = (props) => {
           <Row className="mb-2">
             <Col md="6">
               <Row>
-                <Col md="2">
+                <Col md="4">
                   <label className="mt-1">
-                    <b>{i18n.t("date")}:</b>
-                    <Moment format="DD/MM/YYYY" className="ml-2">
-                      {currentPurchase.date}
-                    </Moment>
+                    <b>{i18n.t("date")}:</b>&nbsp;
+                    <Moment format="DD/MM/YYYY">{currentPurchase.date}</Moment>
                   </label>
                 </Col>
-                <Col md="4">
+                <Col md="8">
                   <Widgets.Select
                     label={i18n.t("pondOwner") + ": "}
                     value={parseInt(currentPurchase.pondOwnerId)}

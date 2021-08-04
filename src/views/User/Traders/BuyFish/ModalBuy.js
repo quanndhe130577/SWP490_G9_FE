@@ -30,7 +30,7 @@ const ModalBuy = ({
         tem.idx = purchase.length + 1;
         createPurchaseDetail(tem);
       }
-      setIsShowBuy(false);
+      //setIsShowBuy(false);
     } else if (mode === "edit") {
       updatePurchaseDetail(transaction);
     }
@@ -189,6 +189,8 @@ const ModalBuy = ({
             value={transaction.basketId || ""}
             onChange={(e) => handleChangeTran("basketId", e)}
             items={dataDf.basket || []}
+            displayField={["type", "weight"]}
+            containLbl={containLbl}
           />
         </Col>
         <Col md="6" xs="12">
@@ -220,3 +222,8 @@ const ModalBuy = ({
 };
 
 export default ModalBuy;
+const containLbl = {
+  text: "",
+  field: "weight",
+  suffix: " Kg",
+};
