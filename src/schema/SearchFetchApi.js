@@ -66,7 +66,7 @@ async function fetchUserList(api, param, displayField) {
         if (displayField && Array.isArray(displayField)) {
           let temStr = "";
           for (const field of displayField) {
-            temStr += ele[field] + "  ";
+            temStr += ele[field] + " ";
           }
           ele.label = temStr;
         }

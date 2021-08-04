@@ -33,7 +33,6 @@ const SellFish = (props) => {
     if (action === "delete") {
       // deletetransactionDetail(id);
     } else {
-      console.log(currentTransaction);
       let tem = listTransDetail.find((e) => e.id === id);
       if (tem) {
         setCurrentTrans(tem);
@@ -43,7 +42,7 @@ const SellFish = (props) => {
     }
   };
 
-  const handleChangeTrans = (pro, value) => {
+  const handleChangeCurrentTrans = (pro, value) => {
     setCurrentTrans((preStates) => ({ ...preStates, [pro]: value }));
   };
   const calculateIntoMoney = ({ sellPrice, weight }) => (
@@ -180,14 +179,12 @@ const SellFish = (props) => {
       setLoading(true);
       let user = session.get("user");
       setDtFetched((preProps) => ({ ...preProps, currentWR: user }));
-      // if (date) {
-      //   await getAllTransByDate(date);
-      // } else {
-      // await getTraderByWR();
-      // }
+
+      if (user.roleName !== "Trader") {
+        await getTraderByWR();
+      }
 
       await getAllTransByDate(date);
-      await getTraderByWR();
 
       setLoading(false);
     } catch (error) {
@@ -210,22 +207,23 @@ const SellFish = (props) => {
       let rs = await apis.getTransByDate({}, "GET", date);
       if (rs && rs.statusCode === 200) {
         if (rs.data.length === 0) {
-          // await getTraderByWR();
           setShowChooseTraders(true);
         } else {
           let tem = [],
-            temTransDetail = [];
+            temTransDetail = [],
+            listTraderId = [];
           for (const trans of rs.data) {
             trans.transactionDetails.map((el) => (el.trader = trans.trader));
             temTransDetail = temTransDetail.concat(trans.transactionDetails);
             trans.trader.transId = trans.id;
             tem.push(trans.trader);
+            listTraderId.push(trans.trader.id);
           }
-          // setTraderInDate(tem);
+          handleChangeCurrentTrans("listTraderId", listTraderId);
           setListTransDetail(temTransDetail);
           setListTransaction(rs.data);
 
-          setDtFetched((pro) => ({ ...pro, traders: tem }));
+          setDtFetched((pro) => ({ ...pro, tradersSelected: tem }));
         }
       }
     } catch (error) {
@@ -308,7 +306,7 @@ const SellFish = (props) => {
             dataFetched={dataFetched}
             isShowChooseTraders={isShowChooseTraders}
             currentTransaction={currentTransaction}
-            handleChangeTrans={handleChangeTrans}
+            handleChangeCurrentTrans={handleChangeCurrentTrans}
             setShowChooseTraders={(status) => setShowChooseTraders(status)}
           />
         )}

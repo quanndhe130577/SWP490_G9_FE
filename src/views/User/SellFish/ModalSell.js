@@ -29,9 +29,11 @@ const ModalSell = ({
     if (validate) {
       return helper.toast("error", i18n.t(validate));
     }
-    let trader = dataDf.traders.find((el) => el.id === transaction.traderId);
+    let trader = dataDf.tradersSelected.find(
+      (el) => el.id === transaction.traderId
+    );
     if (user.roleName === "Trader" && !trader) {
-      trader = dataDf.traders.find((el) => el.id === user.userID);
+      trader = dataDf.tradersSelected.find((el) => el.id === user.userID);
     }
     let data = {
       fishTypeId: transaction.fishTypeId,
