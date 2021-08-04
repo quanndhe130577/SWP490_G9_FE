@@ -7,8 +7,7 @@ import LoadingCustom from "../../../containers/Antd/LoadingCustom";
 import ChooseTraders from "./ChooseTraders";
 import ModalSell from "./ModalSell";
 import queryString from "qs";
-
-import { apis, session } from "../../../services";
+import { apis, helper, session } from "../../../services";
 
 import NumberFormat from "react-number-format";
 import Moment from "react-moment";
@@ -20,7 +19,10 @@ const SellFish = (props) => {
   const [isShowChooseTraders, setShowChooseTraders] = useState(false);
   const [isShowSell, setShowSell] = useState(false);
   // data
+  const [listTransaction, setListTransaction] = useState([]);
   const [listTransDetail, setListTransDetail] = useState([]);
+  const [date, setDate] = useState("");
+  // const [listTrans, setListTrans] = useState([]);
   const [currentTransaction, setCurrentTrans] = useState({});
   const [mode, setMode] = useState("create");
 
@@ -33,30 +35,23 @@ const SellFish = (props) => {
     } else {
       let tem = listTransDetail.find((e) => e.id === id);
       if (tem) {
-        tem.transactionDetailId = id;
+        setCurrentTrans(tem);
+        setShowSell(true);
         setMode("edit");
       }
     }
   };
 
-  const handleChangeTrans = (pro, value) => {
+  const handleChangeCurrentTrans = (pro, value) => {
     setCurrentTrans((preStates) => ({ ...preStates, [pro]: value }));
   };
-  const calculateIntoMoney = (id) => {
-    let tem = listTransDetail.find((e) => e.id === id);
-    if (tem && tem.fishType) {
-      let value =
-        tem.fishType.price * (parseInt(tem.weight) - tem.basket.weight);
-      return (
-        <NumberFormat
-          value={value}
-          displayType={"text"}
-          thousandSeparator={true}
-          // suffix={i18n.t("suffix")}
-        />
-      );
-    }
-  };
+  const calculateIntoMoney = ({ sellPrice, weight }) => (
+    <NumberFormat
+      value={sellPrice * weight}
+      displayType={"text"}
+      thousandSeparator={true}
+    />
+  );
 
   // render button action like: edit, delete
   const renderBtnAction = (id) => {
@@ -86,10 +81,10 @@ const SellFish = (props) => {
   const columns = [
     {
       title: "STT",
-      dataIndex: "idx",
-      key: "idx",
       width: 60,
-      render: (idx) => <label className="antd-tb-idx">{idx}</label>,
+      render: (el, row, idx) => (
+        <label className="antd-tb-idx">{idx + 1}</label>
+      ),
     },
     {
       title: i18n.t("typeOfFish"),
@@ -100,46 +95,40 @@ const SellFish = (props) => {
       ),
     },
     {
-      title: i18n.t("qtyOfFish(Kg)"),
+      title: i18n.t("qtyOfFish(Kg-onlyFish)"),
       dataIndex: "weight",
       key: "weight",
     },
     {
-      title: i18n.t("sellPrice"),
+      title: i18n.t("sellPrice(VND)"),
       dataIndex: "sellPrice",
       key: "sellPrice",
+      render: (sellPrice) => (
+        <NumberFormat
+          value={sellPrice}
+          displayType={"text"}
+          thousandSeparator={true}
+        />
+      ),
     },
     {
-      title: i18n.t("isPaid"),
+      title: i18n.t("intoMoney"),
+      render: (el, row) => <label>{calculateIntoMoney(row)}</label>,
+    },
+    {
+      title: i18n.t("statusPaid"),
       dataIndex: "isPaid",
       key: "isPaid",
-    },
-    {
-      title: (
-        <div>
-          <label>{i18n.t("intoMoney")}</label>
-          <label>({i18n.t("temporary")})</label>
-        </div>
-      ),
-      dataIndex: "id",
-      key: "id",
-      responsive: ["md", "lg"],
-      render: (id) => {
-        return <div>{id && <label>{calculateIntoMoney(id)}</label>}</div>;
-      },
-    },
-
-    {
-      title: i18n.t("trader"),
-      dataIndex: "trader",
-      key: "trader",
+      render: (isPaid) => <span>{i18n.t(isPaid ? "isPaid" : "notPaid")}</span>,
     },
     {
       title: i18n.t("buyer"),
       dataIndex: "buyer",
       key: "buyer",
       render: (buyer) => {
-        return <div>{buyer && <label>{buyer.name}</label>}</div>;
+        return (
+          <div>{buyer && buyer ? buyer.name : i18n.t("retailCustomers")}</div>
+        );
       },
     },
 
@@ -157,18 +146,45 @@ const SellFish = (props) => {
       ),
     },
   ];
-
+  //create purchase detail
+  async function createTransDetail(data) {
+    try {
+      let rs = await apis.createTranDetail(data);
+      if (rs && rs.statusCode === 200) {
+        getAllTransByDate(date);
+        setShowSell(false);
+        helper.toast("success", i18n.t(rs.message || "success"));
+      }
+    } catch (error) {
+      console.log(error);
+      helper.toast("error", error);
+    }
+  }
+  async function updateTransDetail(data) {
+    try {
+      let rs = await apis.updateTransDetail(data);
+      if (rs && rs.statusCode === 200) {
+        getAllTransByDate(date);
+        setShowSell(false);
+        helper.toast("success", i18n.t(rs.message || "success"));
+      }
+    } catch (error) {
+      console.log(error);
+      helper.toast("error", error);
+    }
+  }
   // fetch data
   async function fetchData(date) {
     try {
       setLoading(true);
       let user = session.get("user");
       setDtFetched((preProps) => ({ ...preProps, currentWR: user }));
-      if (date) {
-        getAllTransByDate(date);
-      } else {
-        getTraderByWR();
+
+      if (user.roleName !== "Trader") {
+        await getTraderByWR();
       }
+
+      await getAllTransByDate(date);
 
       setLoading(false);
     } catch (error) {
@@ -190,14 +206,25 @@ const SellFish = (props) => {
     try {
       let rs = await apis.getTransByDate({}, "GET", date);
       if (rs && rs.statusCode === 200) {
-        // setListTransDetail(rs.data);
-        let tem = [];
-        for (const trans of rs.data) {
-          trans.trader.purchaseId = trans.id;
-          tem.push(trans.trader);
+        if (rs.data.length === 0) {
+          setShowChooseTraders(true);
+        } else {
+          let tem = [],
+            temTransDetail = [],
+            listTraderId = [];
+          for (const trans of rs.data) {
+            trans.transactionDetails.map((el) => (el.trader = trans.trader));
+            temTransDetail = temTransDetail.concat(trans.transactionDetails);
+            trans.trader.transId = trans.id;
+            tem.push(trans.trader);
+            listTraderId.push(trans.trader.id);
+          }
+          handleChangeCurrentTrans("listTraderId", listTraderId);
+          setListTransDetail(temTransDetail);
+          setListTransaction(rs.data);
+
+          setDtFetched((pro) => ({ ...pro, tradersSelected: tem }));
         }
-        // setTraderInDate(tem);
-        setDtFetched((pro) => ({ ...pro, trader: tem }));
       }
     } catch (error) {
       console.log(error);
@@ -207,6 +234,34 @@ const SellFish = (props) => {
     history.push("/sell");
   }
 
+  const renderTitleTable = (trans) => {
+    let user = session.get("user");
+
+    let client = "trader";
+    if (user.roleName === "Trader") {
+      client = "weightRecorder";
+    }
+    return (
+      <b>
+        <span className="mr-2">
+          {i18n.t(client)}:{" "}
+          {trans[client] &&
+            trans[client].firstName + " " + trans[client].lastName}
+          .
+        </span>
+        {trans.transactionDetails.length > 0 && (
+          <span className="mr-2">
+            {i18n.t("totalWR")}: {trans.transactionDetails.length}
+          </span>
+        )}
+      </b>
+    );
+  };
+  const calculateColumns = (col, trans) => {
+    let user = session.get("user") || {};
+    if (trans && trans.weightRecorder && user.roleName === "Trader") col.pop();
+    return col;
+  };
   useEffect(() => {
     let query = queryString.parse(props.location.search, {
       ignoreQueryPrefix: true,
@@ -215,6 +270,7 @@ const SellFish = (props) => {
     let date;
     if (query && query.date) {
       date = query.date;
+      setDate(date);
     }
     fetchData(date);
 
@@ -225,7 +281,7 @@ const SellFish = (props) => {
     return (
       <Row>
         <Col md="6">
-          <h3 className="mr-5">{i18n.t("sellGood")}</h3>
+          <h3 className="mr-5">{i18n.t("transactionDetail.Title")}</h3>
         </Col>
         <Col md="6">
           <Button
@@ -250,7 +306,7 @@ const SellFish = (props) => {
             dataFetched={dataFetched}
             isShowChooseTraders={isShowChooseTraders}
             currentTransaction={currentTransaction}
-            handleChangeTrans={handleChangeTrans}
+            handleChangeCurrentTrans={handleChangeCurrentTrans}
             setShowChooseTraders={(status) => setShowChooseTraders(status)}
           />
         )}
@@ -261,19 +317,25 @@ const SellFish = (props) => {
             currentTransaction={currentTransaction || {}}
             dataDf={dataFetched || []}
             mode={mode}
+            createTransDetail={createTransDetail}
+            updateTransDetail={updateTransDetail}
+            date={date}
           />
         )}
         {!isShowChooseTraders && (
-          <Card title={renderTitle()}>
+          <Card title={renderTitle()} style={{ minHeight: "80vh" }}>
             <Row className="mb-2">
               <Col md="6">
                 <label className="mr-2">
                   <b>{i18n.t("date")}:</b>
-                  <Moment format="DD/MM/YYYY" className="ml-2"></Moment>
+                  <Moment format="DD/MM/YYYY" className="ml-2">
+                    {listTransaction.length > 0
+                      ? listTransaction[0].date
+                      : new Date()}
+                  </Moment>
                 </label>
-                <label></label>
               </Col>
-              <Col md="6">
+              {/* <Col md="6">
                 <div className="float-right">
                   <Button
                     color="info"
@@ -297,63 +359,94 @@ const SellFish = (props) => {
                     {i18n.t("Thêm Mã")}
                   </Button>
                 </div>
+              </Col> */}
+              <Col md="2" xs="6">
+                <Button
+                  color="info"
+                  // onClick={() => handleClosetransaction()}
+                  className="float-right"
+                >
+                  {i18n.t("close transaction")}
+                </Button>
+              </Col>
+              <Col md="2" xs="6">
+                <Button
+                  color="info"
+                  onClick={() => setShowChooseTraders(true)}
+                  className="float-right"
+                >
+                  {i18n.t("choseTrader")}
+                </Button>
+              </Col>
+
+              <Col md="2" xs="6">
+                <Button
+                  color="info"
+                  onClick={() => {
+                    setShowSell(true);
+                    setCurrentTrans({});
+                    setMode("create");
+                  }}
+                  className="float-right"
+                >
+                  {i18n.t("Thêm Mã Bán")}
+                </Button>
               </Col>
             </Row>
 
             <Row>
               <Col style={{ overflowX: "auto" }}>
-                {listTransDetail.map((trans, idx) => (
-                  <div>
-                    key={idx}
+                {listTransaction.map((trans, idx) => (
+                  <div className="mb-5">
+                    {renderTitleTable(trans)}
+
                     <Table
-                      key={idx}
-                      columns={columns}
-                      dataSource={trans || []}
+                      key={idx + trans.id}
+                      columns={calculateColumns(columns, trans)}
+                      dataSource={trans.transactionDetails || []}
                       loading={isLoading}
                       scroll={{ y: 420 }}
-                      pagination={{ pageSize: 100 }}
+                      pagination={{ pageSize: 10 }}
                       bordered
-                      // summary={(pageData) => {
-                      //   let totalWeight = 0;
-                      //   let totalAmount = 0;
-                      //   pageData.forEach(({ weight, fishType, basket }) => {
-                      //     totalWeight += weight;
-                      //     totalAmount +=
-                      //       fishType.price * (parseInt(weight) - basket.weight);
-                      //   });
+                      summary={(pageData) => {
+                        let totalWeight = 0;
+                        let totalAmount = 0;
+                        pageData.forEach(({ weight, sellPrice }) => {
+                          totalWeight += weight;
+                          totalAmount += weight * sellPrice;
+                        });
 
-                      //   return (
-                      //     <Table.Summary fixed>
-                      //       <Table.Summary.Row>
-                      //         <Table.Summary.Cell
-                      //           colSpan="2"
-                      //           key="1"
-                      //           className="bold"
-                      //         >
-                      //           {i18n.t("total")}
-                      //         </Table.Summary.Cell>
-                      //         <Table.Summary.Cell key="2">
-                      //           <NumberFormat
-                      //             value={totalWeight.toFixed(1)}
-                      //             displayType={"text"}
-                      //             thousandSeparator={true}
-                      //             suffix=" Kg"
-                      //           />
-                      //         </Table.Summary.Cell>
-                      //         <Table.Summary.Cell key="3">
-                      //           <NumberFormat
-                      //             value={totalAmount}
-                      //             displayType={"text"}
-                      //             thousandSeparator={true}
-                      //             suffix={i18n.t("suffix")}
-                      //           />
-                      //         </Table.Summary.Cell>
-                      //         <Table.Summary.Cell colSpan="4" key="4" />
-                      //       </Table.Summary.Row>
-                      //     </Table.Summary>
-                      //   );
-
-                      // }}
+                        return (
+                          <Table.Summary fixed>
+                            <Table.Summary.Row>
+                              <Table.Summary.Cell
+                                colSpan="2"
+                                key="1"
+                                className="bold"
+                              >
+                                {i18n.t("total")}
+                              </Table.Summary.Cell>
+                              <Table.Summary.Cell key="2">
+                                <NumberFormat
+                                  value={totalWeight.toFixed(1)}
+                                  displayType={"text"}
+                                  thousandSeparator={true}
+                                />
+                              </Table.Summary.Cell>
+                              <Table.Summary.Cell key="3" />
+                              <Table.Summary.Cell key="4">
+                                <NumberFormat
+                                  value={totalAmount}
+                                  displayType={"text"}
+                                  thousandSeparator={true}
+                                />
+                              </Table.Summary.Cell>
+                              <Table.Summary.Cell key="5" />
+                              <Table.Summary.Cell colSpan="4" key="6" />
+                            </Table.Summary.Row>
+                          </Table.Summary>
+                        );
+                      }}
                     />
                   </div>
                 ))}

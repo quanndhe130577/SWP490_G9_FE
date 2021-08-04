@@ -19,7 +19,6 @@ const ModalBuy = ({
 }) => {
   const [transaction, setTransaction] = useState(currentPurchase); // transaction là 1 bản ghi của purchase
   const [loading, setLoading] = useState(false);
-
   const handleOk = () => {
     let validate = validateData();
     if (validate) {
@@ -31,14 +30,16 @@ const ModalBuy = ({
         tem.idx = purchase.length + 1;
         createPurchaseDetail(tem);
       }
-      setIsShowBuy(false);
+      //setIsShowBuy(false);
     } else if (mode === "edit") {
       updatePurchaseDetail(transaction);
     }
   };
+
   const handleCancel = () => {
     setIsShowBuy(false);
   };
+
   const handleChangeTran = async (name, value) => {
     // if(name === "drum"){
     //   let drums =purchase.drum
@@ -56,7 +57,8 @@ const ModalBuy = ({
       }));
       setLoading(rs);
     } else if (name === "listDrumId" && value.length > 0) {
-      value = value.map((el) => (el = parseInt(el)));
+      //value = value.map((el) => (el = parseInt(el)));
+      value = value.map((el) => (el = "" + el));
     }
     setTransaction((prevState) => ({
       ...prevState,
@@ -96,10 +98,30 @@ const ModalBuy = ({
   // }
   async function convertDataInEditMode() {
     if (mode === "create") {
-      setTransaction((prevState) => ({
-        ...prevState,
-        weight: 0,
-      }));
+      if (suggestionPurchase) {
+        // purchase goi y khi mua
+        let fishTypeId = suggestionPurchase.fishTypeId;
+        let basketId = suggestionPurchase.basketId;
+        let truck = suggestionPurchase.truck;
+        let listDrumId = [...suggestionPurchase.listDrumId];
+
+        setTransaction((prevState) => ({
+          ...prevState,
+          fishTypeId,
+          basketId,
+          truck,
+          listDrumId,
+        }));
+        // fetch Drum By Truck
+        let rs = await fetchDrumByTruck(truck);
+        setLoading(rs);
+        //setLoading(true);
+      } else {
+        setTransaction((prevState) => ({
+          ...prevState,
+          weight: 0,
+        }));
+      }
     }
     // data to display in create mode and edit mode is difference, we need convert data
     else if (mode === "edit") {
@@ -108,7 +130,7 @@ const ModalBuy = ({
       let truck = transaction.truck.id;
       let listDrumId = [];
       // get list drum id
-      transaction.listDrum.forEach((el) => listDrumId.push(el.id || ""));
+      transaction.listDrum.forEach((el) => listDrumId.push("" + el.id || ""));
       setTransaction((prevState) => ({
         ...prevState,
         fishTypeId,
@@ -116,26 +138,10 @@ const ModalBuy = ({
         truck,
         listDrumId,
       }));
-      // fetch Drum By Truck
+      // // fetch Drum By Truck
       let rs = await fetchDrumByTruck(truck);
       setLoading(rs);
-    } else if (mode === "create" && suggestionPurchase) {
-      // purchase goi y khi mua
-      let fishTypeId = suggestionPurchase.fishTypeId;
-      let basketId = suggestionPurchase.basketId;
-      let truck = suggestionPurchase.truck;
-      let listDrumId = suggestionPurchase.listDrumId;
-
-      setTransaction((prevState) => ({
-        ...prevState,
-        fishTypeId,
-        basketId,
-        truck,
-        listDrumId,
-      }));
-      // fetch Drum By Truck
-      let rs = await fetchDrumByTruck(truck);
-      setLoading(rs);
+      //setLoading(true);
     }
   }
   useEffect(() => {
@@ -183,6 +189,8 @@ const ModalBuy = ({
             value={transaction.basketId || ""}
             onChange={(e) => handleChangeTran("basketId", e)}
             items={dataDf.basket || []}
+            displayField={["type", "weight"]}
+            containLbl={containLbl}
           />
         </Col>
         <Col md="6" xs="12">
@@ -199,7 +207,8 @@ const ModalBuy = ({
             <Widgets.SelectSearchMulti
               required={true}
               label={i18n.t("drum")}
-              value={transaction.listDrumId || transaction.listDrum || []}
+              value={transaction.listDrumId || []}
+              //value={transaction.listDrumId || transaction.listDrum || []}
               onChange={(e) => handleChangeTran("listDrumId", e)}
               items={dataDf.drum || []}
               displayField="number"
@@ -213,3 +222,8 @@ const ModalBuy = ({
 };
 
 export default ModalBuy;
+const containLbl = {
+  text: "",
+  field: "weight",
+  suffix: " Kg",
+};

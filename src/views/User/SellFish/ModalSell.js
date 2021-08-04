@@ -1,55 +1,86 @@
 import React, { useState, useEffect } from "react";
-import { Modal } from "antd";
+import ModalCustom from "../../../containers/Antd/ModalCustom";
 import { Row, Col } from "reactstrap";
 import i18n from "i18next";
 import Widgets from "../../../schema/Widgets";
-import helper from "../../../services/helper";
-import { apis, local } from "../../../services";
+import { apis, local, session, helper } from "../../../services";
 import { API_FETCH } from "../../../constant";
 
 const ModalSell = ({
   isShowSell,
   setShowSell,
   currentTransaction,
-  Trans,
   mode,
   dataDf,
   createTransDetail,
   updateTransDetail,
-  suggestionTrans,
+  date,
 }) => {
-  const [transaction, setTransaction] = useState(currentTransaction); // transaction là 1 bản ghi của Trans
-  // const [loading, setLoading] = useState(false);
+  const [transaction, setTransaction] = useState({
+    ...currentTransaction,
+    isPaid: false,
+  }); // transaction là 1 bản ghi của Trans
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState();
 
-  const handleOk = () => {
+  const handleOk = async () => {
+    setLoading(true);
     let validate = validateData();
     if (validate) {
       return helper.toast("error", i18n.t(validate));
     }
-    let tem = transaction;
+    let trader = dataDf.tradersSelected.find(
+      (el) => el.id === transaction.traderId
+    );
+    if (user.roleName === "Trader" && !trader) {
+      trader = dataDf.tradersSelected.find((el) => el.id === user.userID);
+    }
+    let data = {
+      fishTypeId: transaction.fishTypeId,
+      buyerId: transaction.buyer.key,
+      isPaid: transaction.isPaid,
+      traderId: trader.id,
+      transId: trader.transId,
+      sellPrice: transaction.sellPrice,
+      weight: parseFloat(transaction.weight),
+    };
     if (mode === "create") {
       if (createTransDetail) {
-        tem.idx = Trans.length + 1;
-        createTransDetail(tem);
+        if (user.roleName === "Trader" && data.transId) {
+          delete data.transId;
+          data.date = helper.correctDate();
+        }
+        await createTransDetail(data);
       }
-      setShowSell(false);
     } else if (mode === "edit") {
-      updateTransDetail(transaction);
+      await updateTransDetail({ ...data, id: transaction.id });
     }
+    setLoading(false);
   };
   const handleCancel = () => {
     setShowSell(false);
   };
   const handleChangeTran = async (name, value) => {
-    if (name === "isRetailCustomers" && !value) {
+    if (name === "isRetailCustomers" && value) {
       setTransaction((prevState) => ({
         ...prevState,
-        buyer: "",
+        buyer: [],
         isPaid: true,
       }));
-    } else if (name === "trader") {
-      debugger;
+    } else if (name === "traderId") {
       getFTByTrader(value);
+    } else if (name === "fishTypeId") {
+      let currentFT = transaction.listFishType.find(
+        (ft) => ft.id === parseInt(value)
+      );
+      if (!currentFT) {
+        return helper.toast("error", i18n("fishTypeInvalid"));
+      }
+      setTransaction((prevState) => ({
+        ...prevState,
+        sellPrice: currentFT.transactionPrice,
+        selectedFT: currentFT,
+      }));
     }
     setTransaction((prevState) => ({
       ...prevState,
@@ -59,51 +90,63 @@ const ModalSell = ({
 
   // validate các trường required
   const validateData = () => {
-    let { weight, fishTypeId, truck, basketId } = transaction;
-    if (!weight || !fishTypeId || !truck || !basketId) {
+    let { weight, fishTypeId, traderId, sellPrice, buyer } = transaction;
+    if (user.roleName === "Trader") {
+      traderId = user.userID;
+      setTransaction((prevState) => ({
+        ...prevState,
+        traderId: user.userID,
+      }));
+    }
+    if (!weight || !fishTypeId || !traderId || !sellPrice || !buyer) {
       return "fillAll*";
     } else {
       if (weight <= 0.1) {
         return "qtyMustLargerThan0";
-      } else if (weight > 200) {
-        setTransaction((prevState) => ({
-          ...prevState,
-          weight: 0,
-        }));
-        return "qtyMustSmallerThan200";
       }
+      // DO NOT REMOVE
+      //  else if (weight > 200) {
+      //   setTransaction((prevState) => ({
+      //     ...prevState,
+      //     weight: 0,
+      //   }));
+      //   return "qtyMustSmallerThan200";
+      // }
     }
   };
 
   async function convertDataInEditMode() {
     // data to display in create mode and edit mode is difference, we need convert data
     if (mode === "edit") {
-      let fishTypeId = transaction.fishType.id;
-      let basketId = transaction.basket.id;
-      let truck = transaction.truck.id;
-      let listDrumId = [];
-      // get list drum id
-      transaction.listDrum.forEach((el) => listDrumId.push(el.id || ""));
-      setTransaction((prevState) => ({
-        ...prevState,
-        fishTypeId,
-        basketId,
-        truck,
-        listDrumId,
-      }));
-    } else if (mode === "create" && suggestionTrans) {
-      // Trans goi y khi mua
-      let fishTypeId = suggestionTrans.fishTypeId;
-      let basketId = suggestionTrans.basketId;
-      let truck = suggestionTrans.truck;
-      let listDrumId = suggestionTrans.listDrumId;
+      let fishTypeId = transaction.fishType.id,
+        isPaid = transaction.isPaid,
+        traderId = transaction.trader.id,
+        sellPrice = transaction.sellPrice,
+        weight = parseFloat(transaction.weight),
+        isRetailCustomers = false,
+        buyer = [];
 
+      if (transaction.buyer) {
+        buyer = {
+          key: transaction.buyer.id,
+          label: transaction.buyer.name,
+          value: transaction.buyer.id,
+        };
+      } else {
+        isRetailCustomers = true;
+      }
+      if (traderId) {
+        getFTByTrader(traderId);
+      }
       setTransaction((prevState) => ({
         ...prevState,
         fishTypeId,
-        basketId,
-        truck,
-        listDrumId,
+        isPaid,
+        traderId,
+        buyer,
+        weight,
+        sellPrice,
+        isRetailCustomers,
       }));
     }
   }
@@ -123,10 +166,13 @@ const ModalSell = ({
   }
   async function getFTByTrader(traderId) {
     try {
-      let rs = await apis.getFTByTrader({}, "GET", traderId);
+      let param = traderId;
+      if (date) {
+        param += "/" + date;
+      }
+      let rs = await apis.getFTByTrader({}, "GET", param);
       if (rs && rs.statusCode === 200) {
         setTransaction((pre) => ({ ...pre, listFishType: rs.data }));
-        // return rs.data
       }
     } catch (error) {
       console.log(error);
@@ -136,10 +182,18 @@ const ModalSell = ({
   useEffect(() => {
     convertDataInEditMode();
     getBuyer();
+    let user = session.get("user") || null;
+    if (user) {
+      setUser(user);
+      if (user.roleName === "Trader") {
+        getFTByTrader(user.userID);
+      }
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <Modal
+    <ModalCustom
       title={
         mode === "create"
           ? i18n.t("createTransDetail")
@@ -149,86 +203,186 @@ const ModalSell = ({
       onOk={handleOk}
       onCancel={handleCancel}
       width={800}
-    >
-      <Row>
-        <Col md="6" xs="12">
-          <Widgets.Select
-            required={true}
-            label={i18n.t("trader")}
-            value={transaction.trader || ""}
-            onChange={(e) => handleChangeTran("trader", e)}
-            items={dataDf.trader || []}
-            displayField={"lastname"}
-          />
-        </Col>
+      loading={loading}
+      component={() => (
+        <>
+          {user && user.roleDisplayName === "Thương lái" ? (
+            // for trader
+            <Row>
+              <Col md="4" xs="12">
+                <Widgets.SearchFetchApi
+                  required={true}
+                  label={i18n.t("buyer")}
+                  value={transaction.buyer || []}
+                  onChange={(e) => handleChangeTran("buyer", e)}
+                  isOne={true}
+                  items={transaction.listBuyer || []}
+                  api={API_FETCH.FIND_BUYER}
+                  placeholder={i18n.t("enterNameToFindBuyer")}
+                  disabled={transaction.isRetailCustomers || false}
+                  displayField="name"
+                  saveField="id"
+                />
+              </Col>
 
-        <Col md="4" xs="12">
-          <Widgets.SearchFetchApi
-            required={true}
-            label={i18n.t("buyer")}
-            value={transaction.buyer || []}
-            onSelect={(e) => handleChangeTran("buyer", e)}
-            items={transaction.listBuyer || []}
-            api={API_FETCH.FIND_BUYER}
-            placeholder={i18n.t("enterNameToFindBuyer")}
-            disabled={transaction.isRetailCustomers || false}
-          />
-        </Col>
+              <Col md="2" xs="12">
+                <Widgets.Checkbox
+                  label={i18n.t("Or")}
+                  value={transaction.isRetailCustomers || false}
+                  onChange={(e) => handleChangeTran("isRetailCustomers", e)}
+                  lblCheckbox={i18n.t("retailCustomers")}
+                />
+              </Col>
 
-        <Col md="2" xs="12">
-          <Widgets.Checkbox
-            label={i18n.t("Or")}
-            value={transaction.isRetailCustomers || false}
-            onChange={(e) => handleChangeTran("isRetailCustomers", e)}
-            lblCheckbox={i18n.t("retailCustomers")}
-          />
-        </Col>
+              {transaction.buyer && (
+                <>
+                  <Col md="6" xs="12">
+                    <Widgets.Select
+                      required={true}
+                      label={i18n.t("typeOfFish")}
+                      value={transaction.fishTypeId || ""}
+                      onChange={(e) => handleChangeTran("fishTypeId", e)}
+                      items={transaction.listFishType || dataDf.arrFish || []}
+                      displayField={["fishName", "remainWeight"]}
+                      containLbl={containLbl}
+                    />
+                  </Col>
+                  <Col md="6" xs="12">
+                    <Widgets.WeightInput
+                      required={true}
+                      label={i18n.t("qtyOfFish(Kg-onlyFish)")}
+                      value={transaction.weight || 0}
+                      onChange={(e) => handleChangeTran("weight", e)}
+                    />
+                  </Col>
+                  <Col md="6" xs="12">
+                    <Widgets.MoneyInput
+                      required={true}
+                      label={i18n.t("sellPrice")}
+                      value={transaction.sellPrice || 0}
+                      onChange={(e) => handleChangeTran("sellPrice", e)}
+                    />
+                  </Col>
 
-        <Col md="6" xs="12">
-          <Widgets.Select
-            required={true}
-            label={i18n.t("typeOfFish")}
-            value={transaction.fishTypeId || ""}
-            onChange={(e) => handleChangeTran("fishTypeId", e)}
-            items={transaction.listFishType || dataDf.arrFish || []}
-          />
-        </Col>
-        <Col md="6" xs="12">
-          <Widgets.WeightInput
-            required={true}
-            label={i18n.t("qtyOfFish(Kg)")}
-            value={transaction.weight || 0}
-            onChange={(e) => handleChangeTran("weight", e)}
-          />
-        </Col>
-        <Col md="6" xs="12">
-          <Widgets.MoneyInput
-            required={true}
-            label={i18n.t("sellPrice")}
-            value={transaction.cost || ""}
-            onChange={(e) => handleChangeTran("cost", e)}
-          />
-        </Col>
-        <Col md="2" xs="12">
-          <Widgets.Checkbox
-            label={i18n.t("isPaid")}
-            value={transaction.isPaid || false}
-            onChange={(e) => handleChangeTran("isPaid", e)}
-            lblCheckbox={i18n.t("isPaid")}
-            disabled={transaction.isRetailCustomers || false}
-          />
-        </Col>
-        <Col md="6" xs="12">
-          <Widgets.MoneyInput
-            required={true}
-            label={i18n.t("intoMoney")}
-            value={transaction.intoMoney || ""}
-            // onChange={(e) => handleChangeTran("cost", e)}
-          />
-        </Col>
-      </Row>
-    </Modal>
+                  <Col md="6" xs="12">
+                    <Widgets.MoneyInput
+                      disabled={true}
+                      label={i18n.t("intoMoney")}
+                      value={transaction.weight * transaction.sellPrice || ""}
+                    />
+                  </Col>
+
+                  <Col md="6" xs="12">
+                    <Widgets.Checkbox
+                      label={i18n.t("payStatus")}
+                      value={transaction.isPaid || false}
+                      onChange={(e) => handleChangeTran("isPaid", e)}
+                      lblChecked={i18n.t("isPaid")}
+                      lblCheckbox={i18n.t("isNotPaid")}
+                      disabled={transaction.isRetailCustomers || false}
+                    />
+                  </Col>
+                </>
+              )}
+            </Row>
+          ) : (
+            //for weight recorder
+            <Row>
+              <Col md="6" xs="12">
+                <Widgets.Select
+                  required={true}
+                  label={i18n.t("trader")}
+                  value={transaction.traderId || ""}
+                  onChange={(e) => handleChangeTran("traderId", e)}
+                  items={dataDf.traders || []}
+                  displayField={"lastName"}
+                />
+              </Col>
+
+              <Col md="4" xs="12">
+                <Widgets.SearchFetchApi
+                  required={true}
+                  label={i18n.t("buyer")}
+                  onChange={(e) => handleChangeTran("buyer", e)}
+                  isOne={true}
+                  value={transaction.buyer || []}
+                  // onSelect={(e) => handleChangeTran("buyer", e)}
+                  items={transaction.listBuyer || []}
+                  api={API_FETCH.FIND_BUYER}
+                  placeholder={i18n.t("enterNameToFindBuyer")}
+                  disabled={transaction.isRetailCustomers || false}
+                />
+              </Col>
+
+              <Col md="2" xs="12">
+                <Widgets.Checkbox
+                  label={i18n.t("Or")}
+                  value={transaction.isRetailCustomers || false}
+                  onChange={(e) => handleChangeTran("isRetailCustomers", e)}
+                  lblCheckbox={i18n.t("retailCustomers")}
+                />
+              </Col>
+
+              {transaction.traderId && (
+                <>
+                  <Col md="6" xs="12">
+                    <Widgets.Select
+                      required={true}
+                      label={i18n.t("typeOfFish")}
+                      value={transaction.fishTypeId || ""}
+                      onChange={(e) => handleChangeTran("fishTypeId", e)}
+                      items={transaction.listFishType || dataDf.arrFish || []}
+                      displayField={["fishName", "remainWeight"]}
+                      containLbl={containLbl}
+                    />
+                  </Col>
+                  <Col md="6" xs="12">
+                    <Widgets.WeightInput
+                      required={true}
+                      label={i18n.t("qtyOfFish(Kg-onlyFish)")}
+                      value={transaction.weight || 0}
+                      onChange={(e) => handleChangeTran("weight", e)}
+                    />
+                  </Col>
+                  <Col md="6" xs="12">
+                    <Widgets.MoneyInput
+                      required={true}
+                      label={i18n.t("sellPrice")}
+                      value={transaction.sellPrice || 0}
+                      onChange={(e) => handleChangeTran("sellPrice", e)}
+                    />
+                  </Col>
+                  <Col md="6" xs="12">
+                    <Widgets.Checkbox
+                      label={i18n.t("payStatus")}
+                      value={transaction.isPaid || false}
+                      onChange={(e) => handleChangeTran("isPaid", e)}
+                      lblChecked={i18n.t("isPaid")}
+                      lblCheckbox={i18n.t("isNotPaid")}
+                      disabled={transaction.isRetailCustomers || false}
+                    />
+                  </Col>
+                  <Col md="6" xs="12">
+                    <Widgets.MoneyInput
+                      disabled={true}
+                      label={i18n.t("intoMoney")}
+                      value={transaction.weight * transaction.sellPrice || ""}
+                      // onChange={(e) => handleChangeTran("sellPrice", e)}
+                    />
+                  </Col>
+                </>
+              )}
+            </Row>
+          )}
+        </>
+      )}
+    />
   );
 };
 
 export default ModalSell;
+const containLbl = {
+  text: i18n.t("remain"),
+  field: "remainWeight",
+  suffix: " Kg",
+};

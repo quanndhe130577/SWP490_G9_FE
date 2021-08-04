@@ -11,7 +11,7 @@ class NormalInfo extends Component {
     super(props);
     this.state = {
       firstname: null,
-      lastname: null,
+      lastName: null,
       dob: new Date(),
       identifyCode: null,
       avatar: "https://via.placeholder.com/150",
@@ -30,7 +30,7 @@ class NormalInfo extends Component {
     let rs = await apis.getUserInfo({}, "GET", user.userID);
     this.setState({
       firstname: rs.data.firstName,
-      lastname: rs.data.lastname,
+      lastName: rs.data.lastName,
       dob: new Date(rs.data.dob),
       identifyCode: rs.data.identifyCode,
       avatar:
@@ -58,7 +58,7 @@ class NormalInfo extends Component {
     let rs = await apis.updateUser(
       {
         firstname: this.state.firstname,
-        lastname: this.state.lastname,
+        lastName: this.state.lastName,
         dob: this.state.dob,
         identifyCode: this.state.identifyCode,
         avatarBase64: this.state.avatar.split(",")[1],
@@ -112,8 +112,8 @@ class NormalInfo extends Component {
               <Widgets.Text
                 required={true}
                 label={"Tên"}
-                value={this.state.lastname}
-                onChange={(e) => this.handleChange2(e, "lastname")}
+                value={this.state.lastName}
+                onChange={(e) => this.handleChange2(e, "lastName")}
               />
             </div>
             <div className="col-md-6 mb-2">

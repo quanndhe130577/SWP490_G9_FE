@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "reactstrap";
 import { apis, local, helper } from "../../../services";
 import { Card, Dropdown, Menu, Table } from "antd";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import i18n from "i18next";
 import { useHistory } from "react-router-dom";
 import Moment from "react-moment";
@@ -11,7 +11,7 @@ import NumberFormat from "react-number-format";
 
 const ManaSell = () => {
   let history = useHistory();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(true);
   const [transaction, setTransaction] = useState([]);
 
@@ -50,16 +50,21 @@ const ManaSell = () => {
       <Menu>
         <Menu.Item key="1">
           <Button
+            style={{ width: "100%" }}
             color="info"
             className="mr-2"
             onClick={() => onClickBtn("edit", id, row)}
           >
             <i className="fa fa-pencil-square-o mr-1" />
-            {i18n.t("edit")}
+            {i18n.t("transaction.action.continue")}
           </Button>
         </Menu.Item>
         <Menu.Item key="2">
-          <Button color="danger" onClick={() => onClickBtn("delete", id, row)}>
+          <Button
+            color="danger"
+            onClick={() => onClickBtn("delete", id, row)}
+            style={{ width: "100%" }}
+          >
             <i className="fa fa-trash-o mr-1" />
             {i18n.t("delete")}
           </Button>
@@ -76,14 +81,6 @@ const ManaSell = () => {
       render: (text) => <label>{text}</label>,
     },
     {
-      title: i18n.t("traderName"),
-      dataIndex: "trader",
-      key: "trader",
-      render: (trader) => (
-        <label>{trader.firstName + " " + trader.lastname}</label>
-      ),
-    },
-    {
       title: i18n.t("Ngày tạo"),
       dataIndex: "date",
       key: "date",
@@ -93,7 +90,29 @@ const ManaSell = () => {
       render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
     },
     {
-      title: i18n.t("totalWeight"),
+      title: i18n.t("traderName"),
+      dataIndex: "listTrader",
+      key: "listTrader",
+      render: (listTrader) => {
+        let name = "";
+        // for (const trader of listTrader) {
+        //   if (trader) {
+        //     name += trader.lastName + " " + trader.firstName;
+        //   }
+        // }
+        listTrader.forEach((trader, idx) => {
+          if (trader) {
+            name += trader.firstName + " " + trader.lastName;
+          }
+          if (idx < listTrader.length - 1) {
+            name += ", ";
+          }
+        });
+        return <span>{name}</span>;
+      },
+    },
+    {
+      title: i18n.t("totalWeight") + " (Kg)",
       dataIndex: "totalWeight",
       key: "totalWeight",
       // ...this.getColumnSearchProps("totalWeight"),
@@ -102,9 +121,8 @@ const ManaSell = () => {
     },
     {
       title: i18n.t("totalAmount (VND)"),
-      dataIndex: "totalAmount",
-      key: "totalAmount",
-      // ...this.getColumnSearchProps("totalAmount"),
+      dataIndex: "totalMoney",
+      key: "totalMoney",
       sorter: (a, b) => a.totalAmount - b.totalAmount,
       sortDirections: ["descend", "ascend"],
       render: (totalAmount) => (
@@ -116,10 +134,18 @@ const ManaSell = () => {
       ),
     },
     {
-      title: i18n.t("status"),
-      dataIndex: "status",
-      key: "status",
-      // ...this.getColumnSearchProps("totalAmount"),
+      title: i18n.t("debt") + " (VND)",
+      dataIndex: "totalDebt",
+      key: "totalDebt",
+      sorter: (a, b) => a.totalAmount - b.totalAmount,
+      sortDirections: ["descend", "ascend"],
+      render: (totalDebt) => (
+        <NumberFormat
+          value={totalDebt}
+          displayType={"text"}
+          thousandSeparator={true}
+        />
+      ),
     },
     {
       title: "",
@@ -141,15 +167,15 @@ const ManaSell = () => {
       setLoading(true);
       // let date = moment(new Date()).format("DDMMYYYY");
       // let rs = await apis.getTransByDate({}, "GET", date);
-      let rs = await apis.getAllTransaction({}, "GET");
+      let rs = await apis.getGeneralTrans({}, "GET");
 
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         setTransaction(rs.data);
-        dispatch({
-          type: "SET_TRANSACTION",
-          transaction: rs.data,
-        });
+        // dispatch({
+        //   type: "SET_TRANSACTION",
+        //   transaction: rs.data,
+        // });
       }
     } catch (error) {
       console.log(error);
@@ -169,10 +195,13 @@ const ManaSell = () => {
             color="info"
             className="mb-2 pull-right"
             onClick={() => {
-              history.push("sellF");
+              history.push(
+                "sellF?date=" + helper.getDateFormat(new Date(), "ddmmyyyy")
+              );
+              // history.push("sellF");
             }}
           >
-            {i18n.t("newTransaction")}
+            {i18n.t("transaction.continueSelling")}
           </Button>
         </Col>
       </Row>
@@ -185,14 +214,6 @@ const ManaSell = () => {
 
   return (
     <Card title={renderTitle()}>
-      {/*<Button*/}
-      {/*  color="info"*/}
-      {/*  onClick={() => {*/}
-      {/*    history.push("buyFish");*/}
-      {/*  }}*/}
-      {/*>*/}
-      {/*  {i18n.t("continueToBuy")}*/}
-      {/*</Button>*/}
       <Table columns={columns} dataSource={transaction} loading={isLoading} />
     </Card>
   );

@@ -1,15 +1,12 @@
-// import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
-import { Card, Dropdown, Input, Menu, Space, Table } from "antd";
+import { Card, Input, Space, Table } from "antd";
 import i18n from "i18next";
 import React, { Component } from "react";
 import { Button, Col, Row } from "reactstrap";
-import services from "../../../../services";
+import { apis, helper } from "../../../../services";
 import ModalForm from "./ModalTrader";
 import Widgets from "../../../../schema/Widgets";
 import { API_FETCH } from "../../../../constant";
-
-const { apis, helper } = services;
 
 export default class Trader extends Component {
   constructor(props) {
@@ -54,45 +51,10 @@ export default class Trader extends Component {
           <h3 className="">{i18n.t("Trader")}</h3>
           <label className="hd-total">{total ? "(" + total + ")" : ""}</label>
         </Col>
-
-        <Col md="6">
-          <Button
-            color="info"
-            className="pull-right"
-            onClick={() => {
-              this.setState({ isShowModal: true, mode: "create" });
-            }}
-          >
-            <i className="fa fa-plus mr-1" />
-            {i18n.t("create")}
-          </Button>
-        </Col>
       </Row>
     );
   };
 
-  renderBtnAction(id) {
-    return (
-      <Menu>
-        <Menu.Item key="1">
-          <Button
-            color="info"
-            className="mr-2"
-            onClick={() => this.onClick("edit", id)}
-          >
-            <i className="fa fa-pencil-square-o mr-1" />
-            {i18n.t("edit")}
-          </Button>
-        </Menu.Item>
-        <Menu.Item key="2">
-          <Button color="danger" onClick={() => this.onClick("delete", id)}>
-            <i className="fa fa-trash-o mr-1" />
-            {i18n.t("delete")}
-          </Button>
-        </Menu.Item>
-      </Menu>
-    );
-  }
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     this.setState({
@@ -221,11 +183,9 @@ export default class Trader extends Component {
       title: i18n.t("name"),
       dataIndex: "firstName",
       key: "firstName",
-      // ...this.getColumnSearchProps("name"),
-      // sorter: (a, b) => a.name.length - b.name.length,
-      // sortDirections: ["descend", "ascend"],
+
       render: (firstName, record) => (
-        <label>{firstName + " " + record.lastname}</label>
+        <label>{firstName + " " + record.lastName}</label>
       ),
     },
     {
@@ -252,18 +212,15 @@ export default class Trader extends Component {
       dataIndex: "id",
       key: "id",
       render: (id) => (
-        <Dropdown overlay={this.renderBtnAction(id)}>
-          <Button>
-            <i className="fa fa-cog mr-1" />
-            <label className="tb-lb-action">{i18n.t("action")}</label>
-          </Button>
-        </Dropdown>
+        <Button color="danger" onClick={() => this.onClick("delete", id)}>
+          <i className="fa fa-trash-o mr-1" />
+          {i18n.t("delete")}
+        </Button>
       ),
     },
   ];
   fetchOptions = async (phone) => {
     return await apis.suggestTDByPhone({}, "GET", phone);
-    // return rs.data;
   };
   handleChangeSearchPhone = async (searchPhone) => {
     try {
@@ -313,12 +270,17 @@ export default class Trader extends Component {
               value={searchPhone || ""}
               placeholder={i18n.t("enterPhoneToFind")}
               api={API_FETCH.FIND_TRADER}
-              displayField={["lastname", "phoneNumber"]}
+              displayField={["firstName", "lastName", "phoneNumber"]}
               saveField="id"
             />
           </Col>
           <Col md="6">
-            <Button className="mt-4" onClick={this.handleAddTrader}>
+            <Button
+              color="info"
+              className="mt-4"
+              onClick={this.handleAddTrader}
+            >
+              <i className="fa fa-plus mr-1" />
               {i18n.t("addTrader")}
             </Button>
           </Col>

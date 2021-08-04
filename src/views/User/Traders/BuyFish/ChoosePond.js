@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Modal } from "antd";
 import { Row, Col } from "reactstrap";
 import i18n from "i18next";
@@ -22,7 +22,6 @@ const ChoosePond = ({
 }) => {
   let isChange = false;
   const history = useHistory();
-
   const [dataChange, setDataChange] = useState([]);
   const handleOk = async () => {
     //updateAllFishType
@@ -31,7 +30,10 @@ const ChoosePond = ({
     if (createPurchase && !currentPurchase.id) {
       let purchase = await createPurchase();
       if (purchase !== undefined) {
-        await updateFishType(purchase, dataChange, false);
+        var rs = await updateFishType(purchase, dataChange, false);
+        if (rs) {
+          helper.toast("success", "Tạo đơn mua thành công");
+        }
       }
       // update fishtype khi ở trong page purchase detail
     } else if (currentPurchase.id) {
@@ -43,23 +45,30 @@ const ChoosePond = ({
   const updateFishType = async (
     currentPurchase,
     dataChange,
-    isShowModal = false
+    isShowModal = false,
+    onlyFe = false
   ) => {
     var rs = await updateAllFishType(
       { purchaseId: currentPurchase.id, listFishType: dataChange },
-      currentPurchase
+      currentPurchase,
+      onlyFe
     );
     if (rs) {
       dataChange.forEach((element) => {
         var list = [...currentPurchase.listFishId];
-        if (list.find((item) => parseInt(item) === parseInt(element.id)) === undefined) {
+        if (
+          list.find((item) => parseInt(item) === parseInt(element.id)) ===
+          undefined
+        ) {
           list.push(element.id + "");
           onChange(list, "listFishId");
         }
       });
 
       setShowChoosePond(isShowModal);
+      return true;
     }
+    return false;
   };
 
   const handleCancel = () => {
@@ -104,14 +113,20 @@ const ChoosePond = ({
     }
   };
 
+  // useEffect(() => {
+  //   if (currentPurchase.listFishId === undefined) {
+  //     onChange([], "listFishId");
+  //   }
+  // }, []);
+
   return (
     <Modal
-      title={i18n.t("choosePond")}
+      title={i18n.t("modal.title.createnNewPurchase")}
       centered
       visible={isShowChoosePond}
       onOk={handleOk}
       onCancel={handleCancel}
-      width={1000}
+      width={1200}
     >
       <Row>
         <Col md="4" xs="12">
@@ -121,6 +136,7 @@ const ChoosePond = ({
             items={dataDf.pondOwner}
             // isDisable={currentPurchase.pondOwner ? true : false}
             onChange={(vl) => onChange(vl, "pondOwnerId")}
+            needPleaseChose={false}
           />
           <Widgets.SelectSearchMulti
             label={i18n.t("chooseFish")}
@@ -139,6 +155,15 @@ const ChoosePond = ({
             dataDf={dataDf}
             dataChange={(data) => {
               setDataChange(data);
+            }}
+            removeFishType={(id) => {
+              var newListFishId = currentPurchase.listFishId.filter(
+                (x) => x != id
+              );
+              onChange(newListFishId, "listFishId");
+            }}
+            updateOnlyFe={async (arr) => {
+              updateFishType(currentPurchase, arr, true, true);
             }}
           />
         </Col>

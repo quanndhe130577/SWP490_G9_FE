@@ -122,7 +122,6 @@ request.fetch = async (url, data, headers, method = "POST") => {
   option.headers = Object.assign({}, option.headers, headers);
   if (method === "GET") delete option.body;
   console.log("opt " + option);
-  debugger;
   let res = await fetch(url, option);
   try {
     switch (res.status) {

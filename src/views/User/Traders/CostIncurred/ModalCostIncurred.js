@@ -32,7 +32,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
       //   helper.toast("error", valid.message);
       //   return;
       // }
-      debugger
+
       if (mode === "create") {
         rs = await apis.createCostIncurred({
           name: costInc.name,
@@ -94,8 +94,9 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
               type="date"
               label={i18n.t("date")}
               value={
-                costInc ? moment(costInc.date).format("DD/MM/YYYY") :
-                  moment(new Date()).format("DD/MM/YYYY")
+                costInc
+                  ? moment(costInc.date).format("DD/MM/YYYY")
+                  : moment(new Date()).format("DD/MM/YYYY")
               }
               onChange={(e) => handleChangeCostIncurred(e, "date")}
             />

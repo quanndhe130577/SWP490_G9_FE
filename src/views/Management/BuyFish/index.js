@@ -200,16 +200,21 @@ const ManaBuy = () => {
       <Menu>
         <Menu.Item key="1">
           <Button
+            style={{ width: "100%" }}
             color="info"
             className="mr-2"
             onClick={() => onClick("edit", id)}
           >
             <i className="fa fa-pencil-square-o mr-1" />
-            {i18n.t(record.status === "Pending" ? "buyContinue" : "edit")}
+            {i18n.t(record.status === "Pending" ? "buyContinue" : "action.purchase.detail")}
           </Button>
         </Menu.Item>
         <Menu.Item key="2">
-          <Button color="danger" onClick={() => onClick("delete", id)}>
+          <Button
+            color="danger"
+            onClick={() => onClick("delete", id)}
+            style={{ width: "100%" }}
+          >
             <i className="fa fa-trash-o mr-1" />
             {i18n.t("delete")}
           </Button>
@@ -341,7 +346,8 @@ const ManaBuy = () => {
     return (
       <Row>
         <Col md="6" className="d-flex">
-          <h3 className="">{i18n.t("goodManagement")}</h3>
+          {/* <h3 className="">{i18n.t("goodManagement")}</h3> */}
+          <h3 className="">Đơn mua</h3>
         </Col>
         <Col md="6">
           <Button
@@ -373,7 +379,12 @@ const ManaBuy = () => {
       {/*>*/}
       {/*  {i18n.t("continueToBuy")}*/}
       {/*</Button>*/}
-      <Table columns={columns} dataSource={purchase} loading={isLoading} />
+      <Table
+        columns={columns}
+        dataSource={purchase}
+        loading={isLoading}
+        rowKey="id"
+      />
     </Card>
   );
 };

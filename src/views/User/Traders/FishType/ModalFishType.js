@@ -85,7 +85,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
           </Col>
           <Col md="6" xs="12">
             <Widgets.MoneyInput
-              label={i18n.t("Transaction Price")}
+              label={i18n.t("sellPrice(VND)")}
               value={fishType.transactionPrice || ""}
               onChange={(e) => handleChangeFishType(e, "transactionPrice")}
             />

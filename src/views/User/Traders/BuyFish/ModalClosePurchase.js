@@ -36,12 +36,14 @@ const ModalBuy = ({
   const handleCancel = () => {
     handleShowClosePurchase(!isShowClosePurchase);
   };
+
   const handlePurchase = (name, val) => {
     if (name === "commissionPercent") {
       val = parseInt(val);
     }
     setCurrentPurchase((pre) => ({ ...pre, [name]: val }));
   };
+
   const calculateData = () => {
     let totalWeight = 0,
       totalAmount = 0,
@@ -82,6 +84,7 @@ const ModalBuy = ({
     });
     // setFishInPurchase(fishInPurchase);
   };
+
   useEffect(() => {
     calculateData();
     handlePurchase("commissionPercent", 0);
@@ -91,6 +94,7 @@ const ModalBuy = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <Modal
       title={i18n.t("closePurchase")}
@@ -109,13 +113,20 @@ const ModalBuy = ({
               </Moment>
             </label>
           </Col>
-          <Col md="6">
-            <Widgets.Select
-              label={i18n.t("pondOwner")}
-              value={parseInt(currentPurchase.pondOwner)}
+          <Col md="4">
+            {/* <Widgets.Select
+              label={i18n.t("pondOwner") + ": "}
+              value={parseInt(currentPurchase.pondOwnerId)}
               items={dataDf.pondOwner}
-              isDisable={currentPurchase.pondOwner ? true : false}
-            />
+              isDisable={currentPurchase.pondOwnerId ? true : false}
+              displayField="name"
+              saveField="id"
+              width={"75%"}
+            /> */}
+            <label>
+              <b className="mr-2">{i18n.t("pondOwner")}:</b>
+              {currentPurchase.pondOwnerName || ""}
+            </label>
           </Col>
           <Col md="12">
             <Table
@@ -176,13 +187,13 @@ const ModalBuy = ({
               value={currentPurchase.isPaid}
               onChange={(val) => handlePurchase("isPaid", val)}
               lblCheckbox={
-                currentPurchase.isPaid ? i18n.t("paid") : i18n.t("hasn'tPaid")
+                currentPurchase.isPaid ? i18n.t("paid") : i18n.t("isNotPaid")
               }
             />
           </Col>
           <Col md="6">
             <Widgets.NumberFormat
-              label={i18n.t("percent") + ":  "}
+              label={i18n.t("percent") + ":"}
               value={
                 (objPurchase.totalAmount * currentPurchase.commissionPercent) /
                   100 || ""
@@ -223,17 +234,21 @@ const columns = [
     key: "fishName",
   },
   {
-    title: "Giá (VND/kg)",
+    title: "Đơn giá (VND/kg)",
     dataIndex: "price",
     key: "price",
-    render: (price) => <Widgets.NumberFormat value={price} />,
+    render: (price) => (
+      <Widgets.NumberFormat needSuffix={false} value={price} />
+    ),
   },
   {
-    title: "Tổng khối lượng",
+    title: "Tổng khối lượng (kg)",
     dataIndex: "totalWeight",
     key: "totalWeight",
+    render: (weight) => (
+      <Widgets.NumberFormat needSuffix={false} value={weight} />
+    ),
   },
-
   {
     title: (
       <div>
@@ -244,7 +259,10 @@ const columns = [
     dataIndex: "id",
     key: "id",
     render: (id, row) => (
-      <Widgets.NumberFormat value={row.price * parseFloat(row.totalWeight)} />
+      <Widgets.NumberFormat
+        needSuffix={false}
+        value={row.price * parseFloat(row.totalWeight)}
+      />
     ),
   },
 ];
