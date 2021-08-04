@@ -114,14 +114,19 @@ const ModalBuy = ({
             </label>
           </Col>
           <Col md="4">
-            <Widgets.Select
+            {/* <Widgets.Select
               label={i18n.t("pondOwner") + ": "}
               value={parseInt(currentPurchase.pondOwnerId)}
               items={dataDf.pondOwner}
               isDisable={currentPurchase.pondOwnerId ? true : false}
               displayField="name"
               saveField="id"
-            />
+              width={"75%"}
+            /> */}
+            <label>
+              <b className="mr-2">{i18n.t("pondOwner")}:</b>
+              {currentPurchase.pondOwnerName || ""}
+            </label>
           </Col>
           <Col md="12">
             <Table
@@ -240,8 +245,10 @@ const columns = [
     title: "Tổng khối lượng (kg)",
     dataIndex: "totalWeight",
     key: "totalWeight",
+    render: (weight) => (
+      <Widgets.NumberFormat needSuffix={false} value={weight} />
+    ),
   },
-
   {
     title: (
       <div>
