@@ -12,7 +12,10 @@ export default function Number({
   onKeyDown,
 }) {
   return (
-    <div className={"form-group" + (submitted && !value ? " has-error" : "")} style={{ margin: "auto" }}>
+    <div
+      className={"form-group" + (submitted && !value ? " has-error" : "")}
+      style={{ margin: "auto" }}
+    >
       {label && (
         <label className="bold">
           {label} {required ? <span style={{ color: "red" }}>*</span> : ""}
@@ -25,7 +28,7 @@ export default function Number({
         onChange={(e) => {
           if (onChange) {
             let v = e.target.value.replace(/[^0-9.]/, "");
-            onChange(v);
+            onChange(parseInt(v, 10));
           }
         }}
         onBlur={(e) => {

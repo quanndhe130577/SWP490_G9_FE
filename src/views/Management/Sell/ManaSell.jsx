@@ -45,33 +45,33 @@ const ManaSell = () => {
     }
   }
 
-  function renderBtnAction(id, row) {
-    return (
-      <Menu>
-        <Menu.Item key="1">
-          <Button
-            style={{ width: "100%" }}
-            color="info"
-            className="mr-2"
-            onClick={() => onClickBtn("edit", id, row)}
-          >
-            <i className="fa fa-pencil-square-o mr-1" />
-            {i18n.t("transaction.action.continue")}
-          </Button>
-        </Menu.Item>
-        <Menu.Item key="2">
-          <Button
-            color="danger"
-            onClick={() => onClickBtn("delete", id, row)}
-            style={{ width: "100%" }}
-          >
-            <i className="fa fa-trash-o mr-1" />
-            {i18n.t("delete")}
-          </Button>
-        </Menu.Item>
-      </Menu>
-    );
-  }
+  // function renderBtnAction(id, row) {
+  //   return (
+  //     <Menu>
+  //       <Menu.Item key="1">
+  //         <Button
+  //           style={{ width: "100%" }}
+  //           color="info"
+  //           className="mr-2"
+  //           onClick={() => onClickBtn("edit", id, row)}
+  //         >
+  //           <i className="fa fa-pencil-square-o mr-1" />
+  //           {i18n.t("transaction.action.continue")}
+  //         </Button>
+  //       </Menu.Item>
+  //       <Menu.Item key="2">
+  //         <Button
+  //           color="danger"
+  //           onClick={() => onClickBtn("delete", id, row)}
+  //           style={{ width: "100%" }}
+  //         >
+  //           <i className="fa fa-trash-o mr-1" />
+  //           {i18n.t("delete")}
+  //         </Button>
+  //       </Menu.Item>
+  //     </Menu>
+  //   );
+  // }
 
   const columns = [
     {
@@ -152,12 +152,15 @@ const ManaSell = () => {
       dataIndex: "id",
       key: "id",
       render: (id, row) => (
-        <Dropdown overlay={renderBtnAction(id, row)}>
-          <Button>
-            <i className="fa fa-cog mr-1" />
-            <label className="tb-lb-action">{i18n.t("action")}</label>
-          </Button>
-        </Dropdown>
+        <Button
+          style={{ width: "100%" }}
+          color="info"
+          className="mr-2"
+          onClick={() => onClickBtn("edit", id, row)}
+        >
+          <i className="fa fa-pencil-square-o mr-1" />
+          {i18n.t("transaction.action.continue")}
+        </Button>
       ),
     },
   ];

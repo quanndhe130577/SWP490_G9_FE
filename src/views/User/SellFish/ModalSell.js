@@ -43,12 +43,13 @@ const ModalSell = ({
       transId: trader.transId,
       sellPrice: transaction.sellPrice,
       weight: parseFloat(transaction.weight),
+      date: helper.correctDate(),
     };
     if (mode === "create") {
       if (createTransDetail) {
         if (user.roleName === "Trader" && data.transId) {
           delete data.transId;
-          data.date = helper.correctDate();
+          // data.date = helper.correctDate();
         }
         await createTransDetail(data);
       }
@@ -294,7 +295,7 @@ const ModalSell = ({
                   label={i18n.t("trader")}
                   value={transaction.traderId || ""}
                   onChange={(e) => handleChangeTran("traderId", e)}
-                  items={dataDf.traders || []}
+                  items={dataDf.tradersSelected || []}
                   displayField={"lastName"}
                 />
               </Col>

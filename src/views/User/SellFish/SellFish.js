@@ -22,16 +22,16 @@ const SellFish = (props) => {
   const [listTransaction, setListTransaction] = useState([]);
   const [listTransDetail, setListTransDetail] = useState([]);
   const [date, setDate] = useState("");
-  // const [listTrans, setListTrans] = useState([]);
+
   const [currentTransaction, setCurrentTrans] = useState({});
   const [mode, setMode] = useState("create");
-
+  const [user, setUser] = useState({});
   // const [traderInDate, setTraderInDate] = useState([]);
   const [dataFetched, setDtFetched] = useState({}); // include trader by WR
 
   const handleBtnAction = (action, id) => {
     if (action === "delete") {
-      // deletetransactionDetail(id);
+      deleteTransDetail({ transactionDetailId: id });
     } else {
       let tem = listTransDetail.find((e) => e.id === id);
       if (tem) {
@@ -173,12 +173,29 @@ const SellFish = (props) => {
       helper.toast("error", error);
     }
   }
+  async function deleteTransDetail(transactionDetailId) {
+    try {
+      helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
+        if (rs) {
+          let rs = await apis.deleteTransDetail(transactionDetailId);
+          if (rs && rs.statusCode === 200) {
+            getAllTransByDate(date);
+            helper.toast("success", i18n.t(rs.message || "success"));
+          }
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      helper.toast("error", error);
+    }
+  }
   // fetch data
   async function fetchData(date) {
     try {
       setLoading(true);
       let user = session.get("user");
-      setDtFetched((preProps) => ({ ...preProps, currentWR: user }));
+      setUser(user);
+      // setDtFetched((preProps) => ({ ...preProps, currentWR: user }));
 
       if (user.roleName !== "Trader") {
         await getTraderByWR();
@@ -235,30 +252,59 @@ const SellFish = (props) => {
   }
 
   const renderTitleTable = (trans) => {
-    let user = session.get("user");
-
     let client = "trader";
     if (user.roleName === "Trader") {
       client = "weightRecorder";
     }
-    return (
-      <b>
-        <span className="mr-2">
-          {i18n.t(client)}:{" "}
-          {trans[client] &&
-            trans[client].firstName + " " + trans[client].lastName}
-          .
-        </span>
-        {trans.transactionDetails.length > 0 && (
-          <span className="mr-2">
-            {i18n.t("totalWR")}: {trans.transactionDetails.length}
+    if (trans)
+      return (
+        <div className="mb-2">
+          <span className="mr-3">
+            {trans[client] && (
+              <>
+                <b>{i18n.t(client)}: </b>
+                {trans[client].firstName + " " + trans[client].lastName}
+              </>
+            )}
           </span>
-        )}
-      </b>
-    );
+          {trans.transactionDetails.length > 0 && (
+            <span className="mr-3">
+              <b> {i18n.t("totalWR")}:</b> {trans.transactionDetails.length}
+            </span>
+          )}
+          {trans.status === "Pending" && (
+            <span className="pull-right mb-2">
+              <Button
+                color="danger"
+                onClick={(e) =>
+                  deleteTrans({ transactionId: trans.trader.transId })
+                }
+              >
+                <i className="fa fa-trash mr-1" />
+                {i18n.t("deleteTrans")}
+              </Button>
+            </span>
+          )}
+        </div>
+      );
   };
+  async function deleteTrans(transactionId) {
+    try {
+      helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
+        if (rs) {
+          let rs = await apis.deleteTrans(transactionId);
+          if (rs && rs.statusCode === 200) {
+            getAllTransByDate(date);
+            helper.toast("success", i18n.t(rs.message || "success"));
+          }
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      helper.toast("error", error);
+    }
+  }
   const calculateColumns = (col, trans) => {
-    let user = session.get("user") || {};
     if (trans && trans.weightRecorder && user.roleName === "Trader") col.pop();
     return col;
   };
@@ -319,6 +365,7 @@ const SellFish = (props) => {
             mode={mode}
             createTransDetail={createTransDetail}
             updateTransDetail={updateTransDetail}
+            deleteTransDetail={deleteTransDetail}
             date={date}
           />
         )}
@@ -335,49 +382,28 @@ const SellFish = (props) => {
                   </Moment>
                 </label>
               </Col>
-              {/* <Col md="6">
-                <div className="float-right">
-                  <Button
-                    color="info"
-                    // onClick={() => handleClosetransaction()}
-                    className="mr-2"
-                  >
-                    {i18n.t("closetransaction")}
-                  </Button>
-                  <Button
-                    color="info"
-                    onClick={() => setShowChooseTraders(true)}
-                    className="mr-2"
-                  >
-                    {i18n.t("choseTrader")}
-                  </Button>
-                  <Button
-                    color="info"
-                    onClick={() => setShowSell(true)}
-                    className=" mr-2"
-                  >
-                    {i18n.t("Thêm Mã")}
-                  </Button>
-                </div>
-              </Col> */}
+
+              {user.roleName === "Trader" && <Col md="2"></Col>}
               <Col md="2" xs="6">
                 <Button
                   color="info"
                   // onClick={() => handleClosetransaction()}
-                  className="float-right"
+                  className="w-100"
                 >
                   {i18n.t("close transaction")}
                 </Button>
               </Col>
-              <Col md="2" xs="6">
-                <Button
-                  color="info"
-                  onClick={() => setShowChooseTraders(true)}
-                  className="float-right"
-                >
-                  {i18n.t("choseTrader")}
-                </Button>
-              </Col>
+              {user.roleName !== "Trader" && (
+                <Col md="2" xs="6">
+                  <Button
+                    color="info"
+                    onClick={() => setShowChooseTraders(true)}
+                    className="w-100"
+                  >
+                    {i18n.t("choseTrader")}
+                  </Button>
+                </Col>
+              )}
 
               <Col md="2" xs="6">
                 <Button
@@ -387,8 +413,9 @@ const SellFish = (props) => {
                     setCurrentTrans({});
                     setMode("create");
                   }}
-                  className="float-right"
+                  className="w-100"
                 >
+                  <i className="fa fa-plus mr-1" />
                   {i18n.t("Thêm Mã Bán")}
                 </Button>
               </Col>
@@ -397,9 +424,9 @@ const SellFish = (props) => {
             <Row>
               <Col style={{ overflowX: "auto" }}>
                 {listTransaction.map((trans, idx) => (
-                  <div className="mb-5">
+                  <div className="mb-5" key={idx}>
+                    {/* render label trader, wr, btn delete trans */}
                     {renderTitleTable(trans)}
-
                     <Table
                       key={idx + trans.id}
                       columns={calculateColumns(columns, trans)}
@@ -426,7 +453,7 @@ const SellFish = (props) => {
                               >
                                 {i18n.t("total")}
                               </Table.Summary.Cell>
-                              <Table.Summary.Cell key="2">
+                              <Table.Summary.Cell key="2" className="bold">
                                 <NumberFormat
                                   value={totalWeight.toFixed(1)}
                                   displayType={"text"}
@@ -434,7 +461,7 @@ const SellFish = (props) => {
                                 />
                               </Table.Summary.Cell>
                               <Table.Summary.Cell key="3" />
-                              <Table.Summary.Cell key="4">
+                              <Table.Summary.Cell key="4" className="bold">
                                 <NumberFormat
                                   value={totalAmount}
                                   displayType={"text"}

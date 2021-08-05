@@ -179,5 +179,6 @@
   "transaction.continueSelling": "Tiếp tục bán",
   "transactionDetail.Title": "Đơn bán",
   "transaction.action.continue": "Bán tiếp",
-  "newTransaction": "Bán mới"
+  "newTransaction": "Bán mới",
+  "deleteTrans": "Xóa đơn bán"
 }
