@@ -17,6 +17,7 @@ const SelectSearchMulti = ({
   onBlur,
 }) => {
   const [options, setOptions] = useState(items);
+  const [valueA, setValueA] = useState(value);
 
   useEffect(() => {
     let data = [...items];
@@ -38,8 +39,18 @@ const SelectSearchMulti = ({
         ele.label = temStr;
       }
     }
+
+    if (saveField === "id" && Array.isArray(value)) {
+      debugger;
+
+      let temArr = [];
+      for (let ele of valueA) {
+        temArr.push(parseInt(ele));
+      }
+      setValueA(temArr);
+    }
     setOptions(data);
-  }, [items, displayField, containLbl]);
+  }, [items, displayField, containLbl, saveField, value, valueA]);
 
   return (
     <div className={"form-group" + (submitted && !value ? " has-error" : "")}>
@@ -54,8 +65,8 @@ const SelectSearchMulti = ({
         allowClear
         style={{ width: "100%" }}
         placeholder={i18n.t("pleaseSelect")}
-        defaultValue={value}
-        value={value}
+        defaultValue={valueA}
+        value={valueA}
         onChange={(e) => {
           let a = Array.from(new Set(e));
           onChange(a);
@@ -64,8 +75,8 @@ const SelectSearchMulti = ({
         disabled={isDisable}
       >
         {options.map((item, index) => (
-          <Option value={item.value || item[saveField]} key={index}>
-            {item.label || item[displayField] || item.type}
+          <Option value={item[saveField] || item.value} key={index}>
+            {item[displayField] || item.label || item.type}
           </Option>
         ))}
       </Select>
