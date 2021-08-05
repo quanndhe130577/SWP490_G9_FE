@@ -10,10 +10,10 @@ const ModalBaseSalaries = ({ isShow, closeModal, baseSalaries, name }) => {
   };
   const columns = [
     {
-      title: i18n.t("salary"),
+      title: i18n.t("salary") + "(VND)",
       dataIndex: "salary",
       key: "salary",
-      render: (salary) => salary !== null ? <Widgets.NumberFormat value={salary} /> : "Không có thông tin",
+      render: (salary) => salary !== null ? <Widgets.NumberFormat needSuffix={false} value={salary} /> : "Không có thông tin",
     },
     {
       title: i18n.t("dateStart"),

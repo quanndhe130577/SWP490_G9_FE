@@ -113,24 +113,24 @@ export default class EmployeeSalary extends Component {
         <Menu.Item key="1">
           <Button
             color="info"
-            className="mr-2"
+            className="mr-2 w-100"
             onClick={() => this.onClick("edit", id, name)}
           >
             {i18n.t("Edit Salary")}
           </Button>
         </Menu.Item>
         <Menu.Item key="2">
-          <Button color="success" onClick={() => this.onClick("advance", id, name)}>
+          <Button color="success" className="w-100" onClick={() => this.onClick("advance", id, name)}>
             {i18n.t("Advance Salary")}
           </Button>
         </Menu.Item>
         <Menu.Item key="3">
-          <Button color="danger" onClick={() => this.onClick("history", id, name)}>
+          <Button color="danger" className="w-100" onClick={() => this.onClick("history", id, name)}>
             {i18n.t("History Salary")}
           </Button>
         </Menu.Item>
         <Menu.Item key="4">
-          <Button onClick={() => this.onClick("fluctuations", id, name)}>
+          <Button onClick={() => this.onClick("fluctuations", id, name)} className="w-100">
             {i18n.t("Employee Base Salary Fluctuations")}
           </Button>
         </Menu.Item>
@@ -300,7 +300,7 @@ export default class EmployeeSalary extends Component {
             sensitivity: "base",
           }),
         sortDirections: ["descend", "ascend"],
-        render: (data) => `${data}\\${month}`
+        render: (data) => `${data} \/ ${month}`
       },
       {
         title: i18n.t("Base Salary") + "(VND)",
