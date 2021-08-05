@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from "react";
-import {Table,Modal} from "antd";
+import React, { useState, useEffect } from "react";
+import { Table, Modal } from "antd";
 import Widgets from "../../../../schema/Widgets";
 import i18n from "i18next";
 
-const ModalBaseSalaries = ({isShow, closeModal,baseSalaries,name}) => {
+const ModalBaseSalaries = ({ isShow, closeModal, baseSalaries, name }) => {
   const [loading, setLoading] = useState(false);
   const handleOk = async () => {
     setLoading(false);
@@ -20,8 +20,8 @@ const ModalBaseSalaries = ({isShow, closeModal,baseSalaries,name}) => {
       dataIndex: "startDate",
       key: "startDate",
       render: (startDate) => {
-        let date=new Date(startDate);
-        return date.getMonth()+"/"+date.getFullYear();
+        let date = new Date(startDate);
+        return date.getMonth() + "/" + date.getFullYear();
       },
     },
     {
@@ -29,14 +29,14 @@ const ModalBaseSalaries = ({isShow, closeModal,baseSalaries,name}) => {
       dataIndex: "endDate",
       key: "endDate",
       render: (endDate) => {
-        let date=new Date(endDate);
-        return endDate==null? "Chưa có": date.getMonth()+"/"+date.getFullYear();
+        let date = new Date(endDate);
+        return endDate == null ? "Chưa có" : date.getMonth() + "/" + date.getFullYear();
       },
     },
   ];
   return (
     <Modal
-      title={"Lương "+" của "+name}
+      title={"Lương " + " của " + name}
       footer=""
       visible={isShow}
       onCancel={closeModal}
@@ -46,8 +46,8 @@ const ModalBaseSalaries = ({isShow, closeModal,baseSalaries,name}) => {
         bordered
         columns={columns}
         dataSource={baseSalaries}
-        pagination={{pageSize: 10}}
-        scroll={{y: 600}}
+        pagination={{ pageSize: 10 }}
+        scroll={{ y: 600 }}
       />
     </Modal>
   );
