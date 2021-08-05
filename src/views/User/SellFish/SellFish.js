@@ -305,8 +305,10 @@ const SellFish = (props) => {
     }
   }
   const calculateColumns = (col, trans) => {
-    if (trans && trans.weightRecorder && user.roleName === "Trader") col.pop();
-    return col;
+    let temCol = [...col];
+    if (trans && trans.weightRecorder && user.roleName === "Trader")
+      temCol.pop();
+    return temCol;
   };
   useEffect(() => {
     let query = queryString.parse(props.location.search, {

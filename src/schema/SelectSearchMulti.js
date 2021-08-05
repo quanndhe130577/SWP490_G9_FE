@@ -41,8 +41,6 @@ const SelectSearchMulti = ({
     }
 
     if (saveField === "id" && Array.isArray(value)) {
-      debugger;
-
       let temArr = [];
       for (let ele of valueA) {
         temArr.push(parseInt(ele));

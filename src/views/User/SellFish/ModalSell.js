@@ -18,7 +18,6 @@ const ModalSell = ({
 }) => {
   const [transaction, setTransaction] = useState({
     ...currentTransaction,
-    isPaid: false,
   }); // transaction là 1 bản ghi của Trans
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState();
@@ -119,6 +118,7 @@ const ModalSell = ({
   async function convertDataInEditMode() {
     // data to display in create mode and edit mode is difference, we need convert data
     if (mode === "edit") {
+      debugger;
       let fishTypeId = transaction.fishType.id,
         isPaid = transaction.isPaid,
         traderId = transaction.trader.id,
@@ -148,6 +148,11 @@ const ModalSell = ({
         weight,
         sellPrice,
         isRetailCustomers,
+      }));
+    } else {
+      setTransaction((prevState) => ({
+        ...prevState,
+        isPaid: false,
       }));
     }
   }
