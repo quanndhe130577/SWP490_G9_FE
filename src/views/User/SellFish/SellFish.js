@@ -25,7 +25,7 @@ const SellFish = (props) => {
   // const [listTrans, setListTrans] = useState([]);
   const [currentTransaction, setCurrentTrans] = useState({});
   const [mode, setMode] = useState("create");
-
+  const [user, setUser] = useState(session.get("user"));
   // const [traderInDate, setTraderInDate] = useState([]);
   const [dataFetched, setDtFetched] = useState({}); // include trader by WR
 
@@ -33,7 +33,6 @@ const SellFish = (props) => {
     if (action === "delete") {
       // deletetransactionDetail(id);
     } else {
-      console.log(currentTransaction);
       let tem = listTransDetail.find((e) => e.id === id);
       if (tem) {
         setCurrentTrans(tem);
@@ -43,7 +42,7 @@ const SellFish = (props) => {
     }
   };
 
-  const handleChangeTrans = (pro, value) => {
+  const handleChangeCurrentTrans = (pro, value) => {
     setCurrentTrans((preStates) => ({ ...preStates, [pro]: value }));
   };
   const calculateIntoMoney = ({ sellPrice, weight }) => (
@@ -178,13 +177,14 @@ const SellFish = (props) => {
   async function fetchData(date) {
     try {
       setLoading(true);
-      let user = session.get("user");
-      setDtFetched((preProps) => ({ ...preProps, currentWR: user }));
-      if (date) {
-        await getAllTransByDate(date);
-      } else {
+      // let user = session.get("user");
+      // setDtFetched((preProps) => ({ ...preProps, currentWR: user }));
+
+      if (user.roleName !== "Trader") {
         await getTraderByWR();
       }
+
+      await getAllTransByDate(date);
 
       setLoading(false);
     } catch (error) {
@@ -206,20 +206,25 @@ const SellFish = (props) => {
     try {
       let rs = await apis.getTransByDate({}, "GET", date);
       if (rs && rs.statusCode === 200) {
-        // setListTransaction(rs.data);
-        let tem = [],
-          temTransDetail = [];
-        for (const trans of rs.data) {
-          trans.transactionDetails.map((el) => (el.trader = trans.trader));
-          temTransDetail = temTransDetail.concat(trans.transactionDetails);
-          trans.trader.transId = trans.id;
-          tem.push(trans.trader);
-        }
-        // setTraderInDate(tem);
-        setListTransDetail(temTransDetail);
-        setListTransaction(rs.data);
+        if (rs.data.length === 0) {
+          setShowChooseTraders(true);
+        } else {
+          let tem = [],
+            temTransDetail = [],
+            listTraderId = [];
+          for (const trans of rs.data) {
+            trans.transactionDetails.map((el) => (el.trader = trans.trader));
+            temTransDetail = temTransDetail.concat(trans.transactionDetails);
+            trans.trader.transId = trans.id;
+            tem.push(trans.trader);
+            listTraderId.push(trans.trader.id);
+          }
+          handleChangeCurrentTrans("listTraderId", listTraderId);
+          setListTransDetail(temTransDetail);
+          setListTransaction(rs.data);
 
-        setDtFetched((pro) => ({ ...pro, traders: tem }));
+          setDtFetched((pro) => ({ ...pro, tradersSelected: tem }));
+        }
       }
     } catch (error) {
       console.log(error);
@@ -229,6 +234,33 @@ const SellFish = (props) => {
     history.push("/sell");
   }
 
+  const renderTitleTable = (trans) => {
+    // let user = session.get("user");
+
+    let client = "trader";
+    if (user.roleName === "Trader") {
+      client = "weightRecorder";
+    }
+    return (
+      <div className="mb-2">
+        <span className="mr-3">
+          <b>{i18n.t(client)}: </b>
+          {trans[client] &&
+            trans[client].firstName + " " + trans[client].lastName}
+        </span>
+        {trans.transactionDetails.length > 0 && (
+          <span className="mr-3">
+            <b> {i18n.t("totalWR")}:</b> {trans.transactionDetails.length}
+          </span>
+        )}
+      </div>
+    );
+  };
+  const calculateColumns = (col, trans) => {
+    // let user = session.get("user") || {};
+    if (trans && trans.weightRecorder && user.roleName === "Trader") col.pop();
+    return col;
+  };
   useEffect(() => {
     let query = queryString.parse(props.location.search, {
       ignoreQueryPrefix: true,
@@ -248,7 +280,6 @@ const SellFish = (props) => {
     return (
       <Row>
         <Col md="6">
-          {/* <h3 className="mr-5">{i18n.t("sellGood")}</h3> */}
           <h3 className="mr-5">{i18n.t("transactionDetail.Title")}</h3>
         </Col>
         <Col md="6">
@@ -274,7 +305,7 @@ const SellFish = (props) => {
             dataFetched={dataFetched}
             isShowChooseTraders={isShowChooseTraders}
             currentTransaction={currentTransaction}
-            handleChangeTrans={handleChangeTrans}
+            handleChangeCurrentTrans={handleChangeCurrentTrans}
             setShowChooseTraders={(status) => setShowChooseTraders(status)}
           />
         )}
@@ -328,6 +359,7 @@ const SellFish = (props) => {
                   </Button>
                 </div>
               </Col> */}
+              {user.roleName === "Trader" && <Col md="2"></Col>}
               <Col md="2" xs="6">
                 <Button
                   color="info"
@@ -337,15 +369,17 @@ const SellFish = (props) => {
                   {i18n.t("close transaction")}
                 </Button>
               </Col>
-              <Col md="2" xs="6">
-                <Button
-                  color="info"
-                  onClick={() => setShowChooseTraders(true)}
-                  className="float-right"
-                >
-                  {i18n.t("choseTrader")}
-                </Button>
-              </Col>
+              {user.roleName !== "Trader" && (
+                <Col md="2" xs="6">
+                  <Button
+                    color="info"
+                    onClick={() => setShowChooseTraders(true)}
+                    className="float-right"
+                  >
+                    {i18n.t("choseTrader")}
+                  </Button>
+                </Col>
+              )}
 
               <Col md="2" xs="6">
                 <Button
@@ -366,20 +400,11 @@ const SellFish = (props) => {
               <Col style={{ overflowX: "auto" }}>
                 {listTransaction.map((trans, idx) => (
                   <div className="mb-5">
-                    <b>
-                      <span className="mr-2">
-                        {i18n.t("trader")}:{" "}
-                        {trans.trader && trans.trader.lastName}.
-                      </span>
-                      {trans.transactionDetails.length > 0 && (
-                        <span className="mr-2">
-                          {i18n.t("totalWR")}: {trans.transactionDetails.length}
-                        </span>
-                      )}
-                    </b>
+                    {renderTitleTable(trans)}
+
                     <Table
                       key={idx + trans.id}
-                      columns={columns}
+                      columns={calculateColumns(columns, trans)}
                       dataSource={trans.transactionDetails || []}
                       loading={isLoading}
                       scroll={{ y: 420 }}
@@ -403,7 +428,7 @@ const SellFish = (props) => {
                               >
                                 {i18n.t("total")}
                               </Table.Summary.Cell>
-                              <Table.Summary.Cell key="2">
+                              <Table.Summary.Cell key="2" className="bold">
                                 <NumberFormat
                                   value={totalWeight.toFixed(1)}
                                   displayType={"text"}
@@ -411,7 +436,7 @@ const SellFish = (props) => {
                                 />
                               </Table.Summary.Cell>
                               <Table.Summary.Cell key="3" />
-                              <Table.Summary.Cell key="4">
+                              <Table.Summary.Cell key="4" className="bold">
                                 <NumberFormat
                                   value={totalAmount}
                                   displayType={"text"}
