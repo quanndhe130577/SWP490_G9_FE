@@ -295,7 +295,7 @@ const ModalSell = ({
                   label={i18n.t("trader")}
                   value={transaction.traderId || ""}
                   onChange={(e) => handleChangeTran("traderId", e)}
-                  items={dataDf.traders || []}
+                  items={dataDf.tradersSelected || []}
                   displayField={"lastName"}
                 />
               </Col>
