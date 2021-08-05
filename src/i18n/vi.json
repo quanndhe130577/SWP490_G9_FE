@@ -142,7 +142,7 @@
   "Advance Salary": "Lương ứng trước",
   "salary": "Lương",
   "salary-tk": "Lương thực nhận",
-  "Base Salary": "Lương trên ngày",
+  "Base Salary": "Lương cơ bản",
   "status-tk": "Số công",
   "Employee Salary Mangerment": "Quản Lý Lương Nhân Viên",
   "dateStart": "Ngày bắt đầu",
@@ -179,5 +179,6 @@
   "transaction.continueSelling": "Tiếp tục bán",
   "transactionDetail.Title": "Đơn bán",
   "transaction.action.continue": "Bán tiếp",
-  "newTransaction": "Bán mới"
+  "newTransaction": "Bán mới",
+  "deleteTrans": "Xóa đơn bán"
 }
