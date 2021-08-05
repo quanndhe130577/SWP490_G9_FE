@@ -71,7 +71,7 @@ export default class Employee extends Component {
     );
   };
 
-  renderBtnAction(id) {
+  renderBtnAction(id, row) {
     let { emp, data } = this.state;
     emp = data.find((el) => el.id === id);
     return (
@@ -80,14 +80,17 @@ export default class Employee extends Component {
           <Button
             color="info"
             className="mr-2"
-            onClick={() => this.onClick("edit", id)}
+            onClick={() => this.onClickBtnAction("edit", id, row)}
           >
             <i className="fa fa-pencil-square-o mr-1" />
-            {i18n.t("edit")}
+            {i18n.t(row.status === "Đang làm" ? "edit" : "view")}
           </Button>
         </Menu.Item>
         <Menu.Item key="2">
-          <Button color="danger" onClick={() => this.onClick("delete", id)}>
+          <Button
+            color="danger"
+            onClick={() => this.onClickBtnAction("delete", id)}
+          >
             <i className="fa fa-trash-o mr-1" />
             {i18n.t("delete")}
           </Button>
@@ -96,7 +99,7 @@ export default class Employee extends Component {
           <Menu.Item key="3">
             <Button
               className="deactive"
-              onClick={() => this.onClick("deactive", id)}
+              onClick={() => this.onClickBtnAction("deactive", id)}
             >
               <i className="fa fa-times mr-1" />
               {i18n.t("deactive")}
@@ -106,7 +109,7 @@ export default class Employee extends Component {
           <Menu.Item key="4">
             <Button
               className="active"
-              onClick={() => this.onClick("active", id)}
+              onClick={() => this.onClickBtnAction("active", id)}
             >
               <i className="fa fa-check-square mr-1" />
               {i18n.t("active")}
@@ -136,12 +139,13 @@ export default class Employee extends Component {
     }
     this.setState({ isShowModal: false, mode: "", currentEmp: {} });
   };
-  onClick(modeBtn, employeeId) {
+  onClickBtnAction(modeBtn, employeeId, row) {
     let { currentEmp, data } = this.state;
 
     if (modeBtn === "edit") {
       currentEmp = data.find((el) => el.id === employeeId);
-      this.setState({ currentEmp, mode: "edit", isShowModal: true });
+      let mode = row.status === "Đang làm" ? "edit" : "view";
+      this.setState({ currentEmp, mode, isShowModal: true });
     } else if (modeBtn === "delete") {
       helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
         if (rs) {
@@ -203,21 +207,21 @@ export default class Employee extends Component {
       clearFilters,
     }) => (
       <div style={{ padding: 8 }}>
-        {isDate ?
+        {isDate ? (
           <DatePicker
             value={selectedKeys[0]}
             onChange={(e) => {
-              let t = moment(e, 'DD/MM/YYYY');
-              setSelectedKeys(e ? [t] : [])
-              this.handleSearch(selectedKeys, confirm, dataIndex)
+              let t = moment(e, "DD/MM/YYYY");
+              setSelectedKeys(e ? [t] : []);
+              this.handleSearch(selectedKeys, confirm, dataIndex);
             }}
             onPressEnter={() => {
-              this.handleSearch(selectedKeys, confirm, dataIndex)
-            }
-            }
-            format={'DD/MM/YYYY'}
+              this.handleSearch(selectedKeys, confirm, dataIndex);
+            }}
+            format={"DD/MM/YYYY"}
             style={{ marginBottom: 8, display: "block" }}
-          /> :
+          />
+        ) : (
           <Input
             ref={(node) => {
               this.searchInput = node;
@@ -225,15 +229,14 @@ export default class Employee extends Component {
             placeholder={`Search ${dataIndex}`}
             value={selectedKeys[0]}
             onChange={(e) => {
-              setSelectedKeys(e.target.value ? [e.target.value] : [])
-            }
-            }
+              setSelectedKeys(e.target.value ? [e.target.value] : []);
+            }}
             onPressEnter={() =>
               this.handleSearch(selectedKeys, confirm, dataIndex)
             }
             style={{ marginBottom: 8, display: "block" }}
           />
-        }
+        )}
         <Space>
           <Button
             type="primary"
@@ -272,19 +275,20 @@ export default class Employee extends Component {
     ),
     onFilter: (value, record) => {
       if (isDate) {
-        let x = moment(moment(value).format('DD/MM/YYYY'), 'DD/MM/YYYY')
-        let y = moment(moment(record[dataIndex]).format('DD/MM/YYYY'), 'DD/MM/YYYY')
+        let x = moment(moment(value).format("DD/MM/YYYY"), "DD/MM/YYYY");
+        let y = moment(
+          moment(record[dataIndex]).format("DD/MM/YYYY"),
+          "DD/MM/YYYY"
+        );
 
-        return record[dataIndex]
-          ? x.isSame(y, 'day')
-          : ""
+        return record[dataIndex] ? x.isSame(y, "day") : "";
       } else {
         return record[dataIndex]
           ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
-          : ""
+              .toString()
+              .toLowerCase()
+              .includes(value.toLowerCase())
+          : "";
       }
     },
     onFilterDropdownVisibleChange: (visible) => {
@@ -373,8 +377,8 @@ export default class Employee extends Component {
         title: "",
         dataIndex: "id",
         key: "id",
-        render: (id) => (
-          <Dropdown overlay={this.renderBtnAction(id)}>
+        render: (id, row) => (
+          <Dropdown overlay={this.renderBtnAction(id, row)}>
             <Button>
               <i className="fa fa-cog mr-1" />
               <label className="tb-lb-action">{i18n.t("action")}</label>
@@ -391,7 +395,7 @@ export default class Employee extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentEmp={currentEmp || {}}
-          // handleChangePondOwner={handleChangePondOwner}
+            // handleChangePondOwner={handleChangePondOwner}
           />
         )}
         <Row>

@@ -43,7 +43,6 @@ function DebounceSelect({
       onSearch={debounceFetcher}
       notFoundContent={fetching ? <Spin size="small" /> : null}
       {...props}
-      // options={options}
     >
       {options.map((item) => (
         <Option value={item.value || item[saveField]} key={item[saveField]}>
@@ -67,7 +66,7 @@ async function fetchUserList(api, param, displayField) {
         if (displayField && Array.isArray(displayField)) {
           let temStr = "";
           for (const field of displayField) {
-            temStr += ele[field] + "  ";
+            temStr += ele[field] + " ";
           }
           ele.label = temStr;
         }
@@ -93,8 +92,8 @@ const SearchFetchApi = ({
   onSelect, // for 1 value
   items = [],
   disabled,
+  isOne,
 }) => {
-  // const [value, setValue] = React.useState([]);
   return (
     <div className={"form-group" + (submitted && !value ? " has-error" : "")}>
       {label && (
@@ -108,9 +107,12 @@ const SearchFetchApi = ({
         placeholder={placeholder}
         fetchOptions={fetchUserList}
         onChange={(newValue) => {
-          // setValue(newValue);
           if (onChange) {
-            onChange(newValue);
+            let arr = {};
+            if (isOne && newValue.length > 0) {
+              arr = newValue[newValue.length - 1];
+            } else arr = newValue;
+            onChange(arr);
           }
         }}
         onSelect={(value) => {
@@ -124,6 +126,7 @@ const SearchFetchApi = ({
         style={{
           width: "100%",
         }}
+        items={items}
         disabled={disabled}
       />
       {submitted && !value && (

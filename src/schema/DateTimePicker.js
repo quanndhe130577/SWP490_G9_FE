@@ -32,6 +32,7 @@ export default function DateTimePicker({
         locale={locale}
         defaultValue={moment(value, dateFormat)}
         format={dateFormat}
+        disabled={isDisable}
         onChange={(date) => {
           if (onChange) {
             if (date !== null) {
