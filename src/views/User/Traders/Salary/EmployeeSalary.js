@@ -278,8 +278,8 @@ export default class EmployeeSalary extends Component {
         text
       ),
   });
-
   render() {
+    let month = moment(this.state.date).endOf('month').format('D');
     const { isShowModal, mode, currentEmp, data, loading } = this.state;
     const columns = [
       {
@@ -300,6 +300,7 @@ export default class EmployeeSalary extends Component {
             sensitivity: "base",
           }),
         sortDirections: ["descend", "ascend"],
+        render: (data) => `${data}\\${month}`
       },
       {
         title: i18n.t("Base Salary") + "(VND)",

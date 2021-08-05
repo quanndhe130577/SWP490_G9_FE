@@ -1,25 +1,26 @@
-import React, {useState, useEffect} from "react";
-import {Table, Modal, Button} from "antd";
+import React, { useState, useEffect } from "react";
+import { Table, Modal, Button } from "antd";
 import Widgets from "../../../../schema/Widgets";
 import i18n from "i18next";
 import moment from "moment";
 import apis from "../../../../services/apis";
 
-const ModalCalculateSalaries = ({isShow, closeModal, date = moment()}) => {
+const ModalCalculateSalaries = ({ isShow, closeModal, date = moment() }) => {
   const [calculate, setCalculate] = useState([]);
+  let month = moment(date).endOf('month').format('D');
   const handleChange = (id, value, name) => {
     let list = []
     list.push(...calculate);
     let salary = list.find(c => c.id === id);
     salary[name] = value;
-    salary.salary = salary.baseSalary * salary.status + salary.bonus - salary.advanceSalary - salary.punish;
+    salary.salary = Math.round(salary.baseSalary * salary.status / month + salary.bonus - salary.advanceSalary - salary.punish);
     setCalculate(list);
   };
   const handleOk = async () => {
     let list = [];
     for (let i = 0; i < calculate.length; i++) {
       let item = calculate[i];
-      list.push({dateStart: date._d, salary: item.salary, empId: item.id,punish:item.punish,bonus:item.bonus})
+      list.push({ dateStart: date._d, salary: item.salary, empId: item.id, punish: item.punish, bonus: item.bonus })
     }
     await apis.createEmpHistorySalary(list, "POST");
     closeModal(true);
@@ -28,7 +29,7 @@ const ModalCalculateSalaries = ({isShow, closeModal, date = moment()}) => {
     let rs = await apis.getSalaryDetailEmployee({}, "GET", date._d.toDateString());
     if (rs) {
       setCalculate(rs.data.filter(item => item.baseSalary !== null).map(item => {
-        item.salary = item.baseSalary * item.status + item.bonus - item.advanceSalary - item.punish;
+        item.salary = Math.round(item.baseSalary * item.status / month + item.bonus - item.advanceSalary - item.punish);
         return item;
       }))
     }
@@ -90,8 +91,8 @@ const ModalCalculateSalaries = ({isShow, closeModal, date = moment()}) => {
         bordered
         columns={columns}
         dataSource={calculate}
-        pagination={{pageSize: 10}}
-        scroll={{y: 600}}
+        pagination={{ pageSize: 10 }}
+        scroll={{ y: 600 }}
       />
     </Modal>
   );
