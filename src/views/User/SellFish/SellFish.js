@@ -6,6 +6,7 @@ import i18n from "i18next";
 import LoadingCustom from "../../../containers/Antd/LoadingCustom";
 import ChooseTraders from "./ChooseTraders";
 import ModalSell from "./ModalSell";
+import ModalCloseTransaction from "./ModalCloseSell";
 import queryString from "qs";
 import { apis, helper, session } from "../../../services";
 
@@ -17,6 +18,7 @@ const SellFish = (props) => {
   //loading & show modal
   const [isLoading, setLoading] = useState(false);
   const [isShowChooseTraders, setShowChooseTraders] = useState(false);
+  const [isShowCloseTransaction, setShowCloseTrans] = useState(false);
   const [isShowSell, setShowSell] = useState(false);
   // data
   const [listTransaction, setListTransaction] = useState([]);
@@ -116,12 +118,6 @@ const SellFish = (props) => {
       render: (el, row) => <label>{calculateIntoMoney(row)}</label>,
     },
     {
-      title: i18n.t("statusPaid"),
-      dataIndex: "isPaid",
-      key: "isPaid",
-      render: (isPaid) => <span>{i18n.t(isPaid ? "isPaid" : "notPaid")}</span>,
-    },
-    {
       title: i18n.t("buyer"),
       dataIndex: "buyer",
       key: "buyer",
@@ -130,6 +126,12 @@ const SellFish = (props) => {
           <div>{buyer && buyer ? buyer.name : i18n.t("retailCustomers")}</div>
         );
       },
+    },
+    {
+      title: i18n.t("statusPaid"),
+      dataIndex: "isPaid",
+      key: "isPaid",
+      render: (isPaid) => <span>{i18n.t(isPaid ? "isPaid" : "notPaid")}</span>,
     },
 
     {
@@ -272,7 +274,7 @@ const SellFish = (props) => {
               <b> {i18n.t("totalWR")}:</b> {trans.transactionDetails.length}
             </span>
           )}
-          {trans.status === "Pending" && (
+          {trans.status === "Pending" && !trans[client] && (
             <span className="pull-right mb-2">
               <Button
                 color="danger"
@@ -349,7 +351,16 @@ const SellFish = (props) => {
   } else
     return (
       <div>
-        {isShowChooseTraders && (
+        {isShowCloseTransaction && (
+          <ModalCloseTransaction
+            listTransaction={listTransaction}
+            dataDf={dataFetched || []}
+            date={date}
+            isShowCloseTransaction={isShowCloseTransaction}
+            handleCloseModal={() => setShowCloseTrans(false)}
+          />
+        )}
+        {isShowChooseTraders && user.roleName !== "Trader" && (
           <ChooseTraders
             dataFetched={dataFetched}
             isShowChooseTraders={isShowChooseTraders}
@@ -389,7 +400,7 @@ const SellFish = (props) => {
               <Col md="2" xs="6">
                 <Button
                   color="info"
-                  // onClick={() => handleClosetransaction()}
+                  onClick={() => setShowCloseTrans(true)}
                   className="w-100"
                 >
                   {i18n.t("close transaction")}
