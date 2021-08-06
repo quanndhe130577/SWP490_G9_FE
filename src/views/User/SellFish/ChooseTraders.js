@@ -19,7 +19,6 @@ const ChooseTraders = ({
   const history = useHistory();
 
   const handleOk = async () => {
-    setShowChooseTraders(false);
     if (!currentTransaction.id) {
       // create transaction
       try {
@@ -33,6 +32,7 @@ const ChooseTraders = ({
           history.push(
             "sellF?date=" + helper.getDateFormat(new Date(), "ddmmyyyy")
           );
+          setShowChooseTraders(false);
         }
       } catch (error) {
         console.log(error);
