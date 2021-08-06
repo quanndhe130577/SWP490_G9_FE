@@ -95,11 +95,7 @@ const ManaSell = () => {
       key: "listTrader",
       render: (listTrader) => {
         let name = "";
-        // for (const trader of listTrader) {
-        //   if (trader) {
-        //     name += trader.lastName + " " + trader.firstName;
-        //   }
-        // }
+
         listTrader.forEach((trader, idx) => {
           if (trader) {
             name += trader.firstName + " " + trader.lastName;
@@ -148,7 +144,7 @@ const ManaSell = () => {
       ),
     },
     {
-      title: "",
+      title: i18n.t("action"),
       dataIndex: "id",
       key: "id",
       render: (id, row) => (
@@ -217,7 +213,12 @@ const ManaSell = () => {
 
   return (
     <Card title={renderTitle()}>
-      <Table columns={columns} dataSource={transaction} loading={isLoading} />
+      <Table
+        columns={columns}
+        dataSource={transaction}
+        loading={isLoading}
+        rowKey="idx"
+      />
     </Card>
   );
 };
