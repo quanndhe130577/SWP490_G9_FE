@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from "react";
-import {Table,Modal} from "antd";
+import React, { useState, useEffect } from "react";
+import { Table, Modal } from "antd";
 import Widgets from "../../../../schema/Widgets";
 import i18n from "i18next";
-import apis from "../../../../services/apis";
+import moment from "moment";
 
-const ModalHistorySalaries = ({isShow, closeModal,historySalaries,name}) => {
+const ModalHistorySalaries = ({ isShow, closeModal, historySalaries, name }) => {
   console.log(historySalaries)
   const columns = [
     {
@@ -18,14 +18,14 @@ const ModalHistorySalaries = ({isShow, closeModal,historySalaries,name}) => {
       dataIndex: "dateStart",
       key: "dateStart",
       render: (startDate) => {
-        let date=new Date(startDate);
-        return date.getMonth()+"/"+date.getFullYear();
+        let date = moment(new Date(startDate));
+        return date.format('MM/YYYY');
       },
     },
   ];
   return (
     <Modal
-      title={"Lịch sử lương của "+name}
+      title={"Lịch sử lương của " + name}
       footer=""
       visible={isShow}
       onCancel={closeModal}
@@ -34,8 +34,8 @@ const ModalHistorySalaries = ({isShow, closeModal,historySalaries,name}) => {
         bordered
         columns={columns}
         dataSource={historySalaries}
-        pagination={{pageSize: 10}}
-        scroll={{y: 600}}
+        pagination={{ pageSize: 10 }}
+        scroll={{ y: 600 }}
       />
     </Modal>
   );
