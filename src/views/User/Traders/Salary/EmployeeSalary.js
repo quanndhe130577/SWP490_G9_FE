@@ -111,12 +111,15 @@ export default class EmployeeSalary extends Component {
     return (
       <Menu>
         <Menu.Item key="1">
-          <Button
+          {/* <Button
             color="info"
             className="mr-2 w-100"
             onClick={() => this.onClick("edit", id, name)}
           >
             {i18n.t("Edit Salary")}
+          </Button> */}
+          <Button color="info" onClick={() => this.onClick("fluctuations", id, name)} className="w-100">
+            {i18n.t("Employee Base Salary Fluctuations")}
           </Button>
         </Menu.Item>
         <Menu.Item key="2">
@@ -129,11 +132,11 @@ export default class EmployeeSalary extends Component {
             {i18n.t("History Salary")}
           </Button>
         </Menu.Item>
-        <Menu.Item key="4">
+        {/* <Menu.Item key="4">
           <Button onClick={() => this.onClick("fluctuations", id, name)} className="w-100">
             {i18n.t("Employee Base Salary Fluctuations")}
           </Button>
-        </Menu.Item>
+        </Menu.Item> */}
       </Menu>
     );
   }
@@ -159,13 +162,13 @@ export default class EmployeeSalary extends Component {
   };
   async onClick(modeBtn, employeeId, employeeName) {
     let { currentEmp, data } = this.state;
+    currentEmp = data.find((el) => el.id === employeeId);
 
     if (modeBtn === "edit") {
-      currentEmp = data.find((el) => el.id === employeeId);
       this.setState({ currentEmp, mode: "edit", isShowModal: true, employeeName: employeeName });
     } else if (modeBtn === "fluctuations") {
       this.getBaseSalaries(employeeId);
-      this.setState({ mode: "fluctuations", isShowModal: true, employeeName: employeeName });
+      this.setState({ mode: "fluctuations", isShowModal: true, employeeName: employeeName, currentEmp });
     } else if (modeBtn === "advance") {
       this.getAdvanceSalaries(employeeId);
       this.setState({ mode: "advance", isShowModal: true, employeeId: employeeId, employeeName: employeeName });
@@ -358,6 +361,7 @@ export default class EmployeeSalary extends Component {
         ),
       },
     ];
+    // console.log(this.state)
     return (
       <Card title={this.renderTitle()}>
         {isShowModal && mode !== "" && (
@@ -373,7 +377,8 @@ export default class EmployeeSalary extends Component {
                 name={this.state.employeeName}
                 isShow={isShowModal}
                 closeModal={this.closeModal}
-                baseSalaries={this.state.baseSalaries}
+                baseSalaries={this.state.employeeSalary}
+                currentEmp={currentEmp}
               /> : this.state.mode === "calculate" ?
                 <ModalCalculateSalaries
                   name={this.state.employeeName}

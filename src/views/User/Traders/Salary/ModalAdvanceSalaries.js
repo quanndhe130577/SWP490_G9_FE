@@ -30,8 +30,8 @@ const ModalAdvanceSalaries = ({ isShow, closeModal, employeeId, name }) => {
       dataIndex: "date",
       key: "date",
       render: (startDate) => {
-        let date = new Date(startDate);
-        return date.getDay() + "/" + date.getMonth() + "/" + date.getFullYear();
+        let date = moment(new Date(startDate));
+        return date.format('DD/MM/YYYY');
       },
     },
     {
