@@ -312,6 +312,17 @@ const SellFish = (props) => {
       temCol.pop();
     return temCol;
   };
+  const handleCloseTrans = async (data) => {
+    try {
+      let rs = await apis.closeTrans(data);
+      if (rs && rs.statusCode === 200) {
+        helper.toast("success", i18n.t(rs.message || "success"));
+        getAllTransByDate(date);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     let query = queryString.parse(props.location.search, {
       ignoreQueryPrefix: true,
@@ -358,6 +369,7 @@ const SellFish = (props) => {
             date={date}
             isShowCloseTransaction={isShowCloseTransaction}
             handleCloseModal={() => setShowCloseTrans(false)}
+            handleCloseTrans={handleCloseTrans}
           />
         )}
         {isShowChooseTraders && user.roleName !== "Trader" && (
@@ -396,14 +408,14 @@ const SellFish = (props) => {
                 </label>
               </Col>
 
-              {user.roleName === "Trader" && <Col md="2"></Col>}
+              {user.roleName === "Trader" && <Col md="2" />}
               <Col md="2" xs="6">
                 <Button
                   color="info"
                   onClick={() => setShowCloseTrans(true)}
                   className="w-100"
                 >
-                  {i18n.t("close transaction")}
+                  {i18n.t("closeTransaction")}
                 </Button>
               </Col>
               {user.roleName !== "Trader" && (
@@ -442,6 +454,7 @@ const SellFish = (props) => {
                     {renderTitleTable(trans)}
                     <Table
                       key={idx + trans.id}
+                      rowKey="idx"
                       columns={calculateColumns(columns, trans)}
                       dataSource={trans.transactionDetails || []}
                       loading={isLoading}

@@ -182,4 +182,9 @@
   "newTransaction": "Bán mới",
   "deleteTrans": "Xóa đơn bán",
   "drumManagement.headerTable.typeDrum": "Loại"
+  "closeTransaction": "Chốt đơn bán",
+  "payForTrader": "Số tiền trả cho thương lái",
+  "commissionUnitCanNull": "Vui lòng điền tiền phế",
+  "traderUnitCanNull": "Vui lòng chọn thương lái",
+    "commissionWR": "Phế (VND/Kg)"
 }
