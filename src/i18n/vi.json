@@ -180,5 +180,10 @@
   "transactionDetail.Title": "Đơn bán",
   "transaction.action.continue": "Bán tiếp",
   "newTransaction": "Bán mới",
-  "deleteTrans": "Xóa đơn bán"
+  "deleteTrans": "Xóa đơn bán",
+  "commissionWR": "Phế (VND/Kg)",
+  "closeTransaction": "Chốt đơn bán",
+  "payForTrader": "Số tiền trả cho thương lái",
+  "commissionUnitCanNull": "Vui lòng điền tiền phế",
+  "traderUnitCanNull": "Vui lòng chọn thương lái"
 }
