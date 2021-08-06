@@ -191,19 +191,33 @@ const ModalCloseSell = ({
           {total &&
             total.totalAmount > 0 &&
             currentTransaction.commissionUnit > 0 && (
-              <Col md="6">
-                <Widgets.MoneyInput
-                  disabled
-                  placeholder="700"
-                  label={i18n.t("payForTrader")}
-                  value={
-                    total.totalAmount -
+              <>
+                <Col md="6">
+                  <Widgets.MoneyInput
+                    disabled
+                    placeholder="700"
+                    label={i18n.t("wcTReciver")}
+                    value={
                       total.totalWeight * currentTransaction.commissionUnit ||
-                    ""
-                  }
-                  // onChange={(val) => handleChangeTran("commissionUnit", val)}
-                />
-              </Col>
+                      ""
+                    }
+                    // onChange={(val) => handleChangeTran("commissionUnit", val)}
+                  />
+                </Col>
+                <Col md="6">
+                  <Widgets.MoneyInput
+                    disabled
+                    placeholder="700"
+                    label={i18n.t("payForTrader")}
+                    value={
+                      total.totalAmount -
+                        total.totalWeight * currentTransaction.commissionUnit ||
+                      ""
+                    }
+                    // onChange={(val) => handleChangeTran("commissionUnit", val)}
+                  />
+                </Col>
+              </>
             )}
         </Row>
       )}
