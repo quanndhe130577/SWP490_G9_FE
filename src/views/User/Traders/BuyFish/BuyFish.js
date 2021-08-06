@@ -537,7 +537,7 @@ const BuyFish = (props) => {
     var rs = await apis.updatePondOwnerInPurchase(
       {
         purchaseId: currentPurchase.id,
-        pondOwnerId: currentPurchase.pondOwnerId,
+        pondOwnerId: value,
       },
       "POST"
     );

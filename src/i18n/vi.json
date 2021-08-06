@@ -167,7 +167,7 @@
   "editTransDetail": "Sửa mã bán",
   "qtyOfFish(Kg-onlyFish)": "Khối lượng cá (Kg)",
   "statusPaid": "Trạng thái thanh toán",
-  "notPaid": "Chưa trả",
+  "notPaid": "Chưa thanh toán",
   "totalWR": "Tổng số mã",
   "weightRecorder": "Chủ bến",
   "remain": "Còn lại ",
@@ -180,5 +180,6 @@
   "transactionDetail.Title": "Đơn bán",
   "transaction.action.continue": "Bán tiếp",
   "newTransaction": "Bán mới",
-  "deleteTrans": "Xóa đơn bán"
+  "deleteTrans": "Xóa đơn bán",
+  "drumManagement.headerTable.typeDrum": "Loại"
 }
