@@ -171,7 +171,7 @@
   "totalWR": "Tổng số mã",
   "weightRecorder": "Chủ bến",
   "remain": "Còn lại ",
-  "modal.title.createnNewPurchase": "Tạo mới đơn mua",
+  "modal.title.createNewPurchase": "Tạo mới đơn mua",
   "month": "Tháng",
   "bonus": "Thưởng",
   "punish": "Phạt",
@@ -185,5 +185,6 @@
   "closeTransaction": "Chốt đơn bán",
   "payForTrader": "Số tiền trả cho thương lái",
   "commissionUnitCanNull": "Vui lòng điền tiền phế",
-  "traderUnitCanNull": "Vui lòng chọn thương lái"
+  "traderUnitCanNull": "Vui lòng chọn thương lái",
+  "modal.title.updatePurchase": "Cập nhật thông tin giá cá"
 }

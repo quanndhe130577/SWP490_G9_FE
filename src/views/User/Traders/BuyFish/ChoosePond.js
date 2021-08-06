@@ -113,15 +113,17 @@ const ChoosePond = ({
     }
   };
 
-  // useEffect(() => {
-  //   if (currentPurchase.listFishId === undefined) {
-  //     onChange([], "listFishId");
-  //   }
-  // }, []);
+  function renderTitleModal(listFishId = []) {
+    let title = "modal.title.createNewPurchase";
+    if (listFishId.length >= 1) {
+      title = "modal.title.updatePurchase";
+    }
+    return i18n.t(title);
+  }
 
   return (
     <Modal
-      title={i18n.t("modal.title.createnNewPurchase")}
+      title={renderTitleModal(currentPurchase.listFishId)}
       centered
       visible={isShowChoosePond}
       onOk={handleOk}
@@ -157,8 +159,8 @@ const ChoosePond = ({
               setDataChange(data);
             }}
             removeFishType={(id) => {
-              var newListFishId = currentPurchase.listFishId.filter(
-                (x) => x != id
+              let newListFishId = currentPurchase.listFishId.filter(
+                (x) => parseInt(x) !== parseInt(id)
               );
               onChange(newListFishId, "listFishId");
             }}
