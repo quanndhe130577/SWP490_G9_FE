@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "reactstrap";
 import { apis, local, helper } from "../../../services";
-import { Card, Dropdown, Menu, Table } from "antd";
+import { Card, Dropdown, Menu, Table, Tag } from "antd";
 // import { useDispatch } from "react-redux";
 import i18n from "i18next";
 import { useHistory } from "react-router-dom";
@@ -100,15 +100,20 @@ const ManaSell = () => {
         //     name += trader.lastName + " " + trader.firstName;
         //   }
         // }
-        listTrader.forEach((trader, idx) => {
-          if (trader) {
-            name += trader.firstName + " " + trader.lastName;
-          }
-          if (idx < listTrader.length - 1) {
-            name += ", ";
-          }
-        });
-        return <span>{name}</span>;
+        // listTrader.forEach((trader, idx) => {
+        //   if (trader) {
+        //     name += trader.firstName + " " + trader.lastName;
+        //   }
+        //   if (idx < listTrader.length - 1) {
+        //     name += ", ";
+        //   }
+        // });
+        // return <span>{name}</span>;
+        return listTrader.map((trader, idx) => (
+          <Tag key={idx}>
+            {trader.firstName} {trader.lastName}
+          </Tag>
+        ));
       },
     },
     {
@@ -154,12 +159,14 @@ const ManaSell = () => {
       render: (id, row) => (
         <Button
           style={{ width: "100%" }}
-          color="info"
+          // color="info"
+          color="danger"
           className="mr-2"
           onClick={() => onClickBtn("edit", id, row)}
         >
           <i className="fa fa-pencil-square-o mr-1" />
-          {i18n.t("transaction.action.continue")}
+          Chi tiết
+          {/* {i18n.t("transaction.action.continue")} */}
         </Button>
       ),
     },
@@ -217,7 +224,7 @@ const ManaSell = () => {
 
   return (
     <Card title={renderTitle()}>
-      <Table columns={columns} dataSource={transaction} loading={isLoading} />
+      <Table columns={columns} dataSource={transaction} loading={isLoading} rowKey="idx"/>
     </Card>
   );
 };
