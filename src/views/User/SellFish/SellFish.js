@@ -274,8 +274,8 @@ const SellFish = (props) => {
               <b> {i18n.t("totalWR")}:</b> {trans.transactionDetails.length}
             </span>
           )}
-          {trans.status === "Pending" && !trans[client] && (
-            <span className="pull-right mb-2">
+          <span className="pull-right mb-2">
+            {showBtnDelete(trans) === "delete" ? (
               <Button
                 color="danger"
                 onClick={(e) =>
@@ -285,11 +285,30 @@ const SellFish = (props) => {
                 <i className="fa fa-trash mr-1" />
                 {i18n.t("deleteTrans")}
               </Button>
-            </span>
-          )}
+            ) : showBtnDelete(trans) === "complete" ? (
+              <span>{i18n.t("complete")}:))</span>
+            ) : (
+              ""
+            )}
+          </span>
         </div>
       );
   };
+  function showBtnDelete(trans) {
+    // status === pending
+    if (trans.status === "Pending") {
+      if (user.roleName === "WeightRecorder") {
+        return "delete";
+      } else if (user.roleName === "Trader") {
+        if (trans.weightRecorder) {
+          return "";
+        }
+        return "delete";
+      }
+    } else if (trans.status === "Completed") {
+      return "complete";
+    }
+  }
   async function deleteTrans(transactionId) {
     try {
       helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {

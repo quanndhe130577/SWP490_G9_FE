@@ -139,10 +139,10 @@
   "Re-NewPassword": "Nhập lại mật khẩu mới",
   "Edit Salary": "Chỉnh sửa lương",
   "History Salary": "Lịch sử lương",
-  "Advance Salary": "Lương ứng trước",
+  "Advance Salary": "Đã ứng trước",
   "salary": "Lương",
-  "salary-tk": "Lương thực nhận",
-  "Base Salary": "Lương cơ bản",
+  "salary-tk": "Thực nhận",
+  "Base Salary": "Lương/Tháng",
   "status-tk": "Số công",
   "Employee Salary Mangerment": "Quản Lý Lương Nhân Viên",
   "dateStart": "Ngày bắt đầu",
@@ -171,7 +171,7 @@
   "totalWR": "Tổng số mã",
   "weightRecorder": "Chủ bến",
   "remain": "Còn lại ",
-  "modal.title.createnNewPurchase": "Tạo mới đơn mua",
+  "modal.title.createNewPurchase": "Tạo mới đơn mua",
   "month": "Tháng",
   "bonus": "Thưởng",
   "punish": "Phạt",
@@ -186,5 +186,6 @@
   "payForTrader": "Số tiền trả cho thương lái",
   "commissionUnitCanNull": "Vui lòng điền tiền phế",
   "traderUnitCanNull": "Vui lòng chọn thương lái",
-    "commissionWR": "Phế (VND/Kg)"
+    "commissionWR": "Phế (VND/Kg)",
+      "modal.title.updatePurchase": "Cập nhật thông tin giá cá"
 }
