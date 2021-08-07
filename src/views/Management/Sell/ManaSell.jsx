@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "reactstrap";
 import { apis, local, helper } from "../../../services";
-import { Card, Dropdown, Menu, Table } from "antd";
+import { Card, Table } from "antd";
 // import { useDispatch } from "react-redux";
 import i18n from "i18next";
 import { useHistory } from "react-router-dom";
 import Moment from "react-moment";
 import NumberFormat from "react-number-format";
+import { session } from "../../../services";
 // import moment from "moment";
 
 const ManaSell = () => {
@@ -14,6 +15,7 @@ const ManaSell = () => {
   // const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(true);
   const [transaction, setTransaction] = useState([]);
+  const [user, setUser] = useState(session.get("user"));
 
   async function onClickBtn(mode, id, row) {
     if (mode === "edit") {
@@ -90,20 +92,33 @@ const ManaSell = () => {
       render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
     },
     {
-      title: i18n.t("traderName"),
+      title: i18n.t(
+        user.roleName === "Trader" ? "weightRecorder" : "traderName"
+      ),
       dataIndex: "listTrader",
       key: "listTrader",
-      render: (listTrader) => {
+      render: (listTrader, row) => {
         let name = "";
 
-        listTrader.forEach((trader, idx) => {
-          if (trader) {
-            name += trader.firstName + " " + trader.lastName;
-          }
-          if (idx < listTrader.length - 1) {
-            name += ", ";
-          }
-        });
+        if (user.roleName !== "Trader") {
+          listTrader.forEach((trader, idx) => {
+            if (trader) {
+              name += trader.firstName + " " + trader.lastName;
+            }
+            if (idx < listTrader.length - 1) {
+              name += ", ";
+            }
+          });
+        } else {
+          row.listWeightRecorder.forEach((wr, idx) => {
+            if (wr) {
+              name += wr.firstName + " " + wr.lastName;
+            }
+            if (idx < row.listWeightRecorder.length - 1) {
+              name += ", ";
+            }
+          });
+        }
         return <span>{name}</span>;
       },
     },
@@ -197,7 +212,6 @@ const ManaSell = () => {
               history.push(
                 "sellF?date=" + helper.getDateFormat(new Date(), "ddmmyyyy")
               );
-              // history.push("sellF");
             }}
           >
             {i18n.t("transaction.continueSelling")}

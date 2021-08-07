@@ -16,6 +16,7 @@ const ModalCloseSell = ({
   handleCloseTrans,
   date,
   traderId,
+  handleChangeTraderId,
 }) => {
   const [currentTransaction, setCurrentTransaction] = useState({});
   const [total, setTotal] = useState({});
@@ -53,6 +54,10 @@ const ModalCloseSell = ({
     handleCloseModal(!isShowCloseTransaction);
   };
   const handleChangeTran = async (name, val) => {
+    // if (traderId) {
+    //   debugger;
+    //   handleChangeTraderId("");
+    // }
     if (name === "traderId") {
       let trader = dataDf.tradersSelected.find((el) => el.id === val);
       let trans = listTransaction.find((el) => el.id === trader.transId);
@@ -147,6 +152,7 @@ const ModalCloseSell = ({
           <Col md="6">
             <Widgets.MoneyInput
               placeholder="700"
+              disabled={traderId}
               required={true}
               label={i18n.t("commissionWR")}
               value={currentTransaction.commissionUnit || ""}
@@ -200,10 +206,8 @@ const ModalCloseSell = ({
             currentTransaction.commissionUnit > 0 && (
               <>
                 <Col md="6">
-                  <Widgets.MoneyInput
-                    disabled
-                    placeholder="700"
-                    label={i18n.t("wcTReciver")}
+                  <Widgets.NumberFormat
+                    label={i18n.t("wcReceiver") + ": "}
                     value={
                       total.totalWeight * currentTransaction.commissionUnit ||
                       ""
@@ -211,10 +215,8 @@ const ModalCloseSell = ({
                   />
                 </Col>
                 <Col md="6">
-                  <Widgets.MoneyInput
-                    disabled
-                    placeholder="700"
-                    label={i18n.t("payForTrader")}
+                  <Widgets.NumberFormat
+                    label={i18n.t("payForTrader") + ": "}
                     value={
                       total.totalAmount -
                         total.totalWeight * currentTransaction.commissionUnit ||

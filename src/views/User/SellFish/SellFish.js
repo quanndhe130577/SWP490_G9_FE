@@ -405,6 +405,9 @@ const SellFish = (props) => {
             }}
             handleCloseTrans={handleCloseTrans}
             traderId={currentTraderId}
+            handleChangeTraderId={() => {
+              setCurrentTraderId("");
+            }}
           />
         )}
         {isShowChooseTraders && user.roleName !== "Trader" && (
@@ -483,6 +486,11 @@ const SellFish = (props) => {
 
             <Row>
               <Col style={{ overflowX: "auto" }}>
+                {listTransaction ? (
+                  <span>hgfdcfghjhgfcgh</span>
+                ) : (
+                  "hgfdcfghjhgfcgh"
+                )}
                 {listTransaction.map((trans, idx) => (
                   <div className="mb-5" key={idx}>
                     {/* render label trader, wr, btn delete trans */}

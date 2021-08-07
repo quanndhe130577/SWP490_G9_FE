@@ -189,5 +189,6 @@
   "modal.title.updatePurchase": "Cập nhật thông tin giá cá",
   "viewDetail": "Xem chi tiết",
   "Completed": "Đã hoàn thành",
-  "Pending": "Đang xử lý"
+  "Pending": "Đang xử lý",
+  "wcReceiver": "Số tiền nhận được"
 }
