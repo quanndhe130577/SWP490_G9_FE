@@ -243,13 +243,20 @@ export default class Truck extends Component {
         key: "idx",
         render: (text) => <label>{text}</label>,
       },
-
       {
         title: i18n.t("numberDrum"),
         dataIndex: "number",
         key: "number",
         ...this.getColumnSearchProps("number"),
         sorter: (a, b) => a.number.length - b.number.length,
+        sortDirections: ["descend", "ascend"],
+      },
+      {
+        title: i18n.t("drumManagement.headerTable.typeDrum"),
+        dataIndex: "type",
+        key: "type",
+        ...this.getColumnSearchProps("type"),
+        //sorter: (a, b) => a.number.length - b.number.length,
         sortDirections: ["descend", "ascend"],
       },
       {

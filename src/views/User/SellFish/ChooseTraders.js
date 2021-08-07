@@ -81,7 +81,7 @@ const ChooseTraders = ({
     }
   };
   function convertField(arr) {
-    arr.map((el) => (el.name = el.firstName + " " + el.lastName));
+    arr.map((el) => (el.name = el.firstName.trim() + " " + el.lastName.trim()));
     return arr;
   }
 
