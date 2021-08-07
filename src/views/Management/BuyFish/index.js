@@ -29,9 +29,9 @@ const ManaBuy = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const [isShowModal, setIsShowModal] = useState(false);
-  const [mode, setMode] = useState("");
-  const [data, setData] = useState([]);
-  const [searchInput, setSearchInput] = useState("");
+  // const [mode, setMode] = useState("");
+  // const [data, setData] = useState([]);
+  // const [searchInput, setSearchInput] = useState("");
   // const [loading, setLoading] = useState(true);
 
   async function onClick(mode, id) {
@@ -46,21 +46,22 @@ const ManaBuy = () => {
       //   currentPurchase: purchase.find((e) => e.id === id),
       // });
     } else if (mode === "delete") {
-      try {
-        helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
-          if (rs) {
+      helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
+        if (rs) {
+          try {
             setLoading(true);
             let rs = await apis.deletePurchase({ purchaseId: id });
             if (rs && rs.statusCode === 200) {
-              setLoading(false);
               helper.toast("success", i18n.t(rs.message));
               fetchData();
             }
+          } catch (error) {
+            console.log(error);
+          } finally {
+            setLoading(false);
           }
-        });
-      } catch (error) {
-        console.log(error);
-      }
+        }
+      });
     }
   }
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -74,15 +75,15 @@ const ManaBuy = () => {
     setSearchText("");
   };
 
-  const closeModal = (refresh) => {
-    if (refresh === true) {
-      fetchData();
-    }
-    // this.setState({ isShowModal: false, mode: "", currentEmp: {} });
-    setIsShowModal(false);
-    setMode("");
-    setPurchase({});
-  };
+  // const closeModal = (refresh) => {
+  //   if (refresh === true) {
+  //     fetchData();
+  //   }
+  //   // this.setState({ isShowModal: false, mode: "", currentEmp: {} });
+  //   setIsShowModal(false);
+  //   // setMode("");
+  //   setPurchase({});
+  // };
   const getColumnSearchProps = (dataIndex, isDate = false) => ({
     filterDropdown: ({
       setSelectedKeys,
@@ -109,7 +110,7 @@ const ManaBuy = () => {
           <Input
             ref={(node) => {
               // eslint-disable-next-line no-const-assign
-              searchInput = node;
+              // searchInput = node;
             }}
             placeholder={`Search ${dataIndex}`}
             value={selectedKeys[0]}
@@ -181,18 +182,7 @@ const ManaBuy = () => {
         // setTimeout(() => this.searchInput.select(), 100);
       }
     },
-    render: (text) =>
-      searchedColumn === dataIndex ? (
-        //   <Highlighter
-        //     highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
-        //     searchWords={[this.state.searchText]}
-        //     autoEscape
-        //     textToHighlight={text ? text.toString() : ""}
-        //   />
-        <div>{text}</div>
-      ) : (
-        text
-      ),
+    render: (text) => (searchedColumn === dataIndex ? <div>{text}</div> : text),
   });
 
   function renderBtnAction(id, record) {
@@ -206,7 +196,11 @@ const ManaBuy = () => {
             onClick={() => onClick("edit", id)}
           >
             <i className="fa fa-pencil-square-o mr-1" />
-            {i18n.t(record.status === "Pending" ? "buyContinue" : "action.purchase.detail")}
+            {i18n.t(
+              record.status === "Pending"
+                ? "buyContinue"
+                : "action.purchase.detail"
+            )}
           </Button>
         </Menu.Item>
         <Menu.Item key="2">
@@ -277,36 +271,25 @@ const ManaBuy = () => {
       title: i18n.t("status"),
       dataIndex: "status",
       key: "status",
-      render: (status) => {
-        console.log("here", status);
-        // status.map(tag => {
-        //   let color = tag.length > 5 ? 'geekblue' : 'green';
-        //   if (tag === 'loser') {
-        //     color = 'volcano';
-        //   }
-        let color = "";
-        switch (status) {
-          case "Completed":
-            color = "green";
-            break;
-          case "Pending":
-            color = "red";
-            break;
-          default:
-            color = "red";
-        }
+      render: (status) =>
+        // let color = "";
+        // switch (status) {
+        //   case "Completed":
+        //     color = "green";
+        //     break;
+        //   case "Pending":
+        //     color = "gold";
+        //     break;
+        //   default:
+        //     color = "red";
+        // }
 
-        return (
-          <Tag color={color} key={status}>
-            {status.toUpperCase()}
-          </Tag>
-        );
-        //   // return (
-        //   //   <Tag color={'geekblue'} key={"tag"}>
-        //   //     {status.toUpperCase()}
-        //   //   </Tag>
-        //   // );
-      },
+        // return (
+        //   <Tag color={color} key={status}>
+        //     {i18n.t(status).toUpperCase()}
+        //   </Tag>
+        // );
+        helper.tag(status),
     },
     {
       title: "",
@@ -346,7 +329,6 @@ const ManaBuy = () => {
     return (
       <Row>
         <Col md="6" className="d-flex">
-          {/* <h3 className="">{i18n.t("goodManagement")}</h3> */}
           <h3 className="">Đơn mua</h3>
         </Col>
         <Col md="6">
@@ -371,14 +353,6 @@ const ManaBuy = () => {
 
   return (
     <Card title={renderTitle()}>
-      {/*<Button*/}
-      {/*  color="info"*/}
-      {/*  onClick={() => {*/}
-      {/*    history.push("buyFish");*/}
-      {/*  }}*/}
-      {/*>*/}
-      {/*  {i18n.t("continueToBuy")}*/}
-      {/*</Button>*/}
       <Table
         columns={columns}
         dataSource={purchase}

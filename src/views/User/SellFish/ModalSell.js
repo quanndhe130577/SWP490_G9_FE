@@ -18,45 +18,49 @@ const ModalSell = ({
 }) => {
   const [transaction, setTransaction] = useState({
     ...currentTransaction,
-    isPaid: false,
   }); // transaction là 1 bản ghi của Trans
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState();
 
   const handleOk = async () => {
-    setLoading(true);
-    let validate = validateData();
-    if (validate) {
-      return helper.toast("error", i18n.t(validate));
-    }
-    let trader = dataDf.tradersSelected.find(
-      (el) => el.id === transaction.traderId
-    );
-    if (user.roleName === "Trader" && !trader) {
-      trader = dataDf.tradersSelected.find((el) => el.id === user.userID);
-    }
-    let data = {
-      fishTypeId: transaction.fishTypeId,
-      buyerId: transaction.buyer.key,
-      isPaid: transaction.isPaid,
-      traderId: trader.id,
-      transId: trader.transId,
-      sellPrice: transaction.sellPrice,
-      weight: parseFloat(transaction.weight),
-      date: helper.correctDate(),
-    };
-    if (mode === "create") {
-      if (createTransDetail) {
-        if (user.roleName === "Trader" && data.transId) {
-          delete data.transId;
-          // data.date = helper.correctDate();
-        }
-        await createTransDetail(data);
+    try {
+      setLoading(true);
+      let validate = validateData();
+      if (validate) {
+        return helper.toast("error", i18n.t(validate));
       }
-    } else if (mode === "edit") {
-      await updateTransDetail({ ...data, id: transaction.id });
+      let trader = dataDf.tradersSelected.find(
+        (el) => el.id === transaction.traderId
+      );
+      if (user.roleName === "Trader" && !trader) {
+        trader = dataDf.tradersSelected.find((el) => el.id === user.userID);
+      }
+      let data = {
+        fishTypeId: transaction.fishTypeId,
+        buyerId: transaction.buyer.key,
+        isPaid: transaction.isPaid,
+        traderId: trader.id,
+        transId: trader.transId,
+        sellPrice: transaction.sellPrice,
+        weight: parseFloat(transaction.weight),
+        date: helper.correctDate(),
+      };
+      if (mode === "create") {
+        if (createTransDetail) {
+          if (user.roleName === "Trader" && data.transId) {
+            delete data.transId;
+            // data.date = helper.correctDate();
+          }
+          await createTransDetail(data);
+        }
+      } else if (mode === "edit") {
+        await updateTransDetail({ ...data, id: transaction.id });
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
   const handleCancel = () => {
     setShowSell(false);
@@ -148,6 +152,11 @@ const ModalSell = ({
         weight,
         sellPrice,
         isRetailCustomers,
+      }));
+    } else {
+      setTransaction((prevState) => ({
+        ...prevState,
+        isPaid: false,
       }));
     }
   }
@@ -278,8 +287,8 @@ const ModalSell = ({
                       label={i18n.t("payStatus")}
                       value={transaction.isPaid || false}
                       onChange={(e) => handleChangeTran("isPaid", e)}
-                      lblChecked={i18n.t("isPaid")}
-                      lblCheckbox={i18n.t("isNotPaid")}
+                      lblCheckbox={i18n.t("isPaid")}
+                      // lblCheckbox={i18n.t("isNotPaid")}
                       disabled={transaction.isRetailCustomers || false}
                     />
                   </Col>
@@ -295,8 +304,8 @@ const ModalSell = ({
                   label={i18n.t("trader")}
                   value={transaction.traderId || ""}
                   onChange={(e) => handleChangeTran("traderId", e)}
-                  items={dataDf.traders || []}
-                  displayField={"lastName"}
+                  items={dataDf.tradersSelected || []}
+                  displayField={["firstName", "lastName"]}
                 />
               </Col>
 
@@ -358,8 +367,8 @@ const ModalSell = ({
                       label={i18n.t("payStatus")}
                       value={transaction.isPaid || false}
                       onChange={(e) => handleChangeTran("isPaid", e)}
-                      lblChecked={i18n.t("isPaid")}
-                      lblCheckbox={i18n.t("isNotPaid")}
+                      // lblChecked={i18n.t("isPaid")}
+                      lblCheckbox={i18n.t("isPaid")}
                       disabled={transaction.isRetailCustomers || false}
                     />
                   </Col>
