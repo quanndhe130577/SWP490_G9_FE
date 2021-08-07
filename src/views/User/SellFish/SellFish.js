@@ -486,11 +486,11 @@ const SellFish = (props) => {
 
             <Row>
               <Col style={{ overflowX: "auto" }}>
-                {listTransaction ? (
+                {/* {listTransaction ? (
                   <span>hgfdcfghjhgfcgh</span>
                 ) : (
                   "hgfdcfghjhgfcgh"
-                )}
+                )} */}
                 {listTransaction.map((trans, idx) => (
                   <div className="mb-5" key={idx}>
                     {/* render label trader, wr, btn delete trans */}
