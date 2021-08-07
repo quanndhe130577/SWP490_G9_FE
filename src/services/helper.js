@@ -1,6 +1,7 @@
 import { notification } from "antd";
 import i18n from "i18next";
 import Swal from "sweetalert2";
+import { Tag } from "antd";
 
 let helper = {};
 
@@ -71,5 +72,28 @@ helper.correctDate = (dateDf) => {
   date.setHours(hoursDiff);
   date.setMinutes(minutesDiff);
   return date;
+};
+
+helper.tag = (status) => {
+  let color = "",
+    txt = status;
+  if (status === "isPaid") {
+    status = "Completed";
+  }
+  switch (status) {
+    case "Completed":
+      color = "green";
+      break;
+    case "Pending":
+      color = "gold";
+      break;
+    default:
+      color = "red";
+  }
+  return (
+    <Tag color={color} key={status}>
+      {i18n.t(txt).toUpperCase()}
+    </Tag>
+  );
 };
 export default helper;

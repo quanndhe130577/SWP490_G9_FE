@@ -271,27 +271,25 @@ const ManaBuy = () => {
       title: i18n.t("status"),
       dataIndex: "status",
       key: "status",
-      render: (status) => {
-        console.log("here", status);
+      render: (status) =>
+        // let color = "";
+        // switch (status) {
+        //   case "Completed":
+        //     color = "green";
+        //     break;
+        //   case "Pending":
+        //     color = "gold";
+        //     break;
+        //   default:
+        //     color = "red";
+        // }
 
-        let color = "";
-        switch (status) {
-          case "Completed":
-            color = "green";
-            break;
-          case "Pending":
-            color = "red";
-            break;
-          default:
-            color = "red";
-        }
-
-        return (
-          <Tag color={color} key={status}>
-            {status.toUpperCase()}
-          </Tag>
-        );
-      },
+        // return (
+        //   <Tag color={color} key={status}>
+        //     {i18n.t(status).toUpperCase()}
+        //   </Tag>
+        // );
+        helper.tag(status),
     },
     {
       title: "",

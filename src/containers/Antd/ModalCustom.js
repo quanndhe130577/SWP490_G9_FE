@@ -11,7 +11,8 @@ const ModalCustom = ({
   titleBtnCancel = i18n.t("cancel"),
   titleBtnOk = i18n.t(title || "ok"),
   loading,
-  width
+  width,
+  disabledOk = false,
 }) => {
   return (
     <Modal
@@ -35,7 +36,7 @@ const ModalCustom = ({
           type="primary"
           loading={loading}
           onClick={onOk}
-          disabled={loading}
+          disabled={disabledOk || loading}
         >
           {titleBtnOk}
         </Button>,

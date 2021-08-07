@@ -30,6 +30,7 @@ const SellFish = (props) => {
   const [user, setUser] = useState({});
   // const [traderInDate, setTraderInDate] = useState([]);
   const [dataFetched, setDtFetched] = useState({}); // include trader by WR
+  const [currentTraderId, setCurrentTraderId] = useState("");
 
   const handleBtnAction = (action, id) => {
     if (action === "delete") {
@@ -131,7 +132,7 @@ const SellFish = (props) => {
       title: i18n.t("statusPaid"),
       dataIndex: "isPaid",
       key: "isPaid",
-      render: (isPaid) => <span>{i18n.t(isPaid ? "isPaid" : "notPaid")}</span>,
+      render: (isPaid) => helper.tag(isPaid ? "isPaid" : "notPaid"),
     },
 
     {
@@ -203,7 +204,7 @@ const SellFish = (props) => {
         await getTraderByWR();
       }
 
-      await getAllTransByDate(date);
+      await getAllTransByDate(date, user);
 
       setLoading(false);
     } catch (error) {
@@ -221,12 +222,13 @@ const SellFish = (props) => {
       console.log(error);
     }
   }
-  async function getAllTransByDate(date) {
+  async function getAllTransByDate(date, user) {
     try {
       let rs = await apis.getTransByDate({}, "GET", date);
       if (rs && rs.statusCode === 200) {
         if (rs.data.length === 0) {
-          setShowChooseTraders(true);
+          if (user.roleName !== "Trader") setShowChooseTraders(true);
+          else setShowChooseTraders(false);
         } else {
           let tem = [],
             temTransDetail = [],
@@ -286,7 +288,16 @@ const SellFish = (props) => {
                 {i18n.t("deleteTrans")}
               </Button>
             ) : showBtnDelete(trans) === "complete" ? (
-              <span>{i18n.t("complete")}:))</span>
+              <Button
+                color="info"
+                onClick={() => {
+                  setCurrentTraderId(trans.trader.id);
+                  setShowCloseTrans(true);
+                }}
+              >
+                <i className="fa fa-info-circle mr-1" />
+                {i18n.t("viewDetail")}
+              </Button>
             ) : (
               ""
             )}
@@ -342,6 +353,7 @@ const SellFish = (props) => {
       console.log(error);
     }
   };
+
   useEffect(() => {
     let query = queryString.parse(props.location.search, {
       ignoreQueryPrefix: true,
@@ -387,8 +399,12 @@ const SellFish = (props) => {
             dataDf={dataFetched || []}
             date={date}
             isShowCloseTransaction={isShowCloseTransaction}
-            handleCloseModal={() => setShowCloseTrans(false)}
+            handleCloseModal={() => {
+              setShowCloseTrans(false);
+              setCurrentTraderId("");
+            }}
             handleCloseTrans={handleCloseTrans}
+            traderId={currentTraderId}
           />
         )}
         {isShowChooseTraders && user.roleName !== "Trader" && (
@@ -513,8 +529,16 @@ const SellFish = (props) => {
                                   thousandSeparator={true}
                                 />
                               </Table.Summary.Cell>
-                              <Table.Summary.Cell key="5" />
-                              <Table.Summary.Cell colSpan="4" key="6" />
+                              <Table.Summary.Cell
+                                key="5"
+                                colSpan="3"
+                                className="bold"
+                              >
+                                {trans.status === "Completed"
+                                  ? helper.tag(trans.status)
+                                  : ""}
+                              </Table.Summary.Cell>
+                              {/* <Table.Summary.Cell colSpan="4" key="6" /> */}
                             </Table.Summary.Row>
                           </Table.Summary>
                         );

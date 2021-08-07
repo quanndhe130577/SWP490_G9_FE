@@ -167,7 +167,7 @@
   "editTransDetail": "Sửa mã bán",
   "qtyOfFish(Kg-onlyFish)": "Khối lượng cá (Kg)",
   "statusPaid": "Trạng thái thanh toán",
-  "notPaid": "Chưa trả",
+  "notPaid": "Chưa thanh toán",
   "totalWR": "Tổng số mã",
   "weightRecorder": "Chủ bến",
   "remain": "Còn lại ",
@@ -186,5 +186,8 @@
   "payForTrader": "Số tiền trả cho thương lái",
   "commissionUnitCanNull": "Vui lòng điền tiền phế",
   "traderUnitCanNull": "Vui lòng chọn thương lái",
-  "modal.title.updatePurchase": "Cập nhật thông tin giá cá"
+  "modal.title.updatePurchase": "Cập nhật thông tin giá cá",
+  "viewDetail": "Xem chi tiết",
+  "Completed": "Đã hoàn thành",
+  "Pending": "Đang xử lý"
 }
