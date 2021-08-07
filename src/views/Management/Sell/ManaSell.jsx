@@ -165,12 +165,14 @@ const ManaSell = () => {
       render: (id, row) => (
         <Button
           style={{ width: "100%" }}
-          color="info"
+          // color="info"
+          color="danger"
           className="mr-2"
           onClick={() => onClickBtn("edit", id, row)}
         >
           <i className="fa fa-pencil-square-o mr-1" />
-          {i18n.t("transaction.action.continue")}
+          Chi tiết
+          {/* {i18n.t("transaction.action.continue")} */}
         </Button>
       ),
     },
