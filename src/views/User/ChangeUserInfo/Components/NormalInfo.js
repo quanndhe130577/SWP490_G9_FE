@@ -3,6 +3,7 @@ import Avatar from "react-avatar-edit";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import Widgets from "../../../../schema/Widgets";
+import { Modal } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import apis from "../../../../services/apis";
 
@@ -18,6 +19,7 @@ class NormalInfo extends Component {
       preview: null,
       isRender: true,
       loading: false,
+      display: false,
     };
     this.submit = this.submit.bind(this);
     this.getUserInfo = this.getUserInfo.bind(this);
@@ -94,8 +96,7 @@ class NormalInfo extends Component {
                 src={this.state.avatar}
                 className="cover-img w-75"
                 alt="Preview"
-                data-toggle="modal"
-                data-target="#exampleModal"
+                onClick={() => this.setState({ display: true })}
               />
             </div>
           </div>
@@ -121,8 +122,6 @@ class NormalInfo extends Component {
                 required={true}
                 label={"Ngày sinh"}
                 value={this.state.dob}
-                // maxDate={new Date()}
-                // minDate={minDate}
                 onChange={(data) => {
                   this.setState({ dob: new Date(data) });
                 }}
@@ -147,58 +146,25 @@ class NormalInfo extends Component {
             </div>
           </div>
         </form>
-        <div
-          className="modal fade"
-          id="exampleModal"
-          tabindex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
-                  Chọn một ảnh để thay ảnh đại diện
-                </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div className="container">
-                  <label className="form-label text-muted"></label>
-                  <div className="container d-flex justify-content-center">
-                    <Avatar
-                      width={300}
-                      height={240}
-                      onCrop={(preview) => this.setState({ preview })}
-                      onClose={() =>
-                        this.setState({ preview: this.state.avatar })
-                      }
-                      onBeforeFileLoad={(elem) => {}}
-                      className="update-userInfo-avatar"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  data-dismiss="modal"
-                  onClick={() => this.setState({ avatar: this.state.preview })}
-                >
-                  Save changes
-                </button>
-              </div>
+        <Modal title="Basic Modal" visible={this.state.display}
+          onOk={() => this.setState({ avatar: this.state.preview, display: false })}
+          onCancel={() => this.setState({ display: false })}>
+          <div className="container">
+            <label className="form-label text-muted"></label>
+            <div className="container d-flex justify-content-center">
+              <Avatar
+                width={300}
+                height={240}
+                onCrop={(preview) => this.setState({ preview })}
+                onClose={() =>
+                  this.setState({ preview: this.state.avatar })
+                }
+                onBeforeFileLoad={(elem) => { }}
+                className="update-userInfo-avatar"
+              />
             </div>
           </div>
-        </div>
+        </Modal>
       </div>
     );
   }

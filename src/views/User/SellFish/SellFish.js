@@ -6,6 +6,7 @@ import i18n from "i18next";
 import LoadingCustom from "../../../containers/Antd/LoadingCustom";
 import ChooseTraders from "./ChooseTraders";
 import ModalSell from "./ModalSell";
+import ModalCloseTransaction from "./ModalCloseSell";
 import queryString from "qs";
 import { apis, helper, session } from "../../../services";
 
@@ -17,23 +18,24 @@ const SellFish = (props) => {
   //loading & show modal
   const [isLoading, setLoading] = useState(false);
   const [isShowChooseTraders, setShowChooseTraders] = useState(false);
+  const [isShowCloseTransaction, setShowCloseTrans] = useState(false);
   const [isShowSell, setShowSell] = useState(false);
   // data
   const [listTransaction, setListTransaction] = useState([]);
   const [listTransDetail, setListTransDetail] = useState([]);
   const [date, setDate] = useState("");
-  // const [listTrans, setListTrans] = useState([]);
+
   const [currentTransaction, setCurrentTrans] = useState({});
   const [mode, setMode] = useState("create");
-
+  const [user, setUser] = useState({});
   // const [traderInDate, setTraderInDate] = useState([]);
   const [dataFetched, setDtFetched] = useState({}); // include trader by WR
+  const [currentTraderId, setCurrentTraderId] = useState("");
 
   const handleBtnAction = (action, id) => {
     if (action === "delete") {
-      // deletetransactionDetail(id);
+      deleteTransDetail({ transactionDetailId: id });
     } else {
-      console.log(currentTransaction);
       let tem = listTransDetail.find((e) => e.id === id);
       if (tem) {
         setCurrentTrans(tem);
@@ -43,7 +45,7 @@ const SellFish = (props) => {
     }
   };
 
-  const handleChangeTrans = (pro, value) => {
+  const handleChangeCurrentTrans = (pro, value) => {
     setCurrentTrans((preStates) => ({ ...preStates, [pro]: value }));
   };
   const calculateIntoMoney = ({ sellPrice, weight }) => (
@@ -117,12 +119,6 @@ const SellFish = (props) => {
       render: (el, row) => <label>{calculateIntoMoney(row)}</label>,
     },
     {
-      title: i18n.t("statusPaid"),
-      dataIndex: "isPaid",
-      key: "isPaid",
-      render: (isPaid) => <span>{i18n.t(isPaid ? "isPaid" : "notPaid")}</span>,
-    },
-    {
       title: i18n.t("buyer"),
       dataIndex: "buyer",
       key: "buyer",
@@ -131,6 +127,12 @@ const SellFish = (props) => {
           <div>{buyer && buyer ? buyer.name : i18n.t("retailCustomers")}</div>
         );
       },
+    },
+    {
+      title: i18n.t("statusPaid"),
+      dataIndex: "isPaid",
+      key: "isPaid",
+      render: (isPaid) => helper.tag(isPaid ? "isPaid" : "notPaid"),
     },
 
     {
@@ -174,17 +176,35 @@ const SellFish = (props) => {
       helper.toast("error", error);
     }
   }
+  async function deleteTransDetail(transactionDetailId) {
+    try {
+      helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
+        if (rs) {
+          let rs = await apis.deleteTransDetail(transactionDetailId);
+          if (rs && rs.statusCode === 200) {
+            getAllTransByDate(date);
+            helper.toast("success", i18n.t(rs.message || "success"));
+          }
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      helper.toast("error", error);
+    }
+  }
   // fetch data
   async function fetchData(date) {
     try {
       setLoading(true);
       let user = session.get("user");
-      setDtFetched((preProps) => ({ ...preProps, currentWR: user }));
-      if (date) {
-        await getAllTransByDate(date);
-      } else {
+      setUser(user);
+      // setDtFetched((preProps) => ({ ...preProps, currentWR: user }));
+
+      if (user.roleName !== "Trader") {
         await getTraderByWR();
       }
+
+      await getAllTransByDate(date, user);
 
       setLoading(false);
     } catch (error) {
@@ -202,24 +222,30 @@ const SellFish = (props) => {
       console.log(error);
     }
   }
-  async function getAllTransByDate(date) {
+  async function getAllTransByDate(date, user) {
     try {
       let rs = await apis.getTransByDate({}, "GET", date);
       if (rs && rs.statusCode === 200) {
-        // setListTransaction(rs.data);
-        let tem = [],
-          temTransDetail = [];
-        for (const trans of rs.data) {
-          trans.transactionDetails.map((el) => (el.trader = trans.trader));
-          temTransDetail = temTransDetail.concat(trans.transactionDetails);
-          trans.trader.transId = trans.id;
-          tem.push(trans.trader);
-        }
-        // setTraderInDate(tem);
-        setListTransDetail(temTransDetail);
-        setListTransaction(rs.data);
+        if (rs.data.length === 0) {
+          if (user.roleName !== "Trader") setShowChooseTraders(true);
+          else setShowChooseTraders(false);
+        } else {
+          let tem = [],
+            temTransDetail = [],
+            listTraderId = [];
+          for (const trans of rs.data) {
+            trans.transactionDetails.map((el) => (el.trader = trans.trader));
+            temTransDetail = temTransDetail.concat(trans.transactionDetails);
+            trans.trader.transId = trans.id;
+            tem.push(trans.trader);
+            listTraderId.push(trans.trader.id);
+          }
+          handleChangeCurrentTrans("listTraderId", listTraderId);
+          setListTransDetail(temTransDetail);
+          setListTransaction(rs.data);
 
-        setDtFetched((pro) => ({ ...pro, traders: tem }));
+          setDtFetched((pro) => ({ ...pro, tradersSelected: tem }));
+        }
       }
     } catch (error) {
       console.log(error);
@@ -228,6 +254,105 @@ const SellFish = (props) => {
   function handleBack() {
     history.push("/sell");
   }
+
+  const renderTitleTable = (trans) => {
+    let client = "trader";
+    if (user.roleName === "Trader") {
+      client = "weightRecorder";
+    }
+    if (trans)
+      return (
+        <div className="mb-2">
+          <span className="mr-3">
+            {trans[client] && (
+              <>
+                <b>{i18n.t(client)}: </b>
+                {trans[client].firstName + " " + trans[client].lastName}
+              </>
+            )}
+          </span>
+          {trans.transactionDetails.length > 0 && (
+            <span className="mr-3">
+              <b> {i18n.t("totalWR")}:</b> {trans.transactionDetails.length}
+            </span>
+          )}
+          <span className="pull-right mb-2">
+            {showBtnDelete(trans) === "delete" ? (
+              <Button
+                color="danger"
+                onClick={(e) =>
+                  deleteTrans({ transactionId: trans.trader.transId })
+                }
+              >
+                <i className="fa fa-trash mr-1" />
+                {i18n.t("deleteTrans")}
+              </Button>
+            ) : showBtnDelete(trans) === "complete" ? (
+              <Button
+                color="info"
+                onClick={() => {
+                  setCurrentTraderId(trans.trader.id);
+                  setShowCloseTrans(true);
+                }}
+              >
+                <i className="fa fa-info-circle mr-1" />
+                {i18n.t("viewDetail")}
+              </Button>
+            ) : (
+              ""
+            )}
+          </span>
+        </div>
+      );
+  };
+  function showBtnDelete(trans) {
+    // status === pending
+    if (trans.status === "Pending") {
+      if (user.roleName === "WeightRecorder") {
+        return "delete";
+      } else if (user.roleName === "Trader") {
+        if (trans.weightRecorder) {
+          return "";
+        }
+        return "delete";
+      }
+    } else if (trans.status === "Completed") {
+      return "complete";
+    }
+  }
+  async function deleteTrans(transactionId) {
+    try {
+      helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
+        if (rs) {
+          let rs = await apis.deleteTrans(transactionId);
+          if (rs && rs.statusCode === 200) {
+            getAllTransByDate(date);
+            helper.toast("success", i18n.t(rs.message || "success"));
+          }
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      helper.toast("error", error);
+    }
+  }
+  const calculateColumns = (col, trans) => {
+    let temCol = [...col];
+    if (trans && trans.weightRecorder && user.roleName === "Trader")
+      temCol.pop();
+    return temCol;
+  };
+  const handleCloseTrans = async (data) => {
+    try {
+      let rs = await apis.closeTrans(data);
+      if (rs && rs.statusCode === 200) {
+        helper.toast("success", i18n.t(rs.message || "success"));
+        getAllTransByDate(date);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     let query = queryString.parse(props.location.search, {
@@ -248,7 +373,6 @@ const SellFish = (props) => {
     return (
       <Row>
         <Col md="6">
-          {/* <h3 className="mr-5">{i18n.t("sellGood")}</h3> */}
           <h3 className="mr-5">{i18n.t("transactionDetail.Title")}</h3>
         </Col>
         <Col md="6">
@@ -269,12 +393,29 @@ const SellFish = (props) => {
   } else
     return (
       <div>
-        {isShowChooseTraders && (
+        {isShowCloseTransaction && (
+          <ModalCloseTransaction
+            listTransaction={listTransaction}
+            dataDf={dataFetched || []}
+            date={date}
+            isShowCloseTransaction={isShowCloseTransaction}
+            handleCloseModal={() => {
+              setShowCloseTrans(false);
+              setCurrentTraderId("");
+            }}
+            handleCloseTrans={handleCloseTrans}
+            traderId={currentTraderId}
+            handleChangeTraderId={() => {
+              setCurrentTraderId("");
+            }}
+          />
+        )}
+        {isShowChooseTraders && user.roleName !== "Trader" && (
           <ChooseTraders
             dataFetched={dataFetched}
             isShowChooseTraders={isShowChooseTraders}
             currentTransaction={currentTransaction}
-            handleChangeTrans={handleChangeTrans}
+            handleChangeCurrentTrans={handleChangeCurrentTrans}
             setShowChooseTraders={(status) => setShowChooseTraders(status)}
           />
         )}
@@ -287,6 +428,7 @@ const SellFish = (props) => {
             mode={mode}
             createTransDetail={createTransDetail}
             updateTransDetail={updateTransDetail}
+            deleteTransDetail={deleteTransDetail}
             date={date}
           />
         )}
@@ -303,49 +445,28 @@ const SellFish = (props) => {
                   </Moment>
                 </label>
               </Col>
-              {/* <Col md="6">
-                <div className="float-right">
-                  <Button
-                    color="info"
-                    // onClick={() => handleClosetransaction()}
-                    className="mr-2"
-                  >
-                    {i18n.t("closetransaction")}
-                  </Button>
+
+              {user.roleName === "Trader" && <Col md="2" />}
+              <Col md="2" xs="6">
+                <Button
+                  color="info"
+                  onClick={() => setShowCloseTrans(true)}
+                  className="w-100"
+                >
+                  {i18n.t("closeTransaction")}
+                </Button>
+              </Col>
+              {user.roleName !== "Trader" && (
+                <Col md="2" xs="6">
                   <Button
                     color="info"
                     onClick={() => setShowChooseTraders(true)}
-                    className="mr-2"
+                    className="w-100"
                   >
                     {i18n.t("choseTrader")}
                   </Button>
-                  <Button
-                    color="info"
-                    onClick={() => setShowSell(true)}
-                    className=" mr-2"
-                  >
-                    {i18n.t("Thêm Mã")}
-                  </Button>
-                </div>
-              </Col> */}
-              <Col md="2" xs="6">
-                <Button
-                  color="info"
-                  // onClick={() => handleClosetransaction()}
-                  className="float-right"
-                >
-                  {i18n.t("close transaction")}
-                </Button>
-              </Col>
-              <Col md="2" xs="6">
-                <Button
-                  color="info"
-                  onClick={() => setShowChooseTraders(true)}
-                  className="float-right"
-                >
-                  {i18n.t("choseTrader")}
-                </Button>
-              </Col>
+                </Col>
+              )}
 
               <Col md="2" xs="6">
                 <Button
@@ -355,8 +476,9 @@ const SellFish = (props) => {
                     setCurrentTrans({});
                     setMode("create");
                   }}
-                  className="float-right"
+                  className="w-100"
                 >
+                  <i className="fa fa-plus mr-1" />
                   {i18n.t("Thêm Mã Bán")}
                 </Button>
               </Col>
@@ -364,22 +486,19 @@ const SellFish = (props) => {
 
             <Row>
               <Col style={{ overflowX: "auto" }}>
+                {listTransaction ? (
+                  <span>hgfdcfghjhgfcgh</span>
+                ) : (
+                  "hgfdcfghjhgfcgh"
+                )}
                 {listTransaction.map((trans, idx) => (
-                  <div className="mb-5">
-                    <b>
-                      <span className="mr-2">
-                        {i18n.t("trader")}:{" "}
-                        {trans.trader && trans.trader.lastName}.
-                      </span>
-                      {trans.transactionDetails.length > 0 && (
-                        <span className="mr-2">
-                          {i18n.t("totalWR")}: {trans.transactionDetails.length}
-                        </span>
-                      )}
-                    </b>
+                  <div className="mb-5" key={idx}>
+                    {/* render label trader, wr, btn delete trans */}
+                    {renderTitleTable(trans)}
                     <Table
                       key={idx + trans.id}
-                      columns={columns}
+                      rowKey="idx"
+                      columns={calculateColumns(columns, trans)}
                       dataSource={trans.transactionDetails || []}
                       loading={isLoading}
                       scroll={{ y: 420 }}
@@ -403,7 +522,7 @@ const SellFish = (props) => {
                               >
                                 {i18n.t("total")}
                               </Table.Summary.Cell>
-                              <Table.Summary.Cell key="2">
+                              <Table.Summary.Cell key="2" className="bold">
                                 <NumberFormat
                                   value={totalWeight.toFixed(1)}
                                   displayType={"text"}
@@ -411,15 +530,23 @@ const SellFish = (props) => {
                                 />
                               </Table.Summary.Cell>
                               <Table.Summary.Cell key="3" />
-                              <Table.Summary.Cell key="4">
+                              <Table.Summary.Cell key="4" className="bold">
                                 <NumberFormat
                                   value={totalAmount}
                                   displayType={"text"}
                                   thousandSeparator={true}
                                 />
                               </Table.Summary.Cell>
-                              <Table.Summary.Cell key="5" />
-                              <Table.Summary.Cell colSpan="4" key="6" />
+                              <Table.Summary.Cell
+                                key="5"
+                                colSpan="3"
+                                className="bold"
+                              >
+                                {trans.status === "Completed"
+                                  ? helper.tag(trans.status)
+                                  : ""}
+                              </Table.Summary.Cell>
+                              {/* <Table.Summary.Cell colSpan="4" key="6" /> */}
                             </Table.Summary.Row>
                           </Table.Summary>
                         );

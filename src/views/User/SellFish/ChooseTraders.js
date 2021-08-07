@@ -11,17 +11,14 @@ import { useHistory } from "react-router-dom";
 const ChooseTraders = ({
   isShowChooseTraders,
   setShowChooseTraders,
-  // trader,
   currentTransaction = {},
-  // setCurrentTransaction,
   dataFetched,
-  handleChangeTrans,
+  handleChangeCurrentTrans,
 }) => {
   let isChange = false;
   const history = useHistory();
 
   const handleOk = async () => {
-    setShowChooseTraders(false);
     if (!currentTransaction.id) {
       // create transaction
       try {
@@ -35,6 +32,7 @@ const ChooseTraders = ({
           history.push(
             "sellF?date=" + helper.getDateFormat(new Date(), "ddmmyyyy")
           );
+          setShowChooseTraders(false);
         }
       } catch (error) {
         console.log(error);
@@ -75,7 +73,7 @@ const ChooseTraders = ({
       }
 
       local.set("currentTransaction", tem);
-      handleChangeTrans(prop, val);
+      handleChangeCurrentTrans(prop, val);
       // setCurrentTransaction((prevState) => ({
       //   ...prevState,
       //   [prop]: val,
@@ -103,6 +101,7 @@ const ChooseTraders = ({
             value={currentTransaction.listTraderId || []}
             items={convertField(dataFetched.traders || [])}
             onChange={(vl) => onChange(vl, "listTraderId")}
+            saveField="id"
           />
         </Col>
         <Col md="8" xs="12">

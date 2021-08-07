@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "reactstrap";
 import { apis, local, helper } from "../../../services";
-import { Card, Dropdown, Menu, Table } from "antd";
-import { useDispatch } from "react-redux";
+import { Card, Table } from "antd";
+// import { useDispatch } from "react-redux";
 import i18n from "i18next";
 import { useHistory } from "react-router-dom";
 import Moment from "react-moment";
 import NumberFormat from "react-number-format";
+import { session } from "../../../services";
 // import moment from "moment";
 
 const ManaSell = () => {
   let history = useHistory();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(true);
   const [transaction, setTransaction] = useState([]);
+  const [user, setUser] = useState(session.get("user"));
 
   async function onClickBtn(mode, id, row) {
     if (mode === "edit") {
@@ -45,30 +47,33 @@ const ManaSell = () => {
     }
   }
 
-  function renderBtnAction(id, row) {
-    return (
-      <Menu>
-        <Menu.Item key="1">
-          <Button
-            style={{ width: "100%" }}
-            color="info"
-            className="mr-2"
-            onClick={() => onClickBtn("edit", id, row)}
-          >
-            <i className="fa fa-pencil-square-o mr-1" />
-            {/* {i18n.t("edit")} */}
-            {i18n.t("transaction.action.continue")}
-          </Button>
-        </Menu.Item>
-        <Menu.Item key="2">
-          <Button color="danger" onClick={() => onClickBtn("delete", id, row)} style={{ width: "100%" }}>
-            <i className="fa fa-trash-o mr-1" />
-            {i18n.t("delete")}
-          </Button>
-        </Menu.Item>
-      </Menu>
-    );
-  }
+  // function renderBtnAction(id, row) {
+  //   return (
+  //     <Menu>
+  //       <Menu.Item key="1">
+  //         <Button
+  //           style={{ width: "100%" }}
+  //           color="info"
+  //           className="mr-2"
+  //           onClick={() => onClickBtn("edit", id, row)}
+  //         >
+  //           <i className="fa fa-pencil-square-o mr-1" />
+  //           {i18n.t("transaction.action.continue")}
+  //         </Button>
+  //       </Menu.Item>
+  //       <Menu.Item key="2">
+  //         <Button
+  //           color="danger"
+  //           onClick={() => onClickBtn("delete", id, row)}
+  //           style={{ width: "100%" }}
+  //         >
+  //           <i className="fa fa-trash-o mr-1" />
+  //           {i18n.t("delete")}
+  //         </Button>
+  //       </Menu.Item>
+  //     </Menu>
+  //   );
+  // }
 
   const columns = [
     {
@@ -87,24 +92,33 @@ const ManaSell = () => {
       render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
     },
     {
-      title: i18n.t("traderName"),
+      title: i18n.t(
+        user.roleName === "Trader" ? "weightRecorder" : "traderName"
+      ),
       dataIndex: "listTrader",
       key: "listTrader",
-      render: (listTrader) => {
+      render: (listTrader, row) => {
         let name = "";
-        // for (const trader of listTrader) {
-        //   if (trader) {
-        //     name += trader.lastName + " " + trader.firstName;
-        //   }
-        // }
-        listTrader.forEach((trader, idx) => {
-          if (trader) {
-            name += trader.firstName + " " + trader.lastName;
-          }
-          if (idx < listTrader.length - 1) {
-            name += ", ";
-          }
-        });
+
+        if (user.roleName !== "Trader") {
+          listTrader.forEach((trader, idx) => {
+            if (trader) {
+              name += trader.firstName + " " + trader.lastName;
+            }
+            if (idx < listTrader.length - 1) {
+              name += ", ";
+            }
+          });
+        } else {
+          row.listWeightRecorder.forEach((wr, idx) => {
+            if (wr) {
+              name += wr.firstName + " " + wr.lastName;
+            }
+            if (idx < row.listWeightRecorder.length - 1) {
+              name += ", ";
+            }
+          });
+        }
         return <span>{name}</span>;
       },
     },
@@ -145,16 +159,19 @@ const ManaSell = () => {
       ),
     },
     {
-      title: "",
+      title: i18n.t("action"),
       dataIndex: "id",
       key: "id",
       render: (id, row) => (
-        <Dropdown overlay={renderBtnAction(id, row)}>
-          <Button>
-            <i className="fa fa-cog mr-1" />
-            <label className="tb-lb-action">{i18n.t("action")}</label>
-          </Button>
-        </Dropdown>
+        <Button
+          style={{ width: "100%" }}
+          color="info"
+          className="mr-2"
+          onClick={() => onClickBtn("edit", id, row)}
+        >
+          <i className="fa fa-pencil-square-o mr-1" />
+          {i18n.t("transaction.action.continue")}
+        </Button>
       ),
     },
   ];
@@ -192,11 +209,12 @@ const ManaSell = () => {
             color="info"
             className="mb-2 pull-right"
             onClick={() => {
-              history.push("sellF");
+              history.push(
+                "sellF?date=" + helper.getDateFormat(new Date(), "ddmmyyyy")
+              );
             }}
           >
-            {/* {i18n.t("newTransaction")} */}
-            {i18n.t("transaction.continueSelling")}    
+            {i18n.t("transaction.continueSelling")}
           </Button>
         </Col>
       </Row>
@@ -209,15 +227,12 @@ const ManaSell = () => {
 
   return (
     <Card title={renderTitle()}>
-      {/*<Button*/}
-      {/*  color="info"*/}
-      {/*  onClick={() => {*/}
-      {/*    history.push("buyFish");*/}
-      {/*  }}*/}
-      {/*>*/}
-      {/*  {i18n.t("continueToBuy")}*/}
-      {/*</Button>*/}
-      <Table columns={columns} dataSource={transaction} loading={isLoading} />
+      <Table
+        columns={columns}
+        dataSource={transaction}
+        loading={isLoading}
+        rowKey="idx"
+      />
     </Card>
   );
 };

@@ -66,7 +66,7 @@ async function fetchUserList(api, param, displayField) {
         if (displayField && Array.isArray(displayField)) {
           let temStr = "";
           for (const field of displayField) {
-            temStr += ele[field] + "  ";
+            temStr += ele[field] + " ";
           }
           ele.label = temStr;
         }
@@ -113,6 +113,11 @@ const SearchFetchApi = ({
               arr = newValue[newValue.length - 1];
             } else arr = newValue;
             onChange(arr);
+          }
+        }}
+        onSelect={(value) => {
+          if (onSelect) {
+            onSelect(value);
           }
         }}
         displayField={displayField}
