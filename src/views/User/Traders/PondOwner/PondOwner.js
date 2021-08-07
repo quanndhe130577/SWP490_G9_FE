@@ -7,7 +7,7 @@ import i18n from "i18next";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
-import ModalForm from "./ModalForm";
+import ModalPondOwner from "./ModalPondOwner";
 export default class PondOwner extends Component {
   constructor(props) {
     super(props);
@@ -266,7 +266,7 @@ export default class PondOwner extends Component {
     return (
       <Card title={this.renderTitle()}>
         {isShowModal && mode !== "" && (
-          <ModalForm
+          <ModalPondOwner
             isShow={isShowModal}
             mode={mode}
             closeModal={this.closeModal}

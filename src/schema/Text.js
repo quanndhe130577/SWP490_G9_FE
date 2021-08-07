@@ -11,6 +11,7 @@ export default function Text({
   required = false,
   submitted,
   onKeyDown,
+  placeholder,
 }) {
   return (
     <div className={"form-group" + (submitted && !value ? " has-error" : "")}>
@@ -29,6 +30,7 @@ export default function Text({
             onChange(e.target.value);
           }
         }}
+        placeholder={placeholder}
         onKeyDown={onKeyDown}
         required={required}
       />

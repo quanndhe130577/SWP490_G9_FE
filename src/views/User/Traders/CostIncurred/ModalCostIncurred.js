@@ -76,7 +76,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
           <Col md="6" xs="12">
             <Widgets.MoneyInput
               required={true}
-              label={i18n.t("cost")}
+              label={i18n.t("cost") + i18n.t("(suffix)")}
               value={costInc.cost || ""}
               onChange={(e) => handleChangeCostIncurred(e, "cost")}
             />

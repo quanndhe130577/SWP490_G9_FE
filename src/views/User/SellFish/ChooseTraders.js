@@ -24,7 +24,7 @@ const ChooseTraders = ({
       try {
         let rs = await apis.createTransactions({
           // date: helper.getDateFormat(),
-          date: helper.correctDate(),
+          date: helper.correctDate(new Date()),
           listTraderId: currentTransaction.listTraderId,
         });
         if (rs && rs.statusCode === 200) {

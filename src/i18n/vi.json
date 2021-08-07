@@ -191,5 +191,8 @@
   "viewDetail": "Xem chi tiết",
   "Completed": "Đã hoàn thành",
   "Pending": "Đang xử lý",
-  "wcReceiver": "Số tiền nhận được"
+  "wcReceiver": "Số tiền nhận được",
+  "weightBasket": "Khối lượng rổ (Kg)",
+  "minWeight": "Trọng lượng tối thiểu (Kg)",
+  "maxWeight": "Trọng lượng tối đa (Kg)"
 }
