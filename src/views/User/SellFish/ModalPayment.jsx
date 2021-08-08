@@ -102,7 +102,7 @@ const ModalBuyer = ({ isShowBuyer, date, setShowBuyer }) => {
           <Col md="6">
             <Widgets.Select
               required={true}
-              label={i18n.t("trader")}
+              label={i18n.t("buyer")}
               value={currentDetail.buyerId || ""}
               onChange={(e) => handleCurrentDetail("buyerId", e)}
               items={buyers || []}

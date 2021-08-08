@@ -30,7 +30,7 @@ const ChooseTraders = ({
         if (rs && rs.statusCode === 200) {
           helper.toast("success", i18n.t(rs.message || "success"));
           history.push(
-            "sellF?date=" + helper.getDateFormat(new Date(), "ddmmyyyy")
+            "sellFish?date=" + helper.getDateFormat(new Date(), "ddmmyyyy")
           );
           setShowChooseTraders(false);
         }

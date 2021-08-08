@@ -17,7 +17,9 @@ const ManaSell = () => {
 
   async function onClickBtn(mode, id, row) {
     if (mode === "edit") {
-      history.push("sellF?date=" + helper.getDateFormat(row.date, "ddmmyyyy"));
+      history.push(
+        "sellFish?date=" + helper.getDateFormat(row.date, "ddmmyyyy")
+      );
       local.set(
         "historyTransaction",
         transaction.find((e) => e.id === id)
@@ -212,7 +214,7 @@ const ManaSell = () => {
             className="mb-2 pull-right"
             onClick={() => {
               history.push(
-                "sellF?date=" + helper.getDateFormat(new Date(), "ddmmyyyy")
+                "sellFish?date=" + helper.getDateFormat(new Date(), "ddmmyyyy")
               );
             }}
           >
