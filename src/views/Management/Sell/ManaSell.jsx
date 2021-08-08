@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "reactstrap";
 import { apis, local, helper } from "../../../services";
-import { Card, Table } from "antd";
+import { Card, Table, Tag } from "antd";
 import i18n from "i18next";
 import { useHistory } from "react-router-dom";
 import Moment from "react-moment";
@@ -99,27 +99,37 @@ const ManaSell = () => {
         let name = "";
 
         if (user.roleName !== "Trader") {
-          listTrader.forEach((trader, idx) => {
-            if (trader) {
-              name += trader.firstName + " " + trader.lastName;
-            }
-            if (idx < listTrader.length - 1) {
-              name += ", ";
-            }
-          });
+          // listTrader.forEach((trader, idx) => {
+          //   if (trader) {
+          //     name += trader.firstName + " " + trader.lastName;
+          //   }
+          //   if (idx < listTrader.length - 1) {
+          //     name += ", ";
+          //   }
+          // });
+          return listTrader.map((trader, idx) => (
+            <Tag key={idx}>
+              {trader.firstName} {trader.lastName}
+            </Tag>
+          ));
         } else {
           // if (row.listWeightRecorder.length === 0) {
           //   name += "tự bán";
           // } else {
-          row.listWeightRecorder.forEach((wr, idx) => {
-            if (wr && (wr.firstName || wr.lastName)) {
-              name += wr.firstName + " " + wr.lastName;
-            }
-            if (idx < row.listWeightRecorder.length - 1) {
-              name += ", ";
-            }
-          });
+          // row.listWeightRecorder.forEach((wr, idx) => {
+          //   if (wr && (wr.firstName || wr.lastName)) {
+          //     name += wr.firstName + " " + wr.lastName;
+          //   }
+          //   if (idx < row.listWeightRecorder.length - 1) {
+          //     name += ", ";
+          //   }
+          // });
           // }
+          return row.listWeightRecorder.map((wr, idx) => (
+            <Tag key={idx}>
+              {wr.firstName} {wr.lastName}
+            </Tag>
+          ));
         }
         return <span>{name}</span>;
       },
