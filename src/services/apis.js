@@ -141,7 +141,8 @@ var path = {
   getGeneralTrans: "/api/transaction/getGeneral", // GET
   updateTransDetail: "/api/transactionDetail/update",
   deleteTransDetail: "/api/transactionDetail/delete", //transactionDetailId
-  buyerPayment: "/api/transactionDetail/payment", // Get
+  getTransDTByBuyer: "/api/transactionDetail/payment", // Get
+  paymentForBuyer: "/api/transactionDetail/buyer/payment",
 };
 
 Object.keys(path).forEach(function (key) {
