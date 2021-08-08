@@ -195,5 +195,9 @@
   "wcReceiver": "Số tiền nhận được",
   "weightBasket": "Khối lượng rổ (Kg)",
   "minWeight": "Trọng lượng tối thiểu (Kg)",
-  "maxWeight": "Trọng lượng tối đa (Kg)"
+  "maxWeight": "Trọng lượng tối đa (Kg)",
+  "moneyNotPaid": "Số tiền chưa trả",
+  "moneyPaid": "Số tiền đã trả",
+  "totalMoney": "Tổng số tiền",
+  "payment": "Thanh toán"
 }

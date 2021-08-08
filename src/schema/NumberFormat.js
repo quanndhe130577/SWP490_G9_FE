@@ -4,7 +4,6 @@ import NumberFormat from "react-number-format";
 export default function NumberFormat2({
   value,
   label,
-  error,
   isDisable = false,
   onChange,
   displayType = "text",
@@ -12,12 +11,17 @@ export default function NumberFormat2({
   submitted,
   format,
   prefix = "",
-  needFormGroup = true,
   className = "",
   needSuffix = true,
+  suffix = "VND",
 }) {
   function onValueChange(e) {
     if (onChange && !isDisable) onChange(e);
+  }
+  function renderSuffix(params) {
+    if (needSuffix) {
+      return " " + suffix;
+    }
   }
   return (
     <div
@@ -34,7 +38,7 @@ export default function NumberFormat2({
         value={value || 0}
         displayType={displayType}
         thousandSeparator={true}
-        suffix={needSuffix ? " VND" : ""}
+        suffix={renderSuffix()}
         onValueChange={onValueChange}
       />
       {submitted && !value && (

@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "reactstrap";
 import { apis, local, helper } from "../../../services";
-import { Card, Table, Tag } from "antd";
-// import { useDispatch } from "react-redux";
+import { Card, Table } from "antd";
 import i18n from "i18next";
 import { useHistory } from "react-router-dom";
 import Moment from "react-moment";
 import NumberFormat from "react-number-format";
 import { session } from "../../../services";
-// import moment from "moment";
 
 const ManaSell = () => {
   let history = useHistory();
@@ -101,44 +99,35 @@ const ManaSell = () => {
         let name = "";
 
         if (user.roleName !== "Trader") {
-          // listTrader.forEach((trader, idx) => {
-          //   if (trader) {
-          //     name += trader.firstName + " " + trader.lastName;
-          //   }
-          //   if (idx < listTrader.length - 1) {
-          //     name += ", ";
-          //   }
-          // }
-          // );
-          return listTrader.map((trader, idx) => (
-            <Tag key={idx}>
-              {trader.firstName} {trader.lastName}
-            </Tag>
-          ));
+          listTrader.forEach((trader, idx) => {
+            if (trader) {
+              name += trader.firstName + " " + trader.lastName;
+            }
+            if (idx < listTrader.length - 1) {
+              name += ", ";
+            }
+          });
         } else {
-          // row.listWeightRecorder.forEach((wr, idx) => {
-          //   if (wr) {
-          //     name += wr.firstName + " " + wr.lastName;
-          //   }
-          //   if (idx < row.listWeightRecorder.length - 1) {
-          //     name += ", ";
-          //   }
-          // });
-          return row.listWeightRecorder.map((wr, idx) => (
-            <Tag key={idx}>
-              {wr.firstName} {wr.lastName}
-            </Tag>
-          ));
+          // if (row.listWeightRecorder.length === 0) {
+          //   name += "tự bán";
+          // } else {
+          row.listWeightRecorder.forEach((wr, idx) => {
+            if (wr && (wr.firstName || wr.lastName)) {
+              name += wr.firstName + " " + wr.lastName;
+            }
+            if (idx < row.listWeightRecorder.length - 1) {
+              name += ", ";
+            }
+          });
+          // }
         }
-        //return <Tag key={listTrader}>{name}</Tag>;
-        //return <span>{name}</span>;
+        return <span>{name}</span>;
       },
     },
     {
       title: i18n.t("totalWeight") + " (Kg)",
       dataIndex: "totalWeight",
       key: "totalWeight",
-      // ...this.getColumnSearchProps("totalWeight"),
       sorter: (a, b) => a.totalWeight - b.totalWeight,
       sortDirections: ["descend", "ascend"],
     },
@@ -177,14 +166,13 @@ const ManaSell = () => {
       render: (id, row) => (
         <Button
           style={{ width: "100%" }}
-          // color="info"
-          color="danger"
+          color="info"
+          // color="danger"
           className="mr-2"
           onClick={() => onClickBtn("edit", id, row)}
         >
           <i className="fa fa-pencil-square-o mr-1" />
-          Chi tiết
-          {/* {i18n.t("transaction.action.continue")} */}
+          {i18n.t("action.purchase.detail")}
         </Button>
       ),
     },

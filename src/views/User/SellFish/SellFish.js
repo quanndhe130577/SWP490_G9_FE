@@ -7,7 +7,7 @@ import LoadingCustom from "../../../containers/Antd/LoadingCustom";
 import ChooseTraders from "./ChooseTraders";
 import ModalSell from "./ModalSell";
 import ModalCloseTransaction from "./ModalCloseSell";
-import ModalBuyer from "./ModalBuyer";
+import ModalBuyer from "./ModalPayment";
 import queryString from "qs";
 import { apis, helper, session } from "../../../services";
 
@@ -523,8 +523,8 @@ const SellFish = (props) => {
                   }}
                   className="w-100"
                 >
-                  {/* <i className="fa fa-plus mr-1" /> */}
-                  {i18n.t("buyer")}
+                  <i className="fa fa-shopping-cart mr-1" />
+                  {i18n.t("payment")}
                 </Button>
               </Col>
             </Row>
@@ -537,7 +537,7 @@ const SellFish = (props) => {
                     {renderTitleTable(trans)}
                     <Table
                       key={idx + trans.id}
-                      rowKey="idx"
+                      rowKey={idx + trans.id}
                       columns={calculateColumns(columns, trans)}
                       dataSource={trans.transactionDetails || []}
                       loading={isLoading}
