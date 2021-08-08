@@ -8,13 +8,29 @@ import { apis, helper } from "../../../services";
 import NumberFormat from "react-number-format";
 import Moment from "react-moment";
 
-const ModalBuyer = ({ isShowBuyer, date, setShowBuyer }) => {
+const ModalBuyer = ({ isShowBuyer, date, setShowBuyer, getAllTransByDate }) => {
   const [loading, setLoading] = useState(false);
   const [buyers, setBuyers] = useState([]);
   const [listTransDetail, setListTransDetail] = useState([]);
   const [currentDetail, setCurrentDetail] = useState({});
 
-  const handleOk = async () => {};
+  const handleOk = async () => {
+    try {
+      console.log(currentDetail);
+      // debugger;
+      let rs = await apis.paymentForBuyer({
+        buyerId: currentDetail.buyerId,
+        date: currentDetail.date,
+      });
+      if (rs && rs.statusCode === 200) {
+        helper.toast("success", i18n.t(rs.message || "success"));
+        setShowBuyer(false);
+        getAllTransByDate(date);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleCancel = () => {
     setShowBuyer(false);
   };
@@ -28,11 +44,11 @@ const ModalBuyer = ({ isShowBuyer, date, setShowBuyer }) => {
     setCurrentDetail((preStates) => ({ ...preStates, [pro]: value }));
     setLoading(false);
   };
-  async function buyerPayment(date) {
+  async function getTransDTByBuyer(date) {
     try {
       setLoading(true);
 
-      let rs = await apis.buyerPayment({}, "GET", date);
+      let rs = await apis.getTransDTByBuyer({}, "GET", date);
 
       if (rs && rs.statusCode === 200) {
         let buyers = [];
@@ -73,7 +89,7 @@ const ModalBuyer = ({ isShowBuyer, date, setShowBuyer }) => {
     );
   };
   useEffect(() => {
-    buyerPayment(date);
+    getTransDTByBuyer(date);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
@@ -81,6 +97,9 @@ const ModalBuyer = ({ isShowBuyer, date, setShowBuyer }) => {
       title={i18n.t("payment")}
       visible={isShowBuyer}
       onOk={handleOk}
+      disabledOk={
+        currentDetail && currentDetail.moneyNotPaid === 0 ? true : false
+      }
       onCancel={handleCancel}
       width={
         currentDetail.transactionDetails &&

@@ -468,6 +468,7 @@ const SellFish = (props) => {
             isShowBuyer={isShowBuyer}
             setShowBuyer={(state) => setShowBuyer(state)}
             date={date}
+            getAllTransByDate={(date) => getAllTransByDate(date)}
           />
         )}
         {!isShowChooseTraders && (
