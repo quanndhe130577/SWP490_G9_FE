@@ -186,6 +186,6 @@
   "payForTrader": "Số tiền trả cho thương lái",
   "commissionUnitCanNull": "Vui lòng điền tiền phế",
   "traderUnitCanNull": "Vui lòng chọn thương lái",
-    "commissionWR": "Phế (VND/Kg)",
-      "modal.title.updatePurchase": "Cập nhật thông tin giá cá"
+  "commissionWR": "Phế (VND/Kg)",
+  "modal.title.updatePurchase": "Cập nhật thông tin giá cá"
 }
