@@ -287,8 +287,8 @@ const ModalSell = ({
                       label={i18n.t("payStatus")}
                       value={transaction.isPaid || false}
                       onChange={(e) => handleChangeTran("isPaid", e)}
-                      lblChecked={i18n.t("isPaid")}
-                      lblCheckbox={i18n.t("isNotPaid")}
+                      lblCheckbox={i18n.t("isPaid")}
+                      // lblCheckbox={i18n.t("isNotPaid")}
                       disabled={transaction.isRetailCustomers || false}
                     />
                   </Col>
@@ -367,8 +367,8 @@ const ModalSell = ({
                       label={i18n.t("payStatus")}
                       value={transaction.isPaid || false}
                       onChange={(e) => handleChangeTran("isPaid", e)}
-                      lblChecked={i18n.t("isPaid")}
-                      lblCheckbox={i18n.t("isNotPaid")}
+                      // lblChecked={i18n.t("isPaid")}
+                      lblCheckbox={i18n.t("isPaid")}
                       disabled={transaction.isRetailCustomers || false}
                     />
                   </Col>

@@ -54,6 +54,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
           <Col md="6" xs="12">
             <Widgets.Text
               required={true}
+              placeholder={"34C-123456"}
               label={i18n.t("licensePlate")}
               value={truck.licensePlate || ""}
               onChange={(e) => handleChangePondOwner(e, "licensePlate")}
@@ -62,6 +63,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
           <Col md="6" xs="12">
             <Widgets.Text
               required={true}
+              placeholder={"Xe tải 1"}
               label={i18n.t("name")}
               value={truck.name || ""}
               onChange={(e) => handleChangePondOwner(e, "name")}

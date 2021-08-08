@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "../../../containers/Antd/ModalCustom";
 import { Table } from "antd";
 import { Row, Col } from "reactstrap";
@@ -15,11 +15,12 @@ const ModalCloseSell = ({
   dataDf,
   handleCloseTrans,
   date,
+  traderId,
+  handleChangeTraderId,
 }) => {
   const [currentTransaction, setCurrentTransaction] = useState({});
   const [total, setTotal] = useState({});
 
-  // transaction là 1 bản ghi của transaction
   const [loading, setLoading] = useState(false);
 
   const handleOk = () => {
@@ -53,6 +54,10 @@ const ModalCloseSell = ({
     handleCloseModal(!isShowCloseTransaction);
   };
   const handleChangeTran = async (name, val) => {
+    // if (traderId) {
+    //   debugger;
+    //   handleChangeTraderId("");
+    // }
     if (name === "traderId") {
       let trader = dataDf.tradersSelected.find((el) => el.id === val);
       let trans = listTransaction.find((el) => el.id === trader.transId);
@@ -90,13 +95,11 @@ const ModalCloseSell = ({
       if (!ele.totalWeight || !ele.totalAmount) {
         ele.totalWeight = 0;
         ele.totalAmount = 0;
-        // ele.totalSellPrice = 0;
       }
       let tem = arr.filter((el) => el.fishType.id === ele.id);
       tem.forEach((el) => {
         ele.totalWeight += el.weight;
         ele.totalAmount += el.sellPrice * el.weight;
-        // ele.totalSellPrice += el.sellPrice;
       });
     });
     let totalAmount = 0,
@@ -109,6 +112,14 @@ const ModalCloseSell = ({
     return arrFish.filter((fi) => fi.totalWeight > 0);
   }
 
+  useEffect(() => {
+    if (traderId) {
+      handleChangeTran("traderId", traderId);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [traderId]);
+
   return (
     <Modal
       title={i18n.t("closeTransaction")}
@@ -117,6 +128,7 @@ const ModalCloseSell = ({
       onCancel={handleCancel}
       loading={loading}
       width={800}
+      disabledOk={traderId}
       component={() => (
         <Row>
           <Col md="12">
@@ -140,6 +152,7 @@ const ModalCloseSell = ({
           <Col md="6">
             <Widgets.MoneyInput
               placeholder="700"
+              disabled={traderId}
               required={true}
               label={i18n.t("commissionWR")}
               value={currentTransaction.commissionUnit || ""}
@@ -193,28 +206,22 @@ const ModalCloseSell = ({
             currentTransaction.commissionUnit > 0 && (
               <>
                 <Col md="6">
-                  <Widgets.MoneyInput
-                    disabled
-                    placeholder="700"
-                    label={i18n.t("wcTReciver")}
+                  <Widgets.NumberFormat
+                    label={i18n.t("wcReceiver") + ": "}
                     value={
                       total.totalWeight * currentTransaction.commissionUnit ||
                       ""
                     }
-                    // onChange={(val) => handleChangeTran("commissionUnit", val)}
                   />
                 </Col>
                 <Col md="6">
-                  <Widgets.MoneyInput
-                    disabled
-                    placeholder="700"
-                    label={i18n.t("payForTrader")}
+                  <Widgets.NumberFormat
+                    label={i18n.t("payForTrader") + ": "}
                     value={
                       total.totalAmount -
                         total.totalWeight * currentTransaction.commissionUnit ||
                       ""
                     }
-                    // onChange={(val) => handleChangeTran("commissionUnit", val)}
                   />
                 </Col>
               </>

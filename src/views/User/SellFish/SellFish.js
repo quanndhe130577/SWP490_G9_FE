@@ -7,6 +7,7 @@ import LoadingCustom from "../../../containers/Antd/LoadingCustom";
 import ChooseTraders from "./ChooseTraders";
 import ModalSell from "./ModalSell";
 import ModalCloseTransaction from "./ModalCloseSell";
+import ModalBuyer from "./ModalBuyer";
 import queryString from "qs";
 import { apis, helper, session } from "../../../services";
 
@@ -20,6 +21,7 @@ const SellFish = (props) => {
   const [isShowChooseTraders, setShowChooseTraders] = useState(false);
   const [isShowCloseTransaction, setShowCloseTrans] = useState(false);
   const [isShowSell, setShowSell] = useState(false);
+  const [isShowBuyer, setShowBuyer] = useState(false);
   // data
   const [listTransaction, setListTransaction] = useState([]);
   const [listTransDetail, setListTransDetail] = useState([]);
@@ -30,6 +32,7 @@ const SellFish = (props) => {
   const [user, setUser] = useState({});
   // const [traderInDate, setTraderInDate] = useState([]);
   const [dataFetched, setDtFetched] = useState({}); // include trader by WR
+  const [currentTraderId, setCurrentTraderId] = useState("");
 
   const handleBtnAction = (action, id) => {
     if (action === "delete") {
@@ -131,7 +134,7 @@ const SellFish = (props) => {
       title: i18n.t("statusPaid"),
       dataIndex: "isPaid",
       key: "isPaid",
-      render: (isPaid) => <span>{i18n.t(isPaid ? "isPaid" : "notPaid")}</span>,
+      render: (isPaid) => helper.tag(isPaid ? "isPaid" : "notPaid"),
     },
 
     {
@@ -203,7 +206,7 @@ const SellFish = (props) => {
         await getTraderByWR();
       }
 
-      await getAllTransByDate(date);
+      await getAllTransByDate(date, user);
 
       setLoading(false);
     } catch (error) {
@@ -221,12 +224,32 @@ const SellFish = (props) => {
       console.log(error);
     }
   }
-  async function getAllTransByDate(date) {
+  async function createOneTrans() {
+    // create  one transaction
+    try {
+      let rs = await apis.createOneTrans({
+        date: helper.correctDate(new Date()),
+      });
+      if (rs && rs.statusCode === 200) {
+        // helper.toast("success", i18n.t(rs.message || "success"));
+        history.push(
+          "sellF?date=" + helper.getDateFormat(new Date(), "ddmmyyyy")
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async function getAllTransByDate(date, user) {
     try {
       let rs = await apis.getTransByDate({}, "GET", date);
       if (rs && rs.statusCode === 200) {
         if (rs.data.length === 0) {
-          setShowChooseTraders(true);
+          if (user.roleName !== "Trader") setShowChooseTraders(true);
+          else {
+            setShowChooseTraders(false);
+            createOneTrans();
+          }
         } else {
           let tem = [],
             temTransDetail = [],
@@ -286,7 +309,16 @@ const SellFish = (props) => {
                 {i18n.t("deleteTrans")}
               </Button>
             ) : showBtnDelete(trans) === "complete" ? (
-              <span>{i18n.t("complete")}:))</span>
+              <Button
+                color="info"
+                onClick={() => {
+                  setCurrentTraderId(trans.trader.id);
+                  setShowCloseTrans(true);
+                }}
+              >
+                <i className="fa fa-info-circle mr-1" />
+                {i18n.t("viewDetail")}
+              </Button>
             ) : (
               ""
             )}
@@ -315,7 +347,7 @@ const SellFish = (props) => {
         if (rs) {
           let rs = await apis.deleteTrans(transactionId);
           if (rs && rs.statusCode === 200) {
-            getAllTransByDate(date);
+            handleBack();
             helper.toast("success", i18n.t(rs.message || "success"));
           }
         }
@@ -342,6 +374,7 @@ const SellFish = (props) => {
       console.log(error);
     }
   };
+
   useEffect(() => {
     let query = queryString.parse(props.location.search, {
       ignoreQueryPrefix: true,
@@ -387,8 +420,15 @@ const SellFish = (props) => {
             dataDf={dataFetched || []}
             date={date}
             isShowCloseTransaction={isShowCloseTransaction}
-            handleCloseModal={() => setShowCloseTrans(false)}
+            handleCloseModal={() => {
+              setShowCloseTrans(false);
+              setCurrentTraderId("");
+            }}
             handleCloseTrans={handleCloseTrans}
+            traderId={currentTraderId}
+            handleChangeTraderId={() => {
+              setCurrentTraderId("");
+            }}
           />
         )}
         {isShowChooseTraders && user.roleName !== "Trader" && (
@@ -413,10 +453,17 @@ const SellFish = (props) => {
             date={date}
           />
         )}
+        {isShowBuyer && (
+          <ModalBuyer
+            isShowBuyer={isShowBuyer}
+            setShowBuyer={(state) => setShowBuyer(state)}
+            date={date}
+          />
+        )}
         {!isShowChooseTraders && (
           <Card title={renderTitle()} style={{ minHeight: "80vh" }}>
             <Row className="mb-2">
-              <Col md="6">
+              <Col md="3">
                 <label className="mr-2">
                   <b>{i18n.t("date")}:</b>
                   <Moment format="DD/MM/YYYY" className="ml-2">
@@ -427,8 +474,8 @@ const SellFish = (props) => {
                 </label>
               </Col>
 
-              {user.roleName === "Trader" && <Col md="2" />}
-              <Col md="2" xs="6">
+              {user.roleName === "Trader" && <Col md="3" />}
+              <Col md="3" xs="6">
                 <Button
                   color="info"
                   onClick={() => setShowCloseTrans(true)}
@@ -438,7 +485,7 @@ const SellFish = (props) => {
                 </Button>
               </Col>
               {user.roleName !== "Trader" && (
-                <Col md="2" xs="6">
+                <Col md="3" xs="6">
                   <Button
                     color="info"
                     onClick={() => setShowChooseTraders(true)}
@@ -449,7 +496,7 @@ const SellFish = (props) => {
                 </Col>
               )}
 
-              <Col md="2" xs="6">
+              <Col md="3" xs="6">
                 <Button
                   color="info"
                   onClick={() => {
@@ -461,6 +508,23 @@ const SellFish = (props) => {
                 >
                   <i className="fa fa-plus mr-1" />
                   {i18n.t("Thêm Mã Bán")}
+                </Button>
+              </Col>
+            </Row>
+            {/* SECOND ROW*/}
+            <Row className="mb-2">
+              <Col md="6" />
+              <Col md="3" />
+              <Col md="3">
+                <Button
+                  color="info"
+                  onClick={() => {
+                    setShowBuyer(true);
+                  }}
+                  className="w-100"
+                >
+                  {/* <i className="fa fa-plus mr-1" /> */}
+                  {i18n.t("buyer")}
                 </Button>
               </Col>
             </Row>
@@ -513,8 +577,16 @@ const SellFish = (props) => {
                                   thousandSeparator={true}
                                 />
                               </Table.Summary.Cell>
-                              <Table.Summary.Cell key="5" />
-                              <Table.Summary.Cell colSpan="4" key="6" />
+                              <Table.Summary.Cell
+                                key="5"
+                                colSpan="3"
+                                className="bold"
+                              >
+                                {trans.status === "Completed"
+                                  ? helper.tag(trans.status)
+                                  : ""}
+                              </Table.Summary.Cell>
+                              {/* <Table.Summary.Cell colSpan="4" key="6" /> */}
                             </Table.Summary.Row>
                           </Table.Summary>
                         );

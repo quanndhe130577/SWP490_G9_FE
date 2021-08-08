@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Input, Table } from "antd";
 import i18n from "i18next";
 import { Button } from "reactstrap";
-import apis from "../../../../services/apis";
+import { apis } from "../../../../services";
 import Widgets from "../../../../schema/Widgets";
+import i18next from "i18next";
 
 const PriceFishToday = ({
   listFishId,
@@ -48,9 +49,6 @@ const PriceFishToday = ({
   };
 
   const onRemoveFish = (id) => {
-    //const newDatas = dataS.filter((x) => x.id !== id);
-    //setData([...newDatas]);
-    //dataChange(newDatas);
     removeFishType(id);
     //   // chưa cập nhật lại được listFishId ở chosePond
     // }
@@ -80,7 +78,7 @@ const PriceFishToday = ({
       ),
     },
     {
-      title: "Trọng lượng tối thiểu",
+      title: i18n.t("minWeight"),
       dataIndex: "minWeight",
       key: "minWeight",
       width: "12%",
@@ -95,7 +93,7 @@ const PriceFishToday = ({
       ),
     },
     {
-      title: "Trọng lượng tối đa",
+      title: i18n.t("maxWeight"),
       dataIndex: "maxWeight",
       key: "maxWeight",
       width: "12%",
@@ -136,7 +134,6 @@ const PriceFishToday = ({
     {
       title: "Hành động",
       key: "action",
-      //width: "10%",
       render: (text, record) => (
         <div size="middle">
           {/* <label>{i18n.t("edit")}</label> */}

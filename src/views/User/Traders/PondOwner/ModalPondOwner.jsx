@@ -7,9 +7,9 @@ import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 
-const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
+const ModalPondOwner = ({ isShow, closeModal, mode, currentPO }) => {
   const [pondOwner, setPO] = useState(currentPO);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const handleChangePondOwner = (val, name) => {
     // set state pondOwner by name and value
@@ -21,19 +21,19 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
 
   //
   const validatePhoneNumber = (data) => {
-    const phoneNumberVNRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/
+    const phoneNumberVNRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
     if (!phoneNumberVNRegex.test(data)) {
-      return { isValid: false, message: 'Số điện thoại không đúng' };
+      return { isValid: false, message: "Số điện thoại không đúng" };
     }
-    return { isValid: true, message: '' };
-  }
+    return { isValid: true, message: "" };
+  };
 
   // handle click btn ok
   const handleOk = async () => {
     try {
-
-      setLoading(true)
-      let user = session.get("user"), rs;
+      setLoading(true);
+      let user = session.get("user"),
+        rs;
 
       // validate name, phone number: can't null
       if (!pondOwner.name || !pondOwner.phoneNumber) {
@@ -67,7 +67,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
       console.log(error);
       helper.toast("error", i18n.t("systemError"));
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
   return (
@@ -89,6 +89,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
           </Col>
           <Col md="6" xs="12">
             <Widgets.Text
+              required={true}
               label={i18n.t("address")}
               value={pondOwner.address || ""}
               onChange={(e) => handleChangePondOwner(e, "address")}
@@ -109,4 +110,4 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
   );
 };
 
-export default ModalEdit;
+export default ModalPondOwner;

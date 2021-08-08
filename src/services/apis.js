@@ -128,6 +128,7 @@ var path = {
   getTransByDate: "/api/transaction/getall", //GET param:date /{ddMMyyyy}
   deleteTrans: "/api/transaction/delete", // transactionId
   closeTrans: "/api/transaction/chotso",
+  createOneTrans: "/api/transaction/create",
 
   //anhnbt forget(reset password)
   getResetPassword: "/api/otp/reset-password",

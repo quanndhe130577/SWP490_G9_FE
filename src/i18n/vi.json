@@ -186,6 +186,14 @@
   "payForTrader": "Số tiền trả cho thương lái",
   "commissionUnitCanNull": "Vui lòng điền tiền phế",
   "traderUnitCanNull": "Vui lòng chọn thương lái",
+  "modal.title.updatePurchase": "Cập nhật thông tin giá cá",
   "commissionWR": "Phế (VND/Kg)",
-  "modal.title.updatePurchase": "Cập nhật thông tin giá cá"
+  "modal.title.updatePurchase": "Cập nhật thông tin giá cá",
+  "viewDetail": "Xem chi tiết",
+  "Completed": "Đã hoàn thành",
+  "Pending": "Đang xử lý",
+  "wcReceiver": "Số tiền nhận được",
+  "weightBasket": "Khối lượng rổ (Kg)",
+  "minWeight": "Trọng lượng tối thiểu (Kg)",
+  "maxWeight": "Trọng lượng tối đa (Kg)"
 }
