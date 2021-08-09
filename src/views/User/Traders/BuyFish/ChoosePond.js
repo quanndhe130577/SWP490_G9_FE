@@ -37,7 +37,10 @@ const ChoosePond = ({
       }
       // update fishtype khi ở trong page purchase detail
     } else if (currentPurchase.id) {
-      await updateFishType(currentPurchase, dataChange, true);
+      var rs = await updateFishType(currentPurchase, dataChange, true);
+      if (rs) {
+        setShowChoosePond(false);
+      }   
     }
   };
 
@@ -155,6 +158,7 @@ const ChoosePond = ({
             listFishId={currentPurchase.listFishId || []}
             onChange={(arr) => onChange(arr, "arrFish")}
             dataDf={dataDf}
+            dateTime={currentPurchase.date}
             dataChange={(data) => {
               setDataChange(data);
             }}

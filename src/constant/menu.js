@@ -34,7 +34,7 @@ const MENU = [
     role: "Thương lái",
   },
   {
-    title: "fishType",
+    title: "historyPurchaseFishtype",
     icon: <OrderedListOutlined />,
     link: "/fishType",
     role: "Thương lái",

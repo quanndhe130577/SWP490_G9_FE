@@ -175,7 +175,7 @@ export default class FishType extends Component {
           <label className="hd-total">{total ? "(" + total + ")" : ""}</label>
         </Col>
 
-        <Col md="6">
+        {/* <Col md="6">
           <Button
             color="info"
             className="pull-right"
@@ -186,7 +186,7 @@ export default class FishType extends Component {
             <i className="fa fa-plus mr-1" />
             {i18n.t("create")}
           </Button>
-        </Col>
+        </Col> */}
       </Row>
     );
   };
@@ -255,12 +255,106 @@ export default class FishType extends Component {
   }
   render() {
     const { isShowModal, mode, currentFT, data, loading } = this.state;
+    var preDate = "";
+    var currentDate = "";
+    var currentPO = "";
+    var currentPage = 0;
     const columns = [
       {
         title: i18n.t("INDEX"),
         dataIndex: "idx",
         key: "idx",
-        render: (text) => <label>{text}</label>,
+        width: 60,
+        //render: (text) => <label>{text}</label>,
+        render: (value, row, index) => {
+          const obj = {
+            children: value,
+            props: {},
+          };
+
+          var temp = currentPage;
+          currentPage = (value - 1 - ((value - 1) % 10)) / 10;
+          if (currentPage != temp) {
+            preDate = "";
+            currentDate = "";
+            currentPO = "";
+          }
+
+          return obj;
+        },
+      },
+      {
+        title: i18n.t("Sell Date FT"),
+        dataIndex: "date",
+        key: "date",
+        ...this.getColumnSearchProps("date", true),
+        sorter: (a, b) => moment(a.data).unix() - moment(b.date).unix(),
+        sortDirections: ["descend", "ascend"],
+        //render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
+        render: (value, row, index) => {
+          const obj = {
+            children: <Moment format="DD/MM/YYYY">{value}</Moment>,
+            props: {},
+          };
+
+          obj.props.rowSpan = 0;
+          if (currentDate != value) {
+            data.forEach((element, subindex) => {
+              //if (subindex >= 10 * currentPage && subindex < 10 * (currentPage + 1)) {
+              if (
+                element.date == value &&
+                subindex >= 10 * currentPage &&
+                subindex < 10 * (currentPage + 1)
+              ) {
+                obj.props.rowSpan += 1;
+              }
+              //}
+            });
+          }
+
+          preDate = currentDate;
+          currentDate = value;
+
+          return obj;
+        },
+      },
+      {
+        title: "Chủ ao",
+        dataIndex: "pondOwner",
+        key: "pondOwner",
+        ...this.getColumnSearchProps("pondOwner"),
+        sorter: (a, b) =>
+          a.pondOwner
+            ? a.pondOwner.name.length
+            : 0 - b.pondOwner.name.length
+            ? b.pondOwner.name.length
+            : 0,
+        sortDirections: ["descend", "ascend"],
+        //render: (pondOwner) => pondOwner.name,
+        render: (value, row, index) => {
+          const obj = {
+            children: value.name,
+            props: {},
+          };
+
+          obj.props.rowSpan = 0;
+          if (preDate != currentDate || currentPO != value.name) {
+            data.forEach((element, subindex) => {
+              //if (subindex >= 10 * currentPage && subindex < 10 * (currentPage + 1)) {
+              if (
+                element.pondOwner.name == value.name &&
+                row.date == element.date &&
+                subindex >= 10 * currentPage &&
+                subindex < 10 * (currentPage + 1)
+              ) {
+                obj.props.rowSpan += 1;
+              }
+              //}
+            });
+          }
+          currentPO = value.name;
+          return obj;
+        },
       },
       {
         title: i18n.t("Fish Name"),
@@ -275,32 +369,6 @@ export default class FishType extends Component {
             : 0,
         sortDirections: ["descend", "ascend"],
       },
-      // {
-      //   title: i18n.t("Mô tả"),
-      //   dataIndex: "description",
-      //   key: "description",
-      //   ...this.getColumnSearchProps("description"),
-      //   sorter: (a, b) => a.description - b.description,
-      //   sortDirections: ["descend", "ascend"],
-      // },
-
-      // {
-      //   title: i18n.t("Cân nặng tối thiểu"),
-      //   dataIndex: "minWeight",
-      //   key: "minWeight",
-      //   ...this.getColumnSearchProps("minWeight"),
-      //   sorter: (a, b) => a.minWeight - b.minWeight,
-      //   sortDirections: ["descend", "ascend"],
-      // },
-      // {
-      //   title: i18n.t("Cân nặng tối đa"),
-      //   dataIndex: "maxWeight",
-      //   key: "maxWeight",
-      //   ...this.getColumnSearchProps("maxWeight"),
-      //   sorter: (a, b) => a.maxWeight - b.maxWeight,
-      //   sortDirections: ["descend", "ascend"],
-      // },
-
       {
         title: i18n.t("Range of Weight"),
         colSpan: 1,
@@ -311,15 +379,20 @@ export default class FishType extends Component {
         sorter: (a, b) => a.minWeight - b.minWeight,
         sortDirections: ["descend", "ascend"],
       },
-
       {
-        title: i18n.t("Sell Date FT"),
-        dataIndex: "date",
-        key: "date",
-        ...this.getColumnSearchProps("date", true),
-        sorter: (a, b) => moment(a.data).unix() - moment(b.date).unix(),
+        title: "Số lượng (kg)",
+        dataIndex: "totalWeight",
+        key: "totalWeight",
+        ...this.getColumnSearchProps("totalWeight"),
+        sorter: (a, b) => a.price - b.price,
         sortDirections: ["descend", "ascend"],
-        render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
+        render: (price) => (
+          <NumberFormat
+            value={price}
+            displayType={"text"}
+            thousandSeparator={true}
+          />
+        ),
       },
       {
         title: i18n.t("Buy Price") + i18n.t("(suffix)"),
@@ -356,20 +429,19 @@ export default class FishType extends Component {
           />
         ),
       },
-
-      {
-        title: "",
-        dataIndex: "id",
-        key: "id",
-        render: (id) => (
-          <Dropdown overlay={this.renderBtnAction(id)}>
-            <Button>
-              <i className="fa fa-cog mr-1" />
-              <label className="tb-lb-action">{i18n.t("action")}</label>
-            </Button>
-          </Dropdown>
-        ),
-      },
+      // {
+      //   title: "",
+      //   dataIndex: "id",
+      //   key: "id",
+      //   render: (id) => (
+      //     <Dropdown overlay={this.renderBtnAction(id)}>
+      //       <Button>
+      //         <i className="fa fa-cog mr-1" />
+      //         <label className="tb-lb-action">{i18n.t("action")}</label>
+      //       </Button>
+      //     </Dropdown>
+      //   ),
+      // },
     ];
     return (
       <Card title={this.renderTitle()}>
@@ -384,7 +456,7 @@ export default class FishType extends Component {
           />
         )}
         <Row>
-          <Col style={{ overflowX: "auto" }}>
+          <Col style={{ overflowX: "auto", overflowY: "auto" }}>
             <Table
               bordered
               columns={columns}
@@ -392,6 +464,7 @@ export default class FishType extends Component {
               pagination={{ pageSize: 10 }}
               scroll={{ y: 600 }}
               loading={loading}
+              rowKey={"idx"}
             />
           </Col>
         </Row>

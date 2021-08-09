@@ -204,5 +204,6 @@
   "report.buy-sell-date": "Báo cáo mua bán theo ngày",
   "buyFish": "Đơn mua",
   "dataNotYet": "Chưa có dữ liệu",
-  "buyBySelf": "Tự bán"
+  "buyBySelf": "Tự bán",
+  "historyPurchaseFishtype": "Lịch sử mua bán cá"
 }
