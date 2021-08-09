@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Row, Col } from "reactstrap";
 import { Checkbox, Modal, List, Radio } from "antd";
 import Widgets from "../../../../schema/Widgets";
+import helper from "../../../../services/helper";
 import apis from "../../../../services/apis";
 
 export default class CurrentEmps extends Component {
@@ -13,6 +14,7 @@ export default class CurrentEmps extends Component {
         let dateStart = new Date(emp.startDate);
         return this.props.currentDate > dateStart;
       }),
+      submit: false
     };
     this.getTimes = this.getTimes.bind(this);
     this.submit = this.submit.bind(this);
@@ -23,6 +25,7 @@ export default class CurrentEmps extends Component {
   }
   componentDidUpdate(props) {
     if (this.props.currentDate !== props.currentDate) {
+      this.setState({ submit: false })
       this.getTimes();
     }
   }
@@ -66,16 +69,6 @@ export default class CurrentEmps extends Component {
           });
         }
       }
-      // this.props.employees.filter(emp => {
-      //   let startDate = new Date(emp.startDate);
-      //   let endDate=null;
-      //   if(emp.endDate) {
-      //     endDate=new Date(emp.endDate);
-      //   }
-      //   return this.props.currentDate > startDate && endDate === null||(this.props.currentDate < endDate);
-      // }).forEach((emp) => {
-
-      // });
       this.setState({
         currentTimes: list,
       });
@@ -94,30 +87,40 @@ export default class CurrentEmps extends Component {
     this.props.getTimes();
   }
   async submit() {
+    this.props.cancel();
     let data = this.state.currentTimes;
-    for (let i = 0; i < data.length; i++) {
-      let item = data[i];
-      if (item.checked) {
-        if (item.id !== 0) {
-          await apis.updateTimeKeeping(item, "POST");
+    if (!this.state.submit) {
+      this.setState({ submit: true });
+      for (let i = 0; i < data.length; i++) {
+        let item = data[i];
+        item.workDay = helper.correctDate(item.workDay);
+        console.log(item.workDay)
+        if (item.checked) {
+          if (item.id !== 0) {
+            await apis.updateTimeKeeping(item, "POST");
+          } else {
+            await apis.createTimeKeeping(item, "POST");
+          }
         } else {
-          await apis.createTimeKeeping(item, "POST");
-        }
-      } else {
-        if (item.id !== 0) {
-          await apis.deleteTimeKeepingByTrader({}, "POST", item.id);
+          if (item.id !== 0) {
+            await apis.deleteTimeKeepingByTrader({}, "POST", item.id);
+          }
         }
       }
+      this.props.load();
     }
-    this.props.load();
-    this.props.cancel();
   }
 
   render() {
+    let date = this.props.currentDate.getDate().toString();
+    let month = this.props.currentDate.getMonth().toString();
+    let year = this.props.currentDate.getFullYear();
+    date = date.length === 1 ? `0${date}` : date;
+    month = month.length === 1 ? `0${month}` : month;
     return (
       <Modal
         width="70%"
-        title="Danh sách nhân viên trong ngày"
+        title={`Chấm công trong ngày ${date}\/${month}\/${year}`}
         okText="Lưu"
         visible={this.props.visible}
         onCancel={this.props.cancel}
@@ -135,9 +138,6 @@ export default class CurrentEmps extends Component {
               <Col md="5" xs="12">
                 <b>Công</b>
               </Col>
-              {/* <Col md="2" xs="12" className="d-flex justify-content-center">
-                <b>Thanh toán</b>
-              </Col> */}
             </Row>
           </List.Item>
         </List>
@@ -176,30 +176,13 @@ export default class CurrentEmps extends Component {
                             )
                           }
                         >
+                          <Radio value={0}>Không đi làm</Radio>
                           <Radio value={0.5}>Nửa công</Radio>
                           <Radio value={1}>Một công</Radio>
                         </Radio.Group>
                       }
                     />
                   </Col>
-
-                  {/* <Col md="2" xs="12" className="d-flex justify-content-center">
-                    <Widgets.Custom
-                      component={
-                        <Checkbox
-                          disabled={!item.checked}
-                          checked={item.note === 0}
-                          onChange={(event) =>
-                            this.handleChange(
-                              event.target.checked ? 0 : 1,
-                              item,
-                              "note"
-                            )
-                          }
-                        />
-                      }
-                    />
-                  </Col> */}
                 </Row>
               </List.Item>
             </>
