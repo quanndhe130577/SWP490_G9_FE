@@ -64,13 +64,12 @@ const ModalBaseSalaries = ({ isShow, closeModal, baseSalaries, name, currentEmp 
       title={"Lương " + " của " + name}
       footer=""
       visible={isShow}
-      onCancel={closeModal}
+      onCancel={() => closeModal(true)}
     >
       <Row className='pb-3'>
         <Col md="6" xs="12">
           <Widgets.MoneyInput
             required={true}
-            // label={i18n.t("salary")}
             value={salary}
             defaultValue={salary}
             onChange={(e) => setSalary(e)}

@@ -44,7 +44,8 @@ class ChangePhoneNumber extends Component {
   async submit(e) {
     e.preventDefault();
     this.setState({ loading: true });
-    if (this.state.comfirm) {
+    if (this.state.confirm) {
+      console.log(1)
       let rs = await apis.checkChangePhonenumber(
         {
           newPhoneNumber: this.state.newPhoneNumber,
@@ -54,9 +55,9 @@ class ChangePhoneNumber extends Component {
         "POST",
         session.get("user").userID
       );
+      this.setState({ loading: false, comfirm: false });
       if (rs) {
-        helper.toast("success", rs.data.message);
-        this.setState({ loading: false });
+        helper.toast("success", rs.message);
         this.reset();
       }
     } else {
@@ -69,9 +70,10 @@ class ChangePhoneNumber extends Component {
         "POST",
         session.get("user").userID
       );
+      this.setState({ loading: false });
       if (rs) {
         helper.toast("success", "Nhập mã otp bạn vừa nhận được");
-        this.setState({ confirm: true, otpId: rs.data.data.otpid });
+        this.setState({ confirm: true, otpId: rs.data.otpid });
       }
     }
   }
@@ -111,7 +113,7 @@ class ChangePhoneNumber extends Component {
                 <Widgets.Text
                   type="password"
                   required={true}
-                  label={"Mật khẩu"}
+                  label={"Mật khẩu hiện tại"}
                   value={this.state.password}
                   onChange={(e) => this.handleChange2(e, "password")}
                 />
