@@ -143,6 +143,9 @@ var path = {
   deleteTransDetail: "/api/transactionDetail/delete", //transactionDetailId
   getTransDTByBuyer: "/api/transactionDetail/payment", // Get
   paymentForBuyer: "/api/transactionDetail/buyer/payment",
+
+  // REPORT MANAGEMENT
+  reportDate: "/api/report/getall", // GET
 };
 
 Object.keys(path).forEach(function (key) {
