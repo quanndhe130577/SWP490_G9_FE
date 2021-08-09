@@ -128,6 +128,7 @@ var path = {
   getTransByDate: "/api/transaction/getall", //GET param:date /{ddMMyyyy}
   deleteTrans: "/api/transaction/delete", // transactionId
   closeTrans: "/api/transaction/chotso",
+  createOneTrans: "/api/transaction/create",
 
   //anhnbt forget(reset password)
   getResetPassword: "/api/otp/reset-password",
@@ -140,6 +141,8 @@ var path = {
   getGeneralTrans: "/api/transaction/getGeneral", // GET
   updateTransDetail: "/api/transactionDetail/update",
   deleteTransDetail: "/api/transactionDetail/delete", //transactionDetailId
+  getTransDTByBuyer: "/api/transactionDetail/payment", // Get
+  paymentForBuyer: "/api/transactionDetail/buyer/payment",
 };
 
 Object.keys(path).forEach(function (key) {

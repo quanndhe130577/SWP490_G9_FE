@@ -70,7 +70,6 @@ const SelectSearchMulti = ({
         // defaultValue={valueA}
         value={valueA}
         onChange={(e) => {
-          debugger;
           let a = Array.from(new Set(e));
           onChange(a);
         }}

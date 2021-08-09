@@ -37,7 +37,10 @@ const ChoosePond = ({
       }
       // update fishtype khi ở trong page purchase detail
     } else if (currentPurchase.id) {
-      await updateFishType(currentPurchase, dataChange, true);
+      var rs = await updateFishType(currentPurchase, dataChange, true);
+      if (rs) {
+        setShowChoosePond(false);
+      }   
     }
   };
 

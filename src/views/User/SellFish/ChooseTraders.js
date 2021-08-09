@@ -24,13 +24,13 @@ const ChooseTraders = ({
       try {
         let rs = await apis.createTransactions({
           // date: helper.getDateFormat(),
-          date: helper.correctDate(),
+          date: helper.correctDate(new Date()),
           listTraderId: currentTransaction.listTraderId,
         });
         if (rs && rs.statusCode === 200) {
           helper.toast("success", i18n.t(rs.message || "success"));
           history.push(
-            "sellF?date=" + helper.getDateFormat(new Date(), "ddmmyyyy")
+            "sellFish?date=" + helper.getDateFormat(new Date(), "ddmmyyyy")
           );
           setShowChooseTraders(false);
         }
@@ -81,7 +81,7 @@ const ChooseTraders = ({
     }
   };
   function convertField(arr) {
-    arr.map((el) => (el.name = el.firstName + " " + el.lastName));
+    arr.map((el) => (el.name = el.firstName.trim() + " " + el.lastName.trim()));
     return arr;
   }
 
