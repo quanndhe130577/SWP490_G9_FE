@@ -240,15 +240,22 @@ const SellFish = (props) => {
       console.log(error);
     }
   }
-  async function getAllTransByDate(date, user) {
+  async function getAllTransByDate(date, user, isDelete) {
     try {
       let rs = await apis.getTransByDate({}, "GET", date);
       if (rs && rs.statusCode === 200) {
+        // IS DATA NULL
         if (rs.data.length === 0) {
-          if (user.roleName !== "Trader") setShowChooseTraders(true);
-          else {
-            setShowChooseTraders(false);
-            createOneTrans();
+          // IS DELETE TRANS MODE
+          if (isDelete) {
+            handleBack();
+          } else {
+            // IS NOT DELETE TRANS MODE
+            if (user.roleName !== "Trader") setShowChooseTraders(true);
+            else {
+              setShowChooseTraders(false);
+              createOneTrans();
+            }
           }
         } else {
           let tem = [],
@@ -347,7 +354,7 @@ const SellFish = (props) => {
         if (rs) {
           let rs = await apis.deleteTrans(transactionId);
           if (rs && rs.statusCode === 200) {
-            handleBack();
+            getAllTransByDate(date, {}, true);
             helper.toast("success", i18n.t(rs.message || "success"));
           }
         }

@@ -74,7 +74,7 @@ helper.correctDate = (dateDf) => {
   return date;
 };
 
-helper.tag = (status) => {
+helper.tag = (status, className = "") => {
   let color = "",
     txt = status;
   if (status === "isPaid") {
@@ -91,7 +91,7 @@ helper.tag = (status) => {
       color = "red";
   }
   return (
-    <Tag color={color} key={status}>
+    <Tag color={color} key={status} className={className + " text-center"}>
       {i18n.t(txt).toUpperCase()}
     </Tag>
   );

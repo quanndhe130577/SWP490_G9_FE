@@ -61,20 +61,24 @@ const BuyFish = (props) => {
 
   // deletePurchaseDetail
   async function deletePurchaseDetail(purchaseDetailId) {
-    try {
-      setLoading(true);
-      let rs = await apis.deletePurchaseDetail({ purchaseDetailId });
-      if (rs && rs.statusCode === 200) {
-        let tem = purchase.filter((el) => el.id !== purchaseDetailId);
-        setPurchase(tem);
-        helper.toast("success", i18n.t(rs.message));
+    helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
+      if (rs) {
+        try {
+          setLoading(true);
+          let rs = await apis.deletePurchaseDetail({ purchaseDetailId });
+          if (rs && rs.statusCode === 200) {
+            let tem = purchase.filter((el) => el.id !== purchaseDetailId);
+            setPurchase(tem);
+            helper.toast("success", i18n.t(rs.message));
+          }
+        } catch (error) {
+          console.log(error);
+          helper.toast("success", i18n.t(error));
+        } finally {
+          setLoading(false);
+        }
       }
-    } catch (error) {
-      console.log(error);
-      helper.toast("success", i18n.t(error));
-    } finally {
-      setLoading(false);
-    }
+    });
   }
 
   const renderDrum = (listDrum = []) => {
@@ -193,7 +197,7 @@ const BuyFish = (props) => {
       key: "id",
       dataIndex: "id",
       render: (id) =>
-        currentPurchase.status == "Pending" && (
+        currentPurchase.status === "Pending" && (
           <Dropdown overlay={renderBtnAction(id)}>
             <Button>
               <i className="fa fa-cog mr-1" />
@@ -209,15 +213,15 @@ const BuyFish = (props) => {
     setIsShowBuy(true);
   };
 
-  const findPO = () => {
-    if (currentPurchase.pondOwner && dataDf.pondOwner)
-      return (
-        dataDf.pondOwner.find(
-          (el) => el.id === parseInt(currentPurchase.pondOwner)
-        ) || {}
-      );
-    else return null;
-  };
+  // const findPO = () => {
+  //   if (currentPurchase.pondOwner && dataDf.pondOwner)
+  //     return (
+  //       dataDf.pondOwner.find(
+  //         (el) => el.id === parseInt(currentPurchase.pondOwner)
+  //       ) || {}
+  //     );
+  //   else return null;
+  // };
 
   // fetch data
   async function fetchData(query) {
@@ -361,7 +365,7 @@ const BuyFish = (props) => {
       let traderId = session.get("user").userID;
       let pondOwnerID = currentPurchase.pondOwner;
       // let date = helper.getDateFormat();
-      let date = helper.correctDate( new Date());
+      let date = helper.correctDate(new Date());
 
       let rs = await apis.createPurchase({ traderId, pondOwnerID, date });
       if (rs && rs.statusCode === 200) {

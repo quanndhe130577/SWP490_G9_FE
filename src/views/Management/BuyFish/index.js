@@ -289,10 +289,10 @@ const ManaBuy = () => {
         //     {i18n.t(status).toUpperCase()}
         //   </Tag>
         // );
-        helper.tag(status),
+        helper.tag(status, "w-120px"),
     },
     {
-      title: "",
+      title: i18n.t("action"),
       dataIndex: "id",
       key: "id",
       render: (id, record) => (

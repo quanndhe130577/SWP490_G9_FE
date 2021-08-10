@@ -112,3 +112,9 @@ button {
   display: flex;
   justify-content: center;
 }
+.w-120px {
+  width: 120px;
+}
+.text-center {
+  text-align: center;
+}
