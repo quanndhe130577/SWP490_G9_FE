@@ -239,7 +239,7 @@ const ManaSell = () => {
   }, []);
 
   return (
-    <Card title={renderTitle()}>
+    <Card title={renderTitle()} className="body-minH">
       <Table
         columns={columns}
         dataSource={transaction}

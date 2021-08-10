@@ -256,7 +256,7 @@ export default class Truck extends Component {
       },
     ];
     return (
-      <Card title={this.renderTitle()}>
+      <Card title={this.renderTitle()} className="body-minH">
         {isShowModal && mode !== "" && (
           <ModalForm
             isShow={isShowModal}

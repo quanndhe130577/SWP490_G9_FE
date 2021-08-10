@@ -6,6 +6,7 @@ import { Card, Table } from "antd";
 import i18n from "i18next";
 import Widgets from "../../../../schema/Widgets";
 import NumberFormat from "react-number-format";
+import Moment from "react-moment";
 
 const ReportByDate = () => {
   const [loading, setLoading] = useState(false);
@@ -24,7 +25,6 @@ const ReportByDate = () => {
   const [listCostIncurred, setListCostIncurred] = useState([]);
   const [user, setUser] = useState(session.get("user"));
 
-  console.log(listCostIncurred);
   async function fetchData(date) {
     try {
       setLoading(true);
@@ -38,8 +38,7 @@ const ReportByDate = () => {
         setPurchaseTotal(purchaseTotal);
         setTransactionTotal(transactionTotal);
         setListCostIncurred(listCostIncurred);
-        let tmp = helper.getDateFormat(date, "dd-mm-yyyy");
-        setDate(tmp);
+        setDate(date);
       }
     } catch (error) {
       console.log(error);
@@ -58,7 +57,11 @@ const ReportByDate = () => {
         <Col md="6" className="d-flex">
           <h3 className="">
             {i18n.t("report.buy-sell-date")}
-            {date && date}
+            {date && (
+              <Moment format="DD-MM-yyyy" className="ml-2">
+                {date}
+              </Moment>
+            )}
           </h3>
         </Col>
       </Row>
@@ -68,7 +71,7 @@ const ReportByDate = () => {
     return <Loading />;
   } else
     return (
-      <Card title={renderTitle()}>
+      <Card title={renderTitle()} className="body-minH">
         <Row>
           {user.roleName === "Trader" && (
             <Col md="6" xs="12" className="rp-tb rp-left">
@@ -129,6 +132,17 @@ const ReportByDate = () => {
             )}
           </Col>
         </Row>
+        <Row>
+          {listCostIncurred.length > 0 ? (
+            <div>
+              {listCostIncurred.map((el) => (
+                <div>{el.name}</div>
+              ))}
+            </div>
+          ) : (
+            ""
+          )}
+        </Row>
       </Card>
     );
 };
@@ -146,7 +160,7 @@ const fTTable = (listSummaryPurchaseDetail) => {
               {el.pondOwner.name}
             </h6>
             <Table
-              rowKey="idx"
+              rowKey={idx}
               columns={columns}
               dataSource={el.purchaseDetails}
               bordered
@@ -215,7 +229,7 @@ const fTTable2 = (listSummaryPurchaseDetail, user) => {
               dataSource={el.transactionDetails}
               bordered
               pagination={false}
-              rowKey="idx"
+              rowKey={idx}
               summary={() => {
                 return (
                   <Table.Summary fixed>

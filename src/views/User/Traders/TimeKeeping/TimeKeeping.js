@@ -165,7 +165,7 @@ export default class TimeKeeping extends Component {
   render() {
     this.checkExitsEmp();
     return (
-      <Card title={this.renderTitle()}>
+      <Card title={this.renderTitle()} className="body-minH">
         <CurrentEmps
           visible={this.state.isShow}
           cancel={this.onCancel}

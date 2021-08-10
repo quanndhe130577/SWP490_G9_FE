@@ -670,7 +670,7 @@ const BuyFish = (props) => {
         />
       )}
       {!isShowChoosePond && (
-        <Card title={renderTitle()}>
+        <Card title={renderTitle()} className="body-minH">
           <Row className="mb-2">
             <Col md="6">
               <Row>

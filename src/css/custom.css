@@ -85,7 +85,6 @@ button {
   padding-right: 5px !important; */
   margin-bottom: 15px;
   /* margin: 0 4%; */
-  height: 80vh !important;
   overflow: auto;
 }
 .rp-left {
@@ -117,4 +116,7 @@ button {
 }
 .text-center {
   text-align: center;
+}
+.body-minH {
+  min-height: 90vh !important;
 }

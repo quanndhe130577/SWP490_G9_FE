@@ -486,7 +486,7 @@ const SellFish = (props) => {
           />
         )}
         {!isShowChooseTraders && (
-          <Card title={renderTitle()} style={{ minHeight: "80vh" }}>
+          <Card title={renderTitle()} className="body-minH">
             {/* ROW BUTTON */}
             <Row className="mb-4" style={{ minHeight: "6vh" }}>
               <Col md="4">

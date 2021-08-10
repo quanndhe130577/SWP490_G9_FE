@@ -251,7 +251,7 @@ export default class Trader extends Component {
       this.state;
 
     return (
-      <Card title={this.renderTitle()}>
+      <Card title={this.renderTitle()} className="body-minH">
         {isShowModal && mode !== "" && (
           <ModalForm
             isShow={isShowModal}

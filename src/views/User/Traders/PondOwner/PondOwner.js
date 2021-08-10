@@ -264,7 +264,7 @@ export default class PondOwner extends Component {
       },
     ];
     return (
-      <Card title={this.renderTitle()}>
+      <Card title={this.renderTitle()} className="body-minH">
         {isShowModal && mode !== "" && (
           <ModalPondOwner
             isShow={isShowModal}

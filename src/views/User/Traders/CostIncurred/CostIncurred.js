@@ -335,7 +335,7 @@ export default class CostIncurred extends Component {
     const { isShowModal, mode, currentCostInc, data, loading } = this.state;
 
     return (
-      <Card title={this.renderTitle()}>
+      <Card title={this.renderTitle()} className="body-minH">
         {isShowModal && mode !== "" && (
           <ModalForm
             isShow={isShowModal}
