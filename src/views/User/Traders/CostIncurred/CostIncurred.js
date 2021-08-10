@@ -1,3 +1,4 @@
+// import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
 import { Card, DatePicker, Dropdown, Input, Menu, Space, Table } from "antd";
 import i18n from "i18next";
@@ -5,9 +6,11 @@ import React, { Component } from "react";
 import Moment from "react-moment";
 import NumberFormat from "react-number-format";
 import { Button, Col, Row } from "reactstrap";
-import { apis, helper, session } from "../../../../services";
+import apis from "../../../../services/apis";
+import helper from "../../../../services/helper";
+import session from "../../../../services/session";
 import ModalForm from "./ModalCostIncurred";
-import moment from "moment";
+import moment from 'moment'
 export default class CostIncurred extends Component {
   constructor(props) {
     super(props);
@@ -93,6 +96,7 @@ export default class CostIncurred extends Component {
     );
   }
   handleSearch = (selectedKeys, confirm, dataIndex) => {
+
     this.setState({
       searchText: selectedKeys[0],
       searchedColumn: dataIndex,
@@ -109,19 +113,15 @@ export default class CostIncurred extends Component {
     if (refresh === true) {
       this.fetchCostIncurred();
     }
-    this.setState({
-      isShowModal: false,
-      mode: "",
-      currentCostInc: {},
-    });
+    this.setState({ isShowModal: false, mode: "", currentEmp: {} });
   };
   async onClick(modeBtn, costIncID) {
-    let { currentCostInc } = this.state;
+    let { currentCostInc, data } = this.state;
 
     if (modeBtn === "edit") {
       //currentCostInc = data.find((el) => el.id === costIncID);
       let rs = await apis.getDetailCostIncurred({}, "GET", costIncID);
-      if (rs && rs.statusCode === 200) {
+      if(rs && rs.statusCode === 200){
         currentCostInc = rs.data;
       }
       this.setState({ currentCostInc, mode: "edit", isShowModal: true });
@@ -152,21 +152,21 @@ export default class CostIncurred extends Component {
       clearFilters,
     }) => (
       <div style={{ padding: 8 }}>
-        {isDate ? (
+        {isDate ?
           <DatePicker
             value={selectedKeys[0]}
             onChange={(e) => {
-              let t = moment(e, "DD/MM/YYYY");
-              setSelectedKeys(e ? [t] : []);
-              this.handleSearch(selectedKeys, confirm, dataIndex);
+              let t = moment(e, 'DD/MM/YYYY');
+              setSelectedKeys(e ? [t] : [])
+              this.handleSearch(selectedKeys, confirm, dataIndex)
             }}
             onPressEnter={() => {
-              this.handleSearch(selectedKeys, confirm, dataIndex);
-            }}
-            format={"DD/MM/YYYY"}
+              this.handleSearch(selectedKeys, confirm, dataIndex)
+            }
+            }
+            format={'DD/MM/YYYY'}
             style={{ marginBottom: 8, display: "block" }}
-          />
-        ) : (
+          /> :
           <Input
             ref={(node) => {
               this.searchInput = node;
@@ -174,14 +174,15 @@ export default class CostIncurred extends Component {
             placeholder={`Search ${dataIndex}`}
             value={selectedKeys[0]}
             onChange={(e) => {
-              setSelectedKeys(e.target.value ? [e.target.value] : []);
-            }}
+              setSelectedKeys(e.target.value ? [e.target.value] : [])
+            }
+            }
             onPressEnter={() =>
               this.handleSearch(selectedKeys, confirm, dataIndex)
             }
             style={{ marginBottom: 8, display: "block" }}
           />
-        )}
+        }
         <Space>
           <Button
             type="primary"
@@ -220,20 +221,19 @@ export default class CostIncurred extends Component {
     ),
     onFilter: (value, record) => {
       if (isDate) {
-        let x = moment(moment(value).format("DD/MM/YYYY"), "DD/MM/YYYY");
-        let y = moment(
-          moment(record[dataIndex]).format("DD/MM/YYYY"),
-          "DD/MM/YYYY"
-        );
+        let x = moment(moment(value).format('DD/MM/YYYY'), 'DD/MM/YYYY')
+        let y = moment(moment(record[dataIndex]).format('DD/MM/YYYY'), 'DD/MM/YYYY')
 
-        return record[dataIndex] ? x.isSame(y, "day") : "";
+        return record[dataIndex]
+          ? x.isSame(y, 'day')
+          : ""
       } else {
         return record[dataIndex]
           ? record[dataIndex]
-              .toString()
-              .toLowerCase()
-              .includes(value.toLowerCase())
-          : "";
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
+          : ""
       }
     },
     onFilterDropdownVisibleChange: (visible) => {
@@ -254,86 +254,70 @@ export default class CostIncurred extends Component {
         text
       ),
   });
-  columns = [
-    {
-      title: i18n.t("INDEX"),
-      dataIndex: "idx",
-      key: "idx",
-      width: 60,
-      render: (text) => <label>{text}</label>,
-    },
-    {
-      title: i18n.t("name"),
-      dataIndex: "name",
-      key: "name",
-      ...this.getColumnSearchProps("name"),
-      sorter: (a, b) => a.name.length - b.name.length,
-      sortDirections: ["descend", "ascend"],
-    },
-    {
-      title: i18n.t("typeOfCost"),
-      dataIndex: "typeOfCost",
-      key: "typeOfCost",
-      ...this.getColumnSearchProps("typeOfCost"),
-      sorter: (a, b) =>
-        a.typeOfCost
-          ? a.typeOfCost.length
-          : 0 - b.typeOfCost
-          ? b.typeOfCost.length
-          : 0,
-      sortDirections: ["descend", "ascend"],
-      render: (text) => <label>{i18n.t(text)}</label>,
-    },
-    {
-      title: i18n.t("note"),
-      dataIndex: "note",
-      key: "note",
-      ...this.getColumnSearchProps("note"),
-      sorter: (a, b) =>
-        a.note ? a.note.length : 0 - b.note ? b.note.length : 0,
-      sortDirections: ["descend", "ascend"],
-    },
-    {
-      title: i18n.t("cost") + i18n.t("(suffix)"),
-      dataIndex: "cost",
-      key: "cost",
-      ...this.getColumnSearchProps("cost"),
-      sorter: (a, b) => a.cost - b.cost,
-      sortDirections: ["descend", "ascend"],
-      render: (cost) => (
-        <NumberFormat
-          value={cost}
-          displayType={"text"}
-          thousandSeparator={true}
-        />
-      ),
-    },
-    {
-      title: i18n.t("date"),
-      dataIndex: "date",
-      key: "date",
-      ...this.getColumnSearchProps("date", true),
-      sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
-      sortDirections: ["descend", "ascend"],
-      render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
-    },
-    {
-      title: i18n.t("action"),
-      dataIndex: "id",
-      key: "id",
-      render: (id) => (
-        <Dropdown overlay={this.renderBtnAction(id)}>
-          <Button>
-            <i className="fa fa-cog mr-1" />
-            <label className="tb-lb-action">{i18n.t("action")}</label>
-          </Button>
-        </Dropdown>
-      ),
-    },
-  ];
+
   render() {
     const { isShowModal, mode, currentCostInc, data, loading } = this.state;
-
+    const columns = [
+      {
+        title: i18n.t("INDEX"),
+        dataIndex: "idx",
+        key: "idx",
+        render: (text) => <label>{text}</label>,
+      },
+      {
+        title: i18n.t("name"),
+        dataIndex: "name",
+        key: "name",
+        ...this.getColumnSearchProps("name"),
+        sorter: (a, b) => a.name.length - b.name.length,
+        sortDirections: ["descend", "ascend"],
+      },
+      {
+        title: i18n.t("note"),
+        dataIndex: "note",
+        key: "note",
+        ...this.getColumnSearchProps("note"),
+        sorter: (a, b) => a.note ? a.note.length : 0 - b.note ? b.note.length : 0,
+        sortDirections: ["descend", "ascend"],
+      },
+      {
+        title: i18n.t("cost") + i18n.t("(suffix)"),
+        dataIndex: "cost",
+        key: "cost",
+        ...this.getColumnSearchProps("cost"),
+        sorter: (a, b) => a.cost - b.cost,
+        sortDirections: ["descend", "ascend"],
+        render: (cost) => (
+          <NumberFormat
+            value={cost}
+            displayType={"text"}
+            thousandSeparator={true}
+          />
+        ),
+      },
+      {
+        title: i18n.t("date"),
+        dataIndex: "date",
+        key: "date",
+        ...this.getColumnSearchProps("date", true),
+        sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
+        sortDirections: ["descend", "ascend"],
+        render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
+      },
+      {
+        title: "",
+        dataIndex: "id",
+        key: "id",
+        render: (id) => (
+          <Dropdown overlay={this.renderBtnAction(id)}>
+            <Button>
+              <i className="fa fa-cog mr-1" />
+              <label className="tb-lb-action">{i18n.t("action")}</label>
+            </Button>
+          </Dropdown>
+        ),
+      },
+    ];
     return (
       <Card title={this.renderTitle()}>
         {isShowModal && mode !== "" && (
@@ -342,14 +326,14 @@ export default class CostIncurred extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentCostInc={currentCostInc || {}}
-            // handleChangePondOwner={handleChangePondOwner}
+          // handleChangePondOwner={handleChangePondOwner}
           />
         )}
         <Row>
           <Col style={{ overflowX: "auto" }}>
             <Table
               bordered
-              columns={this.columns}
+              columns={columns}
               dataSource={data}
               pagination={{ pageSize: 10 }}
               scroll={{ y: 600 }}

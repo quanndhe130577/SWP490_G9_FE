@@ -33,7 +33,7 @@ const SellFish = (props) => {
   // const [traderInDate, setTraderInDate] = useState([]);
   const [dataFetched, setDtFetched] = useState({}); // include trader by WR
   const [currentTraderId, setCurrentTraderId] = useState("");
-  const [currentTransId, setCurrentTransId] = useState("");
+
   const handleBtnAction = (action, id) => {
     if (action === "delete") {
       deleteTransDetail({ transactionDetailId: id });
@@ -315,11 +315,10 @@ const SellFish = (props) => {
                 <i className="fa fa-trash mr-1" />
                 {i18n.t("deleteTrans")}
               </Button>
-            ) : showBtnDelete(trans) === "Completed" ? (
+            ) : showBtnDelete(trans) === "complete" ? (
               <Button
                 color="info"
                 onClick={() => {
-                  setCurrentTransId(trans.trader.transId);
                   setCurrentTraderId(trans.trader.id);
                   setShowCloseTrans(true);
                 }}
@@ -346,7 +345,7 @@ const SellFish = (props) => {
         return "delete";
       }
     } else if (trans.status === "Completed") {
-      return "Completed";
+      return "complete";
     }
   }
   async function deleteTrans(transactionId) {
@@ -367,10 +366,7 @@ const SellFish = (props) => {
   }
   const calculateColumns = (col, trans) => {
     let temCol = [...col];
-    if (
-      (trans && trans.weightRecorder && user.roleName === "Trader") ||
-      trans.status === "Completed"
-    )
+    if (trans && trans.weightRecorder && user.roleName === "Trader")
       temCol.pop();
     return temCol;
   };
@@ -449,9 +445,7 @@ const SellFish = (props) => {
             traderId={currentTraderId}
             handleChangeTraderId={() => {
               setCurrentTraderId("");
-              setCurrentTransId("");
             }}
-            transId={currentTransId}
           />
         )}
         {isShowChooseTraders && user.roleName !== "Trader" && (

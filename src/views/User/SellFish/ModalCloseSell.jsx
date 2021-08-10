@@ -17,7 +17,6 @@ const ModalCloseSell = ({
   date,
   traderId,
   handleChangeTraderId,
-  transId,
 }) => {
   const [currentTransaction, setCurrentTransaction] = useState({});
   const [total, setTotal] = useState({});
@@ -54,17 +53,13 @@ const ModalCloseSell = ({
   const handleCancel = () => {
     handleCloseModal(!isShowCloseTransaction);
   };
-  const handleChangeTran = async (name, val, transId) => {
+  const handleChangeTran = async (name, val) => {
     // if (traderId) {
     //   debugger;
     //   handleChangeTraderId("");
     // }
     if (name === "traderId") {
-      debugger;
       let trader = dataDf.tradersSelected.find((el) => el.id === val);
-      if (transId) {
-        trader.transId = transId;
-      }
       let trans = listTransaction.find((el) => el.id === trader.transId);
       let listTranId = [trans.id];
       let ft = await getFTByTrader(val);
@@ -119,132 +114,125 @@ const ModalCloseSell = ({
 
   useEffect(() => {
     if (traderId || user.roleName === "Trader") {
-      handleChangeTran("traderId", traderId || user.userID, transId);
+      handleChangeTran("traderId", traderId || user.userID);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [traderId]);
 
   return (
-    <>
-      {isShowCloseTransaction && (
-        <Modal
-          title={i18n.t("closeTransaction")}
-          visible={isShowCloseTransaction}
-          onOk={handleOk}
-          onCancel={handleCancel}
-          loading={loading}
-          width={800}
-          disabledOk={traderId || currentTransaction.status === "Completed"}
-          component={() => (
-            <Row>
-              <Col md="12">
-                <label className="mr-2">
-                  <b>{i18n.t("date")}:</b>
-                  <Moment format="DD/MM/YYYY" className="ml-2">
-                    {currentTransaction && currentTransaction.date}
-                  </Moment>
-                </label>
+    <Modal
+      title={i18n.t("closeTransaction")}
+      visible={isShowCloseTransaction}
+      onOk={handleOk}
+      onCancel={handleCancel}
+      loading={loading}
+      width={800}
+      disabledOk={traderId}
+      component={() => (
+        <Row>
+          <Col md="12">
+            <label className="mr-2">
+              <b>{i18n.t("date")}:</b>
+              <Moment format="DD/MM/YYYY" className="ml-2">
+                {currentTransaction && currentTransaction.date}
+              </Moment>
+            </label>
+          </Col>
+          {user && user.roleName !== "Trader" && (
+            <>
+              <Col md="6">
+                <Widgets.Select
+                  required={true}
+                  label={i18n.t("trader")}
+                  value={currentTransaction.traderId || ""}
+                  onChange={(e) => handleChangeTran("traderId", e)}
+                  items={dataDf.tradersSelected || []}
+                  displayField={["firstName", "lastName"]}
+                />
               </Col>
-              {user && user.roleName !== "Trader" && (
-                <>
-                  <Col md="6">
-                    <Widgets.Select
-                      required={true}
-                      label={i18n.t("trader")}
-                      value={currentTransaction.traderId || ""}
-                      onChange={(e) => handleChangeTran("traderId", e)}
-                      items={dataDf.tradersSelected || []}
-                      displayField={["firstName", "lastName"]}
-                    />
-                  </Col>
-                  <Col md="6">
-                    <Widgets.MoneyInput
-                      placeholder="700"
-                      disabled={traderId}
-                      required={true}
-                      label={i18n.t("commissionWR")}
-                      value={currentTransaction.commissionUnit || ""}
-                      onChange={(val) =>
-                        handleChangeTran("commissionUnit", val)
-                      }
-                    />
-                  </Col>
-                </>
-              )}
-              {currentTransaction.fishInPurchase && (
-                <Col md="12">
-                  <Table
-                    rowKey="id"
-                    columns={columns}
-                    dataSource={currentTransaction.fishInPurchase}
-                    bordered
-                    pagination={{ pageSize: 100 }}
-                    summary={() => {
-                      return (
-                        <Table.Summary fixed>
-                          <Table.Summary.Row>
-                            <Table.Summary.Cell
-                              key="1"
-                              // colSpan="2"
-                              className="bold"
-                            >
-                              {i18n.t("total")}
-                            </Table.Summary.Cell>
-                            <Table.Summary.Cell key="2" className="bold">
-                              <NumberFormat
-                                value={total.totalWeight.toFixed(1)}
-                                displayType={"text"}
-                                thousandSeparator={true}
-                                suffix=" Kg"
-                              />
-                            </Table.Summary.Cell>
-                            <Table.Summary.Cell key="3" className="bold">
-                              <NumberFormat
-                                value={total.totalAmount}
-                                displayType={"text"}
-                                thousandSeparator={true}
-                                suffix=" VND"
-                              />
-                            </Table.Summary.Cell>
-                          </Table.Summary.Row>
-                        </Table.Summary>
-                      );
-                    }}
+              <Col md="6">
+                <Widgets.MoneyInput
+                  placeholder="700"
+                  disabled={traderId}
+                  required={true}
+                  label={i18n.t("commissionWR")}
+                  value={currentTransaction.commissionUnit || ""}
+                  onChange={(val) => handleChangeTran("commissionUnit", val)}
+                />
+              </Col>
+            </>
+          )}
+          {currentTransaction.fishInPurchase && (
+            <Col md="12">
+              <Table
+                columns={columns}
+                dataSource={currentTransaction.fishInPurchase}
+                bordered
+                pagination={{ pageSize: 100 }}
+                summary={() => {
+                  return (
+                    <Table.Summary fixed>
+                      <Table.Summary.Row>
+                        <Table.Summary.Cell
+                          key="1"
+                          // colSpan="2"
+                          className="bold"
+                        >
+                          {i18n.t("total")}
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell key="2" className="bold">
+                          <NumberFormat
+                            value={total.totalWeight.toFixed(1)}
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            suffix=" Kg"
+                          />
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell key="3" className="bold">
+                          <NumberFormat
+                            value={total.totalAmount}
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            suffix=" VND"
+                          />
+                        </Table.Summary.Cell>
+                      </Table.Summary.Row>
+                    </Table.Summary>
+                  );
+                }}
+              />
+            </Col>
+          )}
+
+          {total &&
+            total.totalAmount > 0 &&
+            currentTransaction.commissionUnit > 0 && (
+              <>
+                <Col md="6">
+                  <Widgets.NumberFormat
+                    label={i18n.t("wcReceiver") + ": "}
+                    value={
+                      total.totalWeight * currentTransaction.commissionUnit ||
+                      ""
+                    }
                   />
                 </Col>
-              )}
-
-              {total &&
-                total.totalAmount > 0 &&
-                currentTransaction.commissionUnit > 0 && (
-                  <>
-                    <Col md="6">
-                      <Widgets.NumberFormat
-                        label={i18n.t("wcReceiver") + ": "}
-                        value={
-                          total.totalWeight *
-                            currentTransaction.commissionUnit || ""
-                        }
-                      />
-                    </Col>
-                    <Col md="6">
-                      <Widgets.NumberFormat
-                        label={i18n.t("payForTrader") + ": "}
-                        value={
-                          total.totalAmount -
-                            total.totalWeight *
-                              currentTransaction.commissionUnit || ""
-                        }
-                      />
-                    </Col>
-                  </>
-                )}
-            </Row>
-          )}
-        />
+                <Col md="6">
+                  <Widgets.NumberFormat
+                    label={i18n.t("payForTrader") + ": "}
+                    value={
+                      total.totalAmount -
+                        total.totalWeight * currentTransaction.commissionUnit ||
+                      ""
+                    }
+                  />
+                </Col>
+              </>
+            )}
+        </Row>
       )}
-    </>
+    />
   );
 };
 
