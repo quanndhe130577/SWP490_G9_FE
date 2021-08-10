@@ -158,6 +158,7 @@ const ChoosePond = ({
             listFishId={currentPurchase.listFishId || []}
             onChange={(arr) => onChange(arr, "arrFish")}
             dataDf={dataDf}
+            dateTime={currentPurchase.date}
             dataChange={(data) => {
               setDataChange(data);
             }}

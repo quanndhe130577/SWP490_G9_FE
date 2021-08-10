@@ -7,7 +7,7 @@ var path = {
   logout: "/api/user/logout",
   changePassword: "/api/user/change-password",
   changePhonenumber: "/api/otp/change-phone",
-  checkChangePhonenumber: "/api/user/check-change-phone-otp",
+  checkChangePhonenumber: "/api/user/change-phone-number",
   register: "/api/register",
   getAllRole: "/api/role/get-all",
   getOtp: "/api/otp/register",
@@ -143,6 +143,9 @@ var path = {
   deleteTransDetail: "/api/transactionDetail/delete", //transactionDetailId
   getTransDTByBuyer: "/api/transactionDetail/payment", // Get
   paymentForBuyer: "/api/transactionDetail/buyer/payment",
+
+  // REPORT MANAGEMENT
+  reportDate: "/api/report/getall", // GET
 };
 
 Object.keys(path).forEach(function (key) {

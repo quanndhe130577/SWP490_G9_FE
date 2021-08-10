@@ -34,9 +34,9 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
       helper.toast("error", i18n.t("systemError"));
     }
   };
-  useEffect(() => {
-    handleChangeFishType(new Date(), "date");
-  }, []);
+  // useEffect(() => {
+  //   handleChangeFishType(new Date(), "date");
+  // }, []);
   return (
     <Modal
       title={mode === "edit" ? i18n.t("edit") : i18n.t("create")}
@@ -93,7 +93,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
               onChange={(e) => handleChangeFishType(e, "transactionPrice")}
             />
           </Col>
-          <Col md="6" xs="12">
+          {/* <Col md="6" xs="12">
             <Widgets.DateTimePicker
               required={true}
               label={i18n.t("Sell Date FT")}
@@ -106,7 +106,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
                 //console.log(data);
               }}
             />
-          </Col>
+          </Col> */}
         </Row>
       )}
     />

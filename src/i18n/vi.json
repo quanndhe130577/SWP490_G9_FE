@@ -188,7 +188,6 @@
   "traderUnitCanNull": "Vui lòng chọn thương lái",
   "modal.title.updatePurchase": "Cập nhật thông tin giá cá",
   "commissionWR": "Phế (VND/Kg)",
-  "modal.title.updatePurchase": "Cập nhật thông tin giá cá",
   "viewDetail": "Xem chi tiết",
   "Completed": "Đã hoàn thành",
   "Pending": "Đang xử lý",
@@ -199,5 +198,12 @@
   "moneyNotPaid": "Số tiền chưa trả",
   "moneyPaid": "Số tiền đã trả",
   "totalMoney": "Tổng số tiền",
-  "payment": "Thanh toán"
+  "payment": "Thanh toán",
+  "fishWeight": "Khối lượng cá (Kg)",
+  "fishName": "Tên cá",
+  "report.buy-sell-date": "Báo cáo mua bán theo ngày",
+  "buyFish": "Đơn mua",
+  "dataNotYet": "Chưa có dữ liệu",
+  "buyBySelf": "Tự bán",
+  "historyPurchaseFishtype": "Lịch sử mua bán cá"
 }

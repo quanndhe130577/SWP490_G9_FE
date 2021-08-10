@@ -448,6 +448,7 @@ const SellFish = (props) => {
             currentTransaction={currentTransaction}
             handleChangeCurrentTrans={handleChangeCurrentTrans}
             setShowChooseTraders={(status) => setShowChooseTraders(status)}
+            date={date}
           />
         )}
         {isShowSell && (

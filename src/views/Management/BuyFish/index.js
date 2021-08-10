@@ -329,7 +329,7 @@ const ManaBuy = () => {
     return (
       <Row>
         <Col md="6" className="d-flex">
-          <h3 className="">Đơn mua</h3>
+          <h3 className="">{i18n.t("buyFish")}</h3>
         </Col>
         <Col md="6">
           <Button

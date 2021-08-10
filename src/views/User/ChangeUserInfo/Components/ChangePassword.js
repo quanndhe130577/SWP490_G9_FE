@@ -75,7 +75,7 @@ class ChangePassword extends Component {
                   value={this.state.password}
                   type="password"
                   required={true}
-                  label={"Mật khẩu"}
+                  label={"Mật khẩu hiện tại"}
                   onChange={(e) => this.handleChange2(e, "password")}
                 />
               </div>
