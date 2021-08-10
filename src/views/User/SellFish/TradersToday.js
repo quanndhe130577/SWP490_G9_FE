@@ -30,7 +30,7 @@ const TradersToday = ({ listTraderId, onChange, dataFetched }) => {
       key: "phoneNumber",
     },
     // {
-    //   title: "",
+    //   title: i18n.t("action"),
     //   dataIndex: "id",
     //   key: "id",
     //   // render: (id) => (

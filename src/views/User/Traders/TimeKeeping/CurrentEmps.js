@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { Row, Col } from "reactstrap";
 import { Checkbox, Modal, List, Radio } from "antd";
 import Widgets from "../../../../schema/Widgets";
-import helper from "../../../../services/helper";
-import apis from "../../../../services/apis";
+import { helper, apis } from "../../../../services";
 
 export default class CurrentEmps extends Component {
   constructor(props) {
@@ -14,7 +13,7 @@ export default class CurrentEmps extends Component {
         let dateStart = new Date(emp.startDate);
         return this.props.currentDate > dateStart;
       }),
-      submit: false
+      submit: false,
     };
     this.getTimes = this.getTimes.bind(this);
     this.submit = this.submit.bind(this);
@@ -25,7 +24,7 @@ export default class CurrentEmps extends Component {
   }
   componentDidUpdate(props) {
     if (this.props.currentDate !== props.currentDate) {
-      this.setState({ submit: false })
+      this.setState({ submit: false });
       this.getTimes();
     }
   }
@@ -94,7 +93,7 @@ export default class CurrentEmps extends Component {
       for (let i = 0; i < data.length; i++) {
         let item = data[i];
         item.workDay = helper.correctDate(item.workDay);
-        console.log(item.workDay)
+        console.log(item.workDay);
         if (item.checked) {
           if (item.id !== 0) {
             await apis.updateTimeKeeping(item, "POST");
@@ -120,6 +119,7 @@ export default class CurrentEmps extends Component {
     return (
       <Modal
         width="70%"
+        // eslint-disable-next-line no-useless-escape
         title={`Chấm công trong ngày ${date}\/${month}\/${year}`}
         okText="Lưu"
         visible={this.props.visible}

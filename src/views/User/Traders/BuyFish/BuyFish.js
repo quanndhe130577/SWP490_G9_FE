@@ -7,15 +7,12 @@ import ModalBuy from "./ModalBuy";
 import ModalClosePurchase from "./ModalClosePurchase";
 import ChoosePond from "./ChoosePond";
 import queryString from "qs";
-import services from "../../../../services";
+import { local, session, apis, helper } from "../../../../services";
 import NumberFormat from "react-number-format";
 import { useSelector } from "react-redux";
 import Moment from "react-moment";
 import _ from "lodash";
-import Item from "antd/lib/list/Item";
 import Widgets from "../../../../schema/Widgets";
-
-const { local, session, apis, helper } = services;
 
 const BuyFish = (props) => {
   const history = useHistory();
@@ -469,7 +466,7 @@ const BuyFish = (props) => {
 
   // Update All fish type anhnbt
   async function updateAllFishType(body, purchase, onlyFe = false) {
-    var success = false;
+    let success = false;
     try {
       setLoading(true);
       if (!onlyFe) {
@@ -539,7 +536,7 @@ const BuyFish = (props) => {
   }
 
   const onChangePondOwner = async (value) => {
-    var rs = await apis.updatePondOwnerInPurchase(
+    let rs = await apis.updatePondOwnerInPurchase(
       {
         purchaseId: currentPurchase.id,
         pondOwnerId: value,
@@ -547,9 +544,9 @@ const BuyFish = (props) => {
       "POST"
     );
     if (rs && rs.statusCode === 200) {
-      var newPur = { ...currentPurchase };
+      let newPur = { ...currentPurchase };
       newPur.pondOwnerId = value;
-      var pO = dataDf.pondOwner.find((x) => x.id == value);
+      let pO = dataDf.pondOwner.find((x) => parseInt(x.id) === parseInt(value));
       newPur.pondOwnerName = pO ? pO.name : "";
       setCurrentPurchase(newPur);
     }

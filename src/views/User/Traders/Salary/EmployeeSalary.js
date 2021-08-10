@@ -303,7 +303,6 @@ export default class EmployeeSalary extends Component {
           moment(record[dataIndex]).format("DD/MM/YYYY"),
           "DD/MM/YYYY"
         );
-
         return record[dataIndex] ? x.isSame(y, "day") : "";
       } else {
         return record[dataIndex]
@@ -343,6 +342,7 @@ export default class EmployeeSalary extends Component {
             sensitivity: "base",
           }),
         sortDirections: ["descend", "ascend"],
+        // eslint-disable-next-line no-useless-escape
         render: (data) => `${data} \/ ${month}`,
       },
       {

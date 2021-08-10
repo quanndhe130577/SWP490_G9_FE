@@ -2,11 +2,9 @@ import React, { Component } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import routes from "../../routes";
-// import _ from "lodash";
 import i18next from "i18next";
-import DefaultFooter from "./DefaultFooter";
+// import DefaultFooter from "./DefaultFooter";
 import DefaultHeader from "./DefaultHeader";
-// import { UserOutlined, VideoCameraOutlined } from '@ant-design/icons'
 import { Layout } from "antd";
 import session from "../../services/session";
 

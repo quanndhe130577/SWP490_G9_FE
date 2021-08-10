@@ -51,7 +51,7 @@ helper.confirm = (content) => {
 };
 helper.getDateFormat = (date = new Date(), format = "yyyy-mm-dd") => {
   // format date as type yyyy-mm-dd
-  var d = new Date(date);
+  let d = new Date(date);
   let month = "" + (d.getMonth() + 1),
     day = "" + d.getDate(),
     year = d.getFullYear();

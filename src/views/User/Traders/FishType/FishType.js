@@ -255,10 +255,10 @@ export default class FishType extends Component {
   }
   render() {
     const { isShowModal, mode, currentFT, data, loading } = this.state;
-    var preDate = "";
-    var currentDate = "";
-    var currentPO = "";
-    var currentPage = 0;
+    let preDate = "";
+    let currentDate = "";
+    let currentPO = "";
+    let currentPage = 0;
     const columns = [
       {
         title: i18n.t("INDEX"),
@@ -272,9 +272,9 @@ export default class FishType extends Component {
             props: {},
           };
 
-          var temp = currentPage;
+          let temp = currentPage;
           currentPage = (value - 1 - ((value - 1) % 10)) / 10;
-          if (currentPage != temp) {
+          if (currentPage !== temp) {
             preDate = "";
             currentDate = "";
             currentPO = "";
@@ -298,11 +298,11 @@ export default class FishType extends Component {
           };
 
           obj.props.rowSpan = 0;
-          if (currentDate != value) {
+          if (currentDate !== value) {
             data.forEach((element, subindex) => {
               //if (subindex >= 10 * currentPage && subindex < 10 * (currentPage + 1)) {
               if (
-                element.date == value &&
+                element.date === value &&
                 subindex >= 10 * currentPage &&
                 subindex < 10 * (currentPage + 1)
               ) {
@@ -338,12 +338,12 @@ export default class FishType extends Component {
           };
 
           obj.props.rowSpan = 0;
-          if (preDate != currentDate || currentPO != value.name) {
+          if (preDate !== currentDate || currentPO !== value.name) {
             data.forEach((element, subindex) => {
               //if (subindex >= 10 * currentPage && subindex < 10 * (currentPage + 1)) {
               if (
-                element.pondOwner.name == value.name &&
-                row.date == element.date &&
+                element.pondOwner.name === value.name &&
+                row.date === element.date &&
                 subindex >= 10 * currentPage &&
                 subindex < 10 * (currentPage + 1)
               ) {
@@ -430,7 +430,7 @@ export default class FishType extends Component {
         ),
       },
       // {
-      //   title: "",
+      //   title: i18n.t("action"),
       //   dataIndex: "id",
       //   key: "id",
       //   render: (id) => (

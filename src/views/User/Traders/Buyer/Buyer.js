@@ -259,7 +259,7 @@ export default class Buyer extends Component {
         sortDirections: ["descend", "ascend"],
       },
       {
-        title: "",
+        title: i18n.t("action"),
         dataIndex: "id",
         key: "id",
         render: (id) => (

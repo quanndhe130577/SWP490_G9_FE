@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import { Table, Input, Space, Card, Dropdown, Menu } from "antd";
-// import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
 import { Row, Col, Button } from "reactstrap";
 import i18n from "i18next";
-import apis from "../../../../services/apis";
-import helper from "../../../../services/helper";
-import session from "../../../../services/session";
+import { apis, helper, session } from "../../../../services";
 import ModalPondOwner from "./ModalPondOwner";
 export default class PondOwner extends Component {
   constructor(props) {
@@ -112,17 +109,7 @@ export default class PondOwner extends Component {
       }
     },
     render: (text) =>
-      this.state.searchedColumn === dataIndex ? (
-        //   <Highlighter
-        //     highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
-        //     searchWords={[this.state.searchText]}
-        //     autoEscape
-        //     textToHighlight={text ? text.toString() : ""}
-        //   />
-        <div>{text}</div>
-      ) : (
-        text
-      ),
+      this.state.searchedColumn === dataIndex ? <div>{text}</div> : text,
   });
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -250,7 +237,7 @@ export default class PondOwner extends Component {
         sortDirections: ["descend", "ascend"],
       },
       {
-        title: "",
+        title: i18n.t("action"),
         dataIndex: "id",
         key: "id",
         render: (id) => (

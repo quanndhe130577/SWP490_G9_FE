@@ -1,8 +1,8 @@
 import request from "./request";
 
-var apis = {};
+let apis = {};
 
-var path = {
+let path = {
   login: "/api/login",
   logout: "/api/user/logout",
   changePassword: "/api/user/change-password",

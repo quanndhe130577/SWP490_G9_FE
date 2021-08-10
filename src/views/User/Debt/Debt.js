@@ -266,7 +266,7 @@ export default class Debt extends Component {
         render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
       },
       {
-        title: "",
+        title: i18n.t("action"),
         dataIndex: "id",
         key: "id",
         render: (id) => (

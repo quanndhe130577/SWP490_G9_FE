@@ -1,17 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Table, Modal } from "antd";
 import Widgets from "../../../../schema/Widgets";
 import i18n from "i18next";
 import moment from "moment";
 
-const ModalHistorySalaries = ({ isShow, closeModal, historySalaries, name }) => {
-  console.log(historySalaries)
+const ModalHistorySalaries = ({
+  isShow,
+  closeModal,
+  historySalaries,
+  name,
+}) => {
+  console.log(historySalaries);
   const columns = [
     {
       title: i18n.t("salary"),
       dataIndex: "salary",
       key: "salary",
-      render: (salary) => salary !== null ? <Widgets.NumberFormat value={salary} /> : "Không có thông tin",
+      render: (salary) =>
+        salary !== null ? (
+          <Widgets.NumberFormat value={salary} />
+        ) : (
+          "Không có thông tin"
+        ),
     },
     {
       title: i18n.t("month"),
@@ -19,7 +29,7 @@ const ModalHistorySalaries = ({ isShow, closeModal, historySalaries, name }) => 
       key: "dateStart",
       render: (startDate) => {
         let date = moment(new Date(startDate));
-        return date.format('MM/YYYY');
+        return date.format("MM/YYYY");
       },
     },
   ];
