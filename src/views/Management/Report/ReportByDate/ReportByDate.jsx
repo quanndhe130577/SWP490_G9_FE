@@ -24,6 +24,7 @@ const ReportByDate = () => {
   const [listCostIncurred, setListCostIncurred] = useState([]);
   const [user, setUser] = useState(session.get("user"));
 
+  console.log(listCostIncurred);
   async function fetchData(date) {
     try {
       setLoading(true);

@@ -1,5 +1,5 @@
 import { SearchOutlined } from "@ant-design/icons";
-import { Card, DatePicker, Dropdown, Input, Menu, Space, Table } from "antd";
+import { Card, DatePicker, Input, Menu, Space, Table } from "antd";
 import i18n from "i18next";
 import React, { Component } from "react";
 import NumberFormat from "react-number-format";

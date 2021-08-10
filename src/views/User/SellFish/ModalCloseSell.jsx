@@ -4,7 +4,7 @@ import { Table } from "antd";
 import { Row, Col } from "reactstrap";
 import i18n from "i18next";
 import Widgets from "../../../schema/Widgets";
-import { apis, helper } from "../../../services";
+import { apis, helper, session } from "../../../services";
 import Moment from "react-moment";
 import NumberFormat from "react-number-format";
 
@@ -20,8 +20,8 @@ const ModalCloseSell = ({
 }) => {
   const [currentTransaction, setCurrentTransaction] = useState({});
   const [total, setTotal] = useState({});
-
   const [loading, setLoading] = useState(false);
+  const user = session.get("user");
 
   const handleOk = () => {
     try {
@@ -44,7 +44,7 @@ const ModalCloseSell = ({
   };
   const validate = () => {
     let { commissionUnit, listTranId } = currentTransaction;
-    if (!commissionUnit) {
+    if (!commissionUnit && user.roleName !== "Trader") {
       return "commissionUnitCanNull";
     } else if (listTranId.length <= 0) {
       return "traderUnitCanNull";
@@ -54,7 +54,6 @@ const ModalCloseSell = ({
     handleCloseModal(!isShowCloseTransaction);
   };
   const handleChangeTran = async (name, val) => {
-
     // if (traderId) {
     //   debugger;
     //   handleChangeTraderId("");
@@ -114,8 +113,8 @@ const ModalCloseSell = ({
   }
 
   useEffect(() => {
-    if (traderId) {
-      handleChangeTran("traderId", traderId);
+    if (traderId || user.roleName === "Trader") {
+      handleChangeTran("traderId", traderId || user.userID);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -140,26 +139,30 @@ const ModalCloseSell = ({
               </Moment>
             </label>
           </Col>
-          <Col md="6">
-            <Widgets.Select
-              required={true}
-              label={i18n.t("trader")}
-              value={currentTransaction.traderId || ""}
-              onChange={(e) => handleChangeTran("traderId", e)}
-              items={dataDf.tradersSelected || []}
-              displayField={["firstName", "lastName"]}
-            />
-          </Col>
-          <Col md="6">
-            <Widgets.MoneyInput
-              placeholder="700"
-              disabled={traderId}
-              required={true}
-              label={i18n.t("commissionWR")}
-              value={currentTransaction.commissionUnit || ""}
-              onChange={(val) => handleChangeTran("commissionUnit", val)}
-            />
-          </Col>
+          {user && user.roleName !== "Trader" && (
+            <>
+              <Col md="6">
+                <Widgets.Select
+                  required={true}
+                  label={i18n.t("trader")}
+                  value={currentTransaction.traderId || ""}
+                  onChange={(e) => handleChangeTran("traderId", e)}
+                  items={dataDf.tradersSelected || []}
+                  displayField={["firstName", "lastName"]}
+                />
+              </Col>
+              <Col md="6">
+                <Widgets.MoneyInput
+                  placeholder="700"
+                  disabled={traderId}
+                  required={true}
+                  label={i18n.t("commissionWR")}
+                  value={currentTransaction.commissionUnit || ""}
+                  onChange={(val) => handleChangeTran("commissionUnit", val)}
+                />
+              </Col>
+            </>
+          )}
           {currentTransaction.fishInPurchase && (
             <Col md="12">
               <Table
