@@ -5,6 +5,7 @@ import i18n from "i18next";
 import Widgets from "../../../schema/Widgets";
 import { apis, local, session, helper } from "../../../services";
 import { API_FETCH } from "../../../constant";
+import moment from "moment";
 
 const ModalSell = ({
   isShowSell,
@@ -43,7 +44,7 @@ const ModalSell = ({
         transId: trader.transId,
         sellPrice: transaction.sellPrice,
         weight: parseFloat(transaction.weight),
-        date: helper.correctDate(),
+        date: helper.correctDate(new Date(moment(date, "DDMMYYYY"))),
       };
       if (mode === "create") {
         if (createTransDetail) {

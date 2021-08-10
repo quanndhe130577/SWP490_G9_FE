@@ -1,13 +1,13 @@
 import request from "./request";
 
-var apis = {};
+let apis = {};
 
-var path = {
+let path = {
   login: "/api/login",
   logout: "/api/user/logout",
   changePassword: "/api/user/change-password",
   changePhonenumber: "/api/otp/change-phone",
-  checkChangePhonenumber: "/api/user/check-change-phone-otp",
+  checkChangePhonenumber: "/api/user/change-phone-number",
   register: "/api/register",
   getAllRole: "/api/role/get-all",
   getOtp: "/api/otp/register",
@@ -95,7 +95,7 @@ var path = {
   createCostIncurred: "/api/costincurred/create",
   updateCostIncurred: "/api/costincurred/update",
   deleteCostIncurred: "/api/costincurred/delete",
-  getDetailCostIncurred: "/api/costincurred/detail/{incurredId}",
+  getDetailCostIncurred: "/api/costincurred/detail",
 
   //anhnbt - Buyer
   getBuyers: "/api/buyer/getall",
@@ -128,6 +128,7 @@ var path = {
   getTransByDate: "/api/transaction/getall", //GET param:date /{ddMMyyyy}
   deleteTrans: "/api/transaction/delete", // transactionId
   closeTrans: "/api/transaction/chotso",
+  createOneTrans: "/api/transaction/create",
 
   //anhnbt forget(reset password)
   getResetPassword: "/api/otp/reset-password",
@@ -140,6 +141,11 @@ var path = {
   getGeneralTrans: "/api/transaction/getGeneral", // GET
   updateTransDetail: "/api/transactionDetail/update",
   deleteTransDetail: "/api/transactionDetail/delete", //transactionDetailId
+  getTransDTByBuyer: "/api/transactionDetail/payment", // Get
+  paymentForBuyer: "/api/transactionDetail/buyer/payment",
+
+  // REPORT MANAGEMENT
+  reportDate: "/api/report/getall", // GET
 };
 
 Object.keys(path).forEach(function (key) {

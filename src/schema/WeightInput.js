@@ -10,6 +10,7 @@ export default function Number({
   required = false,
   submitted,
   onKeyDown,
+  placeholder,
 }) {
   return (
     <div
@@ -24,6 +25,7 @@ export default function Number({
 
       <Input
         disabled={isDisable}
+        placeholder={placeholder}
         value={value}
         onChange={(e) => {
           if (onChange) {

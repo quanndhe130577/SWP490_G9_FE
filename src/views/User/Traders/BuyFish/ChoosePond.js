@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Modal } from "antd";
 import { Row, Col } from "reactstrap";
 import i18n from "i18next";
@@ -30,14 +30,17 @@ const ChoosePond = ({
     if (createPurchase && !currentPurchase.id) {
       let purchase = await createPurchase();
       if (purchase !== undefined) {
-        var rs = await updateFishType(purchase, dataChange, false);
+        let rs = await updateFishType(purchase, dataChange, false);
         if (rs) {
           helper.toast("success", "Tạo đơn mua thành công");
         }
       }
       // update fishtype khi ở trong page purchase detail
     } else if (currentPurchase.id) {
-      await updateFishType(currentPurchase, dataChange, true);
+      let rs = await updateFishType(currentPurchase, dataChange, true);
+      if (rs) {
+        setShowChoosePond(false);
+      }
     }
   };
 
@@ -48,14 +51,14 @@ const ChoosePond = ({
     isShowModal = false,
     onlyFe = false
   ) => {
-    var rs = await updateAllFishType(
+    let rs = await updateAllFishType(
       { purchaseId: currentPurchase.id, listFishType: dataChange },
       currentPurchase,
       onlyFe
     );
     if (rs) {
       dataChange.forEach((element) => {
-        var list = [...currentPurchase.listFishId];
+        let list = [...currentPurchase.listFishId];
         if (
           list.find((item) => parseInt(item) === parseInt(element.id)) ===
           undefined
@@ -155,6 +158,7 @@ const ChoosePond = ({
             listFishId={currentPurchase.listFishId || []}
             onChange={(arr) => onChange(arr, "arrFish")}
             dataDf={dataDf}
+            dateTime={currentPurchase.date}
             dataChange={(data) => {
               setDataChange(data);
             }}

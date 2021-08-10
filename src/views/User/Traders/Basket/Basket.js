@@ -7,7 +7,7 @@ import i18n from "i18next";
 import apis from "../../../../services/apis";
 import helper from "../../../../services/helper";
 import session from "../../../../services/session";
-import ModalForm from "./ModalForm";
+import ModalForm from "./ModalBasket";
 export default class Basket extends Component {
   constructor(props) {
     super(props);
@@ -241,7 +241,7 @@ export default class Basket extends Component {
         sortDirections: ["descend", "ascend"],
       },
       {
-        title: "",
+        title: i18n.t("action"),
         dataIndex: "id",
         key: "id",
         render: (id) => (
@@ -255,7 +255,7 @@ export default class Basket extends Component {
       },
     ];
     return (
-      <Card title={this.renderTitle()}>
+      <Card title={this.renderTitle()} className="body-minH">
         {isShowModal && mode !== "" && (
           <ModalForm
             isShow={isShowModal}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Input, Table } from "antd";
 import i18n from "i18next";
 import { Button } from "reactstrap";
-import apis from "../../../../services/apis";
+import { apis } from "../../../../services";
 import Widgets from "../../../../schema/Widgets";
 
 const PriceFishToday = ({
@@ -12,6 +12,7 @@ const PriceFishToday = ({
   dataChange,
   updateOnlyFe,
   removeFishType,
+  dateTime,
 }) => {
   const [dataS, setData] = useState([]);
   const onChangeWeight = (value, id, name) => {
@@ -27,10 +28,10 @@ const PriceFishToday = ({
   };
 
   const onAddFish = async () => {
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, "0");
-    var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-    var yyyy = today.getFullYear();
+    let today = new Date(dateTime);
+    let dd = String(today.getDate()).padStart(2, "0");
+    let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    let yyyy = today.getFullYear();
 
     today = dd + mm + yyyy;
 
@@ -48,9 +49,6 @@ const PriceFishToday = ({
   };
 
   const onRemoveFish = (id) => {
-    //const newDatas = dataS.filter((x) => x.id !== id);
-    //setData([...newDatas]);
-    //dataChange(newDatas);
     removeFishType(id);
     //   // chưa cập nhật lại được listFishId ở chosePond
     // }
@@ -80,7 +78,7 @@ const PriceFishToday = ({
       ),
     },
     {
-      title: "Trọng lượng tối thiểu",
+      title: i18n.t("minWeight"),
       dataIndex: "minWeight",
       key: "minWeight",
       width: "12%",
@@ -95,7 +93,7 @@ const PriceFishToday = ({
       ),
     },
     {
-      title: "Trọng lượng tối đa",
+      title: i18n.t("maxWeight"),
       dataIndex: "maxWeight",
       key: "maxWeight",
       width: "12%",
@@ -136,7 +134,6 @@ const PriceFishToday = ({
     {
       title: "Hành động",
       key: "action",
-      //width: "10%",
       render: (text, record) => (
         <div size="middle">
           {/* <label>{i18n.t("edit")}</label> */}

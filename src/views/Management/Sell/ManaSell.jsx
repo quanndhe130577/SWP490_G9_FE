@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "reactstrap";
 import { apis, local, helper } from "../../../services";
-import { Card, Table } from "antd";
-// import { useDispatch } from "react-redux";
+import { Card, Table, Tag } from "antd";
 import i18n from "i18next";
 import { useHistory } from "react-router-dom";
 import Moment from "react-moment";
 import NumberFormat from "react-number-format";
 import { session } from "../../../services";
-// import moment from "moment";
 
 const ManaSell = () => {
   let history = useHistory();
   // const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(true);
   const [transaction, setTransaction] = useState([]);
-  const [user, setUser] = useState(session.get("user"));
+  const user = session.get("user");
 
   async function onClickBtn(mode, id, row) {
     if (mode === "edit") {
-      history.push("sellF?date=" + helper.getDateFormat(row.date, "ddmmyyyy"));
+      history.push(
+        "sellFish?date=" + helper.getDateFormat(row.date, "ddmmyyyy")
+      );
       local.set(
         "historyTransaction",
         transaction.find((e) => e.id === id)
@@ -98,35 +98,47 @@ const ManaSell = () => {
       dataIndex: "listTrader",
       key: "listTrader",
       render: (listTrader, row) => {
-        let name = "";
+        // let name = "";
 
         if (user.roleName !== "Trader") {
-          listTrader.forEach((trader, idx) => {
-            if (trader) {
-              name += trader.firstName + " " + trader.lastName;
-            }
-            if (idx < listTrader.length - 1) {
-              name += ", ";
-            }
-          });
+          // listTrader.forEach((trader, idx) => {
+          //   if (trader) {
+          //     name += trader.firstName + " " + trader.lastName;
+          //   }
+          //   if (idx < listTrader.length - 1) {
+          //     name += ", ";
+          //   }
+          // });
+          return listTrader.map((trader, idx) => (
+            <Tag key={idx}>
+              {trader.firstName} {trader.lastName}
+            </Tag>
+          ));
         } else {
-          row.listWeightRecorder.forEach((wr, idx) => {
-            if (wr) {
-              name += wr.firstName + " " + wr.lastName;
-            }
-            if (idx < row.listWeightRecorder.length - 1) {
-              name += ", ";
-            }
-          });
+          // if (row.listWeightRecorder.length === 0) {
+          //   name += "tự bán";
+          // } else {
+          // row.listWeightRecorder.forEach((wr, idx) => {
+          //   if (wr && (wr.firstName || wr.lastName)) {
+          //     name += wr.firstName + " " + wr.lastName;
+          //   }
+          //   if (idx < row.listWeightRecorder.length - 1) {
+          //     name += ", ";
+          //   }
+          // });
+          // }
+          return row.listWeightRecorder.map((wr, idx) => (
+            <Tag key={idx}>
+              {wr.firstName} {wr.lastName}
+            </Tag>
+          ));
         }
-        return <span>{name}</span>;
       },
     },
     {
       title: i18n.t("totalWeight") + " (Kg)",
       dataIndex: "totalWeight",
       key: "totalWeight",
-      // ...this.getColumnSearchProps("totalWeight"),
       sorter: (a, b) => a.totalWeight - b.totalWeight,
       sortDirections: ["descend", "ascend"],
     },
@@ -165,14 +177,13 @@ const ManaSell = () => {
       render: (id, row) => (
         <Button
           style={{ width: "100%" }}
-          // color="info"
-          color="danger"
+          color="info"
+          // color="danger"
           className="mr-2"
           onClick={() => onClickBtn("edit", id, row)}
         >
           <i className="fa fa-pencil-square-o mr-1" />
-          Chi tiết
-          {/* {i18n.t("transaction.action.continue")} */}
+          {i18n.t("action.purchase.detail")}
         </Button>
       ),
     },
@@ -212,7 +223,7 @@ const ManaSell = () => {
             className="mb-2 pull-right"
             onClick={() => {
               history.push(
-                "sellF?date=" + helper.getDateFormat(new Date(), "ddmmyyyy")
+                "sellFish?date=" + helper.getDateFormat(new Date(), "ddmmyyyy")
               );
             }}
           >
@@ -228,7 +239,7 @@ const ManaSell = () => {
   }, []);
 
   return (
-    <Card title={renderTitle()}>
+    <Card title={renderTitle()} className="body-minH">
       <Table
         columns={columns}
         dataSource={transaction}

@@ -5,7 +5,7 @@ import i18n from "i18next";
 import Widgets from "../../../schema/Widgets";
 import { local, helper, apis } from "../../../services";
 import TradersToday from "./TradersToday";
-
+import moment from "moment";
 import { useHistory } from "react-router-dom";
 
 const ChooseTraders = ({
@@ -14,6 +14,7 @@ const ChooseTraders = ({
   currentTransaction = {},
   dataFetched,
   handleChangeCurrentTrans,
+  date,
 }) => {
   let isChange = false;
   const history = useHistory();
@@ -24,13 +25,14 @@ const ChooseTraders = ({
       try {
         let rs = await apis.createTransactions({
           // date: helper.getDateFormat(),
-          date: helper.correctDate(),
+          date: helper.correctDate(new Date(moment(date, "DDMMYYYY"))),
           listTraderId: currentTransaction.listTraderId,
         });
         if (rs && rs.statusCode === 200) {
           helper.toast("success", i18n.t(rs.message || "success"));
           history.push(
-            "sellF?date=" + helper.getDateFormat(new Date(), "ddmmyyyy")
+            //"sellFish?date=" + helper.getDateFormat(new Date(), "ddmmyyyy")
+            "sellFish?date=" + date
           );
           setShowChooseTraders(false);
         }

@@ -14,11 +14,12 @@ const Select2 = ({
   items = [],
   displayField = "name",
   saveField = "id",
-  needPleaseChose = true,
   containLbl,
 }) => {
   const [options, setOptions] = useState(items);
-  let valueTem = items.find((el) => el.value === value || el.id === value);
+  let valueTem = items.find(
+    (el) => el.value === value || el.id === value || el.saveField === value
+  );
   useEffect(() => {
     let data = [...items];
     if (displayField && Array.isArray(displayField)) {

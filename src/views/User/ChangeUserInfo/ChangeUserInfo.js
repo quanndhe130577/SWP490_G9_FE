@@ -36,7 +36,7 @@ class ChangeUserInfo extends Component {
   };
   render() {
     return (
-      <Card title={this.renderTitle()}>
+      <Card title={this.renderTitle()} className="body-minH">
         <div style={{ minHeight: "50em" }}>
           <Tabs defaultActiveKey="1" centered>
             <Tabs.TabPane tab="Đổi thông tin cơ bản" key="1">

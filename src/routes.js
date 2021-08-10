@@ -87,8 +87,7 @@ const CheckOTP = Loadable({
   loading: Loading,
 });
 const EmployeeSalary = Loadable({
-  loader: () =>
-    import("./views/User/Traders/Salary/EmployeeSalary"),
+  loader: () => import("./views/User/Traders/Salary/EmployeeSalary"),
   loading: Loading,
 });
 const routes = [
@@ -163,7 +162,7 @@ const routes = [
     component: Buyer,
   },
   {
-    path: "/sellF",
+    path: "/sellFish",
     name: "SellFish",
     component: SellFish,
   },

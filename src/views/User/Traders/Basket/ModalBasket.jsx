@@ -5,7 +5,7 @@ import Widgets from "../../../../schema/Widgets";
 import i18n from "i18next";
 import { apis, helper } from "../../../../services";
 
-const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
+const ModalBasket = ({ isShow, closeModal, mode, currentPO }) => {
   const [basket, setPO] = useState(currentPO);
 
   const handleChangePondOwner = (val, name) => {
@@ -51,7 +51,8 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
           <Col md="6" xs="12">
             <Widgets.Text
               required={true}
-              label={i18n.t("type")}
+              label={i18n.t("name")}
+              placeholder="Vd: Rổ vuông"
               value={basket.type || ""}
               onChange={(e) => handleChangePondOwner(e, "type")}
             />
@@ -59,8 +60,9 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
           <Col md="6" xs="12">
             <Widgets.WeightInput
               required={true}
-              label={i18n.t("weight")}
+              label={i18n.t("weightBasket")}
               value={basket.weight || ""}
+              placeholder={"4"}
               onChange={(e) => handleChangePondOwner(e, "weight")}
             />
           </Col>
@@ -70,4 +72,4 @@ const ModalEdit = ({ isShow, closeModal, mode, currentPO }) => {
   );
 };
 
-export default ModalEdit;
+export default ModalBasket;

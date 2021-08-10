@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Row, Col } from "reactstrap";
 import Modal from "../../../../containers/Antd/ModalCustom";
 import Widgets from "../../../../schema/Widgets";
 import i18n from "i18next";
-import apis from "../../../../services/apis";
-import helper from "../../../../services/helper";
+import { apis, helper } from "../../../../services";
 
 const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
   const [fishType, setFT] = useState(currentFT);
@@ -35,9 +34,9 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
       helper.toast("error", i18n.t("systemError"));
     }
   };
-  useEffect(() => {
-    handleChangeFishType(new Date(), "date");
-  }, []);
+  // useEffect(() => {
+  //   handleChangeFishType(new Date(), "date");
+  // }, []);
   return (
     <Modal
       title={mode === "edit" ? i18n.t("edit") : i18n.t("create")}
@@ -48,6 +47,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
         <Row>
           <Col md="6" xs="12">
             <Widgets.Text
+              required={true}
               label={i18n.t("Fish Name")}
               value={fishType.fishName || ""}
               onChange={(e) => handleChangeFishType(e, "fishName")}
@@ -63,14 +63,15 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
           <Col md="6" xs="12">
             <Widgets.WeightInput
               type="number"
-              label={i18n.t("Min Weight")}
+              required={true}
+              label={i18n.t("minWeight")}
               value={fishType.minWeight || ""}
               onChange={(e) => handleChangeFishType(e, "minWeight")}
             />
           </Col>
           <Col md="6" xs="12">
             <Widgets.WeightInput
-              label={i18n.t("Max Weight")}
+              label={i18n.t("maxWeight")}
               value={fishType.maxWeight || ""}
               onChange={(e) => handleChangeFishType(e, "maxWeight")}
             />
@@ -78,6 +79,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
           <Col md="6" xs="12">
             <Widgets.MoneyInput
               type="number"
+              required={true}
               label={i18n.t("buyPrice") + i18n.t("(suffix)")}
               value={fishType.price || ""}
               onChange={(e) => handleChangeFishType(e, "price")}
@@ -85,12 +87,13 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
           </Col>
           <Col md="6" xs="12">
             <Widgets.MoneyInput
+              required={true}
               label={i18n.t("sellPrice(VND)")}
               value={fishType.transactionPrice || ""}
               onChange={(e) => handleChangeFishType(e, "transactionPrice")}
             />
           </Col>
-          <Col md="6" xs="12">
+          {/* <Col md="6" xs="12">
             <Widgets.DateTimePicker
               required={true}
               label={i18n.t("Sell Date FT")}
@@ -103,7 +106,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
                 //console.log(data);
               }}
             />
-          </Col>
+          </Col> */}
         </Row>
       )}
     />

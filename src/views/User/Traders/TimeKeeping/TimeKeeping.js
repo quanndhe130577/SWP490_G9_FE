@@ -89,17 +89,15 @@ export default class TimeKeeping extends Component {
     let currentDate = this.state.currentDate;
     if (currentDate._d.getMonth() === value._d.getMonth()) {
       if (times.length !== 0) {
-        // let money = 0;
-        // times.forEach((item) => {
-        //   money += item.money;
-        // });
         return (
-          <ul className="events">
-            <li key="number" className="d-flex">
-              <UsergroupDeleteOutlined className="tnrss-ts-2 tnrss-text-danger px-1" />
-              <p className="">{`${times.length}`}</p>
-            </li>
-          </ul>
+          <div className="tnrss-bg mb-2">
+            <ul className="events">
+              <li key="number" className="d-flex">
+                <UsergroupDeleteOutlined className="tnrss-ts-2 tnrss-text-primary px-1" />
+                <p className="">{`${times.length}`}</p>
+              </li>
+            </ul>
+          </div>
         );
       }
     } else {
@@ -167,7 +165,7 @@ export default class TimeKeeping extends Component {
   render() {
     this.checkExitsEmp();
     return (
-      <Card title={this.renderTitle()}>
+      <Card title={this.renderTitle()} className="body-minH">
         <CurrentEmps
           visible={this.state.isShow}
           cancel={this.onCancel}
@@ -180,6 +178,7 @@ export default class TimeKeeping extends Component {
             <Calendar
               mode={this.state.mode}
               dateCellRender={this.dateCellRender}
+              // dateFullCellRender={this.dateCellRender}
               validRange={[moment("01-01-2020", "MM-DD-YYYY"), moment()]}
               onSelect={this.onChange}
               value={this.state.currentDate}
