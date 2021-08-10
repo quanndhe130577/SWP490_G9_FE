@@ -54,6 +54,7 @@ const ModalCloseSell = ({
     handleCloseModal(!isShowCloseTransaction);
   };
   const handleChangeTran = async (name, val) => {
+
     // if (traderId) {
     //   debugger;
     //   handleChangeTraderId("");
