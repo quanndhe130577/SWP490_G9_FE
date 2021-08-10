@@ -17,7 +17,6 @@ export default function Money({
 }) {
   //  console.log("number " + value);
   //const [inputValue, setInputValue] = useState(value);
-
   return (
     <div
       className={

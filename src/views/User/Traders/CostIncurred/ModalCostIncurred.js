@@ -7,11 +7,12 @@ import { apis, helper, session } from "../../../../services";
 import moment from "moment";
 import { costIncurred } from "../../../../constant";
 
+
 const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
   const [costInc, setCostInc] = useState(currentCostInc);
   const [loading, setLoading] = useState(false);
   const [userClient, setUserClient] = useState("weightRecorder");
-
+  console.log(currentCostInc);
   useEffect(() => {
     handleChangeCostIncurred(new Date(), "date");
     if (mode === "create") {
@@ -77,16 +78,16 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
             <Widgets.Select
               required={true}
               label={i18n.t("type")}
-              value={costInc.type || "day"}
-              onChange={(e) => handleChangeCostIncurred(e, "type")}
+              value={costInc.typeOfCost || "day"}
+              onChange={(e) => handleChangeCostIncurred(e, "typeOfCost")}
               items={[
-                { key: "day", label: "Ngày" },
-                { key: "month", label: "Tháng" },
+                { value: "day", label: "Ngày" },
+                { value: "month", label: "Tháng" },
               ]}
-              saveField={"key"}
+              saveField={"value"}
             />
           </Col>
-          {costInc && costInc.type && (
+          {costInc && costInc.typeOfCost && (
             <>
               <Col md="6" xs="12">
                 <Widgets.SelectSearchMulti
@@ -95,7 +96,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
                   value={costInc.name || []}
                   onChange={(e) => handleChangeCostIncurred(e, "name")}
                   // items={costIncurred[costIncurred.type].trader}
-                  items={costIncurred[costInc.type][userClient]}
+                  items={costIncurred[costInc.typeOfCost][userClient]}
                   displayField="label"
                   saveField="key"
                 />
