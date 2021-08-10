@@ -95,7 +95,7 @@ var path = {
   createCostIncurred: "/api/costincurred/create",
   updateCostIncurred: "/api/costincurred/update",
   deleteCostIncurred: "/api/costincurred/delete",
-  getDetailCostIncurred: "/api/costincurred/detail/{incurredId}",
+  getDetailCostIncurred: "/api/costincurred/detail",
 
   //anhnbt - Buyer
   getBuyers: "/api/buyer/getall",

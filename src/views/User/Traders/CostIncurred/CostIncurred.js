@@ -115,11 +115,15 @@ export default class CostIncurred extends Component {
     }
     this.setState({ isShowModal: false, mode: "", currentEmp: {} });
   };
-  onClick(modeBtn, costIncID) {
+  async onClick(modeBtn, costIncID) {
     let { currentCostInc, data } = this.state;
 
     if (modeBtn === "edit") {
-      currentCostInc = data.find((el) => el.id === costIncID);
+      //currentCostInc = data.find((el) => el.id === costIncID);
+      let rs = await apis.getDetailCostIncurred({}, "GET", costIncID);
+      if(rs && rs.statusCode === 200){
+        currentCostInc = rs.data;
+      }
       this.setState({ currentCostInc, mode: "edit", isShowModal: true });
     } else if (modeBtn === "delete") {
       helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
