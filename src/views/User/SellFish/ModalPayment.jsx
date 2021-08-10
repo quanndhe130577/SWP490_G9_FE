@@ -7,6 +7,7 @@ import Widgets from "../../../schema/Widgets";
 import { apis, helper } from "../../../services";
 import NumberFormat from "react-number-format";
 import Moment from "react-moment";
+import moment from "moment";
 
 const ModalBuyer = ({ isShowBuyer, date, setShowBuyer, getAllTransByDate }) => {
   const [loading, setLoading] = useState(false);
@@ -114,7 +115,7 @@ const ModalBuyer = ({ isShowBuyer, date, setShowBuyer, getAllTransByDate }) => {
             <label className="mr-2">
               <b>{i18n.t("date")}:</b>
               <Moment format="DD/MM/YYYY" className="ml-2">
-                {currentDetail && currentDetail.date}
+                {new Date(moment(date, "DDMMYYYY"))}
               </Moment>
             </label>
           </Col>
