@@ -205,5 +205,7 @@
   "buyFish": "Đơn mua",
   "dataNotYet": "Chưa có dữ liệu",
   "buyBySelf": "Tự bán",
-  "historyPurchaseFishtype": "Lịch sử mua bán cá"
+  "historyPurchaseFishtype": "Lịch sử mua bán cá",
+  "day": "Ngày",
+  "typeOfCost": "Loại chi phí"
 }

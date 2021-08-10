@@ -7,7 +7,6 @@ import { apis, helper, session } from "../../../../services";
 import moment from "moment";
 import { costIncurred } from "../../../../constant";
 
-
 const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
   const [costInc, setCostInc] = useState(currentCostInc);
   const [loading, setLoading] = useState(false);
@@ -78,7 +77,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
             <Widgets.Select
               required={true}
               label={i18n.t("type")}
-              value={costInc.typeOfCost || "day"}
+              value={costInc.typeOfCost || ""}
               onChange={(e) => handleChangeCostIncurred(e, "typeOfCost")}
               items={[
                 { value: "day", label: "Ngày" },
