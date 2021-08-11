@@ -146,7 +146,7 @@ class NormalInfo extends Component {
             </div>
           </div>
         </form>
-        <Modal title="Basic Modal" visible={this.state.display}
+        <Modal title="Đổi ảnh đại diện" visible={this.state.display}
           onOk={() => this.setState({ avatar: this.state.preview, display: false })}
           onCancel={() => this.setState({ display: false })}>
           <div className="container">
@@ -160,6 +160,7 @@ class NormalInfo extends Component {
                   this.setState({ preview: this.state.avatar })
                 }
                 onBeforeFileLoad={(elem) => { }}
+                label="Chọn một ảnh"
                 className="update-userInfo-avatar"
               />
             </div>
