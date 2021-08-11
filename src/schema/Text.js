@@ -1,5 +1,6 @@
 import React from "react";
 import { Input } from "antd";
+import i18n from "i18next";
 
 export default function Text({
   value,
@@ -9,7 +10,7 @@ export default function Text({
   onChange,
   type = "text",
   required = false,
-  submitted,
+  submitted = false,
   onKeyDown,
   placeholder,
 }) {
@@ -35,7 +36,7 @@ export default function Text({
         required={required}
       />
       {submitted && !value && (
-        <div className="help-block">{label} is required</div>
+        <div className="help-block">{i18n.t("isRequired") + " " + label}</div>
       )}
       {submitted && !error && <div className="help-block">{error}</div>}
     </div>

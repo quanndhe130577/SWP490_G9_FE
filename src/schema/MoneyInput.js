@@ -1,6 +1,6 @@
 import React from "react";
 import { InputNumber } from "antd";
-
+import i18next from "i18next";
 export default function Money({
   defaultValue = 0,
   value = null,
@@ -54,7 +54,9 @@ export default function Money({
         }}
       />
       {submitted && !value && (
-        <div className="help-block">{label} is required</div>
+        <div className="help-block">
+          {i18next.t("isRequired") + " " + label}
+        </div>
       )}
       {submitted && !error && <div className="help-block">{error}</div>}
     </div>
