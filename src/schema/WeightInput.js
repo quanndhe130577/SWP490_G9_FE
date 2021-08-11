@@ -30,7 +30,10 @@ export default function Number({
         onChange={(e) => {
           if (onChange) {
             let v = e.target.value.replace(/[^0-9.]/, "");
-            onChange(parseInt(v, 10));
+            if (v.startsWith(0)) {
+              v = parseInt(v, 10);
+            }
+            onChange(v);
           }
         }}
         onBlur={(e) => {

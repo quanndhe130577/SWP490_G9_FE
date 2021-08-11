@@ -551,7 +551,11 @@ const BuyFish = (props) => {
       setCurrentPurchase(newPur);
     }
   };
-
+  const calculateColumns = (col) => {
+    let temCol = [...col];
+    if (currentPurchase.status !== "Pending") temCol.pop();
+    return temCol;
+  };
   useEffect(() => {
     // lấy id trên address bar
     let query = queryString.parse(props.location.search, {
@@ -604,7 +608,12 @@ const BuyFish = (props) => {
       <Row>
         <Col md="6">
           {/* <h3 className="mr-5">{i18n.t("buyGood")}</h3> */}
-          <h3 className="mr-5">Chi tiết đơn mua</h3>
+          <h3 className="mr-5">
+            Chi tiết đơn mua -
+            <label className="mt-1 ml-1">
+              <Moment format="DD/MM/YYYY">{currentPurchase.date}</Moment>
+            </label>
+          </h3>
         </Col>
         <Col md="6">
           <Button
@@ -668,69 +677,69 @@ const BuyFish = (props) => {
       )}
       {!isShowChoosePond && (
         <Card title={renderTitle()} className="body-minH">
-          <Row className="mb-2">
-            <Col md="6">
-              <Row>
-                <Col md="4">
-                  <label className="mt-1">
-                    <b>{i18n.t("date")}:</b>&nbsp;
-                    <Moment format="DD/MM/YYYY">{currentPurchase.date}</Moment>
-                  </label>
-                </Col>
-                <Col md="8">
-                  <Widgets.Select
-                    label={i18n.t("pondOwner") + ": "}
-                    value={parseInt(currentPurchase.pondOwnerId)}
-                    items={dataDf.pondOwner}
-                    displayField="name"
-                    saveField="id"
-                    isDisable={currentPurchase.status === "Completed"}
-                    onChange={(value) => onChangePondOwner(value)}
-                    needPleaseChose={false}
-                    width={"75%"}
-                  />
-                </Col>
-                {/* <label>
+          <Row className="mb-2" style={{ minHeight: "6vh" }}>
+            <Col md="4">
+              <Widgets.Select
+                label={i18n.t("pondOwner") + ": "}
+                value={parseInt(currentPurchase.pondOwnerId)}
+                items={dataDf.pondOwner}
+                displayField="name"
+                saveField="id"
+                isDisable={currentPurchase.status === "Completed"}
+                onChange={(value) => onChangePondOwner(value)}
+                needPleaseChose={false}
+                width={"75%"}
+              />
+
+              {/* <label>
                   <b className="mr-2">{i18n.t("pondOwner")}:</b>
                   { //nếu ko có id thì dùng hàm findPO  }
                   {(findPO() && findPO().name) || currentPurchase.pondOwnerName}
                 </label> */}
-              </Row>
             </Col>
-            <Col md="6">
-              {/* nếu status khac Pending thì ko show btn thêm */}
-              {currentPurchase.status === "Pending" && (
-                <div className="float-right">
+            <Col md="2" />
+            {/* nếu status khac Pending thì ko show btn thêm */}
+            {currentPurchase.status === "Pending" && (
+              <>
+                <Col md="2" className="p-0 pr-2 mb-2">
                   <Button
                     color="info"
                     onClick={() => handleShowClosePurchase()}
-                    className="mr-2"
+                    className="w-100 p-0 h-100 "
                   >
+                    <i className="fa fa-check-square-o mr-1" />
                     {i18n.t("closePurchase")}
                   </Button>
+                </Col>
+
+                <Col md="2" className="p-0 pr-2 mb-2">
                   <Button
                     color="info"
                     onClick={() => setShowChoosePond(true)}
-                    className="mr-2"
+                    className="w-100 p-0 h-100 "
                   >
+                    <i className="fa fa-list-alt mr-1" />
                     {i18n.t("Giá cá hôm nay")}
                   </Button>
+                </Col>
+                <Col md="2" className="p-0 pr-2 mb-2">
                   <Button
                     color="info"
                     onClick={handleAddPurchaseDetail}
-                    className=" mr-2"
+                    className="w-100 p-0 h-100 bold"
                   >
+                    <i className="fa fa-plus mr-1" />
                     {i18n.t("Thêm Mã")}
                   </Button>
-                </div>
-              )}
-            </Col>
+                </Col>
+              </>
+            )}
           </Row>
 
           <Row>
             <Col style={{ overflowX: "auto" }}>
               <Table
-                columns={columns}
+                columns={calculateColumns(columns)}
                 dataSource={purchase}
                 loading={isLoading}
                 scroll={{ y: 420 }}
