@@ -229,7 +229,7 @@ export default class Truck extends Component {
         sortDirections: ["descend", "ascend"],
       },
       {
-        title: "",
+        title: i18n.t("action"),
         dataIndex: "id",
         key: "id",
         render: (id) => (
@@ -243,7 +243,7 @@ export default class Truck extends Component {
       },
     ];
     return (
-      <Card title={this.renderTitle()}>
+      <Card title={this.renderTitle()} className="body-minH">
         {isShowModal && mode !== "" && (
           <ModalForm
             isShow={isShowModal}

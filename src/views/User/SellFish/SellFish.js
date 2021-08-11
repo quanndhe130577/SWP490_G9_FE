@@ -33,7 +33,7 @@ const SellFish = (props) => {
   // const [traderInDate, setTraderInDate] = useState([]);
   const [dataFetched, setDtFetched] = useState({}); // include trader by WR
   const [currentTraderId, setCurrentTraderId] = useState("");
-
+  const [currentTransId, setCurrentTransId] = useState("");
   const handleBtnAction = (action, id) => {
     if (action === "delete") {
       deleteTransDetail({ transactionDetailId: id });
@@ -240,15 +240,22 @@ const SellFish = (props) => {
       console.log(error);
     }
   }
-  async function getAllTransByDate(date, user) {
+  async function getAllTransByDate(date, user, isDelete) {
     try {
       let rs = await apis.getTransByDate({}, "GET", date);
       if (rs && rs.statusCode === 200) {
+        // IS DATA NULL
         if (rs.data.length === 0) {
-          if (user.roleName !== "Trader") setShowChooseTraders(true);
-          else {
-            setShowChooseTraders(false);
-            createOneTrans();
+          // IS DELETE TRANS MODE
+          if (isDelete) {
+            handleBack();
+          } else {
+            // IS NOT DELETE TRANS MODE
+            if (user.roleName !== "Trader") setShowChooseTraders(true);
+            else {
+              setShowChooseTraders(false);
+              createOneTrans();
+            }
           }
         } else {
           let tem = [],
@@ -308,10 +315,11 @@ const SellFish = (props) => {
                 <i className="fa fa-trash mr-1" />
                 {i18n.t("deleteTrans")}
               </Button>
-            ) : showBtnDelete(trans) === "complete" ? (
+            ) : showBtnDelete(trans) === "Completed" ? (
               <Button
                 color="info"
                 onClick={() => {
+                  setCurrentTransId(trans.trader.transId);
                   setCurrentTraderId(trans.trader.id);
                   setShowCloseTrans(true);
                 }}
@@ -338,7 +346,7 @@ const SellFish = (props) => {
         return "delete";
       }
     } else if (trans.status === "Completed") {
-      return "complete";
+      return "Completed";
     }
   }
   async function deleteTrans(transactionId) {
@@ -347,7 +355,7 @@ const SellFish = (props) => {
         if (rs) {
           let rs = await apis.deleteTrans(transactionId);
           if (rs && rs.statusCode === 200) {
-            handleBack();
+            getAllTransByDate(date, {}, true);
             helper.toast("success", i18n.t(rs.message || "success"));
           }
         }
@@ -359,7 +367,10 @@ const SellFish = (props) => {
   }
   const calculateColumns = (col, trans) => {
     let temCol = [...col];
-    if (trans && trans.weightRecorder && user.roleName === "Trader")
+    if (
+      (trans && trans.weightRecorder && user.roleName === "Trader") ||
+      trans.status === "Completed"
+    )
       temCol.pop();
     return temCol;
   };
@@ -438,7 +449,9 @@ const SellFish = (props) => {
             traderId={currentTraderId}
             handleChangeTraderId={() => {
               setCurrentTraderId("");
+              setCurrentTransId("");
             }}
+            transId={currentTransId}
           />
         )}
         {isShowChooseTraders && user.roleName !== "Trader" && (
@@ -448,6 +461,7 @@ const SellFish = (props) => {
             currentTransaction={currentTransaction}
             handleChangeCurrentTrans={handleChangeCurrentTrans}
             setShowChooseTraders={(status) => setShowChooseTraders(status)}
+            date={date}
           />
         )}
         {isShowSell && (
@@ -472,7 +486,7 @@ const SellFish = (props) => {
           />
         )}
         {!isShowChooseTraders && (
-          <Card title={renderTitle()} style={{ minHeight: "80vh" }}>
+          <Card title={renderTitle()} className="body-minH">
             {/* ROW BUTTON */}
             <Row className="mb-4" style={{ minHeight: "6vh" }}>
               <Col md="4">

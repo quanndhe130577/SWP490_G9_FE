@@ -7,7 +7,13 @@ import apis from "../../../../services/apis";
 import moment from "moment";
 import i18n from "i18next";
 
-const ModalBaseSalaries = ({ isShow, closeModal, baseSalaries, name, currentEmp }) => {
+const ModalBaseSalaries = ({
+  isShow,
+  closeModal,
+  baseSalaries,
+  name,
+  currentEmp,
+}) => {
   const [salaries, setSlaries] = useState([]);
   const [salary, setSalary] = useState(currentEmp.baseSalary);
 
@@ -16,7 +22,12 @@ const ModalBaseSalaries = ({ isShow, closeModal, baseSalaries, name, currentEmp 
       title: i18n.t("salary") + "(VND)",
       dataIndex: "salary",
       key: "salary",
-      render: (salary) => salary !== null ? <Widgets.NumberFormat needSuffix={false} value={salary} /> : "Không có thông tin",
+      render: (salary) =>
+        salary !== null ? (
+          <Widgets.NumberFormat needSuffix={false} value={salary} />
+        ) : (
+          "Không có thông tin"
+        ),
     },
     {
       title: i18n.t("dateStart"),
@@ -24,8 +35,8 @@ const ModalBaseSalaries = ({ isShow, closeModal, baseSalaries, name, currentEmp 
       key: "startDate",
       render: (startDate) => {
         let date = moment(new Date(startDate));
-        date.startOf('month');
-        return date.format('DD/MM/YYYY');
+        date.startOf("month");
+        return date.format("DD/MM/YYYY");
       },
     },
     {
@@ -35,8 +46,8 @@ const ModalBaseSalaries = ({ isShow, closeModal, baseSalaries, name, currentEmp 
       render: (endDate) => {
         if (endDate) {
           let date = moment(new Date(endDate));
-          date.endOf('month');
-          return date.format('DD/MM/YYYY');
+          date.endOf("month");
+          return date.format("DD/MM/YYYY");
         } else {
           return "Chưa có thông tin";
         }
@@ -46,27 +57,31 @@ const ModalBaseSalaries = ({ isShow, closeModal, baseSalaries, name, currentEmp 
   let getBaseSalaries = async () => {
     let rs = await apis.getBaseSalariesByEmployeeId({}, "GET", currentEmp.id);
     setSlaries(rs.data);
-  }
+  };
   const handleOk = async () => {
     try {
-      let rs = await apis.updateEmployeeBaseSalary({ salary: salary, empId: currentEmp.id });
+      let rs = await apis.updateEmployeeBaseSalary({
+        salary: salary,
+        empId: currentEmp.id,
+      });
       if (rs && rs.statusCode === 200) {
         helper.toast("success", i18n.t(rs.message || "success"));
-        getBaseSalaries()
+        getBaseSalaries();
       }
     } catch (error) {
       helper.toast("error", i18n.t("systemError"));
     }
   };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => getBaseSalaries(), []);
   return (
     <Modal
-      title={"Lương " + " của " + name}
+      title={"Lương của " + name}
       footer=""
       visible={isShow}
       onCancel={() => closeModal(true)}
     >
-      <Row className='pb-3'>
+      <Row className="pb-3">
         <Col md="6" xs="12">
           <Widgets.MoneyInput
             required={true}
@@ -76,7 +91,9 @@ const ModalBaseSalaries = ({ isShow, closeModal, baseSalaries, name, currentEmp 
           />
         </Col>
         <Col md="6" xs="12">
-          <Button type="primary" onClick={handleOk}>Lưu</Button>
+          <Button type="primary" onClick={handleOk}>
+            Lưu
+          </Button>
         </Col>
       </Row>
       <Table

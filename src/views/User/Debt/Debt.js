@@ -80,14 +80,27 @@ export default class Debt extends Component {
             size="small"
             style={{ width: 90 }}
           >
-            Tìm
+            Search
           </Button>
           <Button
             onClick={() => this.handleReset(clearFilters)}
             size="small"
             style={{ width: 90 }}
           >
-            Đặt lại
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({ closeDropdown: false });
+              this.setState({
+                searchText: selectedKeys[0],
+                searchedColumn: dataIndex,
+              });
+            }}
+          >
+            Filter
           </Button>
         </Space>
       </div>
@@ -110,7 +123,6 @@ export default class Debt extends Component {
     render: (text) =>
       this.state.searchedColumn === dataIndex ? <div>{text}</div> : text,
   });
-
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -156,7 +168,6 @@ export default class Debt extends Component {
       });
     }
   }
-
 
   renderBtnAction(id) {
     return (
@@ -252,14 +263,10 @@ export default class Debt extends Component {
         ...this.getColumnSearchProps("date"),
         sorter: (a, b) => a.date.length - b.date.length,
         sortDirections: ["descend", "ascend"],
-        render: (date) => (
-          <Moment format="DD/MM/YYYY">
-            {date}
-          </Moment>
-        ),
+        render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
       },
       {
-        title: "",
+        title: i18n.t("action"),
         dataIndex: "id",
         key: "id",
         render: (id) => (
@@ -273,7 +280,7 @@ export default class Debt extends Component {
       },
     ];
     return (
-      <Card title={this.renderTitle()}>
+      <Card title={this.renderTitle()} className="body-minH">
         {isShowModal && mode !== "" && (
           <ModalForm
             isShow={isShowModal}

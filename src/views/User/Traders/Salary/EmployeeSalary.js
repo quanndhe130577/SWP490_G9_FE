@@ -30,7 +30,7 @@ export default class EmployeeSalary extends Component {
       loading: true,
       employeeId: 0,
       employeeName: "",
-      canCalculate: false
+      canCalculate: false,
     };
   }
 
@@ -41,37 +41,47 @@ export default class EmployeeSalary extends Component {
   fetchEmployee = async () => {
     try {
       let user = await session.get("user");
-      let rs = await apis.getSalaryDetailEmployee({}, "GET", this.state.date._d.toDateString());
+      let rs = await apis.getSalaryDetailEmployee(
+        {},
+        "GET",
+        this.state.date._d.toDateString()
+      );
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
-        this.setState({ data: rs.data, user, total: rs.data.length, canCalculate: rs.data.filter(item => item.baseSalary !== null).length > 0 });
+        this.setState({
+          data: rs.data,
+          user,
+          total: rs.data.length,
+          canCalculate:
+            rs.data.filter((item) => item.baseSalary !== null).length > 0,
+        });
       }
     } catch (error) {
       console.log(error);
     } finally {
       this.setState({ loading: false });
     }
-  }
+  };
 
   getBaseSalaries = async (id) => {
     let rs = await apis.getBaseSalariesByEmployeeId({}, "GET", id);
     if (rs) {
-      this.setState({ baseSalaries: rs.data })
+      this.setState({ baseSalaries: rs.data });
     }
-  }
+  };
 
   getAdvanceSalaries = async (id) => {
     let rs = await apis.getAllAdvanceSalary({}, "GET", id);
     if (rs) {
-      this.setState({ advanceSalaries: rs.data })
+      this.setState({ advanceSalaries: rs.data });
     }
-  }
+  };
   getHistorySalaries = async (id) => {
     let rs = await apis.getAllEmpHistorySalary({}, "GET", id);
     if (rs) {
-      this.setState({ historySalaries: rs.data })
+      this.setState({ historySalaries: rs.data });
     }
-  }
+  };
   renderTitle = () => {
     let { total } = this.state || 0;
     return (
@@ -82,9 +92,9 @@ export default class EmployeeSalary extends Component {
         </Col>
 
         <Col md="6">
-          <div className='d-flex flex-row-reverse'>
-            {
-              this.state.canCalculate && <Button
+          <div className="d-flex flex-row-reverse">
+            {this.state.canCalculate && (
+              <Button
                 color="info"
                 className="pull-right"
                 onClick={() => {
@@ -93,14 +103,16 @@ export default class EmployeeSalary extends Component {
               >
                 {i18n.t("Calculate Salary")}
               </Button>
-            }
-            <DatePicker disabledDate={(date) => date.isAfter(moment())}
+            )}
+            <DatePicker
+              disabledDate={(date) => date.isAfter(moment())}
               picker="month"
-              className='mr-2'
-              onChange={value => {
-                this.setState({ date: value })
-                this.fetchEmployee()
-              }} />
+              className="mr-2"
+              onChange={(value) => {
+                this.setState({ date: value });
+                this.fetchEmployee();
+              }}
+            />
           </div>
         </Col>
       </Row>
@@ -118,17 +130,29 @@ export default class EmployeeSalary extends Component {
           >
             {i18n.t("Edit Salary")}
           </Button> */}
-          <Button color="info" onClick={() => this.onClick("fluctuations", id, name)} className="w-100">
+          <Button
+            color="info"
+            onClick={() => this.onClick("fluctuations", id, name)}
+            className="w-100"
+          >
             {i18n.t("Employee Base Salary Fluctuations")}
           </Button>
         </Menu.Item>
         <Menu.Item key="2">
-          <Button color="success" className="w-100" onClick={() => this.onClick("advance", id, name)}>
+          <Button
+            color="success"
+            className="w-100"
+            onClick={() => this.onClick("advance", id, name)}
+          >
             {i18n.t("Advance Salary")}
           </Button>
         </Menu.Item>
         <Menu.Item key="3">
-          <Button color="danger" className="w-100" onClick={() => this.onClick("history", id, name)}>
+          <Button
+            color="danger"
+            className="w-100"
+            onClick={() => this.onClick("history", id, name)}
+          >
             {i18n.t("History Salary")}
           </Button>
         </Menu.Item>
@@ -165,16 +189,36 @@ export default class EmployeeSalary extends Component {
     currentEmp = data.find((el) => el.id === employeeId);
 
     if (modeBtn === "edit") {
-      this.setState({ currentEmp, mode: "edit", isShowModal: true, employeeName: employeeName });
+      this.setState({
+        currentEmp,
+        mode: "edit",
+        isShowModal: true,
+        employeeName: employeeName,
+      });
     } else if (modeBtn === "fluctuations") {
       this.getBaseSalaries(employeeId);
-      this.setState({ mode: "fluctuations", isShowModal: true, employeeName: employeeName, currentEmp });
+      this.setState({
+        mode: "fluctuations",
+        isShowModal: true,
+        employeeName: employeeName,
+        currentEmp,
+      });
     } else if (modeBtn === "advance") {
       this.getAdvanceSalaries(employeeId);
-      this.setState({ mode: "advance", isShowModal: true, employeeId: employeeId, employeeName: employeeName });
+      this.setState({
+        mode: "advance",
+        isShowModal: true,
+        employeeId: employeeId,
+        employeeName: employeeName,
+      });
     } else if (modeBtn === "history") {
       this.getHistorySalaries(employeeId);
-      this.setState({ mode: "history", isShowModal: true, employeeId: employeeId, employeeName: employeeName });
+      this.setState({
+        mode: "history",
+        isShowModal: true,
+        employeeId: employeeId,
+        employeeName: employeeName,
+      });
     }
   }
 
@@ -186,21 +230,21 @@ export default class EmployeeSalary extends Component {
       clearFilters,
     }) => (
       <div style={{ padding: 8 }}>
-        {isDate ?
+        {isDate ? (
           <DatePicker
             value={selectedKeys[0]}
             onChange={(e) => {
-              let t = moment(e, 'DD/MM/YYYY');
-              setSelectedKeys(e ? [t] : [])
-              this.handleSearch(selectedKeys, confirm, dataIndex)
+              let t = moment(e, "DD/MM/YYYY");
+              setSelectedKeys(e ? [t] : []);
+              this.handleSearch(selectedKeys, confirm, dataIndex);
             }}
             onPressEnter={() => {
-              this.handleSearch(selectedKeys, confirm, dataIndex)
-            }
-            }
-            format={'DD/MM/YYYY'}
+              this.handleSearch(selectedKeys, confirm, dataIndex);
+            }}
+            format={"DD/MM/YYYY"}
             style={{ marginBottom: 8, display: "block" }}
-          /> :
+          />
+        ) : (
           <Input
             ref={(node) => {
               this.searchInput = node;
@@ -208,15 +252,14 @@ export default class EmployeeSalary extends Component {
             placeholder={`Search ${dataIndex}`}
             value={selectedKeys[0]}
             onChange={(e) => {
-              setSelectedKeys(e.target.value ? [e.target.value] : [])
-            }
-            }
+              setSelectedKeys(e.target.value ? [e.target.value] : []);
+            }}
             onPressEnter={() =>
               this.handleSearch(selectedKeys, confirm, dataIndex)
             }
             style={{ marginBottom: 8, display: "block" }}
           />
-        }
+        )}
         <Space>
           <Button
             type="primary"
@@ -242,19 +285,19 @@ export default class EmployeeSalary extends Component {
     ),
     onFilter: (value, record) => {
       if (isDate) {
-        let x = moment(moment(value).format('DD/MM/YYYY'), 'DD/MM/YYYY')
-        let y = moment(moment(record[dataIndex]).format('DD/MM/YYYY'), 'DD/MM/YYYY')
-
-        return record[dataIndex]
-          ? x.isSame(y, 'day')
-          : ""
+        let x = moment(moment(value).format("DD/MM/YYYY"), "DD/MM/YYYY");
+        let y = moment(
+          moment(record[dataIndex]).format("DD/MM/YYYY"),
+          "DD/MM/YYYY"
+        );
+        return record[dataIndex] ? x.isSame(y, "day") : "";
       } else {
         return record[dataIndex]
           ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
-          : ""
+              .toString()
+              .toLowerCase()
+              .includes(value.toLowerCase())
+          : "";
       }
     },
     onFilterDropdownVisibleChange: (visible) => {
@@ -262,14 +305,10 @@ export default class EmployeeSalary extends Component {
       }
     },
     render: (text) =>
-      this.state.searchedColumn === dataIndex ? (
-        <div>{text}</div>
-      ) : (
-        text
-      ),
+      this.state.searchedColumn === dataIndex ? <div>{text}</div> : text,
   });
   render() {
-    let month = moment(this.state.date).endOf('month').format('D');
+    let month = moment(this.state.date).endOf("month").format("D");
     const { isShowModal, mode, currentEmp, data, loading } = this.state;
     const columns = [
       {
@@ -290,7 +329,8 @@ export default class EmployeeSalary extends Component {
             sensitivity: "base",
           }),
         sortDirections: ["descend", "ascend"],
-        render: (data) => `${data} \/ ${month}`
+        // eslint-disable-next-line no-useless-escape
+        render: (data) => `${data} \/ ${month}`,
       },
       {
         title: i18n.t("Base Salary") + "(VND)",
@@ -299,7 +339,12 @@ export default class EmployeeSalary extends Component {
         ...this.getColumnSearchProps("baseSalary"),
         sorter: (a, b) => a.baseSalary - b.baseSalary,
         sortDirections: ["descend", "ascend"],
-        render: (salary) => salary !== null ? <Widgets.NumberFormat value={salary} needSuffix={false} /> : "Không có thông tin",
+        render: (salary) =>
+          salary !== null ? (
+            <Widgets.NumberFormat value={salary} needSuffix={false} />
+          ) : (
+            "Không có thông tin"
+          ),
       },
       {
         title: i18n.t("Advance Salary") + "(VND)",
@@ -308,7 +353,12 @@ export default class EmployeeSalary extends Component {
         ...this.getColumnSearchProps("advanceSalary"),
         sorter: (a, b) => a.baseSalary - b.baseSalary,
         sortDirections: ["descend", "ascend"],
-        render: (salary) => salary !== null ? <Widgets.NumberFormat value={salary} needSuffix={false} /> : "Không có thông tin",
+        render: (salary) =>
+          salary !== null ? (
+            <Widgets.NumberFormat value={salary} needSuffix={false} />
+          ) : (
+            "Không có thông tin"
+          ),
       },
       {
         title: i18n.t("bonus") + "(VND)",
@@ -317,7 +367,12 @@ export default class EmployeeSalary extends Component {
         ...this.getColumnSearchProps("bonus", true),
         sorter: (a, b) => a > b,
         sortDirections: ["descend", "ascend"],
-        render: (salary) => salary !== null ? <Widgets.NumberFormat value={salary} needSuffix={false} /> : "Không có thông tin",
+        render: (salary) =>
+          salary !== null ? (
+            <Widgets.NumberFormat value={salary} needSuffix={false} />
+          ) : (
+            "Không có thông tin"
+          ),
       },
       {
         title: i18n.t("punish") + "(VND)",
@@ -326,7 +381,12 @@ export default class EmployeeSalary extends Component {
         ...this.getColumnSearchProps("punish", true),
         sorter: (a, b) => a > b,
         sortDirections: ["descend", "ascend"],
-        render: (salary) => salary !== null ? <Widgets.NumberFormat value={salary} needSuffix={false} /> : "Không có thông tin",
+        render: (salary) =>
+          salary !== null ? (
+            <Widgets.NumberFormat value={salary} needSuffix={false} />
+          ) : (
+            "Không có thông tin"
+          ),
       },
       {
         title: i18n.t("salary-tk") + "(VND)",
@@ -335,7 +395,12 @@ export default class EmployeeSalary extends Component {
         ...this.getColumnSearchProps("salary", true),
         sorter: (a, b) => a > b,
         sortDirections: ["descend", "ascend"],
-        render: (salary) => salary !== null ? <Widgets.NumberFormat value={salary} needSuffix={false} /> : "Không có thông tin",
+        render: (salary) =>
+          salary !== null ? (
+            <Widgets.NumberFormat value={salary} needSuffix={false} />
+          ) : (
+            "Không có thông tin"
+          ),
       },
       {
         title: i18n.t("action"),
@@ -350,42 +415,49 @@ export default class EmployeeSalary extends Component {
     ];
     // console.log(this.state)
     return (
-      <Card title={this.renderTitle()}>
-        {isShowModal && mode !== "" && (
-          this.state.mode === "edit" ?
+      <Card title={this.renderTitle()} className="body-minH">
+        {isShowModal &&
+          mode !== "" &&
+          (this.state.mode === "edit" ? (
             <ModalEdit
               name={this.state.employeeName}
               isShow={isShowModal}
               mode={mode}
               closeModal={this.closeModal}
               currentEmp={currentEmp || {}}
-            /> : this.state.mode === "fluctuations" ?
-              <ModalBaseSalaries
-                name={this.state.employeeName}
-                isShow={isShowModal}
-                closeModal={this.closeModal}
-                baseSalaries={this.state.employeeSalary}
-                currentEmp={currentEmp}
-              /> : this.state.mode === "calculate" ?
-                <ModalCalculateSalaries
-                  name={this.state.employeeName}
-                  isShow={isShowModal}
-                  closeModal={this.closeModal}
-                  date={this.state.date}
-                /> : this.state.mode === "advance" ?
-                  <ModalAdvanceSalaries
-                    name={this.state.employeeName}
-                    isShow={isShowModal}
-                    closeModal={this.closeModal}
-                    employeeId={this.state.employeeId}
-                  /> : this.state.mode === "history" ?
-                    <ModalHistorySalaries
-                      name={this.state.employeeName}
-                      isShow={isShowModal}
-                      closeModal={this.closeModal}
-                      historySalaries={this.state.historySalaries}
-                    /> : ""
-        )}
+            />
+          ) : this.state.mode === "fluctuations" ? (
+            <ModalBaseSalaries
+              name={this.state.employeeName}
+              isShow={isShowModal}
+              closeModal={this.closeModal}
+              baseSalaries={this.state.employeeSalary}
+              currentEmp={currentEmp}
+            />
+          ) : this.state.mode === "calculate" ? (
+            <ModalCalculateSalaries
+              name={this.state.employeeName}
+              isShow={isShowModal}
+              closeModal={this.closeModal}
+              date={this.state.date}
+            />
+          ) : this.state.mode === "advance" ? (
+            <ModalAdvanceSalaries
+              name={this.state.employeeName}
+              isShow={isShowModal}
+              closeModal={this.closeModal}
+              employeeId={this.state.employeeId}
+            />
+          ) : this.state.mode === "history" ? (
+            <ModalHistorySalaries
+              name={this.state.employeeName}
+              isShow={isShowModal}
+              closeModal={this.closeModal}
+              historySalaries={this.state.historySalaries}
+            />
+          ) : (
+            ""
+          ))}
         <Row>
           <Col style={{ overflowX: "auto" }}>
             <Table

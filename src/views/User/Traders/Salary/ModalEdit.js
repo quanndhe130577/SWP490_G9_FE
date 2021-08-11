@@ -3,10 +3,7 @@ import { Row, Col } from "reactstrap";
 import Modal from "../../../../containers/Antd/ModalCustom";
 import Widgets from "../../../../schema/Widgets";
 import i18n from "i18next";
-import apis from "../../../../services/apis";
-import helper from "../../../../services/helper";
-import session from "../../../../services/session";
-import moment from "moment";
+import { apis, helper } from "../../../../services";
 
 const ModalEdit = ({ isShow, closeModal, mode, currentEmp, name }) => {
   const [employee, setEmp] = useState(currentEmp);
@@ -25,7 +22,10 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp, name }) => {
     try {
       setLoading(true);
       if (mode === "edit") {
-        rs = await apis.updateEmployeeBaseSalary({ salary: employee.baseSalary, empId: employee.id });
+        rs = await apis.updateEmployeeBaseSalary({
+          salary: employee.baseSalary,
+          empId: employee.id,
+        });
       }
 
       if (rs && rs.statusCode === 200) {

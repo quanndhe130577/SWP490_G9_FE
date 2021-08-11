@@ -13,7 +13,7 @@ const ManaSell = () => {
   // const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(true);
   const [transaction, setTransaction] = useState([]);
-  const [user, setUser] = useState(session.get("user"));
+  const user = session.get("user");
 
   async function onClickBtn(mode, id, row) {
     if (mode === "edit") {
@@ -98,7 +98,7 @@ const ManaSell = () => {
       dataIndex: "listTrader",
       key: "listTrader",
       render: (listTrader, row) => {
-        let name = "";
+        // let name = "";
 
         if (user.roleName !== "Trader") {
           // listTrader.forEach((trader, idx) => {
@@ -133,7 +133,6 @@ const ManaSell = () => {
             </Tag>
           ));
         }
-        return <span>{name}</span>;
       },
     },
     {
@@ -240,7 +239,7 @@ const ManaSell = () => {
   }, []);
 
   return (
-    <Card title={renderTitle()}>
+    <Card title={renderTitle()} className="body-minH">
       <Table
         columns={columns}
         dataSource={transaction}

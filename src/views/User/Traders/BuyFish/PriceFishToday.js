@@ -4,7 +4,6 @@ import i18n from "i18next";
 import { Button } from "reactstrap";
 import { apis } from "../../../../services";
 import Widgets from "../../../../schema/Widgets";
-import i18next from "i18next";
 
 const PriceFishToday = ({
   listFishId,
@@ -29,10 +28,10 @@ const PriceFishToday = ({
   };
 
   const onAddFish = async () => {
-    var today = new Date(dateTime);
-    var dd = String(today.getDate()).padStart(2, "0");
-    var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-    var yyyy = today.getFullYear();
+    let today = new Date(dateTime);
+    let dd = String(today.getDate()).padStart(2, "0");
+    let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    let yyyy = today.getFullYear();
 
     today = dd + mm + yyyy;
 
