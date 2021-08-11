@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Calendar, Card } from "antd";
+import { Calendar, Card, Badge } from "antd";
 import { UsergroupDeleteOutlined } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
 import moment from "moment";
@@ -86,18 +86,33 @@ export default class TimeKeeping extends Component {
   };
   dateCellRender = (value) => {
     let times = this.currentTimes(value._d);
+    console.log(times)
     let currentDate = this.state.currentDate;
-    if (currentDate._d.getMonth() === value._d.getMonth()) {
+    if (currentDate._d.getMonth() === value._d.getMonth() && currentDate._d.getDate() >= value._d.getDate()) {
       if (times.length !== 0) {
         return (
           <div className="tnrss-bg mb-2">
             <ul className="events">
-              <li key="number" className="d-flex">
-                <UsergroupDeleteOutlined className="tnrss-ts-2 tnrss-text-primary px-1" />
-                <p className="">{`${times.length}`}</p>
-              </li>
+              {this.state.employees.filter(emp => {
+                let time = times.find(t => t.empId === emp.id);
+                return time === undefined ? false : time.status === 1
+              }).map(emp => <li key={emp.id}>
+                <Badge status='success' text={emp.name} />
+              </li>)}
+              {this.state.employees.filter(emp => {
+                let time = times.find(t => t.empId === emp.id);
+                return time === undefined ? false : time.status === 0.5
+              }).map(emp => <li key={emp.id}>
+                <Badge status='warning' text={emp.name} />
+              </li>)}
+              {this.state.employees.filter(emp => {
+                let time = times.find(t => t.empId === emp.id);
+                return time === undefined
+              }).map(emp => <li key={emp.id}>
+                <Badge status='error' text={emp.name} />
+              </li>)}
             </ul>
-          </div>
+          </div >
         );
       }
     } else {

@@ -129,29 +129,14 @@ const ManaBuy = () => {
             size="small"
             style={{ width: 90 }}
           >
-            Search
+            Tìm
           </Button>
           <Button
             onClick={() => handleReset(clearFilters)}
             size="small"
             style={{ width: 90 }}
           >
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({ closeDropdown: false });
-              setSearchText(selectedKeys[0]);
-              setSearchedColumn(dataIndex);
-              // this.setState({
-              //   searchText: selectedKeys[0],
-              //   searchedColumn: dataIndex,
-              // });
-            }}
-          >
-            Filter
+            Đặt lại
           </Button>
         </Space>
       </div>
@@ -171,9 +156,9 @@ const ManaBuy = () => {
       } else {
         return record[dataIndex]
           ? record[dataIndex]
-              .toString()
-              .toLowerCase()
-              .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
           : "";
       }
     },
