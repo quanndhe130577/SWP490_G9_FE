@@ -114,13 +114,13 @@ const Login = (props) => {
                     </Link>
                   </div>
                 </div>
-                <div>
+                <div className="text-center">
                   <Link
                     to="/forgetPassword"
-                    style={{ color: "black" }}
-                    className=""
+                    // style={{ color: "blue" }}
+                    className="primary"
                   >
-                    Quên mật khẩu?
+                    Bạn quên mật khẩu?
                   </Link>
                 </div>
               </div>
