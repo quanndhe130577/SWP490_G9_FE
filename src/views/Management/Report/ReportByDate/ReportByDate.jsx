@@ -24,7 +24,7 @@ const ReportByDate = () => {
   });
   const [date, setDate] = useState();
   const [listCostIncurred, setListCostIncurred] = useState([]);
-  const [user, setUser] = useState(session.get("user"));
+  const [user, setUser] = useState();
 
   async function fetchData(date) {
     try {
@@ -74,7 +74,7 @@ const ReportByDate = () => {
     return (
       <Card title={renderTitle()} className="body-minH">
         <Row>
-          {user.roleName === "Trader" && (
+          {user && user.roleName === "Trader" && (
             <Col md="6" xs="12" className="rp-tb rp-left">
               {/* FOR PURCHASE */}
 
@@ -157,14 +157,14 @@ const fTTable = (listSummaryPurchaseDetail) => {
   if (listSummaryPurchaseDetail.length > 0)
     return (
       <div>
-        {listSummaryPurchaseDetail.map((el, idx) => (
+        {listSummaryPurchaseDetail.map((el) => (
           <div className="mb-3">
             <h6>
               <b>{i18n.t("pondOwner")}: </b>
               {el.pondOwner.name}
             </h6>
             <Table
-              rowKey="pondOwner"
+              rowKey="idx"
               columns={columns}
               dataSource={el.purchaseDetails}
               bordered
@@ -208,7 +208,7 @@ const fTTable2 = (listSummaryPurchaseDetail, user) => {
   if (listSummaryPurchaseDetail.length > 0)
     return (
       <div>
-        {listSummaryPurchaseDetail.map((el, idx) => (
+        {listSummaryPurchaseDetail.map((el) => (
           <div className="mb-3">
             {user.roleName === "WeightRecorder" ? (
               <h6>
@@ -227,20 +227,16 @@ const fTTable2 = (listSummaryPurchaseDetail, user) => {
             )}
 
             <Table
+              rowKey="idx"
               columns={columns2}
               dataSource={el.transactionDetails}
               bordered
               pagination={false}
-              rowKey={idx}
               summary={() => {
                 return (
                   <Table.Summary fixed>
                     <Table.Summary.Row>
-                      <Table.Summary.Cell
-                        key="1"
-                        // colSpan="2"
-                        className="bold"
-                      >
+                      <Table.Summary.Cell key="1" className="bold">
                         {i18n.t("total")}
                       </Table.Summary.Cell>
                       <Table.Summary.Cell key="2" className="bold">

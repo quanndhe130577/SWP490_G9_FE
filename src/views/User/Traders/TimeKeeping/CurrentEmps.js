@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col } from "reactstrap";
-import { Table, Modal, List, Radio } from "antd";
+import { Table, Modal, Radio } from "antd";
 import Widgets from "../../../../schema/Widgets";
 import { helper, apis } from "../../../../services";
 
@@ -141,34 +140,36 @@ export default class CurrentEmps extends Component {
         onCancel={this.props.cancel}
         onOk={this.submit}
       >
-        <Table dataSource={this.state.currentTimes} columns={[
-          {
-            title: 'Tên nhân viên',
-            dataIndex: 'empName',
-            key: 'empName',
-          },
-          {
-            title: 'Số công',
-            key: 'status',
-            render: item => <Widgets.Custom
-              component={
-                <Radio.Group
-                  value={item.status}
-                  onChange={(event) =>
-                    this.handleChangeStatus(
-                      event.target.value,
-                      item,
-                    )
+        <Table
+          dataSource={this.state.currentTimes}
+          columns={[
+            {
+              title: "Tên nhân viên",
+              dataIndex: "empName",
+              key: "empName",
+            },
+            {
+              title: "Số công",
+              key: "status",
+              render: (item) => (
+                <Widgets.Custom
+                  component={
+                    <Radio.Group
+                      value={item.status}
+                      onChange={(event) =>
+                        this.handleChangeStatus(event.target.value, item)
+                      }
+                    >
+                      <Radio value={0}>Không đi làm</Radio>
+                      <Radio value={0.5}>Nửa công</Radio>
+                      <Radio value={1}>Một công</Radio>
+                    </Radio.Group>
                   }
-                >
-                  <Radio value={0}>Không đi làm</Radio>
-                  <Radio value={0.5}>Nửa công</Radio>
-                  <Radio value={1}>Một công</Radio>
-                </Radio.Group>
-              }
-            />
-          }
-        ]} />
+                />
+              ),
+            },
+          ]}
+        />
       </Modal>
     );
   }

@@ -30,9 +30,7 @@ export default class Basket extends Component {
     try {
       let user = await session.get("user");
       let rs = await apis.getBasketByTraderId({}, "GET");
-      console.log(rs);
       if (rs && rs.statusCode === 200) {
-        console.log(rs);
         rs.data.map((el, idx) => (el.idx = idx + 1));
         this.setState({ data: rs.data, user, total: rs.data.length });
       }
@@ -91,9 +89,9 @@ export default class Basket extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -249,7 +247,7 @@ export default class Basket extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentPO={currentPO || {}}
-          // handleChangeBasket={handleChangeBasket}
+            // handleChangeBasket={handleChangeBasket}
           />
         )}
         <Row>

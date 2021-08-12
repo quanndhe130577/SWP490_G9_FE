@@ -36,7 +36,6 @@ export default class Employee extends Component {
       // let rs = await apis.getPondOwnerByTraderId({}, "GET", user.userID);
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
-        console.log(rs.data);
         this.setState({ data: rs.data, user, total: rs.data.length });
       }
     } catch (error) {
@@ -272,9 +271,9 @@ export default class Employee extends Component {
       } else {
         return record[dataIndex]
           ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+              .toString()
+              .toLowerCase()
+              .includes(value.toLowerCase())
           : "";
       }
     },
@@ -382,7 +381,7 @@ export default class Employee extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentEmp={currentEmp || {}}
-          // handleChangePondOwner={handleChangePondOwner}
+            // handleChangePondOwner={handleChangePondOwner}
           />
         )}
         <Row>

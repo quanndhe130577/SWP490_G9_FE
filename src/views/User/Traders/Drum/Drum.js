@@ -32,7 +32,6 @@ export default class Truck extends Component {
       let user = await session.get("user");
       let rs = await apis.getTruck({}, "GET");
       if (rs && rs.statusCode === 200) {
-        console.log(rs);
         rs.data.map((el, idx) => (el.idx = idx + 1));
         this.setState({ trucks: rs.data, user });
       }
@@ -47,7 +46,6 @@ export default class Truck extends Component {
       this.setState({ loading: true });
       let rs = await apis.getDrumByTraderId({}, "GET");
       if (rs && rs.statusCode === 200) {
-        console.log(rs);
         rs.data.map((el, idx) => (el.idx = idx + 1));
         this.setState({ drums: rs.data, total: rs.data.length });
       }
@@ -106,9 +104,9 @@ export default class Truck extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -279,7 +277,7 @@ export default class Truck extends Component {
             trucks={trucks}
             user={user}
             currentDrum={currentDrum}
-          // handleChangeTruck={handleChangeTruck}
+            // handleChangeTruck={handleChangeTruck}
           />
         )}
         <Row>
