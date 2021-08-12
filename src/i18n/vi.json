@@ -214,5 +214,7 @@
   "tongThu": "Tổng thu",
   "reportManagement": "Báo cáo",
   "dayReport": "Báo cáo ngày",
-  "monthReport": "Báo cáo tháng"
+  "monthReport": "Báo cáo tháng",
+  "isAccepted": "Được chấp thuận",
+  "isNotAccepted": "Chưa chấp thuận"
 }
