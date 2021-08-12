@@ -9,10 +9,9 @@ import session from "../../../../services/session";
 
 const ModalEdit = ({ isShow, closeModal, mode, currentBuyer }) => {
   const [buyer, setPO] = useState(currentBuyer);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const handleChangeBuyer = (val, name) => {
-    console.log(buyer)
     // set state buyer by name and value
     setPO((prevState) => ({
       ...prevState,
@@ -22,19 +21,19 @@ const ModalEdit = ({ isShow, closeModal, mode, currentBuyer }) => {
 
   //
   const validatePhoneNumber = (data) => {
-    const phoneNumberVNRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/
+    const phoneNumberVNRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
     if (!phoneNumberVNRegex.test(data)) {
-      return { isValid: false, message: 'Số điện thoại không đúng' };
+      return { isValid: false, message: "Số điện thoại không đúng" };
     }
-    return { isValid: true, message: '' };
-  }
+    return { isValid: true, message: "" };
+  };
 
   // handle click btn ok
   const handleOk = async () => {
     try {
-
-      setLoading(true)
-      let user = session.get("user"), rs;
+      setLoading(true);
+      let user = session.get("user"),
+        rs;
 
       // validate name, phone number: can't null
       if (!buyer.name || !buyer.phoneNumber) {
@@ -68,7 +67,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentBuyer }) => {
       console.log(error);
       helper.toast("error", i18n.t("systemError"));
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
   return (
@@ -102,8 +101,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentBuyer }) => {
               label={i18n.t("phone")}
               value={buyer.phoneNumber || ""}
               onChange={(e) => {
-             
-                handleChangeBuyer(e, "phoneNumber")
+                handleChangeBuyer(e, "phoneNumber");
               }}
             />
           </Col>

@@ -32,7 +32,6 @@ export default class Truck extends Component {
       let user = await session.get("user");
       let rs = await apis.getTruck({}, "GET");
       if (rs && rs.statusCode === 200) {
-        console.log(rs);
         rs.data.map((el, idx) => (el.idx = idx + 1));
         this.setState({
           data: rs.data,
@@ -41,7 +40,7 @@ export default class Truck extends Component {
           isLoading: false,
         });
       }
-    } catch (error) { }
+    } catch (error) {}
   }
 
   getColumnSearchProps = (dataIndex) => ({
@@ -92,9 +91,9 @@ export default class Truck extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -250,7 +249,7 @@ export default class Truck extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentPO={currentPO || {}}
-          // handleChangeTruck={handleChangeTruck}
+            // handleChangeTruck={handleChangeTruck}
           />
         )}
         <Row>

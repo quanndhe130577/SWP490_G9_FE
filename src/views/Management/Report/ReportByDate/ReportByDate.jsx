@@ -7,6 +7,7 @@ import i18n from "i18next";
 import Widgets from "../../../../schema/Widgets";
 import NumberFormat from "react-number-format";
 import Moment from "react-moment";
+import Chart from "../Chart";
 
 const ReportByDate = () => {
   const [loading, setLoading] = useState(false);
@@ -23,7 +24,7 @@ const ReportByDate = () => {
   });
   const [date, setDate] = useState();
   const [listCostIncurred, setListCostIncurred] = useState([]);
-  const [user, setUser] = useState(session.get("user"));
+  const [user, setUser] = useState();
 
   async function fetchData(date) {
     try {
@@ -73,7 +74,7 @@ const ReportByDate = () => {
     return (
       <Card title={renderTitle()} className="body-minH">
         <Row>
-          {user.roleName === "Trader" && (
+          {user && user.roleName === "Trader" && (
             <Col md="6" xs="12" className="rp-tb rp-left">
               {/* FOR PURCHASE */}
 
@@ -143,6 +144,9 @@ const ReportByDate = () => {
             ""
           )}
         </Row>
+        <Row>
+          <Chart />
+        </Row>
       </Card>
     );
 };
@@ -153,49 +157,47 @@ const fTTable = (listSummaryPurchaseDetail) => {
   if (listSummaryPurchaseDetail.length > 0)
     return (
       <div>
-        {listSummaryPurchaseDetail.map((el, idx) => (
+        {listSummaryPurchaseDetail.map((el) => (
           <div className="mb-3">
             <h6>
               <b>{i18n.t("pondOwner")}: </b>
               {el.pondOwner.name}
             </h6>
             <Table
-              rowKey={idx}
+              rowKey="idx"
               columns={columns}
               dataSource={el.purchaseDetails}
               bordered
               pagination={false}
-              summary={() => {
-                return (
-                  <Table.Summary fixed>
-                    <Table.Summary.Row>
-                      <Table.Summary.Cell
-                        key="1"
-                        // colSpan="2"
-                        className="bold"
-                      >
-                        {i18n.t("total")}
-                      </Table.Summary.Cell>
-                      <Table.Summary.Cell key="2" className="bold">
-                        <NumberFormat
-                          value={el.totalWeight.toFixed(1)}
-                          displayType={"text"}
-                          thousandSeparator={true}
-                          suffix=" Kg"
-                        />
-                      </Table.Summary.Cell>
-                      <Table.Summary.Cell key="3" className="bold">
-                        <NumberFormat
-                          value={el.totalMoney}
-                          displayType={"text"}
-                          thousandSeparator={true}
-                          suffix=" VND"
-                        />
-                      </Table.Summary.Cell>
-                    </Table.Summary.Row>
-                  </Table.Summary>
-                );
-              }}
+              summary={() => (
+                <Table.Summary fixed>
+                  <Table.Summary.Row>
+                    <Table.Summary.Cell
+                      key="1"
+                      // colSpan="2"
+                      className="bold"
+                    >
+                      {i18n.t("total")}
+                    </Table.Summary.Cell>
+                    <Table.Summary.Cell key="2" className="bold">
+                      <NumberFormat
+                        value={el.totalWeight.toFixed(1)}
+                        displayType={"text"}
+                        thousandSeparator={true}
+                        suffix=" Kg"
+                      />
+                    </Table.Summary.Cell>
+                    <Table.Summary.Cell key="3" className="bold">
+                      <NumberFormat
+                        value={el.totalMoney}
+                        displayType={"text"}
+                        thousandSeparator={true}
+                        suffix=" VND"
+                      />
+                    </Table.Summary.Cell>
+                  </Table.Summary.Row>
+                </Table.Summary>
+              )}
             />
           </div>
         ))}
@@ -206,7 +208,7 @@ const fTTable2 = (listSummaryPurchaseDetail, user) => {
   if (listSummaryPurchaseDetail.length > 0)
     return (
       <div>
-        {listSummaryPurchaseDetail.map((el, idx) => (
+        {listSummaryPurchaseDetail.map((el) => (
           <div className="mb-3">
             {user.roleName === "WeightRecorder" ? (
               <h6>
@@ -225,20 +227,16 @@ const fTTable2 = (listSummaryPurchaseDetail, user) => {
             )}
 
             <Table
+              rowKey="idx"
               columns={columns2}
               dataSource={el.transactionDetails}
               bordered
               pagination={false}
-              rowKey={idx}
               summary={() => {
                 return (
                   <Table.Summary fixed>
                     <Table.Summary.Row>
-                      <Table.Summary.Cell
-                        key="1"
-                        // colSpan="2"
-                        className="bold"
-                      >
+                      <Table.Summary.Cell key="1" className="bold">
                         {i18n.t("total")}
                       </Table.Summary.Cell>
                       <Table.Summary.Cell key="2" className="bold">

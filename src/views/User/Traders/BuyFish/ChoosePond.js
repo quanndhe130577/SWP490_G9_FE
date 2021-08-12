@@ -25,7 +25,7 @@ const ChoosePond = ({
   const [dataChange, setDataChange] = useState([]);
   const handleOk = async () => {
     //updateAllFishType
-    console.log(dataChange);
+    // console.log(dataChange);
     // neu ko co id purchase thì tạo purchase mới
     if (createPurchase && !currentPurchase.id) {
       let purchase = await createPurchase();

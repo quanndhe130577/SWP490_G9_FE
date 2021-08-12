@@ -2,6 +2,7 @@ import React from "react";
 import { Select, Spin } from "antd";
 import debounce from "lodash/debounce";
 import { apis } from "../services";
+import i18next from "i18next";
 const { Option } = Select;
 function DebounceSelect({
   fetchOptions,
@@ -130,7 +131,9 @@ const SearchFetchApi = ({
         disabled={disabled}
       />
       {submitted && !value && (
-        <div className="help-block">{label} is required</div>
+        <div className="help-block">
+          {i18next.t("isRequired") + " " + label}
+        </div>
       )}
       {submitted && !error && <div className="help-block">{error}</div>}
     </div>

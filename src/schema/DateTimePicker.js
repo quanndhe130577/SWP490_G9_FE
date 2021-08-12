@@ -4,7 +4,7 @@ import moment from "moment";
 import "moment/locale/vi";
 import locale from "antd/lib/locale/vi_VN";
 import { helper } from "../services";
-
+import i18next from "i18next";
 export default function DateTimePicker({
   value,
   label,
@@ -50,7 +50,9 @@ export default function DateTimePicker({
       />
 
       {submitted && !value && (
-        <div className="help-block">{label} is required</div>
+        <div className="help-block">
+          {i18next.t("isRequired") + " " + label}
+        </div>
       )}
     </div>
   );

@@ -26,6 +26,7 @@ const SellFish = (props) => {
   const [listTransaction, setListTransaction] = useState([]);
   const [listTransDetail, setListTransDetail] = useState([]);
   const [date, setDate] = useState("");
+  // const [realDate, setRealDate] = useState("");
 
   const [currentTransaction, setCurrentTrans] = useState({});
   const [mode, setMode] = useState("create");
@@ -271,6 +272,7 @@ const SellFish = (props) => {
           handleChangeCurrentTrans("listTraderId", listTraderId);
           setListTransDetail(temTransDetail);
           setListTransaction(rs.data);
+          // setRealDate(rs.data[0].date);
 
           setDtFetched((pro) => ({ ...pro, tradersSelected: tem }));
         }

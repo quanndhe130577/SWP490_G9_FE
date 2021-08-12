@@ -4,9 +4,7 @@ import i18n from "i18next";
 import React, { Component } from "react";
 import NumberFormat from "react-number-format";
 import { Button, Col, Row } from "reactstrap";
-import apis from "../../../services/apis";
-import helper from "../../../services/helper";
-import session from "../../../services/session";
+import { apis, helper, session } from "../../../services";
 import ModalForm from "./ModalDebt";
 import Moment from "react-moment";
 
@@ -111,9 +109,9 @@ export default class Debt extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {

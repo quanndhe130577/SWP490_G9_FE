@@ -37,11 +37,13 @@ const Login = (props) => {
         rs = await apis.getOtp({}, "GET", user.phoneNumber);
         if (rs && rs.statusCode === 200) {
           setStep(1);
+          setSubmitted(false);
           handleChange(rs.data.otpid, "otpid");
           helper.toast("success", i18n.t(rs.message || "systemError"));
         }
         //setStep(1);
       } else if (step === 1) {
+        setSubmitted(false);
         rs = await apis.checkOtp(
           { otpid: user.otpid, code: user.code, phoneNumber: user.phoneNumber },
           "POST"
@@ -59,8 +61,8 @@ const Login = (props) => {
         }
       }
     } catch (error) {
-      console.log(error);
-      helper.toast("error", i18n.t(rs.Message || "systemError"));
+      // console.log(error);
+      helper.toast("error", i18n.t(rs.message || "systemError"));
     }
   };
 

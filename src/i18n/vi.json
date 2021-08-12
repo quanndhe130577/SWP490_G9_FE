@@ -207,5 +207,6 @@
   "buyBySelf": "Tự bán",
   "historyPurchaseFishtype": "Lịch sử mua bán cá",
   "day": "Ngày",
-  "typeOfCost": "Loại chi phí"
+  "typeOfCost": "Loại chi phí",
+  "isRequired": "Vui lòng điền"
 }

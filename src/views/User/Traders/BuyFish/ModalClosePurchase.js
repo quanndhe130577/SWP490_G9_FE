@@ -76,7 +76,6 @@ const ModalBuy = ({
       });
     });
     fishInPurchase = fishInPurchase.filter((el) => el.totalWeight > 0);
-    console.log("totalAmount" + totalAmount);
     setObjPurchase({
       totalWeight,
       totalAmount,
