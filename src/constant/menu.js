@@ -29,12 +29,6 @@ const MENU = [
     ],
   },
   {
-    title: "pondOwnerManagement",
-    icon: <UserOutlined />,
-    link: "/pondOwner",
-    role: "Thương lái",
-  },
-  {
     title: "reportManagement",
     icon: <LineChartOutlined />,
     type: "subMenu",
@@ -48,6 +42,12 @@ const MENU = [
         title: "monthReport",
       },
     ],
+  },
+  {
+    title: "pondOwnerManagement",
+    icon: <UserOutlined />,
+    link: "/pondOwner",
+    role: "Thương lái",
   },
   {
     title: "historyPurchaseFishtype",

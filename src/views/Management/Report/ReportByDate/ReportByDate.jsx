@@ -30,9 +30,12 @@ const ReportByDate = () => {
   async function fetchData(date) {
     try {
       setLoading(true);
-      if (!date) {
-        date = helper.getDateFormat(new Date(), "ddmmyyyy");
-      }
+
+      // if (!date) {
+      //   date = helper.getDateFormat(new Date(), "ddmmyyyy");
+      // } else {
+      date = helper.getDateFormat(date, "ddmmyyyy");
+      // }
       let rs = await apis.reportDate({}, "GET", date);
       if (rs && rs.statusCode === 200) {
         let {
@@ -51,7 +54,7 @@ const ReportByDate = () => {
         setPurchaseTotal(purchaseTotal);
         setTransactionTotal(transactionTotal);
         setCostIncurred({ totalCost, listCostIncurred });
-        setDate(date);
+        setDate(new Date(date));
         setData({ tongChi, tongNo, tongThu });
       }
     } catch (error) {
@@ -61,7 +64,7 @@ const ReportByDate = () => {
     }
   }
   useEffect(() => {
-    fetchData();
+    fetchData(new Date());
     setUser(session.get("user"));
   }, []);
 
@@ -86,6 +89,16 @@ const ReportByDate = () => {
   } else
     return (
       <Card title={renderTitle()} className="body-minH">
+        <Row>
+          <Widgets.DateTimePicker
+            label="Ngày"
+            value={date || new Date()}
+            needCorrect={false}
+            onChange={(value) => {
+              fetchData(value);
+            }}
+          />
+        </Row>
         <Row>
           {user && user.roleName === "Trader" && (
             <Col md="6" xs="12" className="rp-tb rp-left">
@@ -339,3 +352,18 @@ const columns2 = [
     ),
   },
 ];
+// const costIncurred = (CostIncurred) => {
+//   return (
+//     <Collapse defaultActiveKey={["1"]} ghost>
+//       <Panel
+//         header={
+//           <Widgets.NumberFormat
+//             label={i18n.t("CostIncurredManagement") + ": "}
+//             value={CostIncurred.totalCost}
+//           />
+//         }
+//         key="1"
+//       ></Panel>
+//     </Collapse>
+//   );
+// };

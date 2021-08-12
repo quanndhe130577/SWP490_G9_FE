@@ -76,6 +76,12 @@ const ModalBuy = ({
       });
     });
     fishInPurchase = fishInPurchase.filter((el) => el.totalWeight > 0);
+    if (mode === "view") {
+      console.log(prCurrentPurchase);
+      let { commission, totalAmount } = prCurrentPurchase;
+      let commissionPercent = (commission / totalAmount) * 100;
+      handlePurchase("commissionPercent", commissionPercent);
+    }
     setObjPurchase({
       totalWeight,
       totalAmount,
@@ -180,6 +186,7 @@ const ModalBuy = ({
               label={i18n.t("percent") + " %"}
               value={currentPurchase.commissionPercent || ""}
               onChange={(val) => handlePurchase("commissionPercent", val)}
+              isDisable={mode === "view"}
             />
           </Col>
           <Col md="6">
@@ -188,8 +195,10 @@ const ModalBuy = ({
               value={currentPurchase.isPaid}
               onChange={(val) => handlePurchase("isPaid", val)}
               lblCheckbox={
-                currentPurchase.isPaid ? i18n.t("paid") : i18n.t("isNotPaid")
+                // currentPurchase.isPaid ? i18n.t("paid") : i18n.t("isNotPaid")
+                i18n.t("paid")
               }
+              disabled={mode === "view"}
             />
           </Col>
           <Col md="6">
@@ -207,7 +216,9 @@ const ModalBuy = ({
               value={
                 (objPurchase.totalAmount *
                   (100 - currentPurchase.commissionPercent)) /
-                  100 || ""
+                  100 ||
+                currentPurchase.totalAmount - currentPurchase.commission ||
+                ""
               }
             />
           </Col>

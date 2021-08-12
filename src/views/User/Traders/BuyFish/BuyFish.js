@@ -348,7 +348,8 @@ const BuyFish = (props) => {
       if (rs && rs.statusCode === 200) {
         let tem = rs.data;
         tem = Object.assign(tem, currentPurchase);
-        setCurrentPurchase((pre) => ({ ...pre, ...rs.data }));
+        // setCurrentPurchase((pre) => ({ ...pre, ...rs.data }));
+        setCurrentPurchase((pre) => ({ ...pre, ...tem }));
         local.set("currentPurchase", tem);
       }
     } catch (error) {
@@ -748,7 +749,7 @@ const BuyFish = (props) => {
                     className="w-100 p-0 h-100 "
                   >
                     <i className="fa fa-check-square-o mr-1" />
-                    {i18n.t("viewPurchase")}
+                    {i18n.t("viewDetail")}
                   </Button>
                 </Col>
               </>
