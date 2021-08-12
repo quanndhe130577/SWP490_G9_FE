@@ -11,7 +11,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
   const [costInc, setCostInc] = useState(currentCostInc);
   const [loading, setLoading] = useState(false);
   const [userClient, setUserClient] = useState("weightRecorder");
-  console.log(currentCostInc);
+  // console.log(currentCostInc);
   useEffect(() => {
     handleChangeCostIncurred(new Date(), "date");
     if (mode === "create") {

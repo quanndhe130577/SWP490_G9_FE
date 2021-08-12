@@ -7,6 +7,7 @@ import {
   UsergroupAddOutlined,
   MoneyCollectOutlined,
   DollarOutlined,
+  LineChartOutlined,
 } from "@ant-design/icons";
 
 // menu in layout
@@ -32,6 +33,21 @@ const MENU = [
     icon: <UserOutlined />,
     link: "/pondOwner",
     role: "Thương lái",
+  },
+  {
+    title: "reportManagement",
+    icon: <LineChartOutlined />,
+    type: "subMenu",
+    menu: [
+      {
+        link: "/home",
+        title: "dayReport",
+      },
+      {
+        link: "/monthReport",
+        title: "monthReport",
+      },
+    ],
   },
   {
     title: "historyPurchaseFishtype",

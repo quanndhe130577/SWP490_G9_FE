@@ -564,7 +564,7 @@ const SellFish = (props) => {
                     {renderTitleTable(trans)}
                     <Table
                       key={idx + trans.id}
-                      rowKey={idx + trans.id}
+                      rowKey="id"
                       columns={calculateColumns(columns, trans)}
                       dataSource={trans.transactionDetails || []}
                       loading={isLoading}
