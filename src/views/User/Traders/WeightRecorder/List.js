@@ -176,7 +176,7 @@ export default class List extends Component {
             sortDirections: ["descend", "ascend"],
         },
         {
-            title: i18n.t("isAccepted"),
+            title: i18n.t("status"),
             ...this.getColumnSearchProps("isAccepted"),
             sorter: (a, b) => a,
             sortDirections: ["descend", "ascend"],
