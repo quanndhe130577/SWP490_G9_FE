@@ -250,7 +250,7 @@ const SellFish = (props) => {
           if (isDelete) {
             handleBack();
           } else {
-            // IS NOT DELETE TRANS MODE
+            //IS NOT DELETE TRANS MODE
             if (user.roleName !== "Trader") setShowChooseTraders(true);
             else {
               setShowChooseTraders(false);
