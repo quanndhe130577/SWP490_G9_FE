@@ -107,12 +107,13 @@ let path = {
 
   //Debt
   getAllDebt: "/api/debt/getall",
-  createDebt: "",
-  updateDebt: "",
-  deleteDebt: "",
-  getDetailDebt: "",
+  // createDebt: "",
+  // updateDebt: "",
+  // deleteDebt: "",
+  // getDetailDebt: "",
+
   // fishType
-  getOneFT: "/api/fishtype/getOne/{ddMMyyyy}/{pondOwnerId}",
+  // getOneFT: "/api/fishtype/getOne/{ddMMyyyy}/{pondOwnerId}",
   updateAllFishType: "/api/fishtype/updateList",
   getNewFishType: "/api/fishtype/getNew",
 
@@ -137,7 +138,8 @@ let path = {
   // Transaction detail
   createTranDetail: "/api/transactionDetail/create",
   getAllTranDetail: "/api/transactionDetail/getall", // GET if has param: date {ddMMyyyy} will get by date
-  getFTByTrader: "/api/fishtype/wc/getall", // GET, param: TraderID, use when selling
+  // getFTByTrader: "/api/fishtype/wc/getall", // GET, param: TraderID, use when selling
+  getFTByTrader: "/api/fishtype/getall", // GET, param: TraderID, use when selling
   getGeneralTrans: "/api/transaction/getGeneral", // GET
   updateTransDetail: "/api/transactionDetail/update",
   deleteTransDetail: "/api/transactionDetail/delete", //transactionDetailId

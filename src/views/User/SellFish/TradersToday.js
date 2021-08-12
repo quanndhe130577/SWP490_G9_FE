@@ -66,7 +66,7 @@ const TradersToday = ({ listTraderId, onChange, dataFetched }) => {
   }, [listTraderId]);
   return (
     <div style={{ overflowX: "auto" }}>
-      <Table columns={columns} dataSource={dataS} />
+      <Table columns={columns} dataSource={dataS} rowKey="idx" />
     </div>
   );
 };

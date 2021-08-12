@@ -17,8 +17,6 @@ const ModalBuyer = ({ isShowBuyer, date, setShowBuyer, getAllTransByDate }) => {
 
   const handleOk = async () => {
     try {
-      console.log(currentDetail);
-      // debugger;
       let rs = await apis.paymentForBuyer({
         buyerId: currentDetail.buyerId,
         date: currentDetail.date,
@@ -36,7 +34,6 @@ const ModalBuyer = ({ isShowBuyer, date, setShowBuyer, getAllTransByDate }) => {
     setShowBuyer(false);
   };
   const handleCurrentDetail = (pro, value) => {
-    console.log(currentDetail);
     setLoading(true);
     if (pro === "buyerId") {
       let listDetails = listTransDetail.find((el) => el.buyer.id === value);
