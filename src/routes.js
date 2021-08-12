@@ -89,6 +89,9 @@ const CheckOTP = Loadable({
 const EmployeeSalary = Loadable({
   loader: () => import("./views/User/Traders/Salary/EmployeeSalary"),
   loading: Loading,
+}); const WeightRecorder = Loadable({
+  loader: () => import("./views/User/Traders/WeightRecorder/List"),
+  loading: Loading,
 });
 const routes = [
   {
@@ -191,6 +194,11 @@ const routes = [
     path: "/employeeSalary",
     name: "EmployeeSalary",
     component: EmployeeSalary,
+  },
+  {
+    path: "/weightRecorder",
+    name: "WeightRecorder",
+    component: WeightRecorder,
   },
 ];
 
