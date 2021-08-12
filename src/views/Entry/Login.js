@@ -99,14 +99,14 @@ const Login = (props) => {
                       <span>{i18n.t("Login")}</span>
                     )}
                   </button>
-                  {/* <button
+                  <button
                     onClick={(e) => {
                       setPhoneNumber("0357708915");
                       // handleSubmit(e);
                     }}
                   >
                     trader
-                  </button> */}
+                  </button>
                   <div className="ml-3 d-flex align-items-base">
                     <label className="pb-0">{i18n.t("or")}</label>
                     <Link to="/register" className="btn btn-link p-1">

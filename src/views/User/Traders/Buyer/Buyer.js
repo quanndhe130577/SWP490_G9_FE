@@ -36,7 +36,6 @@ export default class Buyer extends Component {
       // let rs = await apis.getPondOwnerByTraderId({}, "GET", user.userID);
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
-        console.log(rs.data);
         this.setState({ data: rs.data, user, total: rs.data.length });
       }
     } catch (error) {
@@ -185,9 +184,9 @@ export default class Buyer extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -267,7 +266,7 @@ export default class Buyer extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentBuyer={currentBuyer || {}}
-          // handleChangePondOwner={handleChangePondOwner}
+            // handleChangePondOwner={handleChangePondOwner}
           />
         )}
         <Row>

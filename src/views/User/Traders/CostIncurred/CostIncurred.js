@@ -35,7 +35,6 @@ export default class CostIncurred extends Component {
       // let rs = await apis.getPondOwnerByTraderId({}, "GET", user.userID);
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
-        console.log(rs.data);
         this.setState({ data: rs.data, user, total: rs.data.length });
       }
     } catch (error) {
