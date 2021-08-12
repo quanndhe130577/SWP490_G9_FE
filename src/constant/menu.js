@@ -8,7 +8,6 @@ import {
   MoneyCollectOutlined,
   DollarOutlined,
   LineChartOutlined,
-  UserSwitchOutlined
 } from "@ant-design/icons";
 
 // menu in layout
@@ -129,12 +128,6 @@ const MENU = [
     title: "Debt Management",
     icon: <DollarOutlined />,
     link: "/debt",
-  },
-  {
-    title: "weightRecorder",
-    icon: <UserSwitchOutlined />,
-    link: "/weightRecorder",
-    role: "Thương lái",
   },
 ];
 export default MENU;

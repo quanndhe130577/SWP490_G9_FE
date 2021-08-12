@@ -123,6 +123,13 @@ export default class EmployeeSalary extends Component {
     return (
       <Menu>
         <Menu.Item key="1">
+          {/* <Button
+            color="info"
+            className="mr-2 w-100"
+            onClick={() => this.onClick("edit", id, name)}
+          >
+            {i18n.t("Edit Salary")}
+          </Button> */}
           <Button
             color="info"
             onClick={() => this.onClick("fluctuations", id, name)}
@@ -287,9 +294,9 @@ export default class EmployeeSalary extends Component {
       } else {
         return record[dataIndex]
           ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+              .toString()
+              .toLowerCase()
+              .includes(value.toLowerCase())
           : "";
       }
     },
@@ -326,7 +333,7 @@ export default class EmployeeSalary extends Component {
         render: (data) => `${data} \/ ${month}`,
       },
       {
-        title: i18n.t("Base Salary"),
+        title: i18n.t("Base Salary") + "(VND)",
         dataIndex: "baseSalary",
         key: "baseSalary",
         ...this.getColumnSearchProps("baseSalary"),

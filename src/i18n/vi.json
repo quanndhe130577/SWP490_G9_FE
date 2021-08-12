@@ -142,7 +142,7 @@
   "Advance Salary": "Đã ứng trước",
   "salary": "Lương",
   "salary-tk": "Thực nhận",
-  "Base Salary": "Lương(VND)/Tháng",
+  "Base Salary": "Lương/Tháng",
   "status-tk": "Số công",
   "Employee Salary Mangerment": "Quản lý lương nhân viên",
   "dateStart": "Ngày bắt đầu",
@@ -150,7 +150,7 @@
   "debt": "Nợ",
   "Employee Base Salary": "Lương cơ nản",
   "Calculate Salary": "Tính lương",
-  "Employee Base Salary Fluctuations": "Lương cơ bản",
+  "Employee Base Salary Fluctuations": "Biến động lương",
   "Amount": "Số tiền",
   "Debt Management": "Quản lý nợ",
   "Debtor": "Người nợ",
@@ -209,8 +209,10 @@
   "day": "Ngày",
   "typeOfCost": "Loại chi phí",
   "isRequired": "Vui lòng điền",
-  "isAccepted": "Được chấp thuận",
-  "isNotAccepted": "Chưa chấp thuận",
-  "cancel delete": "Huỷ xoá",
-  "save": "Lưu"
+  "totalMoneyFish": "Tổng tiền mua cá",
+  "tongChi": "Tổng chi",
+  "tongThu": "Tổng thu",
+  "reportManagement": "Báo cáo",
+  "dayReport": "Báo cáo ngày",
+  "monthReport": "Báo cáo tháng"
 }

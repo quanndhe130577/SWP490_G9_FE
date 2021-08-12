@@ -85,7 +85,7 @@ export default class TimeKeeping extends Component {
   };
   dateCellRender = (value) => {
     let times = this.currentTimes(value._d);
-    let currentDate = moment();
+    let currentDate = this.state.currentDate;
     if (
       currentDate._d.getMonth() === value._d.getMonth() &&
       currentDate._d.getDate() >= value._d.getDate()

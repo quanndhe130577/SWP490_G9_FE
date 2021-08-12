@@ -148,10 +148,6 @@ let path = {
 
   // REPORT MANAGEMENT
   reportDate: "/api/report/getall", // GET
-
-  // Weight recoreder 
-  getWr: "/api/trader/get-wr",
-  updateWr: "/api/trader/edit-wr",
 };
 
 Object.keys(path).forEach(function (key) {

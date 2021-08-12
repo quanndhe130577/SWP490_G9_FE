@@ -1,5 +1,5 @@
 import { SearchOutlined } from "@ant-design/icons";
-import { Card, Input, Space, Table, Tag } from "antd";
+import { Card, Input, Space, Table } from "antd";
 import i18n from "i18next";
 import React, { Component } from "react";
 import { Button, Col, Row } from "reactstrap";
@@ -193,15 +193,6 @@ export default class Trader extends Component {
           sensitivity: "base",
         }),
       sortDirections: ["descend", "ascend"],
-    },
-    {
-      title: i18n.t("status"),
-      dataIndex: "isAccepted",
-      key: "isAccepted",
-      ...this.getColumnSearchProps("isAccepted"),
-      sorter: (a, b) => a,
-      sortDirections: ["descend", "ascend"],
-      render: data => data ? <Tag color="green">{i18n.t("isAccepted")}</Tag> : <Tag color="red">{i18n.t("isNotAccepted")}</Tag>
     },
     {
       title: i18n.t("action"),

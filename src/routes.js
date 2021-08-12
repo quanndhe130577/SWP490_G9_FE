@@ -82,10 +82,6 @@ const Trader = Loadable({
   loader: () => import("./views/User/WeightRecorder/Trader/Trader"),
   loading: Loading,
 });
-const WeightRecorder = Loadable({
-  loader: () => import("./views/User/Traders/WeightRecorder/List"),
-  loading: Loading,
-});
 const CheckOTP = Loadable({
   loader: () => import("./views/Entry/ForgetPassword/CheckOTP"),
   loading: Loading,
@@ -195,11 +191,6 @@ const routes = [
     path: "/employeeSalary",
     name: "EmployeeSalary",
     component: EmployeeSalary,
-  },
-  {
-    path: "/weightRecorder",
-    name: "WeightRecorder",
-    component: WeightRecorder,
   },
 ];
 
