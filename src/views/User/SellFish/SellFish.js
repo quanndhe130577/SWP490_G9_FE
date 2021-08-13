@@ -381,6 +381,7 @@ const SellFish = (props) => {
       let rs = await apis.closeTrans(data);
       if (rs && rs.statusCode === 200) {
         helper.toast("success", i18n.t(rs.message || "success"));
+        setShowCloseTrans(false);
         getAllTransByDate(date);
       }
     } catch (error) {
@@ -564,7 +565,7 @@ const SellFish = (props) => {
                     {renderTitleTable(trans)}
                     <Table
                       key={idx + trans.id}
-                      rowKey={idx + trans.id}
+                      rowKey="id"
                       columns={calculateColumns(columns, trans)}
                       dataSource={trans.transactionDetails || []}
                       loading={isLoading}

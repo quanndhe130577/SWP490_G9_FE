@@ -13,6 +13,7 @@ export default function DateTimePicker({
   onChange,
   required = false,
   submitted,
+  needCorrect = true,
 }) {
   let dateFormat = "DD/MM/yyyy";
   return (
@@ -35,13 +36,7 @@ export default function DateTimePicker({
         disabled={isDisable}
         onChange={(date) => {
           if (onChange) {
-            if (date !== null) {
-              // date = new Date(date);
-              // let hoursDiff = date.getHours() - date.getTimezoneOffset() / 60;
-              // let minutesDiff =
-              //   (date.getHours() - date.getTimezoneOffset()) % 60;
-              // date.setHours(hoursDiff);
-              // date.setMinutes(minutesDiff);
+            if (date !== null && needCorrect) {
               date = helper.correctDate(date);
             }
             onChange(date);

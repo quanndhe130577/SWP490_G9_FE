@@ -208,5 +208,13 @@
   "historyPurchaseFishtype": "Lịch sử mua bán cá",
   "day": "Ngày",
   "typeOfCost": "Loại chi phí",
-  "isRequired": "Vui lòng điền"
+  "isRequired": "Vui lòng điền",
+  "totalMoneyFish": "Tổng tiền mua cá",
+  "tongChi": "Tổng chi",
+  "tongThu": "Tổng thu",
+  "reportManagement": "Báo cáo",
+  "dayReport": "Báo cáo ngày",
+  "monthReport": "Báo cáo tháng",
+  "isAccepted": "Được chấp thuận",
+  "isNotAccepted": "Chưa chấp thuận"
 }

@@ -297,6 +297,7 @@ export default class Debt extends Component {
               pagination={{ pageSize: 10 }}
               scroll={{ y: 600 }}
               loading={loading}
+              rowKey="id"
             />
           </Col>
         </Row>

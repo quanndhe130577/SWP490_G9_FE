@@ -21,6 +21,7 @@ const BuyFish = (props) => {
   const [isShowChoosePond, setShowChoosePond] = useState(true);
   const [purchase, setPurchase] = useState([]);
   const [mode, setMode] = useState("");
+  const [modeClosePC, setModeClosePc] = useState("");
   const [currentPurchase, setCurrentPurchase] = useState({});
   const [suggestionPurchase, setSuggestionPurchase] = useState(null); //purchase dung de goi y khi them purchase detail
   const [dataDf, setData] = useState({
@@ -347,7 +348,8 @@ const BuyFish = (props) => {
       if (rs && rs.statusCode === 200) {
         let tem = rs.data;
         tem = Object.assign(tem, currentPurchase);
-        setCurrentPurchase(tem);
+        // setCurrentPurchase((pre) => ({ ...pre, ...rs.data }));
+        setCurrentPurchase((pre) => ({ ...pre, ...tem }));
         local.set("currentPurchase", tem);
       }
     } catch (error) {
@@ -509,7 +511,8 @@ const BuyFish = (props) => {
     }
   }
 
-  function handleShowClosePurchase() {
+  function handleShowClosePurchase(mode = "") {
+    setModeClosePc(mode);
     setShowClosePurchase(!isShowClosePurchase);
   }
 
@@ -525,6 +528,7 @@ const BuyFish = (props) => {
       if (rs && rs.statusCode === 200) {
         helper.toast("success", i18n.t(rs.message));
         setCurrentPurchase((pre) => ({ ...pre, status: "Completed" }));
+        setShowClosePurchase(false);
       }
     } catch (error) {
       console.log(error);
@@ -641,6 +645,7 @@ const BuyFish = (props) => {
           handleShowClosePurchase={handleShowClosePurchase}
           dataDf={dataDf}
           handleClosePurchase={handleClosePurchase}
+          mode={modeClosePC}
         />
       )}
       {isShowBuy && (
@@ -730,6 +735,21 @@ const BuyFish = (props) => {
                   >
                     <i className="fa fa-plus mr-1" />
                     {i18n.t("Thêm Mã")}
+                  </Button>
+                </Col>
+              </>
+            )}
+            {currentPurchase.status === "Completed" && (
+              <>
+                <Col md="4" />
+                <Col md="2" className="p-0 pr-2 mb-2">
+                  <Button
+                    color="info"
+                    onClick={() => handleShowClosePurchase("view")}
+                    className="w-100 p-0 h-100 "
+                  >
+                    <i className="fa fa-check-square-o mr-1" />
+                    {i18n.t("viewDetail")}
                   </Button>
                 </Col>
               </>

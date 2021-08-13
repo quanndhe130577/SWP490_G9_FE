@@ -7,6 +7,8 @@ import {
   UsergroupAddOutlined,
   MoneyCollectOutlined,
   DollarOutlined,
+  LineChartOutlined,
+  UserSwitchOutlined
 } from "@ant-design/icons";
 
 // menu in layout
@@ -24,6 +26,21 @@ const MENU = [
       {
         link: "/sell",
         title: "sellGood",
+      },
+    ],
+  },
+  {
+    title: "reportManagement",
+    icon: <LineChartOutlined />,
+    type: "subMenu",
+    menu: [
+      {
+        link: "/home",
+        title: "dayReport",
+      },
+      {
+        link: "/monthReport",
+        title: "monthReport",
       },
     ],
   },
@@ -112,6 +129,12 @@ const MENU = [
     title: "Debt Management",
     icon: <DollarOutlined />,
     link: "/debt",
+  },
+  {
+    title: "weightRecorder",
+    icon: <UserSwitchOutlined />,
+    link: "/weightRecorder",
+    role: "Thương lái",
   },
 ];
 export default MENU;

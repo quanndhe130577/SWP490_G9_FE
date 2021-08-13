@@ -60,7 +60,6 @@ const ModalCloseSell = ({
     //   handleChangeTraderId("");
     // }
     if (name === "traderId") {
-      debugger;
       let trader = dataDf.tradersSelected.find((el) => el.id === val);
       if (transId) {
         trader.transId = transId;

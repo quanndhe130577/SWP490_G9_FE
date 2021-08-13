@@ -14,6 +14,7 @@ const ModalBuy = ({
   handleShowClosePurchase,
   dataDf,
   handleClosePurchase,
+  mode,
 }) => {
   const [currentPurchase, setCurrentPurchase] = useState(prCurrentPurchase);
   // const [fishInPurchase, setFishInPurchase] = useState([]);
@@ -49,7 +50,6 @@ const ModalBuy = ({
       totalAmount = 0,
       fishInPurchase = [...currentPurchase.arrFish],
       tem = purchase;
-
     // clear total weight
     tem.forEach(({ fishType }) => {
       //  eslint-disable-next-line array-callback-return
@@ -76,6 +76,12 @@ const ModalBuy = ({
       });
     });
     fishInPurchase = fishInPurchase.filter((el) => el.totalWeight > 0);
+    if (mode === "view") {
+      console.log(prCurrentPurchase);
+      let { commission, totalAmount } = prCurrentPurchase;
+      let commissionPercent = (commission / totalAmount) * 100;
+      handlePurchase("commissionPercent", commissionPercent);
+    }
     setObjPurchase({
       totalWeight,
       totalAmount,
@@ -86,7 +92,9 @@ const ModalBuy = ({
 
   useEffect(() => {
     calculateData();
-    handlePurchase("commissionPercent", 0);
+    if (mode !== "view") {
+      handlePurchase("commissionPercent", 0);
+    }
     return () => {
       setCurrentPurchase({});
       setObjPurchase({ totalWeight: 0, totalAmount: 0, fishInPurchase: [] });
@@ -178,6 +186,7 @@ const ModalBuy = ({
               label={i18n.t("percent") + " %"}
               value={currentPurchase.commissionPercent || ""}
               onChange={(val) => handlePurchase("commissionPercent", val)}
+              isDisable={mode === "view"}
             />
           </Col>
           <Col md="6">
@@ -186,8 +195,10 @@ const ModalBuy = ({
               value={currentPurchase.isPaid}
               onChange={(val) => handlePurchase("isPaid", val)}
               lblCheckbox={
-                currentPurchase.isPaid ? i18n.t("paid") : i18n.t("isNotPaid")
+                // currentPurchase.isPaid ? i18n.t("paid") : i18n.t("isNotPaid")
+                i18n.t("paid")
               }
+              disabled={mode === "view"}
             />
           </Col>
           <Col md="6">
@@ -195,7 +206,9 @@ const ModalBuy = ({
               label={i18n.t("percent") + ":"}
               value={
                 (objPurchase.totalAmount * currentPurchase.commissionPercent) /
-                  100 || ""
+                  100 ||
+                currentPurchase.commission ||
+                ""
               }
             />
             <Widgets.NumberFormat
@@ -203,7 +216,9 @@ const ModalBuy = ({
               value={
                 (objPurchase.totalAmount *
                   (100 - currentPurchase.commissionPercent)) /
-                  100 || ""
+                  100 ||
+                currentPurchase.totalAmount - currentPurchase.commission ||
+                ""
               }
             />
           </Col>

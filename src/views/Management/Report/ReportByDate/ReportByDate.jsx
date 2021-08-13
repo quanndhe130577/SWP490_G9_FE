@@ -23,23 +23,39 @@ const ReportByDate = () => {
     summaryCommission: 0,
   });
   const [date, setDate] = useState();
-  const [listCostIncurred, setListCostIncurred] = useState([]);
+  const [data, setData] = useState({});
+  const [CostIncurred, setCostIncurred] = useState({ totalCost: 0 });
   const [user, setUser] = useState();
 
   async function fetchData(date) {
     try {
       setLoading(true);
-      if (!date) {
-        date = helper.getDateFormat(new Date(), "ddmmyyyy");
-      }
+
+      // if (!date) {
+      //   date = helper.getDateFormat(new Date(), "ddmmyyyy");
+      // } else {
+      date = helper.getDateFormat(date, "ddmmyyyy");
+      // }
       let rs = await apis.reportDate({}, "GET", date);
       if (rs && rs.statusCode === 200) {
-        let { purchaseTotal, transactionTotal, listCostIncurred, date } =
-          rs.data;
+        let {
+          purchaseTotal,
+          transactionTotal,
+          listCostIncurred,
+          date,
+          tongChi,
+          tongNo,
+          tongThu,
+        } = rs.data;
+        let totalCost = 0;
+        for (const el of listCostIncurred) {
+          totalCost += el.cost;
+        }
         setPurchaseTotal(purchaseTotal);
         setTransactionTotal(transactionTotal);
-        setListCostIncurred(listCostIncurred);
-        setDate(date);
+        setCostIncurred({ totalCost, listCostIncurred });
+        setDate(new Date(date));
+        setData({ tongChi, tongNo, tongThu });
       }
     } catch (error) {
       console.log(error);
@@ -48,7 +64,7 @@ const ReportByDate = () => {
     }
   }
   useEffect(() => {
-    fetchData();
+    fetchData(new Date());
     setUser(session.get("user"));
   }, []);
 
@@ -56,14 +72,14 @@ const ReportByDate = () => {
     return (
       <Row>
         <Col md="6" className="d-flex">
-          <h3 className="">
+          <h4 className="">
             {i18n.t("report.buy-sell-date")}
             {date && (
               <Moment format="DD-MM-yyyy" className="ml-2">
                 {date}
               </Moment>
             )}
-          </h3>
+          </h4>
         </Col>
       </Row>
     );
@@ -73,6 +89,16 @@ const ReportByDate = () => {
   } else
     return (
       <Card title={renderTitle()} className="body-minH">
+        <Row>
+          <Widgets.DateTimePicker
+            label="Ngày"
+            value={date || new Date()}
+            needCorrect={false}
+            onChange={(value) => {
+              fetchData(value);
+            }}
+          />
+        </Row>
         <Row>
           {user && user.roleName === "Trader" && (
             <Col md="6" xs="12" className="rp-tb rp-left">
@@ -92,9 +118,14 @@ const ReportByDate = () => {
                     value={purchaseTotal.summaryWeight}
                     suffix=" Kg"
                   />
+
                   <Widgets.NumberFormat
-                    label={i18n.t("totalMoney") + ": "}
+                    label={i18n.t("totalMoneyFish") + ": "}
                     value={purchaseTotal.summaryMoney}
+                  />
+                  <Widgets.NumberFormat
+                    label={i18n.t("CostIncurredManagement") + ": "}
+                    value={CostIncurred.totalCost}
                   />
                 </>
               ) : (
@@ -133,16 +164,24 @@ const ReportByDate = () => {
             )}
           </Col>
         </Row>
+
         <Row>
-          {listCostIncurred.length > 0 ? (
-            <div>
-              {listCostIncurred.map((el) => (
-                <div>{el.name}</div>
-              ))}
-            </div>
-          ) : (
-            ""
-          )}
+          <Col md="6">
+            <h4>
+              <Widgets.NumberFormat
+                label={i18n.t("tongChi") + ": "}
+                value={data.tongChi}
+              />
+            </h4>
+          </Col>
+          <Col md="6">
+            <h4>
+              <Widgets.NumberFormat
+                label={i18n.t("tongThu") + ": "}
+                value={data.tongThu}
+              />
+            </h4>
+          </Col>
         </Row>
         <Row>
           <Chart />
@@ -313,3 +352,18 @@ const columns2 = [
     ),
   },
 ];
+// const costIncurred = (CostIncurred) => {
+//   return (
+//     <Collapse defaultActiveKey={["1"]} ghost>
+//       <Panel
+//         header={
+//           <Widgets.NumberFormat
+//             label={i18n.t("CostIncurredManagement") + ": "}
+//             value={CostIncurred.totalCost}
+//           />
+//         }
+//         key="1"
+//       ></Panel>
+//     </Collapse>
+//   );
+// };
