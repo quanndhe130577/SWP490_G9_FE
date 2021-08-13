@@ -112,7 +112,7 @@ const ManaBuy = () => {
               // eslint-disable-next-line no-const-assign
               // searchInput = node;
             }}
-            placeholder={`Search ${dataIndex}`}
+            placeholder={`${i18n.t("Search")} ${i18n.t(dataIndex)}`}
             value={selectedKeys[0]}
             onChange={(e) => {
               setSelectedKeys(e.target.value ? [e.target.value] : []);

@@ -216,5 +216,12 @@
   "dayReport": "Báo cáo ngày",
   "monthReport": "Báo cáo tháng",
   "isAccepted": "Được chấp thuận",
-  "isNotAccepted": "Chưa chấp thuận"
+  "isNotAccepted": "Chưa chấp thuận",
+  "Search": "Tìm",
+  "debtMoney": "tiền nợ",
+  "creditors": "chủ nợ",
+  "debtor": "người nợ",
+  "number": "số thứ tự",
+  "price": "giá",
+  "transactionPrice": "giá bán"
 }

@@ -242,7 +242,7 @@ export default class EmployeeSalary extends Component {
             ref={(node) => {
               this.searchInput = node;
             }}
-            placeholder={`Search ${dataIndex}`}
+            placeholder={`${i18n.t("Search")} ${i18n.t(dataIndex)}`}
             value={selectedKeys[0]}
             onChange={(e) => {
               setSelectedKeys(e.target.value ? [e.target.value] : []);
