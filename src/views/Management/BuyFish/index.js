@@ -156,9 +156,9 @@ const ManaBuy = () => {
       } else {
         return record[dataIndex]
           ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+              .toString()
+              .toLowerCase()
+              .includes(value.toLowerCase())
           : "";
       }
     },
@@ -343,6 +343,7 @@ const ManaBuy = () => {
         dataSource={purchase}
         loading={isLoading}
         rowKey="id"
+        bordered
       />
     </Card>
   );
