@@ -105,34 +105,63 @@ const ReportDaily = () => {
           />
         </Row> */}
         <Row>
+          <Col md="6">
+            <h4>
+              <Widgets.NumberFormat
+                label={i18n.t("tongChi") + ": "}
+                value={data.tongChi}
+              />
+            </h4>
+            <Widgets.NumberFormat
+              label={i18n.t("buyWeight") + ": "}
+              value={purchaseTotal.summaryWeight}
+              suffix=" Kg"
+            />
+
+            <Widgets.NumberFormat
+              label={i18n.t("moneyBuyFish") + ": "}
+              value={purchaseTotal.summaryMoney}
+            />
+            <Widgets.NumberFormat
+              label={i18n.t("CostIncurredManagement") + ": "}
+              value={CostIncurred.totalCost}
+            />
+            <h4 className="title-rp">{i18n.t("buyFish")}</h4>
+          </Col>
+          <Col md="6">
+            <h4>
+              <Widgets.NumberFormat
+                label={i18n.t("tongThu") + ": "}
+                value={data.tongThu}
+              />
+            </h4>
+            <Widgets.NumberFormat
+              label={i18n.t("sellWeight") + ": "}
+              value={transactionTotal.summaryWeight}
+              suffix=" Kg"
+            />
+            <Widgets.NumberFormat
+              label={i18n.t("moneySellFish") + ": "}
+              value={transactionTotal.summaryMoney}
+            />
+            <Widgets.NumberFormat
+              label={i18n.t("moneyCommission") + ": "}
+              value={transactionTotal.summaryCommission}
+            />
+            <h4 className="title-rp">{i18n.t("sellFish")}</h4>
+          </Col>
+        </Row>
+        <Row>
           {user && user.roleName === "Trader" && (
             <Col md="6" xs="12" className="rp-tb rp-left">
               {/* FOR PURCHASE */}
-
-              <h4 className="title mb-0">{i18n.t("buyFish")}</h4>
 
               <div className="under-title mb-3">
                 <div className="under-title-line" />
               </div>
 
               {purchaseTotal.listSummaryPurchaseDetail.length > 0 ? (
-                <>
-                  {fTTable(purchaseTotal.listSummaryPurchaseDetail, user)}
-                  <Widgets.NumberFormat
-                    label={i18n.t("totalWeight") + ": "}
-                    value={purchaseTotal.summaryWeight}
-                    suffix=" Kg"
-                  />
-
-                  <Widgets.NumberFormat
-                    label={i18n.t("totalMoneyFish") + ": "}
-                    value={purchaseTotal.summaryMoney}
-                  />
-                  <Widgets.NumberFormat
-                    label={i18n.t("CostIncurredManagement") + ": "}
-                    value={CostIncurred.totalCost}
-                  />
-                </>
+                fTTable(purchaseTotal.listSummaryPurchaseDetail, user)
               ) : (
                 <div className="noData">
                   <i className="fa fa-file-o mr-1" />
@@ -144,48 +173,17 @@ const ReportDaily = () => {
           <Col md="6" xs="12" className="rp-tb ">
             {/* FOR TRANSACTION */}
 
-            <h4 className="title mb-0">{i18n.t("sellFish")}</h4>
             <div className="under-title mb-3">
               <div className="under-title-line" />
             </div>
             {transactionTotal.listSummaryTransactionDetail.length > 0 ? (
-              <>
-                {fTTable2(transactionTotal.listSummaryTransactionDetail, user)}
-                <Widgets.NumberFormat
-                  label={i18n.t("totalWeight") + ": "}
-                  value={transactionTotal.summaryWeight}
-                  suffix=" Kg"
-                />
-                <Widgets.NumberFormat
-                  label={i18n.t("totalMoney") + ": "}
-                  value={transactionTotal.summaryMoney}
-                />
-              </>
+              fTTable2(transactionTotal.listSummaryTransactionDetail, user)
             ) : (
               <div className="noData">
                 <i className="fa fa-file-o mr-1" />
                 {i18n.t("dataNotYet")}
               </div>
             )}
-          </Col>
-        </Row>
-
-        <Row>
-          <Col md="6">
-            <h4>
-              <Widgets.NumberFormat
-                label={i18n.t("tongChi") + ": "}
-                value={data.tongChi}
-              />
-            </h4>
-          </Col>
-          <Col md="6">
-            <h4>
-              <Widgets.NumberFormat
-                label={i18n.t("tongThu") + ": "}
-                value={data.tongThu}
-              />
-            </h4>
           </Col>
         </Row>
       </Card>

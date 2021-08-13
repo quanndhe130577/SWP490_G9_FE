@@ -28,15 +28,6 @@ const ReportMonthly = () => {
       if (rs && rs.statusCode === 200) {
         setData(rs.data);
         setDailyData(rs.data.dailyData);
-        // dailyData:{
-        // listTraderData: (31) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
-        // listWRData: []
-        // }
-        // listCostIncurred: [{…}]
-        // summaryDailyCost: 700000
-        // summaryDebt: 3700000
-        // summaryIncome: 3794600
-        // summaryOutcome: 35925000
       }
     } catch (error) {
       console.log(error);
@@ -52,14 +43,7 @@ const ReportMonthly = () => {
     return (
       <Row>
         <Col md="6" className="d-flex">
-          <h4 className="">
-            {i18n.t("report.buy-sell-date")}
-            {/* {date && (
-              <Moment format="DD-MM-yyyy" className="ml-2">
-                {date}
-              </Moment>
-            )} */}
-          </h4>
+          <h4 className="">{i18n.t("report.in-out-come-month")}</h4>
         </Col>
       </Row>
     );
@@ -70,6 +54,7 @@ const ReportMonthly = () => {
     return (
       <Card title={renderTitle()} className="body-minH">
         <Row>
+          <b className="mr-2 mt-2 ml-5">{i18n.t("selectMonth")}</b>
           <Widgets.DateTimePicker
             value={date}
             picker="month"
@@ -81,11 +66,13 @@ const ReportMonthly = () => {
           />
         </Row>
         <Row>
-          {user.roleName === "Trader" ? (
-            <Chart dailyData={dailyData.listTraderData} />
-          ) : (
-            <Chart dailyData={dailyData.listWRData} />
-          )}
+          <Col md="12">
+            {user.roleName === "Trader" ? (
+              <Chart dailyData={dailyData.listTraderData} data={data} />
+            ) : (
+              <Chart dailyData={dailyData.listWRData} />
+            )}
+          </Col>
         </Row>
       </Card>
     );

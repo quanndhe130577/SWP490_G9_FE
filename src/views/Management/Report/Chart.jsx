@@ -3,7 +3,10 @@ import { Line } from "@ant-design/charts";
 import { helper } from "../../../services";
 import i18n from "i18next";
 import moment from "moment";
-const DemoLine = ({ dailyData }) => {
+import { Row, Col } from "reactstrap";
+import Widgets from "../../../schema/Widgets";
+
+const DemoLine = ({ dailyData, data }) => {
   let config = {
     data: dailyData,
     xField: "date",
@@ -28,11 +31,44 @@ const DemoLine = ({ dailyData }) => {
     animation: {
       appear: {
         animation: "path-in",
-        duration: 5000,
+        duration: 3000,
       },
     },
   };
 
-  return <Line {...config} style={{ width: "100%" }} />;
+  return (
+    <Row>
+      <Col md="12" className="mb-5">
+        <div className="d-flex justify-content-center">
+          <Line {...config} style={{ width: "90%" }} />
+        </div>
+      </Col>
+
+      <Col md="6">
+        <div style={{ marginLeft: "10%" }}>
+          <Widgets.NumberFormat
+            label={i18n.t("summaryIncome") + ": "}
+            value={data.summaryIncome}
+          />
+          <Widgets.NumberFormat
+            label={i18n.t("summaryOutcome") + ": "}
+            value={data.summaryOutcome}
+          />
+        </div>
+      </Col>
+      <Col md="6">
+        <div style={{ marginLeft: "10%" }}>
+          <Widgets.NumberFormat
+            label={i18n.t("summaryDailyCost") + ": "}
+            value={data.summaryDailyCost}
+          />
+          {/* <Widgets.NumberFormat
+              label={i18n.t("summaryDebt") + ": "}
+              value={data.summaryDebt}
+            /> */}
+        </div>
+      </Col>
+    </Row>
+  );
 };
 export default DemoLine;
