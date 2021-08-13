@@ -91,39 +91,39 @@ export default class TimeKeeping extends Component {
       currentDate._d.getDate() >= value._d.getDate()
     ) {
       if (times.length !== 0) {
+        let employees = this.state.employees.filter((emp) => {
+          console.log(emp)
+          let dateStart = new Date(emp.startDate);
+          let dateEnd = emp.endDate ? new Date(emp.endDate) : null
+          return value._d > dateStart && (dateEnd === null || value._d < dateEnd);
+        })
         return (
           <div className="tnrss-bg mb-2">
             <ul className="events">
-              {this.state.employees
-                .filter((emp) => {
-                  let time = times.find((t) => t.empId === emp.id);
-                  return time === undefined ? false : time.status === 1;
-                })
-                .map((emp) => (
-                  <li key={emp.id}>
-                    <Badge status="success" text={emp.name} />
-                  </li>
-                ))}
-              {this.state.employees
-                .filter((emp) => {
-                  let time = times.find((t) => t.empId === emp.id);
-                  return time === undefined ? false : time.status === 0.5;
-                })
-                .map((emp) => (
-                  <li key={emp.id}>
-                    <Badge status="warning" text={emp.name} />
-                  </li>
-                ))}
-              {this.state.employees
-                .filter((emp) => {
-                  let time = times.find((t) => t.empId === emp.id);
-                  return time === undefined;
-                })
-                .map((emp) => (
-                  <li key={emp.id}>
-                    <Badge status="error" text={emp.name} />
-                  </li>
-                ))}
+              {employees.filter((emp) => {
+                let time = times.find((t) => t.empId === emp.id);
+                return time === undefined ? false : time.status === 1;
+              }).map((emp) => (
+                <li key={emp.id}>
+                  <Badge status="success" text={emp.name} />
+                </li>
+              ))}
+              {employees.filter((emp) => {
+                let time = times.find((t) => t.empId === emp.id);
+                return time === undefined ? false : time.status === 0.5;
+              }).map((emp) => (
+                <li key={emp.id}>
+                  <Badge status="warning" text={emp.name} />
+                </li>
+              ))}
+              {employees.filter((emp) => {
+                let time = times.find((t) => t.empId === emp.id);
+                return time === undefined;
+              }).map((emp) => (
+                <li key={emp.id}>
+                  <Badge status="error" text={emp.name} />
+                </li>
+              ))}
             </ul>
           </div>
         );
