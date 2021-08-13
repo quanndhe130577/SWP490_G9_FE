@@ -6,10 +6,8 @@ import { Card, Table } from "antd";
 import i18n from "i18next";
 import Widgets from "../../../../schema/Widgets";
 import NumberFormat from "react-number-format";
-import Moment from "react-moment";
-import Chart from "../Chart";
 
-const ReportByDate = () => {
+const ReportDaily = () => {
   const [loading, setLoading] = useState(false);
   const [purchaseTotal, setPurchaseTotal] = useState({
     listSummaryPurchaseDetail: [],
@@ -71,14 +69,21 @@ const ReportByDate = () => {
   const renderTitle = () => {
     return (
       <Row>
-        <Col md="6" className="d-flex">
-          <h4 className="">
+        <Col md="12">
+          <h4 className="d-flex">
             {i18n.t("report.buy-sell-date")}
-            {date && (
+            {/* {date && (
               <Moment format="DD-MM-yyyy" className="ml-2">
                 {date}
               </Moment>
-            )}
+            )} */}
+            <Widgets.DateTimePicker
+              value={date || new Date()}
+              needCorrect={false}
+              onChange={(value) => {
+                fetchData(value);
+              }}
+            />
           </h4>
         </Col>
       </Row>
@@ -89,7 +94,7 @@ const ReportByDate = () => {
   } else
     return (
       <Card title={renderTitle()} className="body-minH">
-        <Row>
+        {/* <Row>
           <Widgets.DateTimePicker
             label="Ngày"
             value={date || new Date()}
@@ -98,7 +103,7 @@ const ReportByDate = () => {
               fetchData(value);
             }}
           />
-        </Row>
+        </Row> */}
         <Row>
           {user && user.roleName === "Trader" && (
             <Col md="6" xs="12" className="rp-tb rp-left">
@@ -183,14 +188,11 @@ const ReportByDate = () => {
             </h4>
           </Col>
         </Row>
-        <Row>
-          <Chart />
-        </Row>
       </Card>
     );
 };
 
-export default ReportByDate;
+export default ReportDaily;
 
 const fTTable = (listSummaryPurchaseDetail) => {
   if (listSummaryPurchaseDetail.length > 0)
