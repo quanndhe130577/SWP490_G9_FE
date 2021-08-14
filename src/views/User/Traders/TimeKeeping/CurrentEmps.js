@@ -10,7 +10,8 @@ export default class CurrentEmps extends Component {
       currentTimes: [],
       employees: this.props.employees.filter((emp) => {
         let dateStart = new Date(emp.startDate);
-        return this.props.currentDate > dateStart;
+        let dateEnd = emp.endDate ? new Date(emp.endDate) : null
+        return this.props.currentDate > dateStart && (dateEnd === null || this.props.currentDate < dateEnd);
       }),
       submit: false,
     };
@@ -107,7 +108,6 @@ export default class CurrentEmps extends Component {
       for (let i = 0; i < data.length; i++) {
         let item = data[i];
         item.workDay = helper.correctDate(item.workDay);
-        console.log(item.workDay);
         if (item.checked) {
           if (item.id !== 0) {
             await apis.updateTimeKeeping(item, "POST");

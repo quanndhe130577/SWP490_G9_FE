@@ -170,7 +170,7 @@ export default class CostIncurred extends Component {
             ref={(node) => {
               this.searchInput = node;
             }}
-            placeholder={`Search ${dataIndex}`}
+            placeholder={`${i18n.t("Search")} ${i18n.t(dataIndex)}`}
             value={selectedKeys[0]}
             onChange={(e) => {
               setSelectedKeys(e.target.value ? [e.target.value] : []);
@@ -216,9 +216,9 @@ export default class CostIncurred extends Component {
       } else {
         return record[dataIndex]
           ? record[dataIndex]
-              .toString()
-              .toLowerCase()
-              .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
           : "";
       }
     },
@@ -265,8 +265,8 @@ export default class CostIncurred extends Component {
         a.typeOfCost
           ? a.typeOfCost.length
           : 0 - b.typeOfCost
-          ? b.typeOfCost.length
-          : 0,
+            ? b.typeOfCost.length
+            : 0,
       sortDirections: ["descend", "ascend"],
       render: (text) => <label>{i18n.t(text)}</label>,
     },
@@ -328,7 +328,7 @@ export default class CostIncurred extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentCostInc={currentCostInc || {}}
-            // handleChangePondOwner={handleChangePondOwner}
+          // handleChangePondOwner={handleChangePondOwner}
           />
         )}
         <Row>

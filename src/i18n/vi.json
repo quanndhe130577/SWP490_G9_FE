@@ -226,5 +226,12 @@
   "selectMonth": "Chọn tháng",
   "summaryIncome": "TỔNG THU",
   "summaryOutcome": "TỔNG CHI",
-  "summaryDailyCost": "TỔNG CHI PHÍ"
+  "summaryDailyCost": "TỔNG CHI PHÍ",
+  "Search": "Tìm",
+  "debtMoney": "tiền nợ",
+  "creditors": "chủ nợ",
+  "debtor": "người nợ",
+  "number": "số thứ tự",
+  "price": "giá",
+  "transactionPrice": "giá bán"
 }

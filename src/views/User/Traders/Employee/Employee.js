@@ -225,7 +225,7 @@ export default class Employee extends Component {
             ref={(node) => {
               this.searchInput = node;
             }}
-            placeholder={`Search ${dataIndex}`}
+            placeholder={`${i18n.t("Search")} ${i18n.t(dataIndex)}`}
             value={selectedKeys[0]}
             onChange={(e) => {
               setSelectedKeys(e.target.value ? [e.target.value] : []);
@@ -271,9 +271,9 @@ export default class Employee extends Component {
       } else {
         return record[dataIndex]
           ? record[dataIndex]
-              .toString()
-              .toLowerCase()
-              .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
           : "";
       }
     },
@@ -381,7 +381,7 @@ export default class Employee extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentEmp={currentEmp || {}}
-            // handleChangePondOwner={handleChangePondOwner}
+          // handleChangePondOwner={handleChangePondOwner}
           />
         )}
         <Row>
