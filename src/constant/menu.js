@@ -8,7 +8,7 @@ import {
   MoneyCollectOutlined,
   DollarOutlined,
   LineChartOutlined,
-  UserSwitchOutlined
+  UserSwitchOutlined,
 } from "@ant-design/icons";
 
 // menu in layout
@@ -35,7 +35,7 @@ const MENU = [
     type: "subMenu",
     menu: [
       {
-        link: "/home",
+        link: "/dailyReport",
         title: "dayReport",
       },
       {

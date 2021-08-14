@@ -14,8 +14,13 @@ export default function DateTimePicker({
   required = false,
   submitted,
   needCorrect = true,
+  picker,
+  needDisabledDate = true,
+  dateFormat = "DD/MM/yyyy",
 }) {
-  let dateFormat = "DD/MM/yyyy";
+  function disabledDate(current) {
+    return current && current > moment().endOf("day");
+  }
   return (
     <div
       className={
@@ -30,6 +35,7 @@ export default function DateTimePicker({
       )}
 
       <DatePicker
+        picker={picker}
         locale={locale}
         defaultValue={moment(value, dateFormat)}
         format={dateFormat}
@@ -42,6 +48,7 @@ export default function DateTimePicker({
             onChange(date);
           }
         }}
+        disabledDate={needDisabledDate && disabledDate}
       />
 
       {submitted && !value && (

@@ -148,8 +148,9 @@ let path = {
 
   // REPORT MANAGEMENT
   reportDate: "/api/report/getall", // GET
+  reportMonth: "/api/report/getall/month", //GET /{MMyyyy}
 
-  // Weight recoreder 
+  // Weight recoreder
   getWr: "/api/trader/get-wr",
   updateWr: "/api/trader/edit-wr",
 };

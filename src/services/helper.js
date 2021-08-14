@@ -60,6 +60,8 @@ helper.getDateFormat = (date = new Date(), format = "yyyy-mm-dd") => {
   if (day.length < 2) day = "0" + day;
   if (format === "yyyy-mm-dd") return [year, month, day].join("-");
   else if (format === "ddmmyyyy") return day + month + year;
+  else if (format === "MMyyyy") return month + year;
+  else if (format === "dd") return day;
 };
 helper.correctDate = (dateDf) => {
   let date = dateDf;

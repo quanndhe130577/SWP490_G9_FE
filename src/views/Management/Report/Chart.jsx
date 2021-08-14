@@ -1,30 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Line } from "@ant-design/charts";
-const DemoLine = () => {
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    asyncFetch();
-  }, []);
-  const asyncFetch = () => {
-    // fetch(
-    //   "https://gw.alipayobjects.com/os/bmw-prod/e00d52f4-2fa6-47ee-a0d7-105dd95bde20.json"
-    // )
-    //   .then((response) => response.json())
-    //   .then((json) => setData(json))
-    //   .catch((error) => {
-    //     console.log("fetch data failed", error);
-    //   });
-    setData([]);
-  };
+import { helper } from "../../../services";
+import i18n from "i18next";
+import moment from "moment";
+import { Row, Col } from "reactstrap";
+import Widgets from "../../../schema/Widgets";
+
+const DemoLine = ({ dailyData, data }) => {
   let config = {
-    data: data,
-    xField: "year",
-    yField: "gdp",
+    data: dailyData,
+    xField: "date",
+    yField: "value",
     seriesField: "name",
     yAxis: {
       label: {
         formatter: function formatter(v) {
-          return "".concat((v / 1000000000).toFixed(1), " B");
+          return v / 1000000 + " " + i18n.t("M");
+        },
+      },
+    },
+    xAxis: {
+      label: {
+        formatter: function formatter(v) {
+          return helper.getDateFormat(moment(v, "DD/MM/YYYY"), "dd");
         },
       },
     },
@@ -33,10 +31,44 @@ const DemoLine = () => {
     animation: {
       appear: {
         animation: "path-in",
-        duration: 1000,
+        duration: 3000,
       },
     },
   };
-  return <Line {...config} />;
+
+  return (
+    <Row>
+      <Col md="12" className="mb-5">
+        <div className="d-flex justify-content-center">
+          <Line {...config} style={{ width: "90%" }} />
+        </div>
+      </Col>
+
+      <Col md="6">
+        <div style={{ marginLeft: "10%" }}>
+          <Widgets.NumberFormat
+            label={i18n.t("summaryIncome") + ": "}
+            value={data.summaryIncome}
+          />
+          <Widgets.NumberFormat
+            label={i18n.t("summaryOutcome") + ": "}
+            value={data.summaryOutcome}
+          />
+        </div>
+      </Col>
+      <Col md="6">
+        <div style={{ marginLeft: "10%" }}>
+          <Widgets.NumberFormat
+            label={i18n.t("summaryDailyCost") + ": "}
+            value={data.summaryDailyCost}
+          />
+          {/* <Widgets.NumberFormat
+              label={i18n.t("summaryDebt") + ": "}
+              value={data.summaryDebt}
+            /> */}
+        </div>
+      </Col>
+    </Row>
+  );
 };
 export default DemoLine;

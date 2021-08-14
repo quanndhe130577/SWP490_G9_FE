@@ -13,6 +13,7 @@ import { apis, helper, session } from "../../../services";
 
 import NumberFormat from "react-number-format";
 import Moment from "react-moment";
+import moment from "moment";
 
 const SellFish = (props) => {
   const history = useHistory();
@@ -388,7 +389,19 @@ const SellFish = (props) => {
       console.log(error);
     }
   };
-
+  const checkSession = () => {
+    if (listTransaction.length > 0) {
+      let dateTrans = helper.getDateFormat(listTransaction[0].date, "ddmmyyyy");
+      let dateToday = new Date();
+      let hourToday = moment(dateToday).format("HH");
+      if (parseInt(hourToday) <= 17) {
+        dateToday = moment(dateToday).subtract(1, "days");
+      }
+      dateToday = helper.getDateFormat(dateToday, "ddmmyyyy");
+      return dateToday === dateTrans;
+    }
+    return true;
+  };
   useEffect(() => {
     let query = queryString.parse(props.location.search, {
       ignoreQueryPrefix: true,
@@ -506,55 +519,76 @@ const SellFish = (props) => {
               {user.roleName === "Trader" && (
                 <Col md="2" className="p-0 pr-2" />
               )}
-              <Col md="2" xs="6" className="p-0 pr-2">
-                <Button
-                  color="info"
-                  onClick={() => setShowCloseTrans(true)}
-                  className="w-100 p-0 h-100"
-                >
-                  <i className="fa fa-check-square-o mr-1" />
-                  {i18n.t("closeTransaction")}
-                </Button>
-              </Col>
-              <Col md="2" xs="6" className="p-0 pr-2">
-                <Button
-                  color="info"
-                  onClick={() => {
-                    setShowBuyer(true);
-                  }}
-                  className="w-100 p-0 h-100"
-                >
-                  <i className="fa fa-shopping-cart mr-1" />
-                  {i18n.t("payment")}
-                </Button>
-              </Col>
-              {user.roleName !== "Trader" && (
-                <Col md="2" xs="6" className="p-0 pr-2">
-                  <Button
-                    color="info"
-                    onClick={() => setShowChooseTraders(true)}
-                    className="w-100 p-0 h-100"
-                  >
-                    <i className="fa fa-user-plus mr-1" />
-                    {i18n.t("choseTrader")}
-                  </Button>
-                </Col>
-              )}
+              {checkSession() ? (
+                <>
+                  <Col md="2" xs="6" className="p-0 pr-2">
+                    <Button
+                      color="info"
+                      onClick={() => setShowCloseTrans(true)}
+                      className="w-100 p-0 h-100"
+                    >
+                      <i className="fa fa-check-square-o mr-1" />
+                      {i18n.t("closeTransaction")}
+                    </Button>
+                  </Col>
 
-              <Col md="2" xs="6" className="p-0 pr-3">
-                <Button
-                  color="info"
-                  onClick={() => {
-                    setShowSell(true);
-                    setCurrentTrans({});
-                    setMode("create");
-                  }}
-                  className="w-100 p-0 h-100 bold"
-                >
-                  <i className="fa fa-plus mr-1" />
-                  {i18n.t("Thêm Mã Bán")}
-                </Button>
-              </Col>
+                  <Col md="2" xs="6" className="p-0 pr-2">
+                    <Button
+                      color="info"
+                      onClick={() => {
+                        setShowBuyer(true);
+                      }}
+                      className="w-100 p-0 h-100"
+                    >
+                      <i className="fa fa-shopping-cart mr-1" />
+                      {i18n.t("payment")}
+                    </Button>
+                  </Col>
+                  {user.roleName !== "Trader" && (
+                    <Col md="2" xs="6" className="p-0 pr-2">
+                      <Button
+                        color="info"
+                        onClick={() => setShowChooseTraders(true)}
+                        className="w-100 p-0 h-100"
+                      >
+                        <i className="fa fa-user-plus mr-1" />
+                        {i18n.t("choseTrader")}
+                      </Button>
+                    </Col>
+                  )}
+
+                  <Col md="2" xs="6" className="p-0 pr-3">
+                    <Button
+                      color="info"
+                      onClick={() => {
+                        setShowSell(true);
+                        setCurrentTrans({});
+                        setMode("create");
+                      }}
+                      className="w-100 p-0 h-100 bold"
+                    >
+                      <i className="fa fa-plus mr-1" />
+                      {i18n.t("Thêm Mã Bán")}
+                    </Button>
+                  </Col>
+                </>
+              ) : (
+                <>
+                  <Col md="6" />
+                  <Col md="2" xs="6" className="p-0 pr-2">
+                    <Button
+                      color="info"
+                      onClick={() => {
+                        setShowBuyer(true);
+                      }}
+                      className="w-100 p-0 h-100"
+                    >
+                      <i className="fa fa-shopping-cart mr-1" />
+                      {i18n.t("payment")}
+                    </Button>
+                  </Col>
+                </>
+              )}
             </Row>
 
             <Row>
@@ -614,7 +648,6 @@ const SellFish = (props) => {
                                   ? helper.tag(trans.status)
                                   : ""}
                               </Table.Summary.Cell>
-                              {/* <Table.Summary.Cell colSpan="4" key="6" /> */}
                             </Table.Summary.Row>
                           </Table.Summary>
                         );
