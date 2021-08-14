@@ -53,7 +53,7 @@ export default class Basket extends Component {
           ref={(node) => {
             this.searchInput = node;
           }}
-          placeholder={`Search ${dataIndex}`}
+          placeholder={`${i18n.t("Search")} ${i18n.t(dataIndex)}`}
           value={selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -89,9 +89,9 @@ export default class Basket extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -247,7 +247,7 @@ export default class Basket extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentPO={currentPO || {}}
-            // handleChangeBasket={handleChangeBasket}
+          // handleChangeBasket={handleChangeBasket}
           />
         )}
         <Row>

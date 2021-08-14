@@ -111,7 +111,7 @@ export default class Trader extends Component {
           ref={(node) => {
             this.searchInput = node;
           }}
-          placeholder={`Search ${dataIndex}`}
+          placeholder={`${i18n.t("Search")} ${i18n.t(dataIndex)}`}
           value={selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -198,7 +198,7 @@ export default class Trader extends Component {
       title: i18n.t("status"),
       dataIndex: "isAccepted",
       key: "isAccepted",
-      ...this.getColumnSearchProps("isAccepted"),
+      ...this.getColumnSearchProps("status"),
       sorter: (a, b) => a,
       sortDirections: ["descend", "ascend"],
       render: data => data ? <Tag color="green">{i18n.t("isAccepted")}</Tag> : <Tag color="red">{i18n.t("isNotAccepted")}</Tag>
