@@ -90,9 +90,10 @@ button {
 .rp-left {
   border-right: 2px solid rgb(116, 116, 116);
 }
-.rp-tb .title {
+.title-rp {
   width: 100%;
   text-align: center;
+  margin-top: 1.5em;
 }
 .noData {
   display: flex;

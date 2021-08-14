@@ -209,7 +209,7 @@
   "day": "Ngày",
   "typeOfCost": "Loại chi phí",
   "isRequired": "Vui lòng điền",
-  "totalMoneyFish": "Tổng tiền mua cá",
+  "moneyBuyFish": "Tiền mua cá",
   "tongChi": "Tổng chi",
   "tongThu": "Tổng thu",
   "reportManagement": "Báo cáo",
@@ -217,5 +217,14 @@
   "monthReport": "Báo cáo tháng",
   "isAccepted": "Được chấp thuận",
   "isNotAccepted": "Chưa chấp thuận",
-  "M": "Tr"
+  "M": "Tr",
+  "moneyCommission": "Tiền phế",
+  "buyWeight": "Khối lượng mua",
+  "sellWeight": "Khối lượng bán",
+  "moneySellFish": "Tiền bán cá",
+  "report.in-out-come-month": "Báo cáo thu chi theo tháng",
+  "selectMonth": "Chọn tháng",
+  "summaryIncome": "TỔNG THU",
+  "summaryOutcome": "TỔNG CHI",
+  "summaryDailyCost": "TỔNG CHI PHÍ"
 }
