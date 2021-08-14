@@ -43,6 +43,7 @@ const ModalCloseSell = ({
       setLoading(false);
     }
   };
+
   const validate = () => {
     let { commissionUnit, listTranId } = currentTransaction;
     if (!commissionUnit && user.roleName !== "Trader") {
@@ -55,10 +56,6 @@ const ModalCloseSell = ({
     handleCloseModal(!isShowCloseTransaction);
   };
   const handleChangeTran = async (name, val, transId) => {
-    // if (traderId) {
-    //   debugger;
-    //   handleChangeTraderId("");
-    // }
     if (name === "traderId") {
       let trader = dataDf.tradersSelected.find((el) => el.id === val);
       if (transId) {
@@ -145,6 +142,8 @@ const ModalCloseSell = ({
                   </Moment>
                 </label>
               </Col>
+
+              {/* FOR WEIGHT RECORDER */}
               {user && user.roleName !== "Trader" && (
                 <>
                   <Col md="6">
@@ -171,6 +170,8 @@ const ModalCloseSell = ({
                   </Col>
                 </>
               )}
+
+              {/* FOR BOTH ROLE */}
               {currentTransaction.fishInPurchase && (
                 <Col md="12">
                   <Table
@@ -214,6 +215,7 @@ const ModalCloseSell = ({
                 </Col>
               )}
 
+              {/* FOR WEIGHT RECORDER */}
               {total &&
                 total.totalAmount > 0 &&
                 currentTransaction.commissionUnit > 0 && (

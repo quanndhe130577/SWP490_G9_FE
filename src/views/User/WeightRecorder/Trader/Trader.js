@@ -147,9 +147,9 @@ export default class Trader extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -163,7 +163,7 @@ export default class Trader extends Component {
     {
       title: i18n.t("INDEX"),
       dataIndex: "idx",
-      key: "idx",
+      width: 60,
       render: (text) => <label>{text}</label>,
     },
     {
@@ -201,7 +201,12 @@ export default class Trader extends Component {
       ...this.getColumnSearchProps("status"),
       sorter: (a, b) => a,
       sortDirections: ["descend", "ascend"],
-      render: data => data ? <Tag color="green">{i18n.t("isAccepted")}</Tag> : <Tag color="red">{i18n.t("isNotAccepted")}</Tag>
+      render: (data) =>
+        data ? (
+          <Tag color="green">{i18n.t("isAccepted")}</Tag>
+        ) : (
+          <Tag color="red">{i18n.t("isNotAccepted")}</Tag>
+        ),
     },
     {
       title: i18n.t("action"),
@@ -254,7 +259,7 @@ export default class Trader extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentTrader={currentTrader || {}}
-          // handleChangePondOwner={handleChangePondOwner}
+            // handleChangePondOwner={handleChangePondOwner}
           />
         )}
         <Row>

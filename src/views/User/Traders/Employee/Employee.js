@@ -271,9 +271,9 @@ export default class Employee extends Component {
       } else {
         return record[dataIndex]
           ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+              .toString()
+              .toLowerCase()
+              .includes(value.toLowerCase())
           : "";
       }
     },
@@ -303,6 +303,8 @@ export default class Employee extends Component {
         title: i18n.t("INDEX"),
         dataIndex: "idx",
         key: "idx",
+        width: 60,
+
         render: (text) => <label>{text}</label>,
       },
       {
@@ -381,7 +383,7 @@ export default class Employee extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentEmp={currentEmp || {}}
-          // handleChangePondOwner={handleChangePondOwner}
+            // handleChangePondOwner={handleChangePondOwner}
           />
         )}
         <Row>

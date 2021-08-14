@@ -146,6 +146,8 @@ export default class List extends Component {
       title: i18n.t("INDEX"),
       dataIndex: "idx",
       key: "idx",
+      width: 60,
+
       render: (text) => <label>{text}</label>,
     },
     {

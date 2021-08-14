@@ -70,21 +70,7 @@ const ReportDaily = () => {
     return (
       <Row>
         <Col md="12">
-          <h4 className="d-flex">
-            {i18n.t("report.buy-sell-date")}
-            {/* {date && (
-              <Moment format="DD-MM-yyyy" className="ml-2">
-                {date}
-              </Moment>
-            )} */}
-            <Widgets.DateTimePicker
-              value={date || new Date()}
-              needCorrect={false}
-              onChange={(value) => {
-                fetchData(value);
-              }}
-            />
-          </h4>
+          <h4 className="d-flex">{i18n.t("report.buy-sell-date")}</h4>
         </Col>
       </Row>
     );
@@ -94,40 +80,42 @@ const ReportDaily = () => {
   } else
     return (
       <Card title={renderTitle()} className="body-minH">
-        {/* <Row>
+        <Row>
+          <b className="mr-2 mt-2 ml-3">{i18n.t("selectDay")}</b>
           <Widgets.DateTimePicker
-            label="Ngày"
             value={date || new Date()}
             needCorrect={false}
             onChange={(value) => {
               fetchData(value);
             }}
           />
-        </Row> */}
+        </Row>
         <Row>
-          <Col md="6">
-            <h4>
+          {user && user.roleName === "Trader" && (
+            <Col md="6">
+              <h4>
+                <Widgets.NumberFormat
+                  label={i18n.t("tongChi") + ": "}
+                  value={data.tongChi}
+                />
+              </h4>
               <Widgets.NumberFormat
-                label={i18n.t("tongChi") + ": "}
-                value={data.tongChi}
+                label={i18n.t("buyWeight") + ": "}
+                value={purchaseTotal.summaryWeight}
+                suffix=" Kg"
               />
-            </h4>
-            <Widgets.NumberFormat
-              label={i18n.t("buyWeight") + ": "}
-              value={purchaseTotal.summaryWeight}
-              suffix=" Kg"
-            />
 
-            <Widgets.NumberFormat
-              label={i18n.t("moneyBuyFish") + ": "}
-              value={purchaseTotal.summaryMoney}
-            />
-            <Widgets.NumberFormat
-              label={i18n.t("CostIncurredManagement") + ": "}
-              value={CostIncurred.totalCost}
-            />
-            <h4 className="title-rp">{i18n.t("buyFish")}</h4>
-          </Col>
+              <Widgets.NumberFormat
+                label={i18n.t("moneyBuyFish") + ": "}
+                value={purchaseTotal.summaryMoney}
+              />
+              <Widgets.NumberFormat
+                label={i18n.t("CostIncurredManagement") + ": "}
+                value={CostIncurred.totalCost}
+              />
+              <h4 className="title-rp">{i18n.t("buyFish")}</h4>
+            </Col>
+          )}
           <Col md="6">
             <h4>
               <Widgets.NumberFormat

@@ -59,7 +59,7 @@ const PriceFishToday = ({
       title: "STT",
       dataIndex: "idx",
       key: "idx",
-      width: "5%",
+      width: 60,
       render: (text) => <label>{text}</label>,
     },
     {
