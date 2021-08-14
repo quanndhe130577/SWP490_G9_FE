@@ -390,7 +390,11 @@ const SellFish = (props) => {
     }
   };
   const checkSession = () => {
+    let isPending = listTransaction.find((el) => el.status === "Pending");
     if (listTransaction.length > 0) {
+      if (isPending) {
+        return true;
+      }
       let dateTrans = helper.getDateFormat(listTransaction[0].date, "ddmmyyyy");
       let dateToday = new Date();
       let hourToday = moment(dateToday).format("HH");

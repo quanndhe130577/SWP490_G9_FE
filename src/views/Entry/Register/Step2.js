@@ -25,6 +25,12 @@ export default class Step1 extends Component {
           onChange={(e) => handleChange(e, "identifyCode")}
           submitted={submitted}
         />
+        <Widgets.Text
+          label={i18n.t("address")}
+          value={user.address}
+          onChange={(e) => handleChange(e, "address")}
+          submitted={submitted}
+        />
         <Widgets.Select
           label={i18n.t("youAre")}
           value={user.roleNormalizedName}
