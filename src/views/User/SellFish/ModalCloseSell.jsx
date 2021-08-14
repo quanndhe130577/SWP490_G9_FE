@@ -43,6 +43,7 @@ const ModalCloseSell = ({
       setLoading(false);
     }
   };
+
   const validate = () => {
     let { commissionUnit, listTranId } = currentTransaction;
     if (!commissionUnit && user.roleName !== "Trader") {
@@ -55,10 +56,6 @@ const ModalCloseSell = ({
     handleCloseModal(!isShowCloseTransaction);
   };
   const handleChangeTran = async (name, val, transId) => {
-    // if (traderId) {
-    //   debugger;
-    //   handleChangeTraderId("");
-    // }
     if (name === "traderId") {
       let trader = dataDf.tradersSelected.find((el) => el.id === val);
       if (transId) {
@@ -145,6 +142,8 @@ const ModalCloseSell = ({
                   </Moment>
                 </label>
               </Col>
+
+              {/* FOR WEIGHT RECORDER */}
               {user && user.roleName !== "Trader" && (
                 <>
                   <Col md="6">
@@ -171,14 +170,16 @@ const ModalCloseSell = ({
                   </Col>
                 </>
               )}
+
+              {/* FOR BOTH ROLE */}
               {currentTransaction.fishInPurchase && (
-                <Col md="12">
+                <Col md="12" className="mb-3">
                   <Table
                     rowKey="id"
                     columns={columns}
                     dataSource={currentTransaction.fishInPurchase}
                     bordered
-                    pagination={{ pageSize: 100 }}
+                    pagination={false}
                     summary={() => {
                       return (
                         <Table.Summary fixed>
@@ -214,13 +215,20 @@ const ModalCloseSell = ({
                 </Col>
               )}
 
+              {/* FOR WEIGHT RECORDER */}
               {total &&
                 total.totalAmount > 0 &&
                 currentTransaction.commissionUnit > 0 && (
                   <>
                     <Col md="6">
                       <Widgets.NumberFormat
-                        label={i18n.t("wcReceiver") + ": "}
+                        label={
+                          i18n.t(
+                            user.roleName === "Trader"
+                              ? "moneyCommission"
+                              : "wcReceiver"
+                          ) + ": "
+                        }
                         value={
                           total.totalWeight *
                             currentTransaction.commissionUnit || ""
@@ -229,7 +237,13 @@ const ModalCloseSell = ({
                     </Col>
                     <Col md="6">
                       <Widgets.NumberFormat
-                        label={i18n.t("payForTrader") + ": "}
+                        label={
+                          i18n.t(
+                            user.roleName !== "Trader"
+                              ? "payForTrader"
+                              : "wcReceiver"
+                          ) + ": "
+                        }
                         value={
                           total.totalAmount -
                             total.totalWeight *

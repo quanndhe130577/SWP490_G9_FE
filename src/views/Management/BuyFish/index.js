@@ -207,6 +207,8 @@ const ManaBuy = () => {
       title: i18n.t("INDEX"),
       dataIndex: "idx",
       key: "idx",
+      width: 60,
+
       render: (text) => <label>{text}</label>,
     },
     {
@@ -253,28 +255,16 @@ const ManaBuy = () => {
       ),
     },
     {
-      title: i18n.t("status"),
+      title: i18n.t("statusBuy"),
       dataIndex: "status",
       key: "status",
-      render: (status) =>
-        // let color = "";
-        // switch (status) {
-        //   case "Completed":
-        //     color = "green";
-        //     break;
-        //   case "Pending":
-        //     color = "gold";
-        //     break;
-        //   default:
-        //     color = "red";
-        // }
-
-        // return (
-        //   <Tag color={color} key={status}>
-        //     {i18n.t(status).toUpperCase()}
-        //   </Tag>
-        // );
-        helper.tag(status, "w-120px"),
+      render: (status) => helper.tag(status, "w-120px"),
+    },
+    {
+      title: i18n.t("statusPaid"),
+      dataIndex: "isPaid",
+      key: "isPaid",
+      render: (isPaid) => helper.tag(isPaid ? "isPaid" : "notPaid", "w-140px"),
     },
     {
       title: i18n.t("action"),

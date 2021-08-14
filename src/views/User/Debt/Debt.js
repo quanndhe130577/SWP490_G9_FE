@@ -109,9 +109,9 @@ export default class Debt extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -221,6 +221,8 @@ export default class Debt extends Component {
         title: i18n.t("INDEX"),
         dataIndex: "idx",
         key: "idx",
+        width: 60,
+
         render: (text) => <label>{text}</label>,
       },
       {

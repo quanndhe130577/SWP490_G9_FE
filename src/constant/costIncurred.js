@@ -52,11 +52,19 @@ const listCostIncurred = {
         label: "Bảo dưỡng xe",
         key: "Bảo dưỡng xe",
       },
+      {
+        label: "Chi phí khác",
+        key: "other",
+      },
     ],
     weightRecorder: [
       {
         label: "Tiền thuê slot chợ",
         key: "Tiền thuê slot chợ",
+      },
+      {
+        label: "Chi phí khác",
+        key: "other",
       },
     ],
   },

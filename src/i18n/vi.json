@@ -233,5 +233,7 @@
   "debtor": "người nợ",
   "number": "số thứ tự",
   "price": "giá",
-  "transactionPrice": "giá bán"
+  "transactionPrice": "giá bán",
+  "selectDay": "Chọn ngày",
+  "statusBuy": "Trạng thái đơn bán"
 }

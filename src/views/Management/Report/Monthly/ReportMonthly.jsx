@@ -12,7 +12,7 @@ const ReportMonthly = () => {
   const [loading, setLoading] = useState(false);
 
   const [date, setDate] = useState(new Date());
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
   const [dailyData, setDailyData] = useState({
     listTraderData: [],
     listWRData: [],
@@ -70,7 +70,7 @@ const ReportMonthly = () => {
             {user.roleName === "Trader" ? (
               <Chart dailyData={dailyData.listTraderData} data={data} />
             ) : (
-              <Chart dailyData={dailyData.listWRData} />
+              <Chart dailyData={dailyData.listWRData} data={data} />
             )}
           </Col>
         </Row>
