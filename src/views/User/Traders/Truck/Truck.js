@@ -32,7 +32,6 @@ export default class Truck extends Component {
       let user = await session.get("user");
       let rs = await apis.getTruck({}, "GET");
       if (rs && rs.statusCode === 200) {
-        console.log(rs);
         rs.data.map((el, idx) => (el.idx = idx + 1));
         this.setState({
           data: rs.data,
@@ -74,27 +73,14 @@ export default class Truck extends Component {
             size="small"
             style={{ width: 90 }}
           >
-            Search
+            Tìm
           </Button>
           <Button
             onClick={() => this.handleReset(clearFilters)}
             size="small"
             style={{ width: 90 }}
           >
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({ closeDropdown: false });
-              this.setState({
-                searchText: selectedKeys[0],
-                searchedColumn: dataIndex,
-              });
-            }}
-          >
-            Filter
+            Đặt lại
           </Button>
         </Space>
       </div>

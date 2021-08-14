@@ -123,13 +123,6 @@ export default class EmployeeSalary extends Component {
     return (
       <Menu>
         <Menu.Item key="1">
-          {/* <Button
-            color="info"
-            className="mr-2 w-100"
-            onClick={() => this.onClick("edit", id, name)}
-          >
-            {i18n.t("Edit Salary")}
-          </Button> */}
           <Button
             color="info"
             onClick={() => this.onClick("fluctuations", id, name)}
@@ -268,27 +261,14 @@ export default class EmployeeSalary extends Component {
             size="small"
             style={{ width: 90 }}
           >
-            Search
+            Tìm
           </Button>
           <Button
             onClick={() => this.handleReset(clearFilters)}
             size="small"
             style={{ width: 90 }}
           >
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({ closeDropdown: false });
-              this.setState({
-                searchText: selectedKeys[0],
-                searchedColumn: dataIndex,
-              });
-            }}
-          >
-            Filter
+            Đặt lại
           </Button>
         </Space>
       </div>
@@ -307,9 +287,9 @@ export default class EmployeeSalary extends Component {
       } else {
         return record[dataIndex]
           ? record[dataIndex]
-              .toString()
-              .toLowerCase()
-              .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
           : "";
       }
     },
@@ -346,7 +326,7 @@ export default class EmployeeSalary extends Component {
         render: (data) => `${data} \/ ${month}`,
       },
       {
-        title: i18n.t("Base Salary") + "(VND)",
+        title: i18n.t("Base Salary"),
         dataIndex: "baseSalary",
         key: "baseSalary",
         ...this.getColumnSearchProps("baseSalary"),

@@ -87,15 +87,6 @@ const Login = (props) => {
                   }}
                   submitted={submitted}
                 />
-                <div>
-                  <Link
-                    to="/forgetPassword"
-                    style={{ color: "black" }}
-                    className=""
-                  >
-                    Quên mật khẩu?
-                  </Link>
-                </div>
 
                 <div className="form-group d-flex justify-content-center">
                   <button className="btn btn-info p-1">
@@ -122,6 +113,15 @@ const Login = (props) => {
                       {i18n.t("Register")}
                     </Link>
                   </div>
+                </div>
+                <div className="text-center">
+                  <Link
+                    to="/forgetPassword"
+                    // style={{ color: "blue" }}
+                    className="primary"
+                  >
+                    Bạn quên mật khẩu?
+                  </Link>
                 </div>
               </div>
             </form>

@@ -1,5 +1,6 @@
 import React from "react";
-import { Input } from 'antd';
+import { Input } from "antd";
+import i18next from "i18next";
 export default function OTP({
   value,
   label,
@@ -9,8 +10,6 @@ export default function OTP({
   required = false,
   submitted,
 }) {
-
-
   return (
     <div className={"form-group" + (submitted && !value ? " has-error" : "")}>
       {label && (
@@ -32,19 +31,18 @@ export default function OTP({
         onBlur={(e) => {
           let regex = /(84|0[3|5|7|8|9])+([0-9]{6})\b/;
           if (!regex.test(e.target.value)) {
-            return { isValid: false, message: 'Sai định dạng OTP' };
+            return { isValid: false, message: "Sai định dạng OTP" };
           }
-          return { isValid: true, message: '' };
+          return { isValid: true, message: "" };
         }}
         required={required}
       />
       {submitted && !value && (
-        <div className="help-block">{label} is required</div>
+        <div className="help-block">
+          {i18next.t("isRequired") + " " + label}
+        </div>
       )}
-      {submitted && !error && (
-        <div className="help-block">{error}</div>
-      )}
-
+      {submitted && !error && <div className="help-block">{error}</div>}
     </div>
   );
 }

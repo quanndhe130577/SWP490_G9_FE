@@ -1,6 +1,6 @@
 import React from "react";
 import { Checkbox } from "antd";
-
+import i18next from "i18next";
 export default function Checkbox1({
   value = false,
   label,
@@ -40,7 +40,9 @@ export default function Checkbox1({
         {renderLabe(value, lblChecked, lblCheckbox || label)}
       </Checkbox>
       {submitted && !value && (
-        <div className="help-block">{label} is required</div>
+        <div className="help-block">
+          {i18next.t("isRequired") + " " + label}
+        </div>
       )}
       {submitted && !error && <div className="help-block">{error}</div>}
     </div>

@@ -245,6 +245,7 @@ const ManaSell = () => {
         dataSource={transaction}
         loading={isLoading}
         rowKey="idx"
+        bordered
       />
     </Card>
   );

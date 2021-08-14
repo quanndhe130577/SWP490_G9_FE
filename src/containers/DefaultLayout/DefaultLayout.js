@@ -40,7 +40,7 @@ class DefaultLayout extends Component {
               {routes.map((route, idx) => {
                 return route.component ? (
                   <Route
-                    key={idx}
+                    key={idx + route.path}
                     path={route.path}
                     exact={route.exact}
                     name={route.name}

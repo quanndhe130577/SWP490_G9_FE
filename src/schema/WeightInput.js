@@ -1,5 +1,6 @@
 import React from "react";
 import { Input } from "antd";
+import i18n from "i18next";
 
 export default function Number({
   value,
@@ -30,7 +31,10 @@ export default function Number({
         onChange={(e) => {
           if (onChange) {
             let v = e.target.value.replace(/[^0-9.]/, "");
-            onChange(parseInt(v, 10));
+            if (v.startsWith(0)) {
+              v = parseInt(v, 10);
+            }
+            onChange(v);
           }
         }}
         onBlur={(e) => {
@@ -53,7 +57,7 @@ export default function Number({
         required={required}
       />
       {submitted && !value && (
-        <div className="help-block">{label} is required</div>
+        <div className="help-block">{i18n.t("isRequired") + " " + label}</div>
       )}
       {submitted && !error && <div className="help-block">{error}</div>}
     </div>

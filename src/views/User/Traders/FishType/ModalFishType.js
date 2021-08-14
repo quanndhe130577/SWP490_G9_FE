@@ -103,7 +103,6 @@ const ModalEdit = ({ isShow, closeModal, mode, currentFT }) => {
               onChange={(data) => {
                 //this.setState({ date: new Date(data) });
                 handleChangeFishType(new Date(data), "date");
-                //console.log(data);
               }}
             />
           </Col> */}

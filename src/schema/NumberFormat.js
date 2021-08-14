@@ -1,5 +1,6 @@
 import React from "react";
 import NumberFormat from "react-number-format";
+import i18next from "i18next";
 // refer https://www.npmjs.com/package/react-number-format
 export default function NumberFormat2({
   value,
@@ -42,7 +43,9 @@ export default function NumberFormat2({
         onValueChange={onValueChange}
       />
       {submitted && !value && (
-        <div className="help-block">{label} is required</div>
+        <div className="help-block">
+          {i18next.t("isRequired") + " " + label}
+        </div>
       )}
     </div>
   );

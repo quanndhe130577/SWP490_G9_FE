@@ -15,13 +15,14 @@
     "url": "https://dvtam99@github.com/quanndhe130577/SWP490_G9_FE.git"
   },
   "dependencies": {
+    "@ant-design/charts": "^1.2.5",
     "@ant-design/colors": "^6.0.0",
     "@ant-design/compatible": "^1.0.8",
     "@ant-design/icons": "4.0.0",
     "antd": "^4.12.3",
     "i18next": "^20.3.1",
-    "node-sass": "^4.9.4",
     "lodash": "^4.17.21",
+    "node-sass": "^4.9.4",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-avatar-edit": "^1.0.0",

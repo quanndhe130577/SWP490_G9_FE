@@ -128,7 +128,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
               onChange={(e) => handleChangeEmployee(e, "startDate")}
             />
           </Col>
-          <Col md="6" xs="12">
+          {/* <Col md="6" xs="12">
             <Widgets.MoneyInput
               required={true}
               disabled={checkDisable()}
@@ -136,7 +136,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
               value={employee.salary}
               onChange={(e) => handleChangeEmployee(e, "salary")}
             />
-          </Col>
+          </Col> */}
           {mode === "edit" && employee && employee.endDate && (
             <Col md="6" xs="12">
               <Widgets.DateTimePicker

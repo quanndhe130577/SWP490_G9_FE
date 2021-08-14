@@ -3,11 +3,7 @@ import React from "react";
 import Loadable from "react-loadable";
 
 function Loading() {
-  return (
-    <div>
-      <Spin />
-    </div>
-  );
+  return <Spin />;
 }
 const Home = Loadable({
   loader: () => import("./views/Home/index"),
@@ -90,6 +86,19 @@ const EmployeeSalary = Loadable({
   loader: () => import("./views/User/Traders/Salary/EmployeeSalary"),
   loading: Loading,
 });
+const WeightRecorder = Loadable({
+  loader: () => import("./views/User/Traders/WeightRecorder/List"),
+  loading: Loading,
+});
+const ReportMonthly = Loadable({
+  loader: () => import("./views/Management/Report/Monthly/ReportMonthly"),
+  loading: Loading,
+});
+const ReportDaily = Loadable({
+  loader: () => import("./views/Management/Report/Daily/ReportDaily"),
+  loading: Loading,
+});
+
 const routes = [
   {
     path: "/home",
@@ -171,7 +180,6 @@ const routes = [
     name: "Debt",
     component: Debt,
   },
-  {},
   {
     path: "/trader",
     name: "Trader",
@@ -191,6 +199,21 @@ const routes = [
     path: "/employeeSalary",
     name: "EmployeeSalary",
     component: EmployeeSalary,
+  },
+  {
+    path: "/weightRecorder",
+    name: "WeightRecorder",
+    component: WeightRecorder,
+  },
+  {
+    path: "/monthReport",
+    name: "ReportMonthly",
+    component: ReportMonthly,
+  },
+  {
+    path: "/dailyReport",
+    name: "ReportDaily",
+    component: ReportDaily,
   },
 ];
 

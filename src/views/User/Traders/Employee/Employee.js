@@ -36,7 +36,6 @@ export default class Employee extends Component {
       // let rs = await apis.getPondOwnerByTraderId({}, "GET", user.userID);
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
-        console.log(rs.data);
         this.setState({ data: rs.data, user, total: rs.data.length });
       }
     } catch (error) {
@@ -245,27 +244,14 @@ export default class Employee extends Component {
             size="small"
             style={{ width: 90 }}
           >
-            Search
+            Tìm
           </Button>
           <Button
             onClick={() => this.handleReset(clearFilters)}
             size="small"
             style={{ width: 90 }}
           >
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({ closeDropdown: false });
-              this.setState({
-                searchText: selectedKeys[0],
-                searchedColumn: dataIndex,
-              });
-            }}
-          >
-            Filter
+            Đặt lại
           </Button>
         </Space>
       </div>

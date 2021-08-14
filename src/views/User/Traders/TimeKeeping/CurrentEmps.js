@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col } from "reactstrap";
-import { Checkbox, Modal, List, Radio } from "antd";
+import { Table, Modal, Radio } from "antd";
 import Widgets from "../../../../schema/Widgets";
 import { helper, apis } from "../../../../services";
 
@@ -62,7 +61,7 @@ export default class CurrentEmps extends Component {
             empName: emp.name,
             id: 0,
             note: 0,
-            status: 1,
+            status: 0,
             workDay: this.props.currentDate,
             checked: false,
           });
@@ -79,6 +78,21 @@ export default class CurrentEmps extends Component {
     if (data.length > 0) {
       data[0][name] = value;
       this.setState({ currentTimes: currentTimes });
+    }
+  };
+  handleChangeStatus = (value, item) => {
+    let currentTimes = this.state.currentTimes;
+    let data = currentTimes.filter((time) => time.empId === item.empId);
+    if (data.length > 0) {
+      if (value === 0) {
+        data[0].status = value;
+        data[0].checked = false;
+        this.setState({ currentTimes: currentTimes });
+      } else {
+        data[0].status = value;
+        data[0].checked = true;
+        this.setState({ currentTimes: currentTimes });
+      }
     }
   };
   load() {
@@ -126,67 +140,35 @@ export default class CurrentEmps extends Component {
         onCancel={this.props.cancel}
         onOk={this.submit}
       >
-        <List>
-          <List.Item>
-            <Row key="header" className="w-100 tnrss-time-keeping-border pb-4">
-              <Col md="3" xs="12" className="d-flex justify-content-center">
-                <b>Có đi làm</b>
-              </Col>
-              <Col md="4" xs="12">
-                <b>Tên</b>
-              </Col>
-              <Col md="5" xs="12">
-                <b>Công</b>
-              </Col>
-            </Row>
-          </List.Item>
-        </List>
-        <List
+        <Table
           dataSource={this.state.currentTimes}
-          renderItem={(item) => (
-            <>
-              <List.Item>
-                <Row key={item.id} className="w-100">
-                  <Col md="3" xs="12" className="d-flex justify-content-center">
-                    <Checkbox
-                      checked={item.checked}
+          columns={[
+            {
+              title: "Tên nhân viên",
+              dataIndex: "empName",
+              key: "empName",
+            },
+            {
+              title: "Số công",
+              key: "status",
+              render: (item) => (
+                <Widgets.Custom
+                  component={
+                    <Radio.Group
+                      value={item.status}
                       onChange={(event) =>
-                        this.handleChange(event.target.checked, item, "checked")
+                        this.handleChangeStatus(event.target.value, item)
                       }
-                    />
-                  </Col>
-                  <Col md="4" xs="12">
-                    <Widgets.Custom
-                      label={item.empName}
-                      value={this.state.note}
-                      component={""}
-                    />
-                  </Col>
-                  <Col md="5" xs="12">
-                    <Widgets.Custom
-                      component={
-                        <Radio.Group
-                          disabled={!item.checked}
-                          value={item.status}
-                          onChange={(event) =>
-                            this.handleChange(
-                              event.target.value,
-                              item,
-                              "status"
-                            )
-                          }
-                        >
-                          <Radio value={0}>Không đi làm</Radio>
-                          <Radio value={0.5}>Nửa công</Radio>
-                          <Radio value={1}>Một công</Radio>
-                        </Radio.Group>
-                      }
-                    />
-                  </Col>
-                </Row>
-              </List.Item>
-            </>
-          )}
+                    >
+                      <Radio value={0}>Không đi làm</Radio>
+                      <Radio value={0.5}>Nửa công</Radio>
+                      <Radio value={1}>Một công</Radio>
+                    </Radio.Group>
+                  }
+                />
+              ),
+            },
+          ]}
         />
       </Modal>
     );

@@ -1,14 +1,11 @@
 import { SearchOutlined } from "@ant-design/icons";
-import { Card, Input, Space, Table, Tag } from "antd";
+import { Card, Input, Space, Table, Checkbox } from "antd";
 import i18n from "i18next";
 import React, { Component } from "react";
 import { Button, Col, Row } from "reactstrap";
 import { apis, helper } from "../../../../services";
-import ModalForm from "./ModalTrader";
-import Widgets from "../../../../schema/Widgets";
-import { API_FETCH } from "../../../../constant";
 
-export default class Trader extends Component {
+export default class List extends Component {
   constructor(props) {
     super(props);
 
@@ -21,8 +18,6 @@ export default class Trader extends Component {
       loading: false,
       searchPhone: [],
     };
-    this.fetchOptions = this.fetchOptions.bind(this);
-    this.handleAddTrader = this.handleAddTrader.bind(this);
   }
 
   componentDidMount() {
@@ -31,7 +26,7 @@ export default class Trader extends Component {
 
   async fetchTrader() {
     try {
-      let rs = await apis.getTraderByWR({}, "GET");
+      let rs = await apis.getWr({}, "GET");
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         this.setState({ data: rs.data, total: rs.data.length });
@@ -42,13 +37,31 @@ export default class Trader extends Component {
       this.setState({ loading: false });
     }
   }
+  delete = async (TraderID) => {
+    let wr = this.state.data.find((wr) => wr.id === TraderID);
+    wr.isDeleted = true;
+    let rs = await apis.updateWr(wr, "POST");
+    if (rs && rs.statusCode === 200) {
+      helper.toast("success", rs.message);
+      await this.fetchTrader();
+    }
+  };
+  changeChecked = async (value, id) => {
+    let wr = this.state.data.find((item) => item.id === id);
+    wr.isAccepted = value;
+    let rs = await apis.updateWr(wr, "POST");
+    if (rs && rs.statusCode === 200) {
+      helper.toast("success", rs.message);
+      await this.fetchTrader();
+    }
+  };
 
   renderTitle = () => {
     let { total } = this.state || 0;
     return (
       <Row>
         <Col md="6" className="d-flex">
-          <h3 className="">{i18n.t("Trader")}</h3>
+          <h3 className="">{i18n.t("weightRecorder")}</h3>
           <label className="hd-total">{total ? "(" + total + ")" : ""}</label>
         </Col>
       </Row>
@@ -67,37 +80,6 @@ export default class Trader extends Component {
     clearFilters();
     this.setState({ searchText: "" });
   };
-
-  closeModal = (refresh) => {
-    if (refresh === true) {
-      this.fetchTrader();
-    }
-    this.setState({ isShowModal: false, mode: "", currentTrader: {} });
-  };
-  onClick(modeBtn, TraderID) {
-    let { currentTrader, data } = this.state;
-
-    if (modeBtn === "edit") {
-      currentTrader = data.find((el) => el.id === TraderID);
-      this.setState({ currentTrader, mode: "edit", isShowModal: true });
-    } else if (modeBtn === "delete") {
-      helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
-        if (rs) {
-          try {
-            let rs = await apis.deleteTrader({}, "POST", TraderID);
-
-            if (rs && rs.statusCode === 200) {
-              helper.toast("success", rs.message || i18n.t("success"));
-              this.fetchTrader();
-            }
-          } catch (error) {
-            console.log(error);
-            helper.toast("error", i18n.t("systemError"));
-          }
-        }
-      });
-    }
-  }
 
   getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -147,9 +129,9 @@ export default class Trader extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -168,12 +150,9 @@ export default class Trader extends Component {
     },
     {
       title: i18n.t("name"),
-      dataIndex: "firstName",
-      key: "firstName",
-
-      render: (firstName, record) => (
-        <label>{firstName + " " + record.lastName}</label>
-      ),
+      dataIndex: "name",
+      key: "name",
+      render: (name) => <label>{name}</label>,
     },
     {
       title: i18n.t("address"),
@@ -196,91 +175,47 @@ export default class Trader extends Component {
     },
     {
       title: i18n.t("status"),
-      dataIndex: "isAccepted",
-      key: "isAccepted",
       ...this.getColumnSearchProps("isAccepted"),
       sorter: (a, b) => a,
       sortDirections: ["descend", "ascend"],
-      render: data => data ? <Tag color="green">{i18n.t("isAccepted")}</Tag> : <Tag color="red">{i18n.t("isNotAccepted")}</Tag>
+      render: (data) => {
+        return (
+          <Checkbox
+            onChange={(event) =>
+              this.changeChecked(event.target.checked, data.id)
+            }
+            checked={data.isAccepted}
+          >
+            {i18n.t("isAccepted")}
+          </Checkbox>
+        );
+      },
     },
     {
       title: i18n.t("action"),
-      dataIndex: "id",
-      key: "id",
-      render: (id) => (
-        <Button color="danger" onClick={() => this.onClick("delete", id)}>
-          <i className="fa fa-trash-o mr-1" />
-          {i18n.t("delete")}
-        </Button>
-      ),
+      render: (data) => {
+        return (
+          <>
+            {data.canDelete && (
+              <Button
+                color={data.isDeleted ? i18n.t("success") : i18n.t("danger")}
+                onClick={() => this.delete(data.id)}
+              >
+                <i className="fa fa-trash-o mr-1" />
+                {data.isDeleted ? i18n.t("cancel delete") : i18n.t("delete")}
+              </Button>
+            )}
+          </>
+        );
+      },
     },
   ];
-  fetchOptions = async (phone) => {
-    return await apis.suggestTDByPhone({}, "GET", phone);
-  };
-  handleChangeSearchPhone = async (searchPhone) => {
-    try {
-      this.setState({ searchPhone: [searchPhone] });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  async handleAddTrader() {
-    try {
-      if (this.state.searchPhone) {
-        let rs = await apis.wrAddTrader({
-          traderId: parseInt(this.state.searchPhone[0].value),
-        });
-        if (rs && rs.statusCode === 200) {
-          helper.toast("success", rs.message || i18n.t("success"));
-          this.fetchTrader();
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   render() {
-    const { isShowModal, mode, currentTrader, data, loading, searchPhone } =
-      this.state;
+    const { data, loading } = this.state;
 
     return (
       <Card title={this.renderTitle()} className="body-minH">
-        {isShowModal && mode !== "" && (
-          <ModalForm
-            isShow={isShowModal}
-            mode={mode}
-            closeModal={this.closeModal}
-            currentTrader={currentTrader || {}}
-          // handleChangePondOwner={handleChangePondOwner}
-          />
-        )}
-        <Row>
-          <Col md="6">
-            <Widgets.SearchFetchApi
-              label={i18n.t("findTrader")}
-              fetchOptions={this.fetchOptions}
-              onSelect={this.handleChangeSearchPhone}
-              value={searchPhone || ""}
-              placeholder={i18n.t("enterPhoneToFind")}
-              api={API_FETCH.FIND_TRADER}
-              displayField={["firstName", "lastName", "phoneNumber"]}
-              saveField="id"
-            />
-          </Col>
-          <Col md="6">
-            <Button
-              color="info"
-              className="mt-4"
-              onClick={this.handleAddTrader}
-            >
-              <i className="fa fa-plus mr-1" />
-              {i18n.t("addTrader")}
-            </Button>
-          </Col>
-        </Row>
         <Row className="mt-3">
           <Col style={{ overflowX: "auto" }}>
             <Table

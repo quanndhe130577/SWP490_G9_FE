@@ -23,8 +23,8 @@ export default class Step1 extends Component {
         </Col>
         <Col md="6">
           <label>
-            {i18n.t("Bạn ko nhận được mã?")}
-            <span> gửi lại</span>
+            {i18n.t("Bạn không nhận được mã?")}
+            <span> Gửi lại OPT</span>
           </label>
         </Col>
       </Row>
