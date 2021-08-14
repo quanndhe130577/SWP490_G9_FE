@@ -7,7 +7,7 @@ import Widgets from "../../../schema/Widgets";
 import { apis, helper, session } from "../../../services";
 import Moment from "react-moment";
 import NumberFormat from "react-number-format";
-
+import RenderTB from "./RenderTB";
 const ModalCloseSell = ({
   isShowCloseTransaction,
   listTransaction,
@@ -22,6 +22,7 @@ const ModalCloseSell = ({
   const [currentTransaction, setCurrentTransaction] = useState({});
   const [total, setTotal] = useState({});
   const [loading, setLoading] = useState(false);
+  const [param, setParam] = useState("");
   const user = session.get("user");
 
   const handleOk = () => {
@@ -79,9 +80,11 @@ const ModalCloseSell = ({
   async function getFTByTrader(traderId) {
     try {
       let param = traderId;
+
       if (date) {
         param += "/" + date;
       }
+      setParam(param);
       let rs = await apis.getFTByTrader({}, "GET", param);
       if (rs && rs.statusCode === 200) {
         return rs.data;
@@ -213,6 +216,18 @@ const ModalCloseSell = ({
                     }}
                   />
                 </Col>
+              )}
+
+              {/* FOR Trader */}
+              {user && user.roleName === "Trader" && (
+                <>
+                  {listTransaction.map(
+                    (el) =>
+                      el.weightRecorder && (
+                        <RenderTB transaction={el} param={param} />
+                      )
+                  )}
+                </>
               )}
 
               {/* FOR WEIGHT RECORDER */}

@@ -569,7 +569,7 @@ const SellFish = (props) => {
                 </>
               ) : (
                 <>
-                  <Col md="6" />
+                  <Col md="10" />
                   <Col md="2" xs="6" className="p-0 pr-2">
                     <Button
                       color="info"
