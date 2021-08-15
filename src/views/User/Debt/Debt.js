@@ -1,5 +1,6 @@
+import "./Debt.css";
 import { SearchOutlined } from "@ant-design/icons";
-import { Card, Dropdown, Input, Menu, Space, Table, Tabs } from "antd";
+import { Card, Input, Menu, Space, Table, Tabs } from "antd";
 import i18n from "i18next";
 import React, { Component } from "react";
 import NumberFormat from "react-number-format";
@@ -7,7 +8,7 @@ import { Button, Col, Row } from "reactstrap";
 import { apis, helper, session } from "../../../services";
 import Moment from "react-moment";
 const { TabPane } = Tabs;
-const user = session.get("user");
+
 export default class Debt extends Component {
   constructor(props) {
     super(props);
@@ -30,6 +31,25 @@ export default class Debt extends Component {
       this.setState({ loading: true });
       let rs;
       if (this.state.mode === "purchase") {
+        rs = await apis.getAllDebtPurchase({}, "GET");
+      } else {
+        rs = await apis.getAllDebtTransaction({}, "GET");
+      }
+      if (rs && rs.statusCode === 200) {
+        rs.data.map((el, idx) => (el.idx = idx + 1));
+        this.setState({ data: rs.data, total: rs.data.length });
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      this.setState({ loading: false });
+    }
+  }
+  async fetchDebtByMode(mode) {
+    try {
+      this.setState({ loading: true });
+      let rs;
+      if (mode === "purchase") {
         rs = await apis.getAllDebtPurchase({}, "GET");
       } else {
         rs = await apis.getAllDebtTransaction({}, "GET");
@@ -137,23 +157,6 @@ export default class Debt extends Component {
     });
   }
 
-  renderBtnAction(id) {
-    return (
-      <Menu>
-        <Menu.Item key="1">
-          <Button
-            color="info"
-            className="mr-2"
-            onClick={() => this.onClick(id)}
-          >
-            <i className="fa fa-pencil-square-o mr-1" />
-            {i18n.t("isPaid")}
-          </Button>
-        </Menu.Item>
-      </Menu>
-    );
-  }
-
   renderTitle = () => {
     let { total } = this.state || 0;
     return (
@@ -167,8 +170,19 @@ export default class Debt extends Component {
   };
   setMode = (state) => {
     this.setState({ mode: state });
-    this.fetchDebt();
+    this.fetchDebtByMode(state);
   }
+  // renderTabBar = (props, DefaultTabBar) => {
+  //   console.log(props, DefaultTabBar)
+  //   return (
+  //     <div>
+  //       <div>{props.panes.map(item => item)}</div>
+  //       {({ style }) => (
+  //         <DefaultTabBar {...props} className="site-custom-tab-bar" style={{ ...style }} />
+  //       )}
+  //     </div>
+  //   )
+  // };
   render() {
     const { data, loading } = this.state;
     const columns = [
@@ -181,7 +195,7 @@ export default class Debt extends Component {
         render: (text) => <label>{text}</label>,
       },
       {
-        title: this.state.mode === "purchase" ? i18n.t("Creditor") : i18n.t("Debtor"),
+        title: this.state.mode === "purchase" ? i18n.t("pondOwner") : i18n.t("buyer"),
         dataIndex: "partner",
         key: "partner",
         ...this.getColumnSearchProps("debtor"),
@@ -217,12 +231,10 @@ export default class Debt extends Component {
         dataIndex: "id",
         key: "id",
         render: (id) => (
-          <Dropdown overlay={this.renderBtnAction(id)}>
-            <Button>
-              <i className="fa fa-cog mr-1" />
-              <label className="tb-lb-action">{i18n.t("action")}</label>
-            </Button>
-          </Dropdown>
+          <Button color="info" className="mr-2" onClick={() => this.onClick(id)}   >
+            <i className="fa fa-pencil-square-o mr-1" />
+            {this.state.mode === "purchase" ? i18n.t("PurchaseIsPaid") : i18n.t("TransactionIsPaid")}
+          </Button>
         ),
       },
     ];
@@ -230,40 +242,41 @@ export default class Debt extends Component {
       <Card title={this.renderTitle()} className="body-minH">
         <Row>
           <Col style={{ overflowX: "auto" }}>
-            {this.state.user.roleName === "Trader" ?
-              <Tabs defaultActiveKey={this.state.mode} onChange={this.setMode} centered>
-                <TabPane tab={i18n.t("Transaction Debt")} key="transaction">
-                  <Table
-                    bordered
-                    columns={columns}
-                    dataSource={data}
-                    pagination={{ pageSize: 10 }}
-                    scroll={{ y: 600 }}
-                    loading={loading}
-                    rowKey="id"
-                  />
-                </TabPane>
-                <TabPane tab={i18n.t("Purchase Debt")} key="purchase">
-                  <Table
-                    bordered
-                    columns={columns}
-                    dataSource={data}
-                    pagination={{ pageSize: 10 }}
-                    scroll={{ y: 600 }}
-                    loading={loading}
-                    rowKey="id"
-                  />
-                </TabPane>
-              </Tabs> : <Table
-                bordered
-                columns={columns}
-                dataSource={data}
-                pagination={{ pageSize: 10 }}
-                scroll={{ y: 600 }}
-                loading={loading}
-                rowKey="id"
-              />}
-
+            <div className="debt-container">
+              {this.state.user.roleName === "Trader" ?
+                <Tabs defaultActiveKey={this.state.mode} onChange={this.setMode} centered>
+                  <TabPane tab={i18n.t("Transaction Debt")} key="transaction" size="large">
+                    <Table
+                      bordered
+                      columns={columns}
+                      dataSource={data}
+                      pagination={{ pageSize: 10 }}
+                      scroll={{ y: 600 }}
+                      loading={loading}
+                      rowKey="id"
+                    />
+                  </TabPane>
+                  <TabPane tab={i18n.t("Purchase Debt")} key="purchase">
+                    <Table
+                      bordered
+                      columns={columns}
+                      dataSource={data}
+                      pagination={{ pageSize: 10 }}
+                      scroll={{ y: 600 }}
+                      loading={loading}
+                      rowKey="id"
+                    />
+                  </TabPane>
+                </Tabs> : <Table
+                  bordered
+                  columns={columns}
+                  dataSource={data}
+                  pagination={{ pageSize: 10 }}
+                  scroll={{ y: 600 }}
+                  loading={loading}
+                  rowKey="id"
+                />}
+            </div>
           </Col>
         </Row>
       </Card>
