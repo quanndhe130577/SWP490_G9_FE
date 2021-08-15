@@ -8,6 +8,7 @@ import { apis, helper, session } from "../../../services";
 import Moment from "react-moment";
 import NumberFormat from "react-number-format";
 import RenderTB from "./RenderTB";
+import moment from "moment";
 const ModalCloseSell = ({
   isShowCloseTransaction,
   listTransaction,
@@ -21,6 +22,7 @@ const ModalCloseSell = ({
 }) => {
   const [currentTransaction, setCurrentTransaction] = useState({});
   const [total, setTotal] = useState({});
+  const [remain, setRemain] = useState([]);
   const [loading, setLoading] = useState(false);
   const [param, setParam] = useState("");
   const user = session.get("user");
@@ -35,7 +37,12 @@ const ModalCloseSell = ({
             let { commissionUnit, tranId } = currentTransaction;
 
             if (handleCloseTrans) {
-              handleCloseTrans({ commissionUnit, tranId });
+              handleCloseTrans({
+                commissionUnit,
+                tranId,
+                listRemainFish: remain,
+                date: moment(date, "DDMMYYYY"),
+              });
             }
           } else {
             helper.toast("error", i18n.t(check));
@@ -150,7 +157,7 @@ const ModalCloseSell = ({
                 </label>
               </Col>
 
-              {/* FOR WEIGHT RECORDER */}
+              {/* FOR WEIGHT RECORDER: choose trader & input commison*/}
               {user && user.roleName !== "Trader" && (
                 <>
                   <Col md="6">
@@ -227,16 +234,17 @@ const ModalCloseSell = ({
               {/* FOR Trader */}
               {user && user.roleName === "Trader" && (
                 <>
-                  {listTransaction.map(
-                    (el, idx) =>
-                      el.weightRecorder && (
-                        <RenderTB
-                          transaction={el}
-                          param={param}
-                          isLast={idx === listTransaction.length - 1}
-                        />
-                      )
-                  )}
+                  {listTransaction.map((el, idx) => (
+                    <RenderTB
+                      key={idx}
+                      transaction={el}
+                      param={param}
+                      isLast={idx === listTransaction.length - 1}
+                      handleRemain={(ele) => {
+                        setRemain(ele);
+                      }}
+                    />
+                  ))}
                 </>
               )}
 
