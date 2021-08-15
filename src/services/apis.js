@@ -107,6 +107,10 @@ let path = {
 
   //Debt
   getAllDebt: "/api/debt/getall",
+  getAllDebtTransaction: "/api/debt/td-getDebtTransaction",
+  getAllDebtPurchase: "/api/debt/td-getDebtPurchase",
+  updateDebtTransaction: "/api/debt/td-UpdateDebtTransactionDetail",
+  updateDebtPurchase: "/api/debt/td-UpdateDebtPurchase",
   // createDebt: "",
   // updateDebt: "",
   // deleteDebt: "",

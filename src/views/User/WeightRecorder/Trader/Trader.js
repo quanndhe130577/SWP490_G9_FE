@@ -129,14 +129,14 @@ export default class Trader extends Component {
             size="small"
             style={{ width: 90 }}
           >
-            Tìm
+            {i18n.t("Search")}
           </Button>
           <Button
             onClick={() => this.handleReset(clearFilters)}
             size="small"
             style={{ width: 90 }}
           >
-            Đặt lại
+            {i18n.t("Reset")}
           </Button>
         </Space>
       </div>
@@ -147,9 +147,9 @@ export default class Trader extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -259,7 +259,7 @@ export default class Trader extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentTrader={currentTrader || {}}
-            // handleChangePondOwner={handleChangePondOwner}
+          // handleChangePondOwner={handleChangePondOwner}
           />
         )}
         <Row>
