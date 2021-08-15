@@ -3,7 +3,7 @@ let config = {
   //host: "http://localhost:5000",
    host: "https://localhost:44310",
 
-  //host: "http://3dc9a9ef36d7.ngrok.io",
+  //host: "https://35.187.254.202:1237",
   // debug: true,
 };
 export default config;
