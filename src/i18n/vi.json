@@ -238,7 +238,9 @@
   "statusBuy": "Trạng thái đơn mua",
   "createFt": "Tạo loại cá mới",
   "Reset": "Đặt lại",
-  "Purchase Debt": "Nợ khi mua cá",
-  "Transaction Debt": "Nợ khi bán cá",
-  "comfirmUpdate": "Bạn có chắc đã thanh toán"
+  "Purchase Debt": "Nợ phải trả",
+  "Transaction Debt": "Nợ phải thu",
+  "comfirmUpdate": "Bạn có chắc đã thanh toán",
+  "PurchaseIsPaid": "Đã trả",
+  "TransactionIsPaid": "Đã thu"
 }
