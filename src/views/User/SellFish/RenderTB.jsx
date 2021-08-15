@@ -49,7 +49,9 @@ const RenderTB = ({ transaction, param, isLast, handleRemain }) => {
         let remainF = rs.data.filter(
           (el) => el.remainWeight && el.remainWeight !== 0
         );
-        remainF.map((el) => (el.weight = el.remainWeight));
+        remainF.map((el) =>
+          el.remainWeight >= 0 ? (el.weight = el.remainWeight) : (el.weight = 0)
+        );
         if (param) {
           setCurrentTransaction((pre) => ({
             ...pre,
@@ -92,7 +94,7 @@ const RenderTB = ({ transaction, param, isLast, handleRemain }) => {
       key: "fishName",
     },
     {
-      title: "Khối lượng còn lại (kg)",
+      title: "Khối lượng ước tính (Kg)",
       dataIndex: "remainWeight",
       key: "remainWeight",
       render: (weight) => (
@@ -100,7 +102,7 @@ const RenderTB = ({ transaction, param, isLast, handleRemain }) => {
       ),
     },
     {
-      title: "Khối lượng thực tế",
+      title: "Khối lượng thực tế (Kg)",
       dataIndex: "weight",
       key: "weight",
       render: (weight, record) => (
@@ -110,11 +112,23 @@ const RenderTB = ({ transaction, param, isLast, handleRemain }) => {
         />
       ),
     },
+    {
+      title: "",
+      dataIndex: "weight",
+      key: "weight",
+      render: (weight, record) => (
+        <Widgets.Checkbox
+          value={weight ? false : true}
+          onChange={(e) => onChangeWeight(e ? 0 : 0, record.id, "weight")}
+          lblCheckbox={i18n.t("Bỏ đi")}
+        />
+      ),
+    },
   ];
   return (
     <>
       {isLast && (
-        <Col md="6">
+        <Col md="12" className="mb-4">
           <b>Số cá còn lại</b>
           <Table
             rowKey="id"
@@ -126,7 +140,6 @@ const RenderTB = ({ transaction, param, isLast, handleRemain }) => {
               let totalRemain = 0;
               let realRemain = 0;
               pageData.forEach(({ remainWeight, weight }) => {
-                debugger;
                 totalRemain += remainWeight;
                 realRemain += weight;
               });
@@ -148,7 +161,7 @@ const RenderTB = ({ transaction, param, isLast, handleRemain }) => {
                         suffix=" Kg"
                       />
                     </Table.Summary.Cell>
-                    <Table.Summary.Cell key="3" className="bold">
+                    <Table.Summary.Cell key="3" className="bold" colSpan="2">
                       <NumberFormat
                         value={realRemain.toFixed(1)}
                         displayType={"text"}
@@ -162,7 +175,7 @@ const RenderTB = ({ transaction, param, isLast, handleRemain }) => {
             }}
           />
 
-          <Widgets.Checkbox
+          {/* <Widgets.Checkbox
             value={!currentTransaction.buyLater}
             onChange={() =>
               setCurrentTransaction((pre) => ({
@@ -181,60 +194,59 @@ const RenderTB = ({ transaction, param, isLast, handleRemain }) => {
                 buyLater: val,
               }))
             }
-          />
+          /> */}
         </Col>
       )}
-      {currentTransaction.weightRecorder &&
-        currentTransaction.fishInPurchase.length >
-          0(
-            <Col md="12" className="mb-3">
-              <span className="mr-3">
-                <b>{i18n.t("weightRecorder")}: </b>
-                {transaction.weightRecorder.firstName +
-                  " " +
-                  transaction.weightRecorder.lastName}
-              </span>
+      {transaction.weightRecorder &&
+        currentTransaction.fishInPurchase.length > 0 && (
+          <Col md="12" className="mb-3">
+            <span className="mr-3 my-2">
+              <b>{i18n.t("weightRecorder")}: </b>
+              {transaction.weightRecorder.firstName +
+                " " +
+                transaction.weightRecorder.lastName}
+            </span>
 
-              <Table
-                rowKey="id"
-                columns={columns}
-                dataSource={currentTransaction.fishInPurchase}
-                bordered
-                pagination={false}
-                summary={() => {
-                  return (
-                    <Table.Summary fixed>
-                      <Table.Summary.Row>
-                        <Table.Summary.Cell
-                          key="1"
-                          // colSpan="2"
-                          className="bold"
-                        >
-                          {i18n.t("total")}
-                        </Table.Summary.Cell>
-                        <Table.Summary.Cell key="2" className="bold">
-                          <NumberFormat
-                            value={total.totalWeight.toFixed(1)}
-                            displayType={"text"}
-                            thousandSeparator={true}
-                            suffix=" Kg"
-                          />
-                        </Table.Summary.Cell>
-                        <Table.Summary.Cell key="3" className="bold">
-                          <NumberFormat
-                            value={total.totalAmount}
-                            displayType={"text"}
-                            thousandSeparator={true}
-                            suffix=" VND"
-                          />
-                        </Table.Summary.Cell>
-                      </Table.Summary.Row>
-                    </Table.Summary>
-                  );
-                }}
-              />
-            </Col>
-          )}
+            <Table
+              rowKey="id"
+              columns={columns}
+              dataSource={currentTransaction.fishInPurchase}
+              bordered
+              pagination={false}
+              summary={() => {
+                return (
+                  <Table.Summary fixed>
+                    <Table.Summary.Row>
+                      <Table.Summary.Cell
+                        key="1"
+                        // colSpan="2"
+                        className="bold"
+                      >
+                        {i18n.t("total")}
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell key="2" className="bold">
+                        <NumberFormat
+                          value={total.totalWeight.toFixed(1)}
+                          displayType={"text"}
+                          thousandSeparator={true}
+                          suffix=" Kg"
+                        />
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell key="3" className="bold">
+                        <NumberFormat
+                          value={total.totalAmount}
+                          displayType={"text"}
+                          thousandSeparator={true}
+                          suffix=" VND"
+                        />
+                      </Table.Summary.Cell>
+                    </Table.Summary.Row>
+                  </Table.Summary>
+                );
+              }}
+            />
+          </Col>
+        )}
     </>
   );
 };

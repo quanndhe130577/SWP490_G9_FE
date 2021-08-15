@@ -5,7 +5,6 @@ import { Row, Col } from "reactstrap";
 import i18n from "i18next";
 import Widgets from "../../../schema/Widgets";
 import { apis, helper, session } from "../../../services";
-import Moment from "react-moment";
 import NumberFormat from "react-number-format";
 import RenderTB from "./RenderTB";
 import moment from "moment";
@@ -20,7 +19,9 @@ const ModalCloseSell = ({
   handleChangeTraderId,
   transId,
 }) => {
-  const [currentTransaction, setCurrentTransaction] = useState({});
+  const [currentTransaction, setCurrentTransaction] = useState({
+    fishInPurchase: [],
+  });
   const [total, setTotal] = useState({});
   const [remain, setRemain] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -139,23 +140,27 @@ const ModalCloseSell = ({
     <>
       {isShowCloseTransaction && (
         <Modal
-          title={i18n.t("closeTransaction")}
+          title={
+            i18n.t("closeTransaction") +
+            ": " +
+            moment(currentTransaction.date).format("DD/MM/YYYY")
+          }
           visible={isShowCloseTransaction}
           onOk={handleOk}
           onCancel={handleCancel}
           loading={loading}
-          width={800}
+          width={700}
           disabledOk={traderId || currentTransaction.status === "Completed"}
           component={() => (
             <Row>
-              <Col md="12">
+              {/* <Col md="12">
                 <label className="mr-2">
                   <b>{i18n.t("date")}:</b>
                   <Moment format="DD/MM/YYYY" className="ml-2">
                     {currentTransaction && currentTransaction.date}
                   </Moment>
                 </label>
-              </Col>
+              </Col> */}
 
               {/* FOR WEIGHT RECORDER: choose trader & input commison*/}
               {user && user.roleName !== "Trader" && (
@@ -188,8 +193,8 @@ const ModalCloseSell = ({
               )}
 
               {/* FOR BOTH ROLE */}
-              {currentTransaction.fishInPurchase && (
-                <Col md="6" className="mb-3">
+              {currentTransaction.fishInPurchase.length > 0 && (
+                <Col md="12" className="mb-3">
                   <Table
                     rowKey="id"
                     columns={columns}
@@ -200,11 +205,7 @@ const ModalCloseSell = ({
                       return (
                         <Table.Summary fixed>
                           <Table.Summary.Row>
-                            <Table.Summary.Cell
-                              key="1"
-                              // colSpan="2"
-                              className="bold"
-                            >
+                            <Table.Summary.Cell key="1" className="bold">
                               {i18n.t("total")}
                             </Table.Summary.Cell>
                             <Table.Summary.Cell key="2" className="bold">
