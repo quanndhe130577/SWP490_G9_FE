@@ -42,7 +42,7 @@ const ModalCloseSell = ({
                 commissionUnit,
                 tranId,
                 listRemainFish: remain,
-                date: moment(date, "DDMMYYYY"),
+                date: helper.correctDate(moment(date, "DDMMYYYY")),
               });
             }
           } else {
@@ -151,16 +151,19 @@ const ModalCloseSell = ({
           loading={loading}
           width={700}
           disabledOk={traderId || currentTransaction.status === "Completed"}
+          titleBtnOk={i18n.t("closeTransaction")}
           component={() => (
             <Row>
-              {/* <Col md="12">
+              {/* 
+              <Col md="12">
                 <label className="mr-2">
                   <b>{i18n.t("date")}:</b>
                   <Moment format="DD/MM/YYYY" className="ml-2">
                     {currentTransaction && currentTransaction.date}
                   </Moment>
                 </label>
-              </Col> */}
+              </Col> 
+              */}
 
               {/* FOR WEIGHT RECORDER: choose trader & input commison*/}
               {user && user.roleName !== "Trader" && (
