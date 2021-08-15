@@ -26,23 +26,27 @@ const ModalCloseSell = ({
   const user = session.get("user");
 
   const handleOk = () => {
-    try {
-      setLoading(true);
-      let check = validate();
-      if (!check) {
-        let { commissionUnit, listTranId } = currentTransaction;
+    helper.confirm("Bạn có chắc chắn chốt sổ?").then((rs) => {
+      if (rs) {
+        try {
+          setLoading(true);
+          let check = validate();
+          if (!check) {
+            let { commissionUnit, listTranId } = currentTransaction;
 
-        if (handleCloseTrans) {
-          handleCloseTrans({ commissionUnit, listTranId });
+            if (handleCloseTrans) {
+              handleCloseTrans({ commissionUnit, listTranId });
+            }
+          } else {
+            helper.toast("error", i18n.t(check));
+          }
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setLoading(false);
         }
-      } else {
-        helper.toast("error", i18n.t(check));
       }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
+    });
   };
 
   const validate = () => {
@@ -162,7 +166,9 @@ const ModalCloseSell = ({
                   <Col md="6">
                     <Widgets.MoneyInput
                       placeholder="700"
-                      disabled={traderId}
+                      disabled={
+                        traderId || currentTransaction.status === "Completed"
+                      }
                       required={true}
                       label={i18n.t("commissionWR")}
                       value={currentTransaction.commissionUnit || ""}
@@ -176,7 +182,7 @@ const ModalCloseSell = ({
 
               {/* FOR BOTH ROLE */}
               {currentTransaction.fishInPurchase && (
-                <Col md="12" className="mb-3">
+                <Col md="6" className="mb-3">
                   <Table
                     rowKey="id"
                     columns={columns}
@@ -222,9 +228,13 @@ const ModalCloseSell = ({
               {user && user.roleName === "Trader" && (
                 <>
                   {listTransaction.map(
-                    (el) =>
+                    (el, idx) =>
                       el.weightRecorder && (
-                        <RenderTB transaction={el} param={param} />
+                        <RenderTB
+                          transaction={el}
+                          param={param}
+                          isLast={idx === listTransaction.length - 1}
+                        />
                       )
                   )}
                 </>
@@ -249,8 +259,8 @@ const ModalCloseSell = ({
                             currentTransaction.commissionUnit || ""
                         }
                       />
-                    </Col>
-                    <Col md="6">
+                      {/* </Col>
+                    <Col md="6"> */}
                       <Widgets.NumberFormat
                         label={
                           i18n.t(
