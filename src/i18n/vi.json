@@ -236,6 +236,7 @@
   "transactionPrice": "giá bán",
   "selectDay": "Chọn ngày",
   "statusBuy": "Trạng thái đơn mua",
+  "createFt": "Tạo loại cá mới",
   "Reset": "Đặt lại",
   "Purchase Debt": "Nợ khi mua cá",
   "Transaction Debt": "Nợ khi bán cá",
