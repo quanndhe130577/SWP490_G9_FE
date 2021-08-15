@@ -155,7 +155,11 @@ const ModalBuy = ({
                 return (
                   <Table.Summary fixed>
                     <Table.Summary.Row>
-                      <Table.Summary.Cell key="1" colSpan="2" className="bold">
+                      <Table.Summary.Cell
+                        key="1"
+                        colSpan="3"
+                        className="bold text-center"
+                      >
                         {i18n.t("total")}
                       </Table.Summary.Cell>
                       <Table.Summary.Cell key="2" className="bold">
@@ -236,12 +240,12 @@ const ModalBuy = ({
 
 export default ModalBuy;
 const columns = [
-  // {
-  //   title: "STT",
-  //   dataIndex: "idx",
-  //   key: "idx",
-  //   render: (text) => <label>{text}</label>,
-  // },
+  {
+    title: "STT",
+    dataIndex: "idx",
+    key: "idx",
+    render: (text, row, idx) => <label>{idx + 1}</label>,
+  },
   {
     title: "Tên cá",
     dataIndex: "fishName",

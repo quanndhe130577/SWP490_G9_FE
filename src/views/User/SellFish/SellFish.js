@@ -136,7 +136,7 @@ const SellFish = (props) => {
       title: i18n.t("statusPaid"),
       dataIndex: "isPaid",
       key: "isPaid",
-      render: (isPaid) => helper.tag(isPaid ? "isPaid" : "notPaid"),
+      render: (isPaid) => helper.tag(isPaid ? "isPaid" : "notPaid", "w-140px"),
     },
 
     {
@@ -509,16 +509,7 @@ const SellFish = (props) => {
           <Card title={renderTitle()} className="body-minH">
             {/* ROW BUTTON */}
             <Row className="mb-4" style={{ minHeight: "6vh" }}>
-              <Col md="4">
-                {/* <label className="mr-2">
-                  <b>{i18n.t("date")}:</b>
-                  <Moment format="DD/MM/YYYY" className="ml-2">
-                    {listTransaction.length > 0
-                      ? listTransaction[0].date
-                      : new Date()}
-                  </Moment>
-                </label> */}
-              </Col>
+              <Col md="4" />
 
               {user.roleName === "Trader" && (
                 <Col md="2" className="p-0 pr-2" />
@@ -578,7 +569,7 @@ const SellFish = (props) => {
                 </>
               ) : (
                 <>
-                  <Col md="6" />
+                  <Col md="10" />
                   <Col md="2" xs="6" className="p-0 pr-2">
                     <Button
                       color="info"
@@ -607,7 +598,7 @@ const SellFish = (props) => {
                       columns={calculateColumns(columns, trans)}
                       dataSource={trans.transactionDetails || []}
                       loading={isLoading}
-                      scroll={{ y: 420 }}
+                      scroll={{ y: 520 }}
                       pagination={{ pageSize: 10 }}
                       bordered
                       summary={(pageData) => {
@@ -624,18 +615,21 @@ const SellFish = (props) => {
                               <Table.Summary.Cell
                                 colSpan="2"
                                 key="1"
-                                className="bold"
+                                className="bold text-center"
                               >
                                 {i18n.t("total")}
                               </Table.Summary.Cell>
-                              <Table.Summary.Cell key="2" className="bold">
+                              <Table.Summary.Cell
+                                key="2"
+                                className="bold"
+                                colSpan="2"
+                              >
                                 <NumberFormat
                                   value={totalWeight.toFixed(1)}
                                   displayType={"text"}
                                   thousandSeparator={true}
                                 />
                               </Table.Summary.Cell>
-                              <Table.Summary.Cell key="3" />
                               <Table.Summary.Cell key="4" className="bold">
                                 <NumberFormat
                                   value={totalAmount}
@@ -645,11 +639,11 @@ const SellFish = (props) => {
                               </Table.Summary.Cell>
                               <Table.Summary.Cell
                                 key="5"
-                                colSpan="3"
+                                colSpan="4"
                                 className="bold"
                               >
                                 {trans.status === "Completed"
-                                  ? helper.tag(trans.status)
+                                  ? helper.tag(trans.status, "w-120px")
                                   : ""}
                               </Table.Summary.Cell>
                             </Table.Summary.Row>

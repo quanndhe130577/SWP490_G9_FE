@@ -34,6 +34,16 @@ const DemoLine = ({ dailyData, data }) => {
         duration: 3000,
       },
     },
+    // or seriesField in some cases
+    color: ({ name }) => {
+      if (name === "Tổng nợ") {
+        return "#FA686F";
+      } else if (name === "Tổng thu") {
+        return "#55A6BC";
+      } else if (name === "Tổng chi") {
+        return "#73BF73";
+      }
+    },
   };
 
   return (

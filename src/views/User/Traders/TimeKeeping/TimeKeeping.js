@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Calendar, Card, Badge } from "antd";
-import { Row, Col } from "reactstrap";
+import { Calendar, Card, Badge, Row, Col } from "antd";
+// import { Row, Col } from "reactstrap";
 import moment from "moment";
 import CurrentEmps from "./CurrentEmps";
 import { apis } from "../../../../services";
@@ -202,7 +202,12 @@ export default class TimeKeeping extends Component {
           load={this.getTimes}
         />
         <Row>
-          <Col style={{ overflowX: "auto" }}>
+          <Col span={24}>
+            <Badge status={"success"} text={"Một công"} className="mr-3" />
+            <Badge status={"warning"} text={"Nửa công"} className="mr-3" />
+            <Badge status={"error"} text={"Không công"} className="mr-3" />
+          </Col>
+          <Col span={24}>
             <Calendar
               mode={this.state.mode}
               dateCellRender={this.dateCellRender}

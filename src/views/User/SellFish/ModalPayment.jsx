@@ -74,14 +74,14 @@ const ModalBuyer = ({ isShowBuyer, date, setShowBuyer, getAllTransByDate }) => {
               thousandSeparator={true}
             />
           </Table.Summary.Cell>
-          <Table.Summary.Cell key="3" className="bold">
+          <Table.Summary.Cell key="3" className="bold" colSpan="4">
             <NumberFormat
               value={currentDetail.totalMoney}
               displayType={"text"}
               thousandSeparator={true}
             />
           </Table.Summary.Cell>
-          <Table.Summary.Cell key="4" colSpan="2" />
+          {/* <Table.Summary.Cell key="4" colSpan="3" /> */}
         </Table.Summary.Row>
       </Table.Summary>
     );
@@ -128,7 +128,7 @@ const ModalBuyer = ({ isShowBuyer, date, setShowBuyer, getAllTransByDate }) => {
           </Col>
           {currentDetail.buyerId && (
             <>
-              <Col md="12">
+              <Col md="12" className="mb-3">
                 {currentDetail.transactionDetails &&
                   currentDetail.transactionDetails.length > 0 && (
                     <Table
@@ -136,7 +136,7 @@ const ModalBuyer = ({ isShowBuyer, date, setShowBuyer, getAllTransByDate }) => {
                       columns={columns}
                       dataSource={currentDetail.transactionDetails || []}
                       scroll={{ y: 420 }}
-                      pagination={{ pageSize: 10 }}
+                      pagination={false}
                       bordered
                       summary={summaryTable}
                     />

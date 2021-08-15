@@ -29,6 +29,7 @@ const ManaBuy = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const [isShowModal, setIsShowModal] = useState(false);
+
   // const [mode, setMode] = useState("");
   // const [data, setData] = useState([]);
   // const [searchInput, setSearchInput] = useState("");
@@ -201,13 +202,59 @@ const ManaBuy = () => {
       </Menu>
     );
   }
-
+  let currentDate = "";
+  let preDate = "";
+  let currentPage = 0;
   const columns = [
     {
       title: i18n.t("INDEX"),
       dataIndex: "idx",
       key: "idx",
+      width: 60,
+
       render: (text) => <label>{text}</label>,
+    },
+    {
+      title: i18n.t("Ngày tạo"),
+      dataIndex: "date",
+      key: "date",
+      ...getColumnSearchProps("date", true),
+
+      sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
+
+      sortDirections: ["descend", "ascend"],
+      render: (value, row, index) => {
+        if (index === 0) {
+          currentDate = "";
+          preDate = "";
+          currentPage = 0;
+        }
+        const obj = {
+          children: <Moment format="DD/MM/YYYY">{value}</Moment>,
+          props: {},
+        };
+
+        obj.props.rowSpan = 0;
+        if (helper.getDateFormat(currentDate) !== helper.getDateFormat(value)) {
+          purchase.forEach((element, subindex) => {
+            //if (subindex >= 10 * currentPage && subindex < 10 * (currentPage + 1)) {
+            if (
+              helper.getDateFormat(element.date) ===
+                helper.getDateFormat(value) &&
+              subindex >= 10 * currentPage &&
+              subindex < 10 * (currentPage + 1)
+            ) {
+              obj.props.rowSpan += 1;
+            }
+            //}
+          });
+        }
+
+        preDate = currentDate;
+        currentDate = value;
+
+        return obj;
+      },
     },
     {
       title: i18n.t("pondOwnerName"),
@@ -217,18 +264,7 @@ const ManaBuy = () => {
       sorter: (a, b) => a.pondOwnerName.localeCompare(b.pondOwnerName),
       sortDirections: ["descend", "ascend"],
     },
-    {
-      title: i18n.t("Ngày tạo"),
-      dataIndex: "date",
-      key: "date",
-      ...getColumnSearchProps("date", true),
-      sorter: (a, b, sortDirections) => {
-        console.log(sortDirections);
-        return moment(a.date).unix() - moment(b.date).unix();
-      },
-      sortDirections: ["descend", "ascend"],
-      render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
-    },
+
     {
       title: i18n.t("totalWeight"),
       dataIndex: "totalWeight",
@@ -253,29 +289,18 @@ const ManaBuy = () => {
       ),
     },
     {
-      title: i18n.t("status"),
+      title: i18n.t("statusPaid"),
+      dataIndex: "isPaid",
+      key: "isPaid",
+      render: (isPaid) => helper.tag(isPaid ? "isPaid" : "notPaid", "w-140px"),
+    },
+    {
+      title: i18n.t("statusBuy"),
       dataIndex: "status",
       key: "status",
-      render: (status) =>
-        // let color = "";
-        // switch (status) {
-        //   case "Completed":
-        //     color = "green";
-        //     break;
-        //   case "Pending":
-        //     color = "gold";
-        //     break;
-        //   default:
-        //     color = "red";
-        // }
-
-        // return (
-        //   <Tag color={color} key={status}>
-        //     {i18n.t(status).toUpperCase()}
-        //   </Tag>
-        // );
-        helper.tag(status, "w-120px"),
+      render: (status) => helper.tag(status, "w-120px"),
     },
+
     {
       title: i18n.t("action"),
       dataIndex: "id",
