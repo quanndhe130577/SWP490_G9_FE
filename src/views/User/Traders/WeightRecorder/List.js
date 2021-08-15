@@ -111,14 +111,14 @@ export default class List extends Component {
             size="small"
             style={{ width: 90 }}
           >
-            Tìm
+            {i18n.t("Search")}
           </Button>
           <Button
             onClick={() => this.handleReset(clearFilters)}
             size="small"
             style={{ width: 90 }}
           >
-            Đặt lại
+            {i18n.t("Reset")}
           </Button>
         </Space>
       </div>

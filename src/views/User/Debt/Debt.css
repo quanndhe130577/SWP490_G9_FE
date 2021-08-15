@@ -1,0 +1,9 @@
+.site-custom-tab-bar {
+    z-index: 1;
+    background: #fff;
+  }
+  .debt-container .ant-tabs-nav-list{
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+  }

@@ -31,19 +31,6 @@ const TradersToday = ({ listTraderId, onChange, dataFetched }) => {
       dataIndex: "phoneNumber",
       key: "phoneNumber",
     },
-    // {
-    //   title: i18n.t("action"),
-    //   dataIndex: "id",
-    //   key: "id",
-    //   // render: (id) => (
-    //   //   <Dropdown overlay={this.renderBtnAction(id)}>
-    //   //     <Button>
-    //   //       <i className="fa fa-cog mr-1" />
-    //   //       <label className="tb-lb-action">{i18n.t("action")}</label>
-    //   //     </Button>
-    //   //   </Dropdown>
-    //   // ),
-    // },
   ];
   const [dataS, setData] = useState([]);
   const findList = (temArr) => {

@@ -202,6 +202,7 @@ const ManaBuy = () => {
       </Menu>
     );
   }
+
   let currentDate = "";
   let preDate = "";
   let currentPage = 0;
@@ -212,7 +213,22 @@ const ManaBuy = () => {
       key: "idx",
       width: 60,
 
-      render: (text) => <label>{text}</label>,
+      //render: (text) => <label>{text}</label>,
+      render: (value, row, index) => {
+        const obj = {
+          children: value,
+          props: {},
+        };
+
+        let temp = currentPage;
+        currentPage = (value - 1 - ((value - 1) % 10)) / 10;
+        if (currentPage !== temp) {
+          preDate = "";
+          currentDate = "";
+        }
+
+        return obj;
+      },
     },
     {
       title: i18n.t("Ngày tạo"),
@@ -224,11 +240,11 @@ const ManaBuy = () => {
 
       sortDirections: ["descend", "ascend"],
       render: (value, row, index) => {
-        if (index === 0) {
-          currentDate = "";
-          preDate = "";
-          currentPage = 0;
-        }
+        // if (index === 0) {
+        //   currentDate = "";
+        //   preDate = "";
+        //   currentPage = 0;
+        // }
         const obj = {
           children: <Moment format="DD/MM/YYYY">{value}</Moment>,
           props: {},
@@ -237,7 +253,6 @@ const ManaBuy = () => {
         obj.props.rowSpan = 0;
         if (helper.getDateFormat(currentDate) !== helper.getDateFormat(value)) {
           purchase.forEach((element, subindex) => {
-            //if (subindex >= 10 * currentPage && subindex < 10 * (currentPage + 1)) {
             if (
               helper.getDateFormat(element.date) ===
                 helper.getDateFormat(value) &&
@@ -246,7 +261,6 @@ const ManaBuy = () => {
             ) {
               obj.props.rowSpan += 1;
             }
-            //}
           });
         }
 
@@ -260,26 +274,26 @@ const ManaBuy = () => {
       title: i18n.t("pondOwnerName"),
       dataIndex: "pondOwnerName",
       key: "pondOwnerName",
-      ...getColumnSearchProps("pondOwnerName"),
-      sorter: (a, b) => a.pondOwnerName.localeCompare(b.pondOwnerName),
-      sortDirections: ["descend", "ascend"],
+      // ...getColumnSearchProps("pondOwnerName"),
+      // sorter: (a, b) => a.pondOwnerName.localeCompare(b.pondOwnerName),
+      // sortDirections: ["descend", "ascend"],
     },
 
     {
       title: i18n.t("totalWeight"),
       dataIndex: "totalWeight",
       key: "totalWeight",
-      ...getColumnSearchProps("totalWeight"),
-      sorter: (a, b) => a.totalWeight - b.totalWeight,
-      sortDirections: ["descend", "ascend"],
+      // ...getColumnSearchProps("totalWeight"),
+      // sorter: (a, b) => a.totalWeight - b.totalWeight,
+      // sortDirections: ["descend", "ascend"],
     },
     {
       title: i18n.t("totalAmount (VND)"),
       dataIndex: "totalAmount",
       key: "totalAmount",
-      ...getColumnSearchProps("totalAmount"),
-      sorter: (a, b) => a.totalAmount - b.totalAmount,
-      sortDirections: ["descend", "ascend"],
+      // ...getColumnSearchProps("totalAmount"),
+      // sorter: (a, b) => a.totalAmount - b.totalAmount,
+      // sortDirections: ["descend", "ascend"],
       render: (totalAmount) => (
         <NumberFormat
           value={totalAmount}
@@ -369,6 +383,12 @@ const ManaBuy = () => {
         loading={isLoading}
         rowKey="id"
         bordered
+        pagination={{ pageSize: 10 }}
+        // onChange={() => {
+        //   currentDate = "";
+        //   preDate = "";
+        //   currentPage = 0;
+        // }}
       />
     </Card>
   );

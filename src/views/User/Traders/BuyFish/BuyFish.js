@@ -802,7 +802,12 @@ const BuyFish = (props) => {
                             className="bold"
                           />
                         </Table.Summary.Cell>
-                        <Table.Summary.Cell colSpan="4" key="4" />
+                        <Table.Summary.Cell colSpan="4" key="4">
+                          {helper.tag(
+                            currentPurchase.isPaid ? "isPaid" : "notPaid",
+                            "w-140px"
+                          )}
+                        </Table.Summary.Cell>
                       </Table.Summary.Row>
                     </Table.Summary>
                   );

@@ -143,7 +143,8 @@ const PriceFishToday = ({
             className="w-25"
             onClick={() => onRemoveFish(record.id)}
           >
-            x
+            <i className="fa fa-trash-o mr-1" />
+            {i18n.t("delete")}
           </Button>
         </div>
       ),
@@ -180,13 +181,16 @@ const PriceFishToday = ({
         columns={columns}
         dataSource={dataS}
         rowKey="idx"
-        summary={(pageData) => {
+        pagination={false}
+        bordered
+        summary={() => {
           return (
             <Table.Summary fixed>
               <Table.Summary.Row>
                 <Table.Summary.Cell colSpan="7" key="1">
                   <Button color="info" className="w-100" onClick={onAddFish}>
-                    +
+                    <i className="fa fa-plus mr-1" />
+                    {i18n.t("createFt")}
                   </Button>
                 </Table.Summary.Cell>
               </Table.Summary.Row>

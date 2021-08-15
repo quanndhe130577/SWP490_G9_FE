@@ -235,5 +235,12 @@
   "price": "giá",
   "transactionPrice": "giá bán",
   "selectDay": "Chọn ngày",
-  "statusBuy": "Trạng thái đơn mua"
+  "statusBuy": "Trạng thái đơn mua",
+  "createFt": "Tạo loại cá mới",
+  "Reset": "Đặt lại",
+  "Purchase Debt": "Nợ phải trả",
+  "Transaction Debt": "Nợ phải thu",
+  "comfirmUpdate": "Bạn có chắc đã thanh toán",
+  "PurchaseIsPaid": "Đã trả",
+  "TransactionIsPaid": "Đã thu"
 }

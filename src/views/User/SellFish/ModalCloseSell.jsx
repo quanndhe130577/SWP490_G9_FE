@@ -5,9 +5,9 @@ import { Row, Col } from "reactstrap";
 import i18n from "i18next";
 import Widgets from "../../../schema/Widgets";
 import { apis, helper, session } from "../../../services";
-import Moment from "react-moment";
 import NumberFormat from "react-number-format";
 import RenderTB from "./RenderTB";
+import moment from "moment";
 const ModalCloseSell = ({
   isShowCloseTransaction,
   listTransaction,
@@ -19,8 +19,11 @@ const ModalCloseSell = ({
   handleChangeTraderId,
   transId,
 }) => {
-  const [currentTransaction, setCurrentTransaction] = useState({});
+  const [currentTransaction, setCurrentTransaction] = useState({
+    fishInPurchase: [],
+  });
   const [total, setTotal] = useState({});
+  const [remain, setRemain] = useState([]);
   const [loading, setLoading] = useState(false);
   const [param, setParam] = useState("");
   const user = session.get("user");
@@ -32,10 +35,15 @@ const ModalCloseSell = ({
           setLoading(true);
           let check = validate();
           if (!check) {
-            let { commissionUnit, listTranId } = currentTransaction;
+            let { commissionUnit, tranId } = currentTransaction;
 
             if (handleCloseTrans) {
-              handleCloseTrans({ commissionUnit, listTranId });
+              handleCloseTrans({
+                commissionUnit,
+                tranId,
+                listRemainFish: remain,
+                date: helper.correctDate(moment(date, "DDMMYYYY")),
+              });
             }
           } else {
             helper.toast("error", i18n.t(check));
@@ -50,10 +58,10 @@ const ModalCloseSell = ({
   };
 
   const validate = () => {
-    let { commissionUnit, listTranId } = currentTransaction;
+    let { commissionUnit, tranId } = currentTransaction;
     if (!commissionUnit && user.roleName !== "Trader") {
       return "commissionUnitCanNull";
-    } else if (listTranId.length <= 0) {
+    } else if (!tranId) {
       return "traderUnitCanNull";
     }
   };
@@ -67,14 +75,14 @@ const ModalCloseSell = ({
         trader.transId = transId;
       }
       let trans = listTransaction.find((el) => el.id === trader.transId);
-      let listTranId = [trans.id];
+      let tranId = trans.id;
       let ft = await getFTByTrader(val);
       let fishInPurchase = calculateData(trans.transactionDetails, ft);
 
       setCurrentTransaction((pre) => ({
         ...pre,
         ...trans,
-        listTranId,
+        tranId,
         fishInPurchase,
       }));
     }
@@ -132,15 +140,21 @@ const ModalCloseSell = ({
     <>
       {isShowCloseTransaction && (
         <Modal
-          title={i18n.t("closeTransaction")}
+          title={
+            i18n.t("closeTransaction") +
+            ": " +
+            moment(currentTransaction.date).format("DD/MM/YYYY")
+          }
           visible={isShowCloseTransaction}
           onOk={handleOk}
           onCancel={handleCancel}
           loading={loading}
-          width={800}
+          width={700}
           disabledOk={traderId || currentTransaction.status === "Completed"}
+          titleBtnOk={i18n.t("closeTransaction")}
           component={() => (
             <Row>
+              {/* 
               <Col md="12">
                 <label className="mr-2">
                   <b>{i18n.t("date")}:</b>
@@ -148,9 +162,10 @@ const ModalCloseSell = ({
                     {currentTransaction && currentTransaction.date}
                   </Moment>
                 </label>
-              </Col>
+              </Col> 
+              */}
 
-              {/* FOR WEIGHT RECORDER */}
+              {/* FOR WEIGHT RECORDER: choose trader & input commison*/}
               {user && user.roleName !== "Trader" && (
                 <>
                   <Col md="6">
@@ -181,8 +196,8 @@ const ModalCloseSell = ({
               )}
 
               {/* FOR BOTH ROLE */}
-              {currentTransaction.fishInPurchase && (
-                <Col md="6" className="mb-3">
+              {currentTransaction.fishInPurchase.length > 0 && (
+                <Col md="12" className="mb-3">
                   <Table
                     rowKey="id"
                     columns={columns}
@@ -193,11 +208,7 @@ const ModalCloseSell = ({
                       return (
                         <Table.Summary fixed>
                           <Table.Summary.Row>
-                            <Table.Summary.Cell
-                              key="1"
-                              // colSpan="2"
-                              className="bold"
-                            >
+                            <Table.Summary.Cell key="1" className="bold">
                               {i18n.t("total")}
                             </Table.Summary.Cell>
                             <Table.Summary.Cell key="2" className="bold">
@@ -227,16 +238,17 @@ const ModalCloseSell = ({
               {/* FOR Trader */}
               {user && user.roleName === "Trader" && (
                 <>
-                  {listTransaction.map(
-                    (el, idx) =>
-                      el.weightRecorder && (
-                        <RenderTB
-                          transaction={el}
-                          param={param}
-                          isLast={idx === listTransaction.length - 1}
-                        />
-                      )
-                  )}
+                  {listTransaction.map((el, idx) => (
+                    <RenderTB
+                      key={idx}
+                      transaction={el}
+                      param={param}
+                      isLast={idx === listTransaction.length - 1}
+                      handleRemain={(ele) => {
+                        setRemain(ele);
+                      }}
+                    />
+                  ))}
                 </>
               )}
 

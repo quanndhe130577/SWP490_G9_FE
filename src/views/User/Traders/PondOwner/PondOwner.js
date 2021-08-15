@@ -68,14 +68,14 @@ export default class PondOwner extends Component {
             size="small"
             style={{ width: 90 }}
           >
-            Tìm
+            {i18n.t("Search")}
           </Button>
           <Button
             onClick={() => this.handleReset(clearFilters)}
             size="small"
             style={{ width: 90 }}
           >
-            Đặt lại
+            {i18n.t("Reset")}
           </Button>
         </Space>
       </div>
@@ -86,9 +86,9 @@ export default class PondOwner extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -247,7 +247,7 @@ export default class PondOwner extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentPO={currentPO || {}}
-            // handleChangePondOwner={handleChangePondOwner}
+          // handleChangePondOwner={handleChangePondOwner}
           />
         )}
         <Row>
