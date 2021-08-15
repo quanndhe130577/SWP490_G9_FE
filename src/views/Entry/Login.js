@@ -9,8 +9,8 @@ import session from "../../services/session";
 
 const Login = (props) => {
   const dispatch = useDispatch();
-  const [phoneNumber, setPhoneNumber] = useState("0312345678");
-  const [password, setPassword] = useState("12345678");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loggingIn, setLoggingIn] = useState(false);
 
