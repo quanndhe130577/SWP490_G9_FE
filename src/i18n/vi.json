@@ -235,5 +235,6 @@
   "price": "giá",
   "transactionPrice": "giá bán",
   "selectDay": "Chọn ngày",
-  "statusBuy": "Trạng thái đơn mua"
+  "statusBuy": "Trạng thái đơn mua",
+  "createFt": "Tạo loại cá mới"
 }

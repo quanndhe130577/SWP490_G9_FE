@@ -253,7 +253,6 @@ const ManaBuy = () => {
         obj.props.rowSpan = 0;
         if (helper.getDateFormat(currentDate) !== helper.getDateFormat(value)) {
           purchase.forEach((element, subindex) => {
-            //if (subindex >= 10 * currentPage && subindex < 10 * (currentPage + 1)) {
             if (
               helper.getDateFormat(element.date) ===
                 helper.getDateFormat(value) &&
@@ -262,7 +261,6 @@ const ManaBuy = () => {
             ) {
               obj.props.rowSpan += 1;
             }
-            //}
           });
         }
 
@@ -277,8 +275,8 @@ const ManaBuy = () => {
       dataIndex: "pondOwnerName",
       key: "pondOwnerName",
       ...getColumnSearchProps("pondOwnerName"),
-      sorter: (a, b) => a.pondOwnerName.localeCompare(b.pondOwnerName),
-      sortDirections: ["descend", "ascend"],
+      // sorter: (a, b) => a.pondOwnerName.localeCompare(b.pondOwnerName),
+      // sortDirections: ["descend", "ascend"],
     },
 
     {
@@ -286,16 +284,16 @@ const ManaBuy = () => {
       dataIndex: "totalWeight",
       key: "totalWeight",
       ...getColumnSearchProps("totalWeight"),
-      sorter: (a, b) => a.totalWeight - b.totalWeight,
-      sortDirections: ["descend", "ascend"],
+      // sorter: (a, b) => a.totalWeight - b.totalWeight,
+      // sortDirections: ["descend", "ascend"],
     },
     {
       title: i18n.t("totalAmount (VND)"),
       dataIndex: "totalAmount",
       key: "totalAmount",
       ...getColumnSearchProps("totalAmount"),
-      sorter: (a, b) => a.totalAmount - b.totalAmount,
-      sortDirections: ["descend", "ascend"],
+      // sorter: (a, b) => a.totalAmount - b.totalAmount,
+      // sortDirections: ["descend", "ascend"],
       render: (totalAmount) => (
         <NumberFormat
           value={totalAmount}
@@ -386,6 +384,11 @@ const ManaBuy = () => {
         rowKey="id"
         bordered
         pagination={{ pageSize: 10 }}
+        // onChange={() => {
+        //   currentDate = "";
+        //   preDate = "";
+        //   currentPage = 0;
+        // }}
       />
     </Card>
   );

@@ -44,7 +44,6 @@ const ChooseTraders = ({
 
   const handleCancel = () => {
     if (!isChange) {
-      // history.push("/home");
       setShowChooseTraders(false);
     } else {
       // if trader null cant close modal
@@ -76,10 +75,6 @@ const ChooseTraders = ({
 
       local.set("currentTransaction", tem);
       handleChangeCurrentTrans(prop, val);
-      // setCurrentTransaction((prevState) => ({
-      //   ...prevState,
-      //   [prop]: val,
-      // }));
     }
   };
   function convertField(arr) {

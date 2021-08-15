@@ -32,10 +32,10 @@ const ModalCloseSell = ({
           setLoading(true);
           let check = validate();
           if (!check) {
-            let { commissionUnit, listTranId } = currentTransaction;
+            let { commissionUnit, tranId } = currentTransaction;
 
             if (handleCloseTrans) {
-              handleCloseTrans({ commissionUnit, listTranId });
+              handleCloseTrans({ commissionUnit, tranId });
             }
           } else {
             helper.toast("error", i18n.t(check));
@@ -50,10 +50,10 @@ const ModalCloseSell = ({
   };
 
   const validate = () => {
-    let { commissionUnit, listTranId } = currentTransaction;
+    let { commissionUnit, tranId } = currentTransaction;
     if (!commissionUnit && user.roleName !== "Trader") {
       return "commissionUnitCanNull";
-    } else if (listTranId.length <= 0) {
+    } else if (!tranId) {
       return "traderUnitCanNull";
     }
   };
@@ -67,14 +67,14 @@ const ModalCloseSell = ({
         trader.transId = transId;
       }
       let trans = listTransaction.find((el) => el.id === trader.transId);
-      let listTranId = [trans.id];
+      let tranId = trans.id;
       let ft = await getFTByTrader(val);
       let fishInPurchase = calculateData(trans.transactionDetails, ft);
 
       setCurrentTransaction((pre) => ({
         ...pre,
         ...trans,
-        listTranId,
+        tranId,
         fishInPurchase,
       }));
     }
