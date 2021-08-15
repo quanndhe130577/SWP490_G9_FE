@@ -7,7 +7,7 @@ import Widgets from "../../../schema/Widgets";
 import { apis, helper, session } from "../../../services";
 import Moment from "react-moment";
 import NumberFormat from "react-number-format";
-
+import RenderTB from "./RenderTB";
 const ModalCloseSell = ({
   isShowCloseTransaction,
   listTransaction,
@@ -22,26 +22,31 @@ const ModalCloseSell = ({
   const [currentTransaction, setCurrentTransaction] = useState({});
   const [total, setTotal] = useState({});
   const [loading, setLoading] = useState(false);
+  const [param, setParam] = useState("");
   const user = session.get("user");
 
   const handleOk = () => {
-    try {
-      setLoading(true);
-      let check = validate();
-      if (!check) {
-        let { commissionUnit, listTranId } = currentTransaction;
+    helper.confirm("Bạn có chắc chắn chốt sổ?").then((rs) => {
+      if (rs) {
+        try {
+          setLoading(true);
+          let check = validate();
+          if (!check) {
+            let { commissionUnit, listTranId } = currentTransaction;
 
-        if (handleCloseTrans) {
-          handleCloseTrans({ commissionUnit, listTranId });
+            if (handleCloseTrans) {
+              handleCloseTrans({ commissionUnit, listTranId });
+            }
+          } else {
+            helper.toast("error", i18n.t(check));
+          }
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setLoading(false);
         }
-      } else {
-        helper.toast("error", i18n.t(check));
       }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
+    });
   };
 
   const validate = () => {
@@ -79,9 +84,11 @@ const ModalCloseSell = ({
   async function getFTByTrader(traderId) {
     try {
       let param = traderId;
+
       if (date) {
         param += "/" + date;
       }
+      setParam(param);
       let rs = await apis.getFTByTrader({}, "GET", param);
       if (rs && rs.statusCode === 200) {
         return rs.data;
@@ -159,7 +166,9 @@ const ModalCloseSell = ({
                   <Col md="6">
                     <Widgets.MoneyInput
                       placeholder="700"
-                      disabled={traderId}
+                      disabled={
+                        traderId || currentTransaction.status === "Completed"
+                      }
                       required={true}
                       label={i18n.t("commissionWR")}
                       value={currentTransaction.commissionUnit || ""}
@@ -173,7 +182,7 @@ const ModalCloseSell = ({
 
               {/* FOR BOTH ROLE */}
               {currentTransaction.fishInPurchase && (
-                <Col md="12" className="mb-3">
+                <Col md="6" className="mb-3">
                   <Table
                     rowKey="id"
                     columns={columns}
@@ -215,6 +224,22 @@ const ModalCloseSell = ({
                 </Col>
               )}
 
+              {/* FOR Trader */}
+              {user && user.roleName === "Trader" && (
+                <>
+                  {listTransaction.map(
+                    (el, idx) =>
+                      el.weightRecorder && (
+                        <RenderTB
+                          transaction={el}
+                          param={param}
+                          isLast={idx === listTransaction.length - 1}
+                        />
+                      )
+                  )}
+                </>
+              )}
+
               {/* FOR WEIGHT RECORDER */}
               {total &&
                 total.totalAmount > 0 &&
@@ -234,8 +259,8 @@ const ModalCloseSell = ({
                             currentTransaction.commissionUnit || ""
                         }
                       />
-                    </Col>
-                    <Col md="6">
+                      {/* </Col>
+                    <Col md="6"> */}
                       <Widgets.NumberFormat
                         label={
                           i18n.t(

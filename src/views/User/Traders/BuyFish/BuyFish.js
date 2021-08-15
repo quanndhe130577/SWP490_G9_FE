@@ -762,8 +762,8 @@ const BuyFish = (props) => {
                 columns={calculateColumns(columns)}
                 dataSource={purchase}
                 loading={isLoading}
-                scroll={{ y: 420 }}
-                pagination={{ pageSize: 100 }}
+                scroll={{ y: 520 }}
+                pagination={false}
                 bordered
                 rowKey="idx"
                 summary={(pageData) => {
@@ -802,7 +802,7 @@ const BuyFish = (props) => {
                             className="bold"
                           />
                         </Table.Summary.Cell>
-                        <Table.Summary.Cell colSpan="3" key="4" />
+                        <Table.Summary.Cell colSpan="4" key="4" />
                       </Table.Summary.Row>
                     </Table.Summary>
                   );
