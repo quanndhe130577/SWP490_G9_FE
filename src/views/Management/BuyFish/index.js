@@ -202,6 +202,7 @@ const ManaBuy = () => {
       </Menu>
     );
   }
+
   let currentDate = "";
   let preDate = "";
   let currentPage = 0;
@@ -212,7 +213,22 @@ const ManaBuy = () => {
       key: "idx",
       width: 60,
 
-      render: (text) => <label>{text}</label>,
+      //render: (text) => <label>{text}</label>,
+      render: (value, row, index) => {
+        const obj = {
+          children: value,
+          props: {},
+        };
+
+        let temp = currentPage;
+        currentPage = (value - 1 - ((value - 1) % 10)) / 10;
+        if (currentPage !== temp) {
+          preDate = "";
+          currentDate = "";
+        }
+
+        return obj;
+      },
     },
     {
       title: i18n.t("Ngày tạo"),
@@ -224,11 +240,11 @@ const ManaBuy = () => {
 
       sortDirections: ["descend", "ascend"],
       render: (value, row, index) => {
-        if (index === 0) {
-          currentDate = "";
-          preDate = "";
-          currentPage = 0;
-        }
+        // if (index === 0) {
+        //   currentDate = "";
+        //   preDate = "";
+        //   currentPage = 0;
+        // }
         const obj = {
           children: <Moment format="DD/MM/YYYY">{value}</Moment>,
           props: {},
@@ -369,6 +385,7 @@ const ManaBuy = () => {
         loading={isLoading}
         rowKey="id"
         bordered
+        pagination={{ pageSize: 10 }}
       />
     </Card>
   );
