@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-// import Moment from "react-moment";
 import NormalInfo from "./Components/NormalInfo";
-import ChangePhoneNumber from "./Components/ChangePhoneNumber";
+// import ChangePhoneNumber from "./Components/ChangePhoneNumber";
 import ChangePassword from "./Components/ChangePassword";
 import { Tabs, Card } from "antd";
 
@@ -42,9 +41,9 @@ class ChangeUserInfo extends Component {
             <Tabs.TabPane tab="Đổi thông tin cơ bản" key="1">
               <NormalInfo />
             </Tabs.TabPane>
-            <Tabs.TabPane tab="Đổi số điện thoại" key="2">
+            {/* <Tabs.TabPane tab="Đổi số điện thoại" key="2">
               <ChangePhoneNumber />
-            </Tabs.TabPane>
+            </Tabs.TabPane> */}
             <Tabs.TabPane tab="Đổi mật khẩu" key="3">
               <ChangePassword />
             </Tabs.TabPane>
