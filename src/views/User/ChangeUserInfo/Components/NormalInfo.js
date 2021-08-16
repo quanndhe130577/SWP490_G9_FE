@@ -6,6 +6,7 @@ import Widgets from "../../../../schema/Widgets";
 import { Modal } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import apis from "../../../../services/apis";
+import i18n from "i18next";
 
 class NormalInfo extends Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class NormalInfo extends Component {
       firstname: null,
       lastName: null,
       dob: new Date(),
+      address: "",
       identifyCode: null,
       avatar: "https://via.placeholder.com/150",
       preview: null,
@@ -35,6 +37,7 @@ class NormalInfo extends Component {
       lastName: rs.data.lastName,
       dob: new Date(rs.data.dob),
       identifyCode: rs.data.identifyCode,
+      address: rs.data.address,
       avatar:
         rs.data.avatar == null
           ? "https://via.placeholder.com/150"
@@ -63,6 +66,7 @@ class NormalInfo extends Component {
         lastName: this.state.lastName,
         dob: this.state.dob,
         identifyCode: this.state.identifyCode,
+        address: this.state.address,
         avatarBase64: this.state.avatar.split(",")[1],
       },
       "POST",
@@ -104,7 +108,8 @@ class NormalInfo extends Component {
             <div className="col-md-6 mb-2">
               <Widgets.Text
                 required={true}
-                label={"Họ"}
+                label={i18n.t("firstName")}
+                // label={"Họ"}
                 value={this.state.firstname}
                 onChange={(e) => this.handleChange2(e, "firstname")}
               />
@@ -112,7 +117,8 @@ class NormalInfo extends Component {
             <div className="col-md-6 mb-2">
               <Widgets.Text
                 required={true}
-                label={"Tên"}
+                label={i18n.t("lastName")}
+                // label={"Tên"}
                 value={this.state.lastName}
                 onChange={(e) => this.handleChange2(e, "lastName")}
               />
@@ -120,7 +126,8 @@ class NormalInfo extends Component {
             <div className="col-md-6 mb-2">
               <Widgets.DateTimePicker
                 required={true}
-                label={"Ngày sinh"}
+                // label={"Ngày sinh"}
+                label={i18n.t("dob")}
                 value={this.state.dob}
                 onChange={(data) => {
                   this.setState({ dob: new Date(data) });
@@ -130,9 +137,17 @@ class NormalInfo extends Component {
             <div className="col-md-6 mb-2">
               <Widgets.Text
                 required={true}
-                label={"CCCD/CMND"}
+                label={i18n.t("identifyCode")}
                 value={this.state.identifyCode}
                 onChange={(e) => this.handleChange2(e, "identifyCode")}
+              />
+            </div>
+            <div className="col-md-6 mb-2">
+              <Widgets.Text
+                required={true}
+                label={i18n.t("address")}
+                value={this.state.address}
+                onChange={(e) => this.handleChange2(e, "address")}
               />
             </div>
             <div className="col-md-12">
@@ -141,12 +156,12 @@ class NormalInfo extends Component {
                 type="submit"
                 disabled={this.state.loading}
               >
-                {this.state.loading ? <LoadingOutlined /> : "Lưu"}
+                {this.state.loading ? <LoadingOutlined /> : i18n.t("save")}
               </button>
             </div>
           </div>
         </form>
-        <Modal title="Đổi ảnh đại diện" visible={this.state.display}
+        <Modal title={i18n.t("chose-avatar")} visible={this.state.display}
           onOk={() => this.setState({ avatar: this.state.preview, display: false })}
           onCancel={() => this.setState({ display: false })}>
           <div className="container">
@@ -160,7 +175,7 @@ class NormalInfo extends Component {
                   this.setState({ preview: this.state.avatar })
                 }
                 onBeforeFileLoad={(elem) => { }}
-                label="Chọn một ảnh"
+                label={i18n.t("chose-image")}
                 className="update-userInfo-avatar"
               />
             </div>

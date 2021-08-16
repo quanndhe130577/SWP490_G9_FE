@@ -3,6 +3,7 @@ import NormalInfo from "./Components/NormalInfo";
 // import ChangePhoneNumber from "./Components/ChangePhoneNumber";
 import ChangePassword from "./Components/ChangePassword";
 import { Tabs, Card } from "antd";
+import i18n from "i18next";
 
 import "./ChangeUserInfo.css";
 
@@ -29,7 +30,7 @@ class ChangeUserInfo extends Component {
   renderTitle = () => {
     return (
       <div className="d-flex">
-        <h3 className="mr-5">Đổi thông tin người dùng</h3>
+        <h3 className="mr-5">{i18n.t("change-user-infor")}</h3>
       </div>
     );
   };
