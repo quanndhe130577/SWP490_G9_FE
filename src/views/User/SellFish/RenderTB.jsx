@@ -103,23 +103,23 @@ const RenderTB = ({ transaction, param, isLast, handleRemain }) => {
     },
     {
       title: "Khối lượng thực tế (Kg)",
-      dataIndex: "weight",
-      key: "weight",
+      dataIndex: "realWeight",
+      key: "realWeight",
       render: (weight, record) => (
         <Widgets.WeightInput
           value={weight}
-          onChange={(e) => onChangeWeight(e, record.id, "weight")}
+          onChange={(e) => onChangeWeight(e, record.id, "realWeight")}
         />
       ),
     },
     {
       title: "",
-      dataIndex: "weight",
-      key: "weight",
+      dataIndex: "realWeight",
+      key: "realWeight",
       render: (weight, record) => (
         <Widgets.Checkbox
           value={weight ? false : true}
-          onChange={(e) => onChangeWeight(e ? 0 : 0, record.id, "weight")}
+          onChange={(e) => onChangeWeight(e ? 0 : 0, record.id, "realWeight")}
           lblCheckbox={i18n.t("Bỏ đi")}
         />
       ),
