@@ -1,6 +1,6 @@
 let config = {
   // config host for be
-  host: "https://35.187.254.202:1237",
+  host: "https://85da72018519.ngrok.io",
   // debug: true,
 };
 export default config;
