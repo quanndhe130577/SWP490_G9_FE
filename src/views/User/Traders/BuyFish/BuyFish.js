@@ -100,7 +100,7 @@ const BuyFish = (props) => {
           value={value}
           displayType={"text"}
           thousandSeparator={true}
-          // suffix={i18n.t("suffix")}
+        // suffix={i18n.t("suffix")}
         />
       );
     }
@@ -769,9 +769,11 @@ const BuyFish = (props) => {
                 summary={(pageData) => {
                   let totalWeight = 0;
                   let totalAmount = 0;
-                  pageData.forEach(({ weight, price }) => {
+                  pageData.forEach(({ weight, price, fishType, basket }) => {
                     totalWeight += weight;
-                    totalAmount += price;
+                    totalAmount +=
+                      fishType.price * (parseFloat(weight) - basket.weight);
+
                   });
 
                   return (
@@ -807,6 +809,7 @@ const BuyFish = (props) => {
                             currentPurchase.isPaid ? "isPaid" : "notPaid",
                             "w-140px"
                           )}
+                          {helper.tag(currentPurchase.status, "w-140px")}
                         </Table.Summary.Cell>
                       </Table.Summary.Row>
                     </Table.Summary>
