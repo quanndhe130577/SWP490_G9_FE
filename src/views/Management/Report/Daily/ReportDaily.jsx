@@ -6,6 +6,7 @@ import { Card, Table } from "antd";
 import i18n from "i18next";
 import Widgets from "../../../../schema/Widgets";
 import NumberFormat from "react-number-format";
+import RemainTable from "./RemainTable";
 
 const ReportDaily = () => {
   const [loading, setLoading] = useState(false);
@@ -24,6 +25,7 @@ const ReportDaily = () => {
   const [data, setData] = useState({});
   const [CostIncurred, setCostIncurred] = useState({ totalCost: 0 });
   const [user, setUser] = useState();
+  const [remainTotal, setRemainTotal] = useState();
 
   async function fetchData(date) {
     try {
@@ -44,6 +46,7 @@ const ReportDaily = () => {
           tongChi,
           tongNo,
           tongThu,
+          remainTotal,
         } = rs.data;
         let totalCost = 0;
         for (const el of listCostIncurred) {
@@ -54,6 +57,7 @@ const ReportDaily = () => {
         setCostIncurred({ totalCost, listCostIncurred });
         setDate(new Date(date));
         setData({ tongChi, tongNo, tongThu });
+        setRemainTotal(remainTotal);
       }
     } catch (error) {
       console.log(error);
@@ -92,7 +96,7 @@ const ReportDaily = () => {
         </Row>
         <Row>
           {user && user.roleName === "Trader" && (
-            <Col md="6">
+            <Col md="4">
               <h4>
                 <Widgets.NumberFormat
                   label={i18n.t("tongChi") + ": "}
@@ -113,10 +117,10 @@ const ReportDaily = () => {
                 label={i18n.t("CostIncurredManagement") + ": "}
                 value={CostIncurred.totalCost}
               />
-              <h4 className="title-rp">{i18n.t("buyFish")}</h4>
             </Col>
           )}
-          <Col md="6">
+
+          <Col md="4">
             <h4>
               <Widgets.NumberFormat
                 label={i18n.t("tongThu") + ": "}
@@ -136,9 +140,23 @@ const ReportDaily = () => {
               label={i18n.t("moneyCommission") + ": "}
               value={transactionTotal.summaryCommission}
             />
+          </Col>
+          {user &&
+            user.roleName === "Trader" &&
+            remainTotal &&
+            remainTotal.remainDetails.length > 0 && (
+              <RemainTable remainTotal={remainTotal} />
+            )}
+        </Row>
+        <Row>
+          <Col md="6">
+            <h4 className="title-rp">{i18n.t("buyFish")}</h4>
+          </Col>
+          <Col md="6">
             <h4 className="title-rp">{i18n.t("sellFish")}</h4>
           </Col>
         </Row>
+
         <Row>
           {user && user.roleName === "Trader" && (
             <Col md="6" xs="12" className="rp-tb rp-left">

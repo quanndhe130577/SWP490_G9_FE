@@ -31,7 +31,7 @@ export default class Trader extends Component {
 
   async fetchTrader() {
     try {
-      let rs = await apis.getTraderByWR({}, "GET");
+      let rs = await apis.getTraderByWRForList({}, "GET");
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         this.setState({ data: rs.data, total: rs.data.length });
