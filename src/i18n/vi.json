@@ -243,5 +243,6 @@
   "comfirmUpdate": "Bạn có chắc đã thanh toán",
   "PurchaseIsPaid": "Đã trả",
   "TransactionIsPaid": "Đã thu",
-  "Remain": "Tồn kho"
+  "Remain": "Tồn kho",
+  "noInfo": "Không có thông tin"
 }

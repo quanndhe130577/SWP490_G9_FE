@@ -188,7 +188,7 @@ const fTTable = (listSummaryPurchaseDetail) => {
           <div className="mb-3">
             <h6>
               <b>{i18n.t("pondOwner")}: </b>
-              {el.pondOwner.name}
+              {el.pondOwner ? el.pondOwner.name : i18n.t("noInfo")}
             </h6>
             <Table
               rowKey="idx"

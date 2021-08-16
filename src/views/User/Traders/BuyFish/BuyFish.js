@@ -767,12 +767,13 @@ const BuyFish = (props) => {
                 bordered
                 rowKey="idx"
                 summary={(pageData) => {
-                  let totalWeight = 0;
-                  let totalAmount = 0;
-                  pageData.forEach(({ weight, price }) => {
-                    totalWeight += weight;
-                    totalAmount += price;
-                  });
+                  // let totalWeight = 0;
+                  // let totalAmount = 0;
+                  // pageData.forEach(({ weight, price }) => {
+                  //   totalWeight += weight;
+                  //   totalAmount += price;
+
+                  // });
 
                   return (
                     <Table.Summary fixed>
@@ -786,7 +787,7 @@ const BuyFish = (props) => {
                         </Table.Summary.Cell>
                         <Table.Summary.Cell key="2" colSpan="2">
                           <NumberFormat
-                            value={totalWeight.toFixed(1)}
+                            value={currentPurchase.totalWeight.toFixed(1)}
                             displayType={"text"}
                             thousandSeparator={true}
                             suffix=" Kg"
@@ -795,7 +796,7 @@ const BuyFish = (props) => {
                         </Table.Summary.Cell>
                         <Table.Summary.Cell key="3">
                           <NumberFormat
-                            value={totalAmount}
+                            value={currentPurchase.totalAmount}
                             displayType={"text"}
                             thousandSeparator={true}
                             suffix={i18n.t("suffix")}
