@@ -151,7 +151,6 @@ const RenderTB = ({ transaction, param, isLast, handleRemain, disabledBtn = fals
                   <Table.Summary.Row>
                     <Table.Summary.Cell
                       key="1"
-                      // colSpan="2"
                       className="bold"
                     >
                       {i18n.t("total")}
@@ -222,7 +221,6 @@ const RenderTB = ({ transaction, param, isLast, handleRemain, disabledBtn = fals
                     <Table.Summary.Row>
                       <Table.Summary.Cell
                         key="1"
-                        // colSpan="2"
                         className="bold"
                       >
                         {i18n.t("total")}
