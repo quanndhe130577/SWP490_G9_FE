@@ -89,6 +89,9 @@ helper.tag = (status, className = "") => {
     case "Pending":
       color = "gold";
       break;
+    case "Remain":
+      color = "blue";
+      break;
     default:
       color = "red";
   }

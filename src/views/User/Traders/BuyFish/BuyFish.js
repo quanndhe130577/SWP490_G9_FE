@@ -100,7 +100,7 @@ const BuyFish = (props) => {
           value={value}
           displayType={"text"}
           thousandSeparator={true}
-          // suffix={i18n.t("suffix")}
+        // suffix={i18n.t("suffix")}
         />
       );
     }
@@ -807,6 +807,7 @@ const BuyFish = (props) => {
                             currentPurchase.isPaid ? "isPaid" : "notPaid",
                             "w-140px"
                           )}
+                          {helper.tag(currentPurchase.status, "w-140px")}
                         </Table.Summary.Cell>
                       </Table.Summary.Row>
                     </Table.Summary>
