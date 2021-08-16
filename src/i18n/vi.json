@@ -244,5 +244,12 @@
   "PurchaseIsPaid": "Đã trả",
   "TransactionIsPaid": "Đã thu",
   "Remain": "Tồn kho",
-  "noInfo": "Không có thông tin"
+  "noInfo": "Không có thông tin",
+  "save": "Lưu",
+  "current-password": "Mật khẩu hiện tại",
+  "new-password": "Mật khẩu mới",
+  "re-password": "Nhập lại mật khẩu",
+  "change-user-infor": "Đổi thông tin người dùng",
+  "chose-avatar": "Chọn ảnh đại diện",
+  "chose-image": "Chọn một ảnh"
 }

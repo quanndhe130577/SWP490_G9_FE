@@ -4,6 +4,7 @@ import helper from "../../../../services/helper";
 import session from "../../../../services/session";
 import apis from "../../../../services/apis";
 import Widgets from "../../../../schema/Widgets";
+import i18n from "i18next";
 
 class ChangePassword extends Component {
   constructor(props) {
@@ -75,7 +76,8 @@ class ChangePassword extends Component {
                   value={this.state.password}
                   type="password"
                   required={true}
-                  label={"Mật khẩu hiện tại"}
+                  label={i18n.t("current-password")}
+                  // label={"Mật khẩu hiện tại"}
                   onChange={(e) => this.handleChange2(e, "password")}
                 />
               </div>
@@ -86,7 +88,8 @@ class ChangePassword extends Component {
                   value={this.state.newPassword}
                   type="password"
                   required={true}
-                  label={"Mật khẩu mới"}
+                  label={i18n.t("new-password")}
+                  // label={"Mật khẩu mới"}
                   onChange={(e) => this.handleChange2(e, "newPassword")}
                 />
               </div>
@@ -97,7 +100,8 @@ class ChangePassword extends Component {
                   value={this.state.rePassword}
                   type="password"
                   required={true}
-                  label={"Nhập lại mật khẩu mới"}
+                  label={i18n.t("re-password")}
+                  // label={"Nhập lại mật khẩu mới"}
                   onChange={(e) => this.handleChange2(e, "rePassword")}
                 />
               </div>
@@ -111,7 +115,7 @@ class ChangePassword extends Component {
             type="submit"
             disabled={this.state.loading}
           >
-            {this.state.loading ? <LoadingOutlined /> : "Lưu"}
+            {this.state.loading ? <LoadingOutlined /> : i18n.t("save")}
           </button>
         </div>
       </form>
