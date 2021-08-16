@@ -126,6 +126,7 @@ let path = {
   suggestTDByPhone: "/api/wc/suggest-traders-by-phone",
   wrAddTrader: "/api/wc/add-trader",
   getTraderByWR: "/api/wc/get-all-trader", // GET
+  getTraderByWRForList: "/api/wc/get-all-trader-for-list", // GET
 
   //Transaction
   createTransactions: "/api/transaction/createList",
