@@ -6,7 +6,7 @@ import { apis } from "../../../services";
 import i18n from "i18next";
 import Widgets from "../../../schema/Widgets";
 
-const RenderTB = ({ transaction, param, isLast, handleRemain }) => {
+const RenderTB = ({ transaction, param, isLast, handleRemain, disabledBtn = false }) => {
   const [total, setTotal] = useState({});
   const [currentTransaction, setCurrentTransaction] = useState({
     fishInPurchase: [],
@@ -83,7 +83,7 @@ const RenderTB = ({ transaction, param, isLast, handleRemain }) => {
   };
   useEffect(() => {
     if (param) {
-      calculateData(transaction.transactionDetails, param);
+      calculateData(transaction.transactionDetails);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param]);
@@ -109,6 +109,8 @@ const RenderTB = ({ transaction, param, isLast, handleRemain }) => {
         <Widgets.WeightInput
           value={weight}
           onChange={(e) => onChangeWeight(e, record.id, "realWeight")}
+          isDisable={disabledBtn}
+
         />
       ),
     },
@@ -121,6 +123,7 @@ const RenderTB = ({ transaction, param, isLast, handleRemain }) => {
           value={weight ? false : true}
           onChange={(e) => onChangeWeight(e ? 0 : 0, record.id, "realWeight")}
           lblCheckbox={i18n.t("Bỏ đi")}
+          disabled={disabledBtn}
         />
       ),
     },
@@ -139,9 +142,9 @@ const RenderTB = ({ transaction, param, isLast, handleRemain }) => {
             summary={(pageData) => {
               let totalRemain = 0;
               let realRemain = 0;
-              pageData.forEach(({ remainWeight, weight }) => {
-                totalRemain += remainWeight;
-                realRemain += weight;
+              pageData.forEach(({ remainWeight, realWeight }) => {
+                if (remainWeight > 0) totalRemain += remainWeight;
+                if (realWeight > 0) realRemain += realWeight;
               });
               return (
                 <Table.Summary fixed>

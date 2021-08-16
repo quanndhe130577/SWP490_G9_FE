@@ -247,6 +247,8 @@ const ModalCloseSell = ({
                       handleRemain={(ele) => {
                         setRemain(ele);
                       }}
+
+                      disabledBtn={currentTransaction.status === "Completed"}
                     />
                   ))}
                 </>
@@ -268,7 +270,7 @@ const ModalCloseSell = ({
                         }
                         value={
                           total.totalWeight *
-                            currentTransaction.commissionUnit || ""
+                          currentTransaction.commissionUnit || ""
                         }
                       />
                       {/* </Col>
@@ -283,8 +285,8 @@ const ModalCloseSell = ({
                         }
                         value={
                           total.totalAmount -
-                            total.totalWeight *
-                              currentTransaction.commissionUnit || ""
+                          total.totalWeight *
+                          currentTransaction.commissionUnit || ""
                         }
                       />
                     </Col>
