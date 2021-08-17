@@ -80,7 +80,7 @@ const Login = (props) => {
         setRoles(noAdmin);
       }
     } catch (error) {
-      helper.toast("error", i18n.t("canGetRoles"));
+      helper.toast("error", i18n.t("systemError"));
       console.log(error);
     }
   };
