@@ -251,5 +251,8 @@
   "re-password": "Nhập lại mật khẩu",
   "change-user-infor": "Đổi thông tin người dùng",
   "chose-avatar": "Chọn ảnh đại diện",
-  "chose-image": "Chọn một ảnh"
+  "chose-image": "Chọn một ảnh",
+  "cfOverWeightSellFish": "Số lượng cá bạn muốn bán lớn hơn số lượng còn lại, bạn có muốn bán vượt số lượng còn lại không?",
+  "profit": "Lợi nhuận",
+  "buyPirce": "Giá mua"
 }

@@ -46,13 +46,29 @@ const ModalSell = ({
         weight: parseFloat(transaction.weight),
         date: helper.correctDate(new Date(moment(date, "DDMMYYYY"))),
       };
-      if (mode === "create") {
+
+      // create trans
+      let doTransaction = async () => {
         if (createTransDetail) {
           if (user.roleName === "Trader" && data.transId) {
             delete data.transId;
-            // data.date = helper.correctDate();
           }
           await createTransDetail(data);
+        }
+      };
+
+      if (mode === "create") {
+        let fish = transaction.listFishType.find(
+          (el) => el.id === transaction.fishTypeId
+        );
+        if (parseFloat(transaction.weight) > fish.remainWeight) {
+          helper.confirm(i18n.t("cfOverWeightSellFish")).then((res) => {
+            if (res) {
+              doTransaction();
+            }
+          });
+        } else {
+          doTransaction();
         }
       } else if (mode === "edit") {
         await updateTransDetail({ ...data, id: transaction.id });
