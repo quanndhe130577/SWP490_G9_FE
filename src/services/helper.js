@@ -96,7 +96,7 @@ helper.tag = (status, className = "") => {
       color = "red";
   }
   return (
-    <Tag color={color} key={status} className={className + " text-center"}>
+    <Tag color={color} className={className + " text-center"}>
       {i18n.t(txt).toUpperCase()}
     </Tag>
   );

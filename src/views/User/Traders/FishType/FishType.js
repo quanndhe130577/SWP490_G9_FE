@@ -115,9 +115,9 @@ export default class FishType extends Component {
       } else {
         return record[dataIndex]
           ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+              .toString()
+              .toLowerCase()
+              .includes(value.toLowerCase())
           : "";
       }
     },
@@ -314,8 +314,8 @@ export default class FishType extends Component {
           a.pondOwner
             ? a.pondOwner.name.length
             : 0 - b.pondOwner.name.length
-              ? b.pondOwner.name.length
-              : 0,
+            ? b.pondOwner.name.length
+            : 0,
         sortDirections: ["descend", "ascend"],
         //render: (pondOwner) => pondOwner.name,
         render: (value, row, index) => {
@@ -352,8 +352,8 @@ export default class FishType extends Component {
           a.fishName
             ? a.fishName.length
             : 0 - b.fishName.length
-              ? b.fishName.length
-              : 0,
+            ? b.fishName.length
+            : 0,
         sortDirections: ["descend", "ascend"],
       },
       {
@@ -367,7 +367,7 @@ export default class FishType extends Component {
         sortDirections: ["descend", "ascend"],
       },
       {
-        title: "Số lượng (kg)",
+        title: "Số lượng (Kg)",
         dataIndex: "totalWeight",
         key: "totalWeight",
         ...this.getColumnSearchProps("totalWeight"),
@@ -405,8 +405,8 @@ export default class FishType extends Component {
           a.transactionprice
             ? a.transactionprice
             : 0 - b.transactionprice
-              ? b.transactionprice
-              : 0,
+            ? b.transactionprice
+            : 0,
         sortDirections: ["descend", "ascend"],
         render: (transactionprice) => (
           <NumberFormat
@@ -439,7 +439,7 @@ export default class FishType extends Component {
             closeModal={this.closeModal}
             currentFT={currentFT || {}}
             loading={loading}
-          // handleChangeFishType={handleChangeFishType}
+            // handleChangeFishType={handleChangeFishType}
           />
         )}
         <Row>

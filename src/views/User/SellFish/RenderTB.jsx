@@ -6,7 +6,13 @@ import { apis } from "../../../services";
 import i18n from "i18next";
 import Widgets from "../../../schema/Widgets";
 
-const RenderTB = ({ transaction, param, isLast, handleRemain, disabledBtn = false }) => {
+const RenderTB = ({
+  transaction,
+  param,
+  isLast,
+  handleRemain,
+  disabledBtn = false,
+}) => {
   const [total, setTotal] = useState({});
   const [currentTransaction, setCurrentTransaction] = useState({
     fishInPurchase: [],
@@ -110,7 +116,6 @@ const RenderTB = ({ transaction, param, isLast, handleRemain, disabledBtn = fals
           value={weight}
           onChange={(e) => onChangeWeight(e, record.id, "realWeight")}
           isDisable={disabledBtn}
-
         />
       ),
     },
@@ -149,10 +154,7 @@ const RenderTB = ({ transaction, param, isLast, handleRemain, disabledBtn = fals
               return (
                 <Table.Summary fixed>
                   <Table.Summary.Row>
-                    <Table.Summary.Cell
-                      key="1"
-                      className="bold"
-                    >
+                    <Table.Summary.Cell key="1" className="bold">
                       {i18n.t("total")}
                     </Table.Summary.Cell>
                     <Table.Summary.Cell key="2" className="bold">
@@ -219,10 +221,7 @@ const RenderTB = ({ transaction, param, isLast, handleRemain, disabledBtn = fals
                 return (
                   <Table.Summary fixed>
                     <Table.Summary.Row>
-                      <Table.Summary.Cell
-                        key="1"
-                        className="bold"
-                      >
+                      <Table.Summary.Cell key="1" className="bold">
                         {i18n.t("total")}
                       </Table.Summary.Cell>
                       <Table.Summary.Cell key="2" className="bold">
@@ -260,7 +259,7 @@ const columns = [
     key: "fishName",
   },
   {
-    title: "Tổng khối lượng (kg)",
+    title: "Tổng khối lượng (Kg)",
     dataIndex: "totalWeight",
     key: "totalWeight",
     render: (weight) => (
