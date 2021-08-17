@@ -19,22 +19,22 @@ const listCostIncurred = {
       },
       {
         label: "Phí vào chợ",
-        key: "marketBill",
+        key: "Phí vào chợ",
       },
       {
         label: "Chi phí khác",
-        key: "other",
+        key: "Khác",
       },
     ],
     weightRecorder: [
       {
         label: "Ăn uống",
-        key: "food",
+        key: "Ăn uống",
       },
 
       {
         label: "Chi phí khác",
-        key: "other",
+        key: "Khác",
       },
     ],
   },
@@ -54,7 +54,7 @@ const listCostIncurred = {
       },
       {
         label: "Chi phí khác",
-        key: "other",
+        key: "Khác",
       },
     ],
     weightRecorder: [
@@ -64,7 +64,7 @@ const listCostIncurred = {
       },
       {
         label: "Chi phí khác",
-        key: "other",
+        key: "Khác",
       },
     ],
   },
