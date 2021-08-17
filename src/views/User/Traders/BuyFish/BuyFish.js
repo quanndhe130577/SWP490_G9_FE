@@ -100,7 +100,7 @@ const BuyFish = (props) => {
           value={value}
           displayType={"text"}
           thousandSeparator={true}
-        // suffix={i18n.t("suffix")}
+          // suffix={i18n.t("suffix")}
         />
       );
     }
@@ -159,7 +159,7 @@ const BuyFish = (props) => {
       render: (basket) => (
         <div>
           {basket && (
-            <label>{basket.type + ": " + basket.weight + " (kg)"}</label>
+            <label>{basket.type + ": " + basket.weight + " (Kg)"}</label>
           )}
         </div>
       ),
@@ -348,9 +348,8 @@ const BuyFish = (props) => {
       if (rs && rs.statusCode === 200) {
         let tem = rs.data;
         tem = Object.assign(tem, currentPurchase);
-        // setCurrentPurchase((pre) => ({ ...pre, ...rs.data }));
-        setCurrentPurchase((pre) => ({ ...pre, ...tem }));
-        local.set("currentPurchase", tem);
+        await local.set("currentPurchase", tem);
+        await setCurrentPurchase((pre) => ({ ...pre, ...tem }));
       }
     } catch (error) {
       console.log(error);
@@ -363,7 +362,6 @@ const BuyFish = (props) => {
     try {
       let traderId = session.get("user").userID;
       let pondOwnerID = currentPurchase.pondOwner;
-      // let date = helper.getDateFormat();
       let date = helper.correctDate(new Date());
 
       let rs = await apis.createPurchase({ traderId, pondOwnerID, date });
@@ -403,9 +401,6 @@ const BuyFish = (props) => {
     } catch (error) {
       console.log(error);
     }
-    //  finally {
-    //   setIsShowBuy(false);
-    // }
   }
 
   // updatePurchaseDetail
@@ -428,9 +423,6 @@ const BuyFish = (props) => {
     } catch (error) {
       console.log(error);
     }
-    // finally {
-    //   setIsShowBuy(false);
-    // }
   }
 
   // Get all purchase detail
@@ -445,8 +437,17 @@ const BuyFish = (props) => {
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         setPurchase(rs.data);
-        if (currentPurchase.id) {
-        }
+        let totalWeight = 0;
+        let totalAmount = 0;
+        rs.data.forEach(({ weight, fishType, basket }) => {
+          totalWeight += parseFloat(weight) - basket.weight;
+          totalAmount += fishType.price * (parseFloat(weight) - basket.weight);
+        });
+        setCurrentPurchase((pre) => ({
+          ...pre,
+          totalWeight,
+          totalAmount,
+        }));
       }
     } catch (error) {
       console.log(error);
@@ -519,7 +520,6 @@ const BuyFish = (props) => {
   async function handleClosePurchase(data) {
     try {
       let { id, commissionPercent, isPaid } = data;
-
       let rs = await apis.closePurchase({
         id,
         isPaid,
@@ -773,7 +773,6 @@ const BuyFish = (props) => {
                     totalWeight += weight;
                     totalAmount +=
                       fishType.price * (parseFloat(weight) - basket.weight);
-
                   });
 
                   return (
@@ -809,7 +808,8 @@ const BuyFish = (props) => {
                             currentPurchase.isPaid ? "isPaid" : "notPaid",
                             "w-140px"
                           )}
-                          {helper.tag(currentPurchase.status, "w-140px")}
+                          {currentPurchase.status === "Completed" &&
+                            helper.tag(currentPurchase.status, "w-140px")}
                         </Table.Summary.Cell>
                       </Table.Summary.Row>
                     </Table.Summary>

@@ -108,7 +108,7 @@ const PriceFishToday = ({
       ),
     },
     {
-      title: "Giá mua\n(VND/kg)",
+      title: "Giá mua\n(VND/Kg)",
       dataIndex: "price",
       key: "price",
       width: "18%",
@@ -120,7 +120,7 @@ const PriceFishToday = ({
       ),
     },
     {
-      title: "Giá bán\n(VND/kg)",
+      title: "Giá bán\n(VND/Kg)",
       dataIndex: "transactionPrice",
       key: "transactionPrice",
       width: "18%",

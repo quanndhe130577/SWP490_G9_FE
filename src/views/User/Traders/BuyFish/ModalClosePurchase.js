@@ -6,8 +6,9 @@ import i18n from "i18next";
 import Widgets from "../../../../schema/Widgets";
 import Moment from "react-moment";
 import NumberFormat from "react-number-format";
+import { helper } from "../../../../services";
 
-const ModalBuy = ({
+const ModalClosePurchase = ({
   isShowClosePurchase,
   purchase,
   prCurrentPurchase,
@@ -17,7 +18,6 @@ const ModalBuy = ({
   mode,
 }) => {
   const [currentPurchase, setCurrentPurchase] = useState(prCurrentPurchase);
-  // const [fishInPurchase, setFishInPurchase] = useState([]);
   const [objPurchase, setObjPurchase] = useState({
     fishInPurchase: [],
     totalWeight: 0,
@@ -27,11 +27,26 @@ const ModalBuy = ({
   const [loading, setLoading] = useState(false);
 
   const handleOk = () => {
-    setLoading(true);
-    if (handleClosePurchase) {
-      handleClosePurchase(currentPurchase);
-      setLoading(false);
-    }
+    let { pondOwnerName, totalAmount, totalWeight } = currentPurchase;
+    helper
+      .confirm(
+        "Bạn sẽ chốt đơn mua tại ao của: " +
+          pondOwnerName +
+          " với khối lượng cá " +
+          totalWeight +
+          "(Kg), số tiền " +
+          new Intl.NumberFormat().format(totalAmount) +
+          " (Vnd) ?"
+      )
+      .then((cf) => {
+        if (cf) {
+          setLoading(true);
+          if (handleClosePurchase) {
+            handleClosePurchase(currentPurchase);
+            setLoading(false);
+          }
+        }
+      });
   };
 
   const handleCancel = () => {
@@ -77,7 +92,6 @@ const ModalBuy = ({
     });
     fishInPurchase = fishInPurchase.filter((el) => el.totalWeight > 0);
     if (mode === "view") {
-      console.log(prCurrentPurchase);
       let { commission, totalAmount } = prCurrentPurchase;
       let commissionPercent = (commission / totalAmount) * 100;
       handlePurchase("commissionPercent", commissionPercent);
@@ -87,7 +101,6 @@ const ModalBuy = ({
       totalAmount,
       fishInPurchase,
     });
-    // setFishInPurchase(fishInPurchase);
   };
 
   useEffect(() => {
@@ -238,7 +251,7 @@ const ModalBuy = ({
   );
 };
 
-export default ModalBuy;
+export default ModalClosePurchase;
 const columns = [
   {
     title: "STT",
@@ -252,7 +265,7 @@ const columns = [
     key: "fishName",
   },
   {
-    title: "Đơn giá (VND/kg)",
+    title: "Đơn giá (VND/Kg)",
     dataIndex: "price",
     key: "price",
     render: (price) => (
@@ -260,7 +273,7 @@ const columns = [
     ),
   },
   {
-    title: "Tổng khối lượng (kg)",
+    title: i18n.t("qtyOfFish(Kg-onlyFish)"),
     dataIndex: "totalWeight",
     key: "totalWeight",
     render: (weight) => (
