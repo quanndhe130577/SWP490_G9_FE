@@ -51,7 +51,7 @@ const ModalBasket = ({ isShow, closeModal, mode, currentPO }) => {
           <Col md="6" xs="12">
             <Widgets.Text
               required={true}
-              label={i18n.t("name")}
+              label={i18n.t("type")}
               placeholder="Vd: Rổ vuông"
               value={basket.type || ""}
               onChange={(e) => handleChangePondOwner(e, "type")}

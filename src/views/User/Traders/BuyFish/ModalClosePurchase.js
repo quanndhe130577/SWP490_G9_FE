@@ -32,7 +32,7 @@ const ModalClosePurchase = ({
       .confirm(
         "Bạn sẽ chốt đơn mua tại ao của: " +
           pondOwnerName +
-          " với khối lượng cá " +
+          ", với khối lượng cá " +
           totalWeight +
           "(Kg), số tiền " +
           new Intl.NumberFormat().format(totalAmount) +

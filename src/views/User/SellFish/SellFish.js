@@ -318,20 +318,20 @@ const SellFish = (props) => {
                 <i className="fa fa-trash mr-1" />
                 {i18n.t("deleteTrans")}
               </Button>
-            ) : showBtnDelete(trans) === "Completed" ? (
-              <Button
-                color="info"
-                onClick={() => {
-                  setCurrentTransId(trans.trader.transId);
-                  setCurrentTraderId(trans.trader.id);
-                  setShowCloseTrans(true);
-                }}
-              >
-                <i className="fa fa-info-circle mr-1" />
-                {i18n.t("viewDetail")}
-              </Button>
             ) : (
-              ""
+              showBtnDelete(trans) === "Completed" && (
+                <Button
+                  color="info"
+                  onClick={() => {
+                    setCurrentTransId(trans.trader.transId);
+                    setCurrentTraderId(trans.trader.id);
+                    setShowCloseTrans(true);
+                  }}
+                >
+                  <i className="fa fa-info-circle mr-1" />
+                  {i18n.t("viewDetail")}
+                </Button>
+              )
             )}
           </span>
         </div>
@@ -398,7 +398,7 @@ const SellFish = (props) => {
       let dateTrans = helper.getDateFormat(listTransaction[0].date, "ddmmyyyy");
       let dateToday = new Date();
       let hourToday = moment(dateToday).format("HH");
-      if (parseInt(hourToday) <= 17) {
+      if (parseInt(hourToday) <= 0) {
         dateToday = moment(dateToday).subtract(1, "days");
       }
       dateToday = helper.getDateFormat(dateToday, "ddmmyyyy");

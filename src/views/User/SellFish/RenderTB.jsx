@@ -31,8 +31,8 @@ const RenderTB = ({
       }
       let tem = arr.filter((el) => el.fishType.id === ele.id);
       tem.forEach((el) => {
-        ele.totalWeight += el.weight;
-        ele.totalAmount += el.sellPrice * el.weight;
+        ele.totalWeight += el.realWeight;
+        ele.totalAmount += el.sellPrice * el.realWeight;
       });
     });
     let totalAmount = 0,
@@ -55,14 +55,29 @@ const RenderTB = ({
         let remainF = rs.data.filter(
           (el) => el.remainWeight && el.remainWeight !== 0
         );
-        remainF.map((el) =>
-          el.remainWeight >= 0 ? (el.weight = el.remainWeight) : (el.weight = 0)
-        );
+        // debugger;
+        // console.log(transaction);
+        if (transaction.status !== "Completed") {
+          remainF.map((el) =>
+            el.remainWeight >= 0
+              ? (el.realWeight = el.remainWeight)
+              : (el.realWeight = 0)
+          );
+        }
+        //         else{
+        //  remainF.map((el) =>
+        //    el.remainWeight >= 0
+        //      ? (el.realWeight = el.remainWeight)
+        //      : (el.realWeight = 0)
+        //  );
+        //         }
+
         if (param) {
           setCurrentTransaction((pre) => ({
             ...pre,
             remainF,
           }));
+          handleRemain(remainF);
         }
         return rs.data;
       }

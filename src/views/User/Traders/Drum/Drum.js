@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import { Table, Input, Space, Card, Dropdown, Menu } from "antd";
-// import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
 import { Row, Col, Button } from "reactstrap";
 import i18n from "i18next";
-import apis from "../../../../services/apis";
-import helper from "../../../../services/helper";
-import session from "../../../../services/session";
+import { apis, helper, session } from "../../../../services";
 import ModalForm from "./ModalForm";
 export default class Truck extends Component {
   constructor(props) {
@@ -104,9 +101,9 @@ export default class Truck extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -114,17 +111,7 @@ export default class Truck extends Component {
       }
     },
     render: (text) =>
-      this.state.searchedColumn === dataIndex ? (
-        //   <Highlighter
-        //     highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
-        //     searchWords={[this.state.searchText]}
-        //     autoEscape
-        //     textToHighlight={text ? text.toString() : ""}
-        //   />
-        <div>{text}</div>
-      ) : (
-        text
-      ),
+      this.state.searchedColumn === dataIndex ? <div>{text}</div> : text,
   });
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -177,8 +164,8 @@ export default class Truck extends Component {
       currentDrum = drums.find((el) => el.id === drumId);
       this.setState({ currentDrum, mode: "edit", isShowModal: true });
     } else if (modeBtn === "delete") {
-      helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
-        if (rs) {
+      helper.confirm(i18n.t("confirmDelete")).then(async (res) => {
+        if (res) {
           try {
             let rs = await apis.deleteDrum({}, "POST", drumId);
             if (rs && rs.statusCode === 200) {
@@ -238,14 +225,14 @@ export default class Truck extends Component {
         sorter: (a, b) => a.number.length - b.number.length,
         sortDirections: ["descend", "ascend"],
       },
-      {
-        title: i18n.t("drumManagement.headerTable.typeDrum"),
-        dataIndex: "type",
-        key: "type",
-        ...this.getColumnSearchProps("type"),
-        //sorter: (a, b) => a.number.length - b.number.length,
-        sortDirections: ["descend", "ascend"],
-      },
+      // {
+      //   title: i18n.t("drumManagement.headerTable.typeDrum"),
+      //   dataIndex: "type",
+      //   key: "type",
+      //   ...this.getColumnSearchProps("type"),
+      //   //sorter: (a, b) => a.number.length - b.number.length,
+      //   sortDirections: ["descend", "ascend"],
+      // },
       {
         title: i18n.t("truck"),
         dataIndex: "truckId",
@@ -279,7 +266,7 @@ export default class Truck extends Component {
             trucks={trucks}
             user={user}
             currentDrum={currentDrum}
-          // handleChangeTruck={handleChangeTruck}
+            // handleChangeTruck={handleChangeTruck}
           />
         )}
         <Row>

@@ -89,7 +89,7 @@ const ModalPondOwner = ({ isShow, closeModal, mode, currentPO }) => {
           </Col>
           <Col md="6" xs="12">
             <Widgets.Text
-              required={true}
+              // required={true}
               label={i18n.t("address")}
               value={pondOwner.address || ""}
               onChange={(e) => handleChangePondOwner(e, "address")}

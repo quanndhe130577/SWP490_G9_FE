@@ -37,6 +37,7 @@ const ModalCloseSell = ({
           if (!check) {
             let { commissionUnit, tranId } = currentTransaction;
 
+            remain.map((e) => alert(e.realWeight));
             if (handleCloseTrans) {
               handleCloseTrans({
                 commissionUnit,
@@ -245,6 +246,7 @@ const ModalCloseSell = ({
                       param={param}
                       isLast={idx === listTransaction.length - 1}
                       handleRemain={(ele) => {
+                        debugger;
                         setRemain(ele);
                       }}
                       disabledBtn={currentTransaction.status === "Completed"}
