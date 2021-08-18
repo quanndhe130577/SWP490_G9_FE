@@ -65,6 +65,15 @@ const ReportDaily = () => {
       setLoading(false);
     }
   }
+  function handleStyleProfit(profit) {
+    let style = "ml-2 ";
+    if (profit > 0) {
+      style += " primary";
+    } else {
+      style += " danger";
+    }
+    return style;
+  }
   useEffect(() => {
     fetchData(new Date());
     setUser(session.get("user"));
@@ -150,6 +159,17 @@ const ReportDaily = () => {
         </Row>
         <Row>
           <Col md="6">
+            <h4 className="mt-4 mb-0 d-flex">
+              <span>{i18n.t("profit") + ": "}</span>
+              <span className={handleStyleProfit(data.tongThu - data.tongChi)}>
+                {new Intl.NumberFormat().format(data.tongThu - data.tongChi) +
+                  " VND"}
+              </span>
+            </h4>
+          </Col>
+        </Row>
+        <Row>
+          <Col md="6">
             <h4 className="title-rp">{i18n.t("buyFish")}</h4>
           </Col>
           <Col md="6">
@@ -217,11 +237,7 @@ const fTTable = (listSummaryPurchaseDetail) => {
               summary={() => (
                 <Table.Summary fixed>
                   <Table.Summary.Row>
-                    <Table.Summary.Cell
-                      key="1"
-                      // colSpan="2"
-                      className="bold"
-                    >
+                    <Table.Summary.Cell key="1" colSpan="2" className="bold">
                       {i18n.t("total")}
                     </Table.Summary.Cell>
                     <Table.Summary.Cell key="2" className="bold">
@@ -316,6 +332,12 @@ const columns = [
     dataIndex: "fishType",
     key: "fishType",
     render: (fishType) => <span>{fishType && fishType.fishName}</span>,
+  },
+  {
+    title: i18n.t("buyPirce"),
+    render: (cell, row) => (
+      <Widgets.NumberFormat needSuffix={false} value={row.price / row.weight} />
+    ),
   },
   {
     title: i18n.t("fishWeight"),

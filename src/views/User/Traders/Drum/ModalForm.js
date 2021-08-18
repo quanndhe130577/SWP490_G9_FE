@@ -63,13 +63,13 @@ const ModalEdit = ({ isShow, closeModal, mode, user, trucks, currentDrum }) => {
               onChange={(e) => handleChangeDrum(e, "number")}
             />
           </Col>
-          <Col md="6" xs="12">
+          {/* <Col md="6" xs="12">
             <Widgets.Text
               label={i18n.t("type")}
               value={drum.type || ""}
               onChange={(e) => handleChangeDrum(e, "type")}
             />
-          </Col>
+          </Col> */}
           <Col md="6" xs="12">
             <Widgets.Select
               required={true}

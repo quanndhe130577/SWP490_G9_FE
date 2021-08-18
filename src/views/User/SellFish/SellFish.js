@@ -318,20 +318,20 @@ const SellFish = (props) => {
                 <i className="fa fa-trash mr-1" />
                 {i18n.t("deleteTrans")}
               </Button>
-            ) : showBtnDelete(trans) === "Completed" ? (
-              <Button
-                color="info"
-                onClick={() => {
-                  setCurrentTransId(trans.trader.transId);
-                  setCurrentTraderId(trans.trader.id);
-                  setShowCloseTrans(true);
-                }}
-              >
-                <i className="fa fa-info-circle mr-1" />
-                {i18n.t("viewDetail")}
-              </Button>
             ) : (
-              ""
+              showBtnDelete(trans) === "Completed" && (
+                <Button
+                  color="info"
+                  onClick={() => {
+                    setCurrentTransId(trans.trader.transId);
+                    setCurrentTraderId(trans.trader.id);
+                    setShowCloseTrans(true);
+                  }}
+                >
+                  <i className="fa fa-info-circle mr-1" />
+                  {i18n.t("viewDetail")}
+                </Button>
+              )
             )}
           </span>
         </div>
