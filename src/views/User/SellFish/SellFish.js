@@ -398,7 +398,7 @@ const SellFish = (props) => {
       let dateTrans = helper.getDateFormat(listTransaction[0].date, "ddmmyyyy");
       let dateToday = new Date();
       let hourToday = moment(dateToday).format("HH");
-      if (parseInt(hourToday) <= 17) {
+      if (parseInt(hourToday) <= 0) {
         dateToday = moment(dateToday).subtract(1, "days");
       }
       dateToday = helper.getDateFormat(dateToday, "ddmmyyyy");

@@ -36,16 +36,15 @@ const ModalEdit = ({ isShow, closeModal, mode, currentEmp }) => {
         helper.toast("error", valid.message);
         return;
       }
-
       if (mode === "create") {
         rs = await apis.createEmployee({
           name: employee.name,
           address: employee.address,
           phoneNumber: employee.phoneNumber,
-          dob: employee.dob,
+          dob: employee.dob || new Date(),
           traderID: user.userID,
           salary: employee.salary,
-          startDate: employee.startDate,
+          startDate: employee.startDate || new Date(),
         });
       } else if (mode === "edit") {
         rs = await apis.updateEmployee(employee);
