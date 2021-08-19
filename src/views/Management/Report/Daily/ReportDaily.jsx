@@ -169,9 +169,10 @@ const ReportDaily = () => {
           </Col>
         </Row>
         <Row>
-          <Col md="6">
+          {user && user.roleName === "Trader" && (<Col md="6">
             <h4 className="title-rp">{i18n.t("buyFish")}</h4>
-          </Col>
+          </Col>)}
+
           <Col md="6">
             <h4 className="title-rp">{i18n.t("sellFish")}</h4>
           </Col>

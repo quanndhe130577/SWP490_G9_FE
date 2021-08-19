@@ -246,9 +246,9 @@ const ModalCloseSell = ({
                       param={param}
                       isLast={idx === listTransaction.length - 1}
                       handleRemain={(ele) => {
-                        debugger;
                         setRemain(ele);
                       }}
+                      traderId={traderId}
                       disabledBtn={currentTransaction.status === "Completed"}
                     />
                   ))}
