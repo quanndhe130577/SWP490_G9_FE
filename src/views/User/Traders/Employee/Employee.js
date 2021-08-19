@@ -78,16 +78,17 @@ export default class Employee extends Component {
         <Menu.Item key="1">
           <Button
             color="info"
-            className="mr-2"
+            className="mr-2 w-100"
             onClick={() => this.onClickBtnAction("edit", id, row)}
           >
             <i className="fa fa-pencil-square-o mr-1" />
-            {i18n.t(row.status === "Đang làm" ? "edit" : "view")}
+            {i18n.t(row.status === "Đang làm" ? "edit" : "viewDetail")}
           </Button>
         </Menu.Item>
         <Menu.Item key="2">
           <Button
             color="danger"
+            className="w-100"
             onClick={() => this.onClickBtnAction("delete", id)}
           >
             <i className="fa fa-trash-o mr-1" />
@@ -97,7 +98,7 @@ export default class Employee extends Component {
         {emp.status === "Đang làm" ? (
           <Menu.Item key="3">
             <Button
-              className="deactive"
+              className="deactive w-100"
               onClick={() => this.onClickBtnAction("deactive", id)}
             >
               <i className="fa fa-times mr-1" />
@@ -107,7 +108,7 @@ export default class Employee extends Component {
         ) : (
           <Menu.Item key="4">
             <Button
-              className="active"
+              className="active w-100"
               onClick={() => this.onClickBtnAction("active", id)}
             >
               <i className="fa fa-check-square mr-1" />
@@ -271,9 +272,9 @@ export default class Employee extends Component {
       } else {
         return record[dataIndex]
           ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+              .toString()
+              .toLowerCase()
+              .includes(value.toLowerCase())
           : "";
       }
     },
@@ -383,7 +384,7 @@ export default class Employee extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentEmp={currentEmp || {}}
-          // handleChangePondOwner={handleChangePondOwner}
+            // handleChangePondOwner={handleChangePondOwner}
           />
         )}
         <Row>

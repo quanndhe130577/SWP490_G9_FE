@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "reactstrap";
 import { apis, local, helper } from "../../../services";
-import { Card, Table, Tag } from "antd";
+import { Card, Table, Tag, DatePicker, Input, Space } from "antd";
 import i18n from "i18next";
 import { useHistory } from "react-router-dom";
 import Moment from "react-moment";
 import NumberFormat from "react-number-format";
 import { session } from "../../../services";
-
+import moment from "moment";
+import { SearchOutlined } from "@ant-design/icons";
 const ManaSell = () => {
   let history = useHistory();
   // const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(true);
   const [transaction, setTransaction] = useState([]);
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const [isShowModal, setIsShowModal] = useState(false);
   const user = session.get("user");
 
   async function onClickBtn(mode, id, row) {
@@ -46,7 +50,101 @@ const ManaSell = () => {
       }
     }
   }
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
 
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText("");
+  };
+  const getColumnSearchProps = (dataIndex, isDate = false) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div style={{ padding: 8 }}>
+        {isDate ? (
+          <DatePicker
+            value={selectedKeys[0]}
+            onChange={(e) => {
+              let t = moment(e, "DD/MM/YYYY");
+              setSelectedKeys(e ? [t] : []);
+              handleSearch(selectedKeys, confirm, dataIndex);
+            }}
+            onPressEnter={() => {
+              handleSearch(selectedKeys, confirm, dataIndex);
+            }}
+            format={"DD/MM/YYYY"}
+            style={{ marginBottom: 8, display: "block" }}
+          />
+        ) : (
+          <Input
+            ref={(node) => {
+              // eslint-disable-next-line no-const-assign
+              // searchInput = node;
+            }}
+            placeholder={`${i18n.t("Search")} ${i18n.t(dataIndex)}`}
+            value={selectedKeys[0]}
+            onChange={(e) => {
+              setSelectedKeys(e.target.value ? [e.target.value] : []);
+            }}
+            onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            style={{ marginBottom: 8, display: "block" }}
+          />
+        )}
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Tìm
+          </Button>
+          <Button
+            onClick={() => handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Đặt lại
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+    ),
+    onFilter: (value, record) => {
+      if (isDate) {
+        let x = moment(moment(value).format("DD/MM/YYYY"), "DD/MM/YYYY");
+        let y = moment(
+          moment(record[dataIndex]).format("DD/MM/YYYY"),
+          "DD/MM/YYYY"
+        );
+
+        return record[dataIndex] ? x.isSame(y, "day") : "";
+      } else {
+        return record[dataIndex]
+          ? record[dataIndex]
+              .toString()
+              .toLowerCase()
+              .includes(value.toLowerCase())
+          : "";
+      }
+    },
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        // setTimeout(() => this.searchInput.select(), 100);
+      }
+    },
+    render: (text) => (searchedColumn === dataIndex ? <div>{text}</div> : text),
+  });
   // function renderBtnAction(id, row) {
   //   return (
   //     <Menu>
@@ -88,9 +186,9 @@ const ManaSell = () => {
       title: i18n.t("Ngày tạo"),
       dataIndex: "date",
       key: "date",
-      // ...this.getColumnSearchProps("date"),
-      sorter: (a, b) => a.date.length - b.date.length,
-      sortDirections: ["descend", "ascend"],
+      ...getColumnSearchProps("date", true),
+      // sorter: (a, b) => a.date.length - b.date.length,
+      // sortDirections: ["descend", "ascend"],
       render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
     },
     {
@@ -235,6 +333,7 @@ const ManaSell = () => {
       </Row>
     );
   };
+
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
