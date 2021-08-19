@@ -157,21 +157,29 @@ const ReportDaily = () => {
               <RemainTable remainTotal={remainTotal} />
             )}
         </Row>
+        {data.tongThu - data.tongChi > 0 ? (
+          <Row>
+            <Col md="6">
+              <h4 className="mt-4 mb-0 d-flex">
+                <span>{i18n.t("profit") + ": "}</span>
+                <span
+                  className={handleStyleProfit(data.tongThu - data.tongChi)}
+                >
+                  {new Intl.NumberFormat().format(data.tongThu - data.tongChi) +
+                    " VND"}
+                </span>
+              </h4>
+            </Col>
+          </Row>
+        ) : (
+          ""
+        )}
         <Row>
-          <Col md="6">
-            <h4 className="mt-4 mb-0 d-flex">
-              <span>{i18n.t("profit") + ": "}</span>
-              <span className={handleStyleProfit(data.tongThu - data.tongChi)}>
-                {new Intl.NumberFormat().format(data.tongThu - data.tongChi) +
-                  " VND"}
-              </span>
-            </h4>
-          </Col>
-        </Row>
-        <Row>
-          {user && user.roleName === "Trader" && (<Col md="6">
-            <h4 className="title-rp">{i18n.t("buyFish")}</h4>
-          </Col>)}
+          {user && user.roleName === "Trader" && (
+            <Col md="6">
+              <h4 className="title-rp">{i18n.t("buyFish")}</h4>
+            </Col>
+          )}
 
           <Col md="6">
             <h4 className="title-rp">{i18n.t("sellFish")}</h4>

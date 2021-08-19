@@ -33,7 +33,7 @@ const Login = (props) => {
           user: rs.data.user,
         });
         helper.toast("success", i18n.t("loginSuccess" || "systemError"));
-        props.history.push("home");
+        props.history.push("dailyReport");
       }
     } catch (error) {
       helper.toast("error", i18n.t("systemError"));
