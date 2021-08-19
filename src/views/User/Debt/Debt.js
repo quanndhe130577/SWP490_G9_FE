@@ -184,6 +184,16 @@ export default class Debt extends Component {
         render: (text) => <label>{text}</label>,
       },
       {
+        title: i18n.t("time"),
+        dataIndex: "date",
+        key: "date",
+        ...this.getColumnSearchProps("date"),
+        sorter: (a, b) =>
+          moment(a.date).unix() - moment(b.date).unix(),
+        sortDirections: ["descend", "ascend"],
+        render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
+      },
+      {
         title: i18n.t("pondOwner"),
         dataIndex: "partner",
         key: "partner",
@@ -205,16 +215,6 @@ export default class Debt extends Component {
             thousandSeparator={true}
           />
         ),
-      },
-      {
-        title: i18n.t("Date"),
-        dataIndex: "date",
-        key: "date",
-        ...this.getColumnSearchProps("date"),
-        sorter: (a, b) =>
-          moment(a.date).unix() - moment(b.date).unix(),
-        sortDirections: ["descend", "ascend"],
-        render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
       },
       {
         title: i18n.t("action"),
@@ -241,6 +241,16 @@ export default class Debt extends Component {
         width: 60,
 
         render: (text) => <label>{text}</label>,
+      },
+      {
+        title: i18n.t("time"),
+        dataIndex: "date",
+        key: "date",
+        ...this.getColumnSearchProps("date"),
+        sorter: (a, b) =>
+          moment(a.date).unix() - moment(b.date).unix(),
+        sortDirections: ["descend", "ascend"],
+        render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
       },
       {
         title: i18n.t("buyer"),
@@ -280,16 +290,6 @@ export default class Debt extends Component {
             thousandSeparator={true}
           />
         ),
-      },
-      {
-        title: i18n.t("Date"),
-        dataIndex: "date",
-        key: "date",
-        ...this.getColumnSearchProps("date"),
-        sorter: (a, b) =>
-          moment(a.date).unix() - moment(b.date).unix(),
-        sortDirections: ["descend", "ascend"],
-        render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
       },
       {
         title: i18n.t("action"),
