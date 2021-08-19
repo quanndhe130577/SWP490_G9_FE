@@ -74,6 +74,7 @@ const ModalBaseSalaries = ({
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => getBaseSalaries(), []);
+  console.log(currentEmp)
   return (
     <Modal
       title={"Lương của " + name}
@@ -81,21 +82,25 @@ const ModalBaseSalaries = ({
       visible={isShow}
       onCancel={() => closeModal(true)}
     >
-      <Row className="pb-3">
-        <Col md="6" xs="12">
-          <Widgets.MoneyInput
-            required={true}
-            value={salary}
-            defaultValue={salary}
-            onChange={(e) => setSalary(e)}
-          />
-        </Col>
-        <Col md="6" xs="12">
-          <Button type="primary" onClick={handleOk}>
-            Lưu
-          </Button>
-        </Col>
-      </Row>
+      {
+        currentEmp.leaved ? "" :
+          <Row className="pb-3">
+            <Col md="6" xs="12">
+              <Widgets.MoneyInput
+                required={true}
+                value={salary}
+                defaultValue={salary}
+                onChange={(e) => setSalary(e)}
+              />
+            </Col>
+            <Col md="6" xs="12">
+              <Button type="primary" onClick={handleOk}>
+                Lưu
+              </Button>
+            </Col>
+          </Row>
+      }
+
       <Table
         bordered
         columns={columns}
