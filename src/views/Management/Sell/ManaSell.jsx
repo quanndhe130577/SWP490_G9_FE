@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "reactstrap";
 import { apis, local, helper } from "../../../services";
