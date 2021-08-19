@@ -130,9 +130,19 @@ const ModalCloseSell = ({
   }
 
   useEffect(() => {
+    // debugger;
     if (traderId || user.roleName === "Trader") {
       handleChangeTran("traderId", traderId || user.userID, transId);
     }
+
+    return () => {
+      setCurrentTransaction({
+        fishInPurchase: [],
+      });
+      setRemain([]);
+      setTotal({});
+      setParam("");
+    };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [traderId]);

@@ -312,7 +312,8 @@ const SellFish = (props) => {
               <Button
                 color="danger"
                 onClick={(e) =>
-                  deleteTrans({ transactionId: trans.trader.transId })
+                  // deleteTrans({ transactionId: trans.trader.transId })
+                  deleteTrans({ transactionId: trans.id })
                 }
               >
                 <i className="fa fa-trash mr-1" />
@@ -323,7 +324,7 @@ const SellFish = (props) => {
                 <Button
                   color="info"
                   onClick={() => {
-                    setCurrentTransId(trans.trader.transId);
+                    setCurrentTransId(trans.id);
                     setCurrentTraderId(trans.trader.id);
                     setShowCloseTrans(true);
                   }}
@@ -464,6 +465,7 @@ const SellFish = (props) => {
             handleCloseModal={() => {
               setShowCloseTrans(false);
               setCurrentTraderId("");
+              setCurrentTransId("");
             }}
             handleCloseTrans={handleCloseTrans}
             traderId={currentTraderId}
@@ -471,7 +473,7 @@ const SellFish = (props) => {
               setCurrentTraderId("");
               setCurrentTransId("");
             }}
-            transId={currentTransId}
+            transId={currentTransId || ""}
           />
         )}
         {isShowChooseTraders && user.roleName !== "Trader" && (
