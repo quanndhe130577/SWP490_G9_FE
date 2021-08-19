@@ -683,25 +683,31 @@ const BuyFish = (props) => {
       {!isShowChoosePond && (
         <Card title={renderTitle()} className="body-minH">
           <Row className="mb-2" style={{ minHeight: "6vh" }}>
-            <Col md="4">
-              <Widgets.Select
-                label={i18n.t("pondOwner") + ": "}
-                value={parseInt(currentPurchase.pondOwnerId)}
-                items={dataDf.pondOwner}
-                displayField="name"
-                saveField="id"
-                isDisable={currentPurchase.status === "Completed"}
-                onChange={(value) => onChangePondOwner(value)}
-                needPleaseChose={false}
-                width={"75%"}
-              />
+            {currentPurchase.pondOwnerId ? (
+              <Col md="4">
+                <Widgets.Select
+                  label={i18n.t("pondOwner") + ": "}
+                  value={parseInt(currentPurchase.pondOwnerId)}
+                  items={dataDf.pondOwner}
+                  displayField="name"
+                  saveField="id"
+                  isDisable={currentPurchase.status === "Completed"}
+                  onChange={(value) => onChangePondOwner(value)}
+                  needPleaseChose={false}
+                  width={"75%"}
+                />
 
-              {/* <label>
+                {/* <label>
                   <b className="mr-2">{i18n.t("pondOwner")}:</b>
                   { //nếu ko có id thì dùng hàm findPO  }
                   {(findPO() && findPO().name) || currentPurchase.pondOwnerName}
                 </label> */}
-            </Col>
+              </Col>
+            ) : (
+              <h4 className="ml-3" style={{ color: "#096dd9" }}>
+                Cá cũ
+              </h4>
+            )}
             <Col md="2" />
             {/* nếu status khac Pending thì ko show btn thêm */}
             {currentPurchase.status === "Pending" && (

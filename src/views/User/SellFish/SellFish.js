@@ -354,8 +354,8 @@ const SellFish = (props) => {
   }
   async function deleteTrans(transactionId) {
     try {
-      helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
-        if (rs) {
+      helper.confirm(i18n.t("confirmDelete")).then(async (res) => {
+        if (res) {
           let rs = await apis.deleteTrans(transactionId);
           if (rs && rs.statusCode === 200) {
             getAllTransByDate(date, {}, true);

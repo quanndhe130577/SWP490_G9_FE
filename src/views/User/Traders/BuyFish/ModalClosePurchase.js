@@ -30,13 +30,14 @@ const ModalClosePurchase = ({
     let { pondOwnerName, totalAmount, totalWeight } = currentPurchase;
     helper
       .confirm(
-        "Bạn sẽ chốt đơn mua tại ao của: " +
-          pondOwnerName +
-          ", với khối lượng cá " +
-          totalWeight +
-          "(Kg), số tiền " +
-          new Intl.NumberFormat().format(totalAmount) +
-          " (Vnd) ?"
+        `<div>
+        <div style = { textAlign: "center" }>
+          Thông tin đơn mua
+  </div>
+  <div><span style={width:"50%"}>Chủ ao:</span> <span>${pondOwnerName}</span></div>
+  <div>Khối lượng cá: ${totalWeight} Kg</div>
+  <div>Số tiền: ${new Intl.NumberFormat().format(totalAmount)} VND</div>
+</div >`
       )
       .then((cf) => {
         if (cf) {

@@ -12,6 +12,7 @@ const RenderTB = ({
   isLast,
   handleRemain,
   disabledBtn = false,
+  traderId,
 }) => {
   const [total, setTotal] = useState({});
   const [currentTransaction, setCurrentTransaction] = useState({
@@ -150,7 +151,7 @@ const RenderTB = ({
   ];
   return (
     <>
-      {isLast && (
+      {isLast && !traderId && (
         <Col md="12" className="mb-4">
           <b>Số cá còn lại</b>
           <Table

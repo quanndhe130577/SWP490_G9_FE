@@ -7,6 +7,7 @@ import NumberFormat from "react-number-format";
 import { Button, Col, Row } from "reactstrap";
 import { apis, helper, session } from "../../../services";
 import Moment from "react-moment";
+import moment from "moment";
 const { TabPane } = Tabs;
 
 export default class Debt extends Component {
@@ -113,9 +114,9 @@ export default class Debt extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -172,20 +173,8 @@ export default class Debt extends Component {
     this.setState({ mode: state });
     this.fetchDebtByMode(state);
   };
-  // renderTabBar = (props, DefaultTabBar) => {
-  //   console.log(props, DefaultTabBar)
-  //   return (
-  //     <div>
-  //       <div>{props.panes.map(item => item)}</div>
-  //       {({ style }) => (
-  //         <DefaultTabBar {...props} className="site-custom-tab-bar" style={{ ...style }} />
-  //       )}
-  //     </div>
-  //   )
-  // };
-  render() {
-    const { data, loading } = this.state;
-    const columns = [
+  getColum() {
+    return this.state.mode === "purchase" ? [
       {
         title: i18n.t("INDEX"),
         dataIndex: "idx",
@@ -195,14 +184,11 @@ export default class Debt extends Component {
         render: (text) => <label>{text}</label>,
       },
       {
-        title:
-          this.state.mode === "purchase"
-            ? i18n.t("pondOwner")
-            : i18n.t("buyer"),
+        title: i18n.t("pondOwner"),
         dataIndex: "partner",
         key: "partner",
         ...this.getColumnSearchProps("debtor"),
-        sorter: (a, b) => a.debtor.length - b.debtor.length,
+        sorter: (a, b) => a.partner.length - b.partner.length,
         sortDirections: ["descend", "ascend"],
       },
       {
@@ -225,7 +211,8 @@ export default class Debt extends Component {
         dataIndex: "date",
         key: "date",
         ...this.getColumnSearchProps("date"),
-        sorter: (a, b) => a.date.length - b.date.length,
+        sorter: (a, b) =>
+          moment(a.date).unix() - moment(b.date).unix(),
         sortDirections: ["descend", "ascend"],
         render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
       },
@@ -246,7 +233,85 @@ export default class Debt extends Component {
           </Button>
         ),
       },
-    ];
+    ] : [
+      {
+        title: i18n.t("INDEX"),
+        dataIndex: "idx",
+        key: "idx",
+        width: 60,
+
+        render: (text) => <label>{text}</label>,
+      },
+      {
+        title: i18n.t("buyer"),
+        dataIndex: "partner",
+        key: "partner",
+        ...this.getColumnSearchProps("debtor"),
+        sorter: (a, b) => a.partner.length - b.partner.length,
+        sortDirections: ["descend", "ascend"],
+      },
+      {
+        title: i18n.t("fishName"),
+        dataIndex: "fishName",
+        key: "fishName",
+        ...this.getColumnSearchProps("fishName"),
+        sorter: (a, b) => a.fishName.length - b.fishName.length,
+        sortDirections: ["descend", "ascend"],
+      },
+      {
+        title: i18n.t("weight"),
+        dataIndex: "weight",
+        key: "weight",
+        ...this.getColumnSearchProps("weight"),
+        sorter: (a, b) => a.weight - b.weight,
+        sortDirections: ["descend", "ascend"],
+      },
+      {
+        title: i18n.t("Debt Money") + i18n.t("(suffix)"),
+        dataIndex: "amount",
+        key: "amount",
+        ...this.getColumnSearchProps("amount"),
+        sorter: (a, b) => a.amount - b.amount,
+        sortDirections: ["descend", "ascend"],
+        render: (debtMoney) => (
+          <NumberFormat
+            value={debtMoney}
+            displayType={"text"}
+            thousandSeparator={true}
+          />
+        ),
+      },
+      {
+        title: i18n.t("Date"),
+        dataIndex: "date",
+        key: "date",
+        ...this.getColumnSearchProps("date"),
+        sorter: (a, b) =>
+          moment(a.date).unix() - moment(b.date).unix(),
+        sortDirections: ["descend", "ascend"],
+        render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
+      },
+      {
+        title: i18n.t("action"),
+        dataIndex: "id",
+        key: "id",
+        render: (id) => (
+          <Button
+            color="info"
+            className="mr-2"
+            onClick={() => this.onClick(id)}
+          >
+            <i className="fa fa-pencil-square-o mr-1" />
+            {this.state.mode === "purchase"
+              ? i18n.t("PurchaseIsPaid")
+              : i18n.t("TransactionIsPaid")}
+          </Button>
+        ),
+      },
+    ]
+  }
+  render() {
+    const { data, loading } = this.state;
     return (
       <Card title={this.renderTitle()} className="body-minH">
         <Row>
@@ -265,7 +330,7 @@ export default class Debt extends Component {
                   >
                     <Table
                       bordered
-                      columns={columns}
+                      columns={this.getColum()}
                       dataSource={data}
                       pagination={{ pageSize: 10 }}
                       scroll={{ y: 600 }}
@@ -276,7 +341,7 @@ export default class Debt extends Component {
                   <TabPane tab={i18n.t("Purchase Debt")} key="purchase">
                     <Table
                       bordered
-                      columns={columns}
+                      columns={this.getColum()}
                       dataSource={data}
                       pagination={{ pageSize: 10 }}
                       scroll={{ y: 600 }}
@@ -288,7 +353,7 @@ export default class Debt extends Component {
               ) : (
                 <Table
                   bordered
-                  columns={columns}
+                  columns={this.getColum()}
                   dataSource={data}
                   pagination={{ pageSize: 10 }}
                   scroll={{ y: 600 }}
