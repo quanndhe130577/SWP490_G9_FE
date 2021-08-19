@@ -32,11 +32,11 @@ helper.renameKey = (obj, old_key, new_key) => {
       delete obj[old_key];
     }
 };
-helper.confirm = (content) => {
+helper.confirm = (content, icon = "question") => {
   return new Promise((resolve, reject) => {
     Swal.fire({
       title: content,
-      icon: "question",
+      icon: icon,
       showCancelButton: true,
       confirmButtonColor: "#17a2b8",
       cancelButtonColor: "#e67e22",
