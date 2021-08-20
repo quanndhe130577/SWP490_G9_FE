@@ -37,7 +37,7 @@ const ModalCloseSell = ({
           if (!check) {
             let { commissionUnit, tranId } = currentTransaction;
 
-            remain.map((e) => alert(e.realWeight));
+            // remain.map((e) => alert(e.realWeight));
             if (handleCloseTrans) {
               handleCloseTrans({
                 commissionUnit,
