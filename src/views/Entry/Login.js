@@ -9,8 +9,8 @@ import session from "../../services/session";
 
 const Login = (props) => {
   const dispatch = useDispatch();
-  const [phoneNumber, setPhoneNumber] = useState("0312345678");
-  const [password, setPassword] = useState("12345678");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loggingIn, setLoggingIn] = useState(false);
 
@@ -33,7 +33,7 @@ const Login = (props) => {
           user: rs.data.user,
         });
         helper.toast("success", i18n.t("loginSuccess" || "systemError"));
-        props.history.push("home");
+        props.history.push("dailyReport");
       }
     } catch (error) {
       helper.toast("error", i18n.t("systemError"));
@@ -99,14 +99,14 @@ const Login = (props) => {
                       <span>{i18n.t("Login")}</span>
                     )}
                   </button>
-                  <button
+                  {/* <button
                     onClick={(e) => {
                       setPhoneNumber("0357708915");
                       // handleSubmit(e);
                     }}
                   >
                     trader
-                  </button>
+                  </button> */}
                   <div className="ml-3 d-flex align-items-base">
                     <label className="pb-0">{i18n.t("or")}</label>
                     <Link to="/register" className="btn btn-link p-1">

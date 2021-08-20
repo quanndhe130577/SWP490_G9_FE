@@ -236,9 +236,9 @@ const ManaBuy = () => {
       key: "date",
       ...getColumnSearchProps("date", true),
 
-      sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
+      // sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
 
-      sortDirections: ["descend", "ascend"],
+      // sortDirections: ["descend", "ascend"],
       render: (value, row, index) => {
         // if (index === 0) {
         //   currentDate = "";
