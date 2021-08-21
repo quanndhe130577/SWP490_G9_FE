@@ -35,6 +35,7 @@ const ModalClosePurchase = ({
         )} VND</div></div>`
       )
       .then((cf) => {
+        debugger;
         if (cf) {
           setLoading(true);
           if (handleClosePurchase) {
@@ -234,6 +235,14 @@ const ModalClosePurchase = ({
                 currentPurchase.totalAmount - currentPurchase.commission ||
                 ""
               }
+            />
+          </Col>
+          <Col md="6">
+            <Widgets.MoneyInput
+              label={"Trả trước: "}
+              value={currentPurchase.sentMoney || ""}
+              onChange={(val) => handlePurchase("sentMoney", val)}
+              disabled={mode === "view"}
             />
           </Col>
           {/* <Col md="6">

@@ -99,6 +99,7 @@
   "payStatus": "Trạng thái thanh toán",
   "paid": "Đã thanh toán",
   "isNotPaid": "Chưa thanh toán",
+  "isNotDone": "Chưa hoàn tất",
   "(suffix)": " (VND)",
   "sellGood": "Bán hàng",
   "trader": "Thương lái",
@@ -254,5 +255,6 @@
   "chose-image": "Chọn một ảnh",
   "cfOverWeightSellFish": "Số lượng cá bạn muốn bán lớn hơn số lượng còn lại, bạn có chắc chắn không?",
   "profit": "Lợi nhuận",
-  "buyPirce": "Giá mua"
+  "buyPirce": "Giá mua",
+  "time": "Thời gian"
 }

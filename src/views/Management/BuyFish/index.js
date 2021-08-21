@@ -306,7 +306,7 @@ const ManaBuy = () => {
       title: i18n.t("statusPaid"),
       dataIndex: "isPaid",
       key: "isPaid",
-      render: (isPaid) => helper.tag(isPaid ? "isPaid" : "notPaid", "w-140px"),
+      render: (isPaid) => helper.tag(isPaid ? "isPaid" : "isNotDone", "w-140px"),
     },
     {
       title: i18n.t("statusBuy"),

@@ -114,9 +114,9 @@ export default class Debt extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -174,141 +174,141 @@ export default class Debt extends Component {
     this.fetchDebtByMode(state);
   };
   getColum() {
-    return this.state.mode === "purchase" ? [
-      {
-        title: i18n.t("INDEX"),
-        dataIndex: "idx",
-        key: "idx",
-        width: 60,
+    return this.state.mode === "purchase"
+      ? [
+          {
+            title: i18n.t("INDEX"),
+            dataIndex: "idx",
+            key: "idx",
+            width: 60,
 
-        render: (text) => <label>{text}</label>,
-      },
-      {
-        title: i18n.t("pondOwner"),
-        dataIndex: "partner",
-        key: "partner",
-        ...this.getColumnSearchProps("debtor"),
-        sorter: (a, b) => a.partner.length - b.partner.length,
-        sortDirections: ["descend", "ascend"],
-      },
-      {
-        title: i18n.t("Debt Money") + i18n.t("(suffix)"),
-        dataIndex: "amount",
-        key: "amount",
-        ...this.getColumnSearchProps("amount"),
-        sorter: (a, b) => a.amount - b.amount,
-        sortDirections: ["descend", "ascend"],
-        render: (debtMoney) => (
-          <NumberFormat
-            value={debtMoney}
-            displayType={"text"}
-            thousandSeparator={true}
-          />
-        ),
-      },
-      {
-        title: i18n.t("Date"),
-        dataIndex: "date",
-        key: "date",
-        ...this.getColumnSearchProps("date"),
-        sorter: (a, b) =>
-          moment(a.date).unix() - moment(b.date).unix(),
-        sortDirections: ["descend", "ascend"],
-        render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
-      },
-      {
-        title: i18n.t("action"),
-        dataIndex: "id",
-        key: "id",
-        render: (id) => (
-          <Button
-            color="info"
-            className="mr-2"
-            onClick={() => this.onClick(id)}
-          >
-            <i className="fa fa-pencil-square-o mr-1" />
-            {this.state.mode === "purchase"
-              ? i18n.t("PurchaseIsPaid")
-              : i18n.t("TransactionIsPaid")}
-          </Button>
-        ),
-      },
-    ] : [
-      {
-        title: i18n.t("INDEX"),
-        dataIndex: "idx",
-        key: "idx",
-        width: 60,
+            render: (text) => <label>{text}</label>,
+          },
+          {
+            title: i18n.t("time"),
+            dataIndex: "date",
+            key: "date",
+            ...this.getColumnSearchProps("date"),
+            sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
+            sortDirections: ["descend", "ascend"],
+            render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
+          },
+          {
+            title: i18n.t("pondOwner"),
+            dataIndex: "partner",
+            key: "partner",
+            ...this.getColumnSearchProps("debtor"),
+            sorter: (a, b) => a.partner.length - b.partner.length,
+            sortDirections: ["descend", "ascend"],
+          },
+          {
+            title: i18n.t("Debt Money") + i18n.t("(suffix)"),
+            dataIndex: "amount",
+            key: "amount",
+            ...this.getColumnSearchProps("amount"),
+            sorter: (a, b) => a.amount - b.amount,
+            sortDirections: ["descend", "ascend"],
+            render: (debtMoney) => (
+              <NumberFormat
+                value={debtMoney}
+                displayType={"text"}
+                thousandSeparator={true}
+              />
+            ),
+          },
+          {
+            title: i18n.t("action"),
+            dataIndex: "id",
+            key: "id",
+            render: (id) => (
+              <Button
+                color="info"
+                className="mr-2"
+                onClick={() => this.onClick(id)}
+              >
+                <i className="fa fa-pencil-square-o mr-1" />
+                {this.state.mode === "purchase"
+                  ? i18n.t("PurchaseIsPaid")
+                  : i18n.t("TransactionIsPaid")}
+              </Button>
+            ),
+          },
+        ]
+      : [
+          {
+            title: i18n.t("INDEX"),
+            dataIndex: "idx",
+            key: "idx",
+            width: 60,
 
-        render: (text) => <label>{text}</label>,
-      },
-      {
-        title: i18n.t("buyer"),
-        dataIndex: "partner",
-        key: "partner",
-        ...this.getColumnSearchProps("debtor"),
-        sorter: (a, b) => a.partner.length - b.partner.length,
-        sortDirections: ["descend", "ascend"],
-      },
-      {
-        title: i18n.t("fishName"),
-        dataIndex: "fishName",
-        key: "fishName",
-        ...this.getColumnSearchProps("fishName"),
-        sorter: (a, b) => a.fishName.length - b.fishName.length,
-        sortDirections: ["descend", "ascend"],
-      },
-      {
-        title: i18n.t("weight"),
-        dataIndex: "weight",
-        key: "weight",
-        ...this.getColumnSearchProps("weight"),
-        sorter: (a, b) => a.weight - b.weight,
-        sortDirections: ["descend", "ascend"],
-      },
-      {
-        title: i18n.t("Debt Money") + i18n.t("(suffix)"),
-        dataIndex: "amount",
-        key: "amount",
-        ...this.getColumnSearchProps("amount"),
-        sorter: (a, b) => a.amount - b.amount,
-        sortDirections: ["descend", "ascend"],
-        render: (debtMoney) => (
-          <NumberFormat
-            value={debtMoney}
-            displayType={"text"}
-            thousandSeparator={true}
-          />
-        ),
-      },
-      {
-        title: i18n.t("Date"),
-        dataIndex: "date",
-        key: "date",
-        ...this.getColumnSearchProps("date"),
-        sorter: (a, b) =>
-          moment(a.date).unix() - moment(b.date).unix(),
-        sortDirections: ["descend", "ascend"],
-        render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
-      },
-      {
-        title: i18n.t("action"),
-        dataIndex: "id",
-        key: "id",
-        render: (id) => (
-          <Button
-            color="info"
-            className="mr-2"
-            onClick={() => this.onClick(id)}
-          >
-            <i className="fa fa-pencil-square-o mr-1" />
-            {this.state.mode === "purchase"
-              ? i18n.t("PurchaseIsPaid")
-              : i18n.t("TransactionIsPaid")}
-          </Button>
-        ),
-      },
-    ]
+            render: (text) => <label>{text}</label>,
+          },
+          {
+            title: i18n.t("time"),
+            dataIndex: "date",
+            key: "date",
+            ...this.getColumnSearchProps("date"),
+            sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
+            sortDirections: ["descend", "ascend"],
+            render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
+          },
+          {
+            title: i18n.t("buyer"),
+            dataIndex: "partner",
+            key: "partner",
+            ...this.getColumnSearchProps("debtor"),
+            sorter: (a, b) => a.partner.length - b.partner.length,
+            sortDirections: ["descend", "ascend"],
+          },
+          {
+            title: i18n.t("fishName"),
+            dataIndex: "fishName",
+            key: "fishName",
+            ...this.getColumnSearchProps("fishName"),
+            sorter: (a, b) => a.fishName.length - b.fishName.length,
+            sortDirections: ["descend", "ascend"],
+          },
+          {
+            title: i18n.t("weight"),
+            dataIndex: "weight",
+            key: "weight",
+            ...this.getColumnSearchProps("weight"),
+            sorter: (a, b) => a.weight - b.weight,
+            sortDirections: ["descend", "ascend"],
+          },
+          {
+            title: i18n.t("Debt Money") + i18n.t("(suffix)"),
+            dataIndex: "amount",
+            key: "amount",
+            ...this.getColumnSearchProps("amount"),
+            sorter: (a, b) => a.amount - b.amount,
+            sortDirections: ["descend", "ascend"],
+            render: (debtMoney) => (
+              <NumberFormat
+                value={debtMoney}
+                displayType={"text"}
+                thousandSeparator={true}
+              />
+            ),
+          },
+          {
+            title: i18n.t("action"),
+            dataIndex: "id",
+            key: "id",
+            render: (id) => (
+              <Button
+                color="info"
+                className="mr-2"
+                onClick={() => this.onClick(id)}
+              >
+                <i className="fa fa-pencil-square-o mr-1" />
+                {this.state.mode === "purchase"
+                  ? i18n.t("PurchaseIsPaid")
+                  : i18n.t("TransactionIsPaid")}
+              </Button>
+            ),
+          },
+        ];
   }
   render() {
     const { data, loading } = this.state;
