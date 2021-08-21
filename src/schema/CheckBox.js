@@ -11,6 +11,7 @@ export default function Checkbox1({
   required = false,
   submitted,
   lblChecked,
+  className,
 }) {
   function renderLabe(valueC, lblCheckedC, txt) {
     if (lblChecked) {
@@ -21,7 +22,13 @@ export default function Checkbox1({
     return txt;
   }
   return (
-    <div className={"form-group" + (submitted && !value ? " has-error" : "")}>
+    <div
+      className={
+        "form-group" +
+        ` ${className}` +
+        (submitted && !value ? " has-error" : "")
+      }
+    >
       {label && (
         <label className="bold" style={{ width: "100%" }}>
           {label} {required ? <span style={{ color: "red" }}>*</span> : ""}
