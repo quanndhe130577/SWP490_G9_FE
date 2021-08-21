@@ -14,13 +14,13 @@ export default function Money({
   onKeyDown,
   placeholder = 0,
   step = 100,
+  className = "",
 }) {
-  //  console.log("number " + value);
-  //const [inputValue, setInputValue] = useState(value);
   return (
     <div
       className={
-        label && "form-group " + (submitted && !value ? " has-error" : "")
+        label &&
+        "form-group " + className + (submitted && !value ? " has-error" : "")
       }
       style={{ display: "flex", flexDirection: "column" }}
     >

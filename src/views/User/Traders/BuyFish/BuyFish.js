@@ -31,8 +31,6 @@ const BuyFish = (props) => {
     fishType: [],
   }); // list data of basket, drum, truck,...
   const [isShowClosePurchase, setShowClosePurchase] = useState(false);
-  // const [currentListFishTyppe, setCurrentListFishTyppe] = useState([]);
-  // const [query, setQuery] = useState({});
   const currentPurchasePROPS = useSelector(
     (state) => state.purchase.currentPurchase
   ); // data in redux
@@ -46,7 +44,6 @@ const BuyFish = (props) => {
         if (tem) {
           tem.id = currentPurchase.id;
           tem.purchaseDetailId = id;
-          //tem.purchaseId = currentPurchase.id;
           setMode("edit");
           setCurrentPurchase(Object.assign(currentPurchase, tem));
           setIsShowBuy(true);
@@ -59,8 +56,8 @@ const BuyFish = (props) => {
 
   // deletePurchaseDetail
   async function deletePurchaseDetail(purchaseDetailId) {
-    helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
-      if (rs) {
+    helper.confirm(i18n.t("confirmDelete")).then(async (res) => {
+      if (res) {
         try {
           setLoading(true);
           let rs = await apis.deletePurchaseDetail({ purchaseDetailId });
@@ -97,7 +94,7 @@ const BuyFish = (props) => {
         tem.fishType.price * (parseFloat(tem.weight) - tem.basket.weight);
       return (
         <NumberFormat
-          value={value}
+          value={value.toFixed(0)}
           displayType={"text"}
           thousandSeparator={true}
           // suffix={i18n.t("suffix")}
@@ -211,16 +208,6 @@ const BuyFish = (props) => {
     setIsShowBuy(true);
   };
 
-  // const findPO = () => {
-  //   if (currentPurchase.pondOwner && dataDf.pondOwner)
-  //     return (
-  //       dataDf.pondOwner.find(
-  //         (el) => el.id === parseInt(currentPurchase.pondOwner)
-  //       ) || {}
-  //     );
-  //   else return null;
-  // };
-
   // fetch data
   async function fetchData(query) {
     try {
@@ -233,7 +220,6 @@ const BuyFish = (props) => {
         getLastAllFTByTraderID();
       }
       getTruckByTraderID();
-      //fetchDrumByTruck(dataDf.truck.id);
       getBasketByTraderId();
       if (query && query.id) getPurchasesById(query.id);
     } catch (error) {
@@ -519,11 +505,12 @@ const BuyFish = (props) => {
 
   async function handleClosePurchase(data) {
     try {
-      let { id, commissionPercent, isPaid } = data;
+      let { id, commissionPercent, isPaid, sentMoney } = data;
       let rs = await apis.closePurchase({
         id,
         isPaid,
         commissionPercent,
+        sentMoney,
       });
       if (rs && rs.statusCode === 200) {
         helper.toast("success", i18n.t(rs.message));
@@ -565,7 +552,6 @@ const BuyFish = (props) => {
     let query = queryString.parse(props.location.search, {
       ignoreQueryPrefix: true,
     });
-
     if (query && query.id) {
       query.id = parseInt(query.id);
       // setQuery(query);
@@ -802,7 +788,7 @@ const BuyFish = (props) => {
                         </Table.Summary.Cell>
                         <Table.Summary.Cell key="3">
                           <NumberFormat
-                            value={totalAmount}
+                            value={totalAmount.toFixed(0)}
                             displayType={"text"}
                             thousandSeparator={true}
                             suffix={i18n.t("suffix")}
@@ -811,7 +797,7 @@ const BuyFish = (props) => {
                         </Table.Summary.Cell>
                         <Table.Summary.Cell colSpan="4" key="4">
                           {helper.tag(
-                            currentPurchase.isPaid ? "isPaid" : "notPaid",
+                            currentPurchase.isPaid ? "isPaid" : "isNotDone",
                             "w-140px"
                           )}
                           {currentPurchase.status === "Completed" &&

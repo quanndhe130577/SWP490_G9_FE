@@ -296,7 +296,7 @@ const ManaBuy = () => {
       // sortDirections: ["descend", "ascend"],
       render: (totalAmount) => (
         <NumberFormat
-          value={totalAmount}
+          value={totalAmount.toFixed(0)}
           displayType={"text"}
           thousandSeparator={true}
         />
@@ -306,7 +306,7 @@ const ManaBuy = () => {
       title: i18n.t("statusPaid"),
       dataIndex: "isPaid",
       key: "isPaid",
-      render: (isPaid) => helper.tag(isPaid ? "isPaid" : "notPaid", "w-140px"),
+      render: (isPaid) => helper.tag(isPaid ? "isPaid" : "isNotDone", "w-140px"),
     },
     {
       title: i18n.t("statusBuy"),

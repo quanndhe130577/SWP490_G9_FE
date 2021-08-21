@@ -275,8 +275,8 @@ export default class FishType extends Component {
         dataIndex: "date",
         key: "date",
         ...this.getColumnSearchProps("date", true),
-        sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
-        sortDirections: ["descend", "ascend"],
+        // sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
+        // sortDirections: ["descend", "ascend"],
         //render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
         render: (value, row, index) => {
           const obj = {
@@ -309,14 +309,14 @@ export default class FishType extends Component {
         title: "Chủ ao",
         dataIndex: "pondOwner",
         key: "pondOwner",
-        ...this.getColumnSearchProps("pondOwner"),
-        sorter: (a, b) =>
-          a.pondOwner
-            ? a.pondOwner.name.length
-            : 0 - b.pondOwner.name.length
-            ? b.pondOwner.name.length
-            : 0,
-        sortDirections: ["descend", "ascend"],
+        //...this.getColumnSearchProps("pondOwner"),
+        // sorter: (a, b) =>
+        //   a.pondOwner
+        //     ? a.pondOwner.name.length
+        //     : 0 - b.pondOwner.name.length
+        //     ? b.pondOwner.name.length
+        //     : 0,
+        // sortDirections: ["descend", "ascend"],
         //render: (pondOwner) => pondOwner.name,
         render: (value, row, index) => {
           const obj = {
@@ -347,14 +347,14 @@ export default class FishType extends Component {
         title: i18n.t("Fish Name"),
         dataIndex: "fishName",
         key: "fishName",
-        ...this.getColumnSearchProps("fishName"),
-        sorter: (a, b) =>
-          a.fishName
-            ? a.fishName.length
-            : 0 - b.fishName.length
-            ? b.fishName.length
-            : 0,
-        sortDirections: ["descend", "ascend"],
+        //...this.getColumnSearchProps("fishName"),
+        // sorter: (a, b) =>
+        //   a.fishName
+        //     ? a.fishName.length
+        //     : 0 - b.fishName.length
+        //     ? b.fishName.length
+        //     : 0,
+        // sortDirections: ["descend", "ascend"],
       },
       {
         title: i18n.t("Range of Weight"),
@@ -363,16 +363,16 @@ export default class FishType extends Component {
         key: "id",
         render: (id) => this.findFT(id),
         // ...this.getColumnSearchProps("minWeight"),
-        sorter: (a, b) => a.minWeight - b.minWeight,
-        sortDirections: ["descend", "ascend"],
+        // sorter: (a, b) => a.minWeight - b.minWeight,
+        // sortDirections: ["descend", "ascend"],
       },
       {
         title: "Số lượng (Kg)",
         dataIndex: "totalWeight",
         key: "totalWeight",
-        ...this.getColumnSearchProps("totalWeight"),
-        sorter: (a, b) => a.price - b.price,
-        sortDirections: ["descend", "ascend"],
+        //...this.getColumnSearchProps("totalWeight"),
+        // sorter: (a, b) => a.price - b.price,
+        // sortDirections: ["descend", "ascend"],
         render: (price) => (
           <NumberFormat
             value={price}
@@ -385,9 +385,9 @@ export default class FishType extends Component {
         title: i18n.t("Buy Price") + i18n.t("(suffix)"),
         dataIndex: "price",
         key: "price",
-        ...this.getColumnSearchProps("price"),
-        sorter: (a, b) => a.price - b.price,
-        sortDirections: ["descend", "ascend"],
+        //...this.getColumnSearchProps("price"),
+        // sorter: (a, b) => a.price - b.price,
+        // sortDirections: ["descend", "ascend"],
         render: (price) => (
           <NumberFormat
             value={price}
@@ -400,14 +400,14 @@ export default class FishType extends Component {
         title: i18n.t("sellPrice(VND)"),
         dataIndex: "transactionPrice",
         key: "transactionPrice",
-        ...this.getColumnSearchProps("transactionPrice"),
-        sorter: (a, b) =>
-          a.transactionprice
-            ? a.transactionprice
-            : 0 - b.transactionprice
-            ? b.transactionprice
-            : 0,
-        sortDirections: ["descend", "ascend"],
+        //...this.getColumnSearchProps("transactionPrice"),
+        // sorter: (a, b) =>
+        //   a.transactionprice
+        //     ? a.transactionprice
+        //     : 0 - b.transactionprice
+        //     ? b.transactionprice
+        //     : 0,
+        // sortDirections: ["descend", "ascend"],
         render: (transactionprice) => (
           <NumberFormat
             value={transactionprice}
