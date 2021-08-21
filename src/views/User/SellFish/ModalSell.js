@@ -36,7 +36,12 @@ const ModalSell = ({
       if (user.roleName === "Trader" && !trader) {
         trader = dataDf.tradersSelected.find((el) => el.id === user.userID);
       }
-      let { transactionPrice } = transaction.selectedFT;
+      let transactionPrice;
+      if (mode === "create") {
+        transactionPrice = transaction.selectedFT.transactionPrice;
+      } else {
+        transactionPrice = transaction.fishType.transactionPrice;
+      }
       let checkPrice = parseFloat(1 - transaction.sellPrice / transactionPrice);
 
       let data = {
@@ -78,13 +83,13 @@ const ModalSell = ({
         }
       };
       if (user.roleName !== "Trader" && checkPrice > 0.15) {
-        helper.confirm(i18n.t("cfOLowPriceFish")).then((res) => {
+        helper.confirm(i18n.t("cfOLowPriceFish")).then(async (res) => {
           if (res) {
-            doTransaction();
+            await doTransaction();
           }
         });
       } else {
-        doTransaction();
+        await doTransaction();
       }
     } catch (error) {
       console.log(error);

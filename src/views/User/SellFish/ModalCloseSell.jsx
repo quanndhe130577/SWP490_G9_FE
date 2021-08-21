@@ -193,7 +193,7 @@ const ModalCloseSell = ({
               )}
 
               {/* FOR Trader */}
-              {user && user.roleName === "Trader" && (
+              {user.roleName === "Trader" && !traderId && (
                 <RenderTB
                   transaction={listTransaction[listTransaction.length - 1]}
                   param={param}
@@ -209,7 +209,8 @@ const ModalCloseSell = ({
               {/* FOR BOTH ROLE */}
               {currentTransaction.fishInPurchase.length > 0 && (
                 <Col md="12" className="mb-3">
-                  {user && user.roleName === "Trader" && <b>Cá tự bán:</b>}
+                  {user.roleName === "Trader" &&
+                    !currentTransaction.weightRecorder && <b>Cá tự bán:</b>}
                   <Table
                     rowKey="id"
                     columns={columns}
@@ -248,7 +249,7 @@ const ModalCloseSell = ({
               )}
 
               {/* FOR Trader */}
-              {user && user.roleName === "Trader" && (
+              {user.roleName === "Trader" && !traderId && (
                 <>
                   {listTransaction.map((el, idx) => (
                     <RenderTB

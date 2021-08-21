@@ -35,7 +35,6 @@ const ModalClosePurchase = ({
         )} VND</div></div>`
       )
       .then((cf) => {
-        debugger;
         if (cf) {
           setLoading(true);
           if (handleClosePurchase) {

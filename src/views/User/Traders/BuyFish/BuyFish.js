@@ -504,14 +504,13 @@ const BuyFish = (props) => {
   }
 
   async function handleClosePurchase(data) {
-    debugger
     try {
       let { id, commissionPercent, isPaid, sentMoney } = data;
       let rs = await apis.closePurchase({
         id,
         isPaid,
         commissionPercent,
-        sentMoney
+        sentMoney,
       });
       if (rs && rs.statusCode === 200) {
         helper.toast("success", i18n.t(rs.message));
@@ -553,7 +552,6 @@ const BuyFish = (props) => {
     let query = queryString.parse(props.location.search, {
       ignoreQueryPrefix: true,
     });
-    debugger;
     if (query && query.id) {
       query.id = parseInt(query.id);
       // setQuery(query);
