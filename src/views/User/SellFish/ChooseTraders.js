@@ -24,20 +24,19 @@ const ChooseTraders = ({
       // create transaction
       try {
         let rs = await apis.createTransactions({
-          // date: helper.getDateFormat(),
           date: helper.correctDate(new Date(moment(date, "DDMMYYYY"))),
           listTraderId: currentTransaction.listTraderId,
         });
         if (rs && rs.statusCode === 200) {
           helper.toast("success", i18n.t(rs.message || "success"));
-          history.push(
-            //"sellFish?date=" + helper.getDateFormat(new Date(), "ddmmyyyy")
-            "sellFish?date=" + date
-          );
+          history.push("sellFish?date=" + date);
           setShowChooseTraders(false);
+        } else {
+          history.push("sell");
         }
       } catch (error) {
         console.log(error);
+        history.push("sell");
       }
     }
   };

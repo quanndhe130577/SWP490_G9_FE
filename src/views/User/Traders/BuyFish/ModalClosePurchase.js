@@ -119,6 +119,7 @@ const ModalClosePurchase = ({
       onOk={handleOk}
       onCancel={handleCancel}
       loading={loading}
+      disabledOk={currentPurchase.status === "Completed"}
       width={800}
       component={() => (
         <Row>
@@ -145,12 +146,12 @@ const ModalClosePurchase = ({
               {currentPurchase.pondOwnerName || ""}
             </label>
           </Col>
-          <Col md="12">
+          <Col md="12" className="mb-3">
             <Table
               columns={columns}
               dataSource={objPurchase.fishInPurchase}
               bordered
-              pagination={{ pageSize: 100 }}
+              pagination={false}
               summary={(pageData) => {
                 let allTotalWeight = 0,
                   totalAmount = 0;

@@ -128,7 +128,6 @@ const ModalCloseSell = ({
   }
 
   useEffect(() => {
-    // debugger;
     if (traderId || user.roleName === "Trader") {
       handleChangeTran("traderId", traderId || user.userID, transId);
     }
@@ -163,17 +162,6 @@ const ModalCloseSell = ({
           titleBtnOk={i18n.t("closeTransaction")}
           component={() => (
             <Row>
-              {/* 
-              <Col md="12">
-                <label className="mr-2">
-                  <b>{i18n.t("date")}:</b>
-                  <Moment format="DD/MM/YYYY" className="ml-2">
-                    {currentTransaction && currentTransaction.date}
-                  </Moment>
-                </label>
-              </Col> 
-              */}
-
               {/* FOR WEIGHT RECORDER: choose trader & input commison*/}
               {user && user.roleName !== "Trader" && (
                 <>
