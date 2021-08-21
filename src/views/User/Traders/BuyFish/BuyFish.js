@@ -97,7 +97,7 @@ const BuyFish = (props) => {
         tem.fishType.price * (parseFloat(tem.weight) - tem.basket.weight);
       return (
         <NumberFormat
-          value={value}
+          value={value.toFixed(0)}
           displayType={"text"}
           thousandSeparator={true}
           // suffix={i18n.t("suffix")}
@@ -802,7 +802,7 @@ const BuyFish = (props) => {
                         </Table.Summary.Cell>
                         <Table.Summary.Cell key="3">
                           <NumberFormat
-                            value={totalAmount}
+                            value={totalAmount.toFixed(0)}
                             displayType={"text"}
                             thousandSeparator={true}
                             suffix={i18n.t("suffix")}

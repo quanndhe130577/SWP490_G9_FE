@@ -36,8 +36,6 @@ const ModalCloseSell = ({
           let check = validate();
           if (!check) {
             let { commissionUnit, tranId } = currentTransaction;
-
-            // remain.map((e) => alert(e.realWeight));
             if (handleCloseTrans) {
               handleCloseTrans({
                 commissionUnit,
@@ -232,7 +230,7 @@ const ModalCloseSell = ({
                             </Table.Summary.Cell>
                             <Table.Summary.Cell key="3" className="bold">
                               <NumberFormat
-                                value={total.totalAmount}
+                                value={total.totalAmount.toFixed(0)}
                                 displayType={"text"}
                                 thousandSeparator={true}
                                 suffix=" VND"
@@ -323,7 +321,7 @@ const columns = [
     dataIndex: "totalWeight",
     key: "totalWeight",
     render: (weight) => (
-      <Widgets.NumberFormat needSuffix={false} value={weight} />
+      <Widgets.NumberFormat needSuffix={false} value={weight.toFixed(1)} />
     ),
   },
   {
@@ -335,7 +333,7 @@ const columns = [
     dataIndex: "totalAmount",
     key: "totalAmount",
     render: (totalAmount) => (
-      <Widgets.NumberFormat needSuffix={false} value={totalAmount} />
+      <Widgets.NumberFormat needSuffix={false} value={totalAmount.toFixed(0)} />
     ),
   },
 ];
