@@ -518,12 +518,14 @@ const BuyFish = (props) => {
   }
 
   async function handleClosePurchase(data) {
+    debugger
     try {
-      let { id, commissionPercent, isPaid } = data;
+      let { id, commissionPercent, isPaid, sentMoney } = data;
       let rs = await apis.closePurchase({
         id,
         isPaid,
         commissionPercent,
+        sentMoney
       });
       if (rs && rs.statusCode === 200) {
         helper.toast("success", i18n.t(rs.message));
@@ -811,7 +813,7 @@ const BuyFish = (props) => {
                         </Table.Summary.Cell>
                         <Table.Summary.Cell colSpan="4" key="4">
                           {helper.tag(
-                            currentPurchase.isPaid ? "isPaid" : "notPaid",
+                            currentPurchase.isPaid ? "isPaid" : "isNotDone",
                             "w-140px"
                           )}
                           {currentPurchase.status === "Completed" &&
