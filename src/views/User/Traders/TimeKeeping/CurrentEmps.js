@@ -8,11 +8,7 @@ export default class CurrentEmps extends Component {
     super(props);
     this.state = {
       currentTimes: [],
-      employees: this.props.employees.filter((emp) => {
-        let dateStart = new Date(emp.startDate);
-        let dateEnd = emp.endDate ? new Date(emp.endDate) : null
-        return this.props.currentDate > dateStart && (dateEnd === null || this.props.currentDate < dateEnd);
-      }),
+      employees: [],
       submit: false,
     };
     this.getTimes = this.getTimes.bind(this);
@@ -21,11 +17,25 @@ export default class CurrentEmps extends Component {
 
   componentDidMount() {
     this.getTimes();
+    this.setState({
+      employees: this.props.employees.filter((emp) => {
+        let dateStart = new Date(emp.startDate);
+        let dateEnd = emp.endDate ? new Date(emp.endDate) : null
+        return this.props.currentDate > dateStart && (dateEnd === null || this.props.currentDate < dateEnd);
+      })
+    })
   }
   componentDidUpdate(props) {
     if (this.props.currentDate !== props.currentDate) {
       this.setState({ submit: false });
       this.getTimes();
+      this.setState({
+        employees: this.props.employees.filter((emp) => {
+          let dateStart = new Date(emp.startDate);
+          let dateEnd = emp.endDate ? new Date(emp.endDate) : null;
+          return this.props.currentDate > dateStart && (dateEnd === null || this.props.currentDate < dateEnd);
+        })
+      })
     }
   }
 
