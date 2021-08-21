@@ -11,7 +11,6 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
   const [costInc, setCostInc] = useState(currentCostInc);
   const [loading, setLoading] = useState(false);
   const [userClient, setUserClient] = useState("weightRecorder");
-  // console.log(currentCostInc);
   useEffect(() => {
     handleChangeCostIncurred(new Date(), "date");
     if (mode === "create") {
@@ -26,10 +25,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
   const handleChangeCostIncurred = (val, name) => {
     if (name === "name") {
       val = val[val.length - 1];
-    } else if (name === "date") {
-      val = helper.correctDate(val);
     }
-
     setCostInc((prevState) => ({
       ...prevState,
       [name]: val,
@@ -41,19 +37,19 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
       setLoading(true);
       let user = session.get("user"),
         rs;
-      // let valid = checkValidate(costInc.phoneNumber);
-      // if (!valid.isValid) {
-      //   helper.toast("error", valid.message);
-      //   return;
-      // }
+      let { date } = costInc;
+      if (date) {
+        date = helper.correctDate(date);
+      }
 
       if (mode === "create") {
         rs = await apis.createCostIncurred({
           ...costInc,
+          date,
           traderID: user.userID,
         });
       } else if (mode === "edit") {
-        rs = await apis.updateCostIncurred(costInc);
+        rs = await apis.updateCostIncurred({ ...costInc, date });
       }
 
       if (rs && rs.statusCode === 200) {
@@ -97,21 +93,12 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
                   label={i18n.t("name")}
                   value={costInc.name || []}
                   onChange={(e) => handleChangeCostIncurred(e, "name")}
-                  // items={costIncurred[costIncurred.type].trader}
                   items={costIncurred[costInc.typeOfCost][userClient]}
                   displayField="label"
                   saveField="key"
                 />
               </Col>
 
-              {/* <Col md="6" xs="12">
-            <Widgets.Text
-              required={true}
-              label={i18n.t("name")}
-              value={costInc.name || ""}
-              onChange={(e) => handleChangeCostIncurred(e, "name")}
-            />
-          </Col> */}
               <Col md="6" xs="12">
                 <Widgets.MoneyInput
                   required={true}
