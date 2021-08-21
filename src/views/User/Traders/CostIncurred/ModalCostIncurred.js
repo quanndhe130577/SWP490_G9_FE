@@ -26,7 +26,10 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
   const handleChangeCostIncurred = (val, name) => {
     if (name === "name") {
       val = val[val.length - 1];
+    } else if (name === "date") {
+      val = helper.correctDate(val);
     }
+
     setCostInc((prevState) => ({
       ...prevState,
       [name]: val,

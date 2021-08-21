@@ -181,7 +181,7 @@ const ModalClosePurchase = ({
                       </Table.Summary.Cell>
                       <Table.Summary.Cell key="3" className="bold">
                         <NumberFormat
-                          value={totalAmount}
+                          value={totalAmount.toFixed(0)}
                           displayType={"text"}
                           thousandSeparator={true}
                           suffix=" VND"
@@ -265,7 +265,7 @@ const columns = [
     dataIndex: "price",
     key: "price",
     render: (price) => (
-      <Widgets.NumberFormat needSuffix={false} value={price} />
+      <Widgets.NumberFormat needSuffix={false} value={price.toFixed(0)} />
     ),
   },
   {
@@ -273,7 +273,7 @@ const columns = [
     dataIndex: "totalWeight",
     key: "totalWeight",
     render: (weight) => (
-      <Widgets.NumberFormat needSuffix={false} value={weight} />
+      <Widgets.NumberFormat needSuffix={false} value={weight.toFixed(1)} />
     ),
   },
   {
@@ -288,7 +288,7 @@ const columns = [
     render: (id, row) => (
       <Widgets.NumberFormat
         needSuffix={false}
-        value={row.price * parseFloat(row.totalWeight)}
+        value={(row.price * parseFloat(row.totalWeight)).toFixed(0)}
       />
     ),
   },

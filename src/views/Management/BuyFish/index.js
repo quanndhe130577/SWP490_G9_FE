@@ -296,7 +296,7 @@ const ManaBuy = () => {
       // sortDirections: ["descend", "ascend"],
       render: (totalAmount) => (
         <NumberFormat
-          value={totalAmount}
+          value={totalAmount.toFixed(0)}
           displayType={"text"}
           thousandSeparator={true}
         />

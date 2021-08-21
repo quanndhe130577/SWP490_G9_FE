@@ -36,6 +36,9 @@ const ModalSell = ({
       if (user.roleName === "Trader" && !trader) {
         trader = dataDf.tradersSelected.find((el) => el.id === user.userID);
       }
+      let { transactionPrice } = transaction.selectedFT;
+      let checkPrice = parseFloat(1 - transaction.sellPrice / transactionPrice);
+
       let data = {
         fishTypeId: transaction.fishTypeId,
         buyerId: transaction.buyer.key,
@@ -48,7 +51,7 @@ const ModalSell = ({
       };
 
       // create trans
-      let doTransaction = async () => {
+      let createTransaction = async () => {
         if (createTransDetail) {
           if (user.roleName === "Trader" && data.transId) {
             delete data.transId;
@@ -56,22 +59,32 @@ const ModalSell = ({
           await createTransDetail(data);
         }
       };
-
-      if (mode === "create") {
-        let fish = transaction.listFishType.find(
-          (el) => el.id === transaction.fishTypeId
-        );
-        if (parseFloat(transaction.weight) > fish.remainWeight) {
-          helper.confirm(i18n.t("cfOverWeightSellFish")).then((res) => {
-            if (res) {
-              doTransaction();
-            }
-          });
-        } else {
-          doTransaction();
+      let doTransaction = async () => {
+        if (mode === "create") {
+          let fish = transaction.listFishType.find(
+            (el) => el.id === transaction.fishTypeId
+          );
+          if (parseFloat(transaction.weight) > fish.remainWeight) {
+            helper.confirm(i18n.t("cfOverWeightSellFish")).then((res) => {
+              if (res) {
+                createTransaction();
+              }
+            });
+          } else {
+            createTransaction();
+          }
+        } else if (mode === "edit") {
+          await updateTransDetail({ ...data, id: transaction.id });
         }
-      } else if (mode === "edit") {
-        await updateTransDetail({ ...data, id: transaction.id });
+      };
+      if (user.roleName !== "Trader" && checkPrice > 0.15) {
+        helper.confirm(i18n.t("cfOLowPriceFish")).then((res) => {
+          if (res) {
+            doTransaction();
+          }
+        });
+      } else {
+        doTransaction();
       }
     } catch (error) {
       console.log(error);
