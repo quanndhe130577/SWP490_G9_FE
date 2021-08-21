@@ -192,9 +192,24 @@ const ModalCloseSell = ({
                 </>
               )}
 
+              {/* FOR Trader */}
+              {user && user.roleName === "Trader" && (
+                <RenderTB
+                  transaction={listTransaction[listTransaction.length - 1]}
+                  param={param}
+                  isLast={true}
+                  handleRemain={(ele) => {
+                    setRemain(ele);
+                  }}
+                  traderId={traderId}
+                  disabledBtn={currentTransaction.status === "Completed"}
+                />
+              )}
+
               {/* FOR BOTH ROLE */}
               {currentTransaction.fishInPurchase.length > 0 && (
                 <Col md="12" className="mb-3">
+                  {user && user.roleName === "Trader" && <b>Cá tự bán:</b>}
                   <Table
                     rowKey="id"
                     columns={columns}
@@ -240,7 +255,7 @@ const ModalCloseSell = ({
                       key={idx}
                       transaction={el}
                       param={param}
-                      isLast={idx === listTransaction.length - 1}
+                      // isLast={idx === listTransaction.length - 1}
                       handleRemain={(ele) => {
                         setRemain(ele);
                       }}
