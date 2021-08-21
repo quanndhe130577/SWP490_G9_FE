@@ -27,15 +27,14 @@ const SellFish = (props) => {
   const [listTransaction, setListTransaction] = useState([]);
   const [listTransDetail, setListTransDetail] = useState([]);
   const [date, setDate] = useState("");
-  // const [realDate, setRealDate] = useState("");
 
   const [currentTransaction, setCurrentTrans] = useState({});
   const [mode, setMode] = useState("create");
   const [user, setUser] = useState({});
-  // const [traderInDate, setTraderInDate] = useState([]);
   const [dataFetched, setDtFetched] = useState({}); // include trader by WR
   const [currentTraderId, setCurrentTraderId] = useState("");
   const [currentTransId, setCurrentTransId] = useState("");
+
   const handleBtnAction = (action, id) => {
     if (action === "delete") {
       deleteTransDetail({ transactionDetailId: id });
@@ -202,7 +201,6 @@ const SellFish = (props) => {
       setLoading(true);
       let user = session.get("user");
       setUser(user);
-      // setDtFetched((preProps) => ({ ...preProps, currentWR: user }));
 
       if (user.roleName !== "Trader") {
         await getTraderByWR();

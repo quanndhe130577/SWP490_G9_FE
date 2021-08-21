@@ -81,7 +81,6 @@ const ModalBuyer = ({ isShowBuyer, date, setShowBuyer, getAllTransByDate }) => {
               thousandSeparator={true}
             />
           </Table.Summary.Cell>
-          {/* <Table.Summary.Cell key="4" colSpan="3" /> */}
         </Table.Summary.Row>
       </Table.Summary>
     );

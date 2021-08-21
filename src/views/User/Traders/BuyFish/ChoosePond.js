@@ -1,14 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Modal } from "antd";
 import { Row, Col } from "reactstrap";
 import i18n from "i18next";
 import Widgets from "../../../../schema/Widgets";
 import PriceFishToday from "./PriceFishToday";
-import services from "../../../../services";
+import { local, helper } from "../../../../services";
 import { useHistory } from "react-router-dom";
-import { useState } from "react";
 
-const { local, helper } = services;
 const ChoosePond = ({
   isShowChoosePond,
   setShowChoosePond,
@@ -16,7 +14,6 @@ const ChoosePond = ({
   currentPurchase,
   setCurrentPurchase,
   dataDf,
-  //setDataDf,
   createPurchase,
   updateAllFishType,
 }) => {
@@ -25,15 +22,17 @@ const ChoosePond = ({
   const [dataChange, setDataChange] = useState([]);
   const handleOk = async () => {
     //updateAllFishType
-    // console.log(dataChange);
     // neu ko co id purchase thì tạo purchase mới
     if (createPurchase && !currentPurchase.id) {
       let purchase = await createPurchase();
+
       if (purchase !== undefined) {
         let rs = await updateFishType(purchase, dataChange, false);
         if (rs) {
           helper.toast("success", "Tạo đơn mua thành công");
         }
+        local.set("historyPurchase", purchase);
+        history.push("buyFish?id=" + purchase.id);
       }
       // update fishtype khi ở trong page purchase detail
     } else if (currentPurchase.id) {
@@ -139,7 +138,6 @@ const ChoosePond = ({
             label={i18n.t("pondOwner")}
             value={parseInt(pondOwner || currentPurchase.pondOwnerId)}
             items={dataDf.pondOwner}
-            // isDisable={currentPurchase.pondOwner ? true : false}
             onChange={(vl) => onChange(vl, "pondOwnerId")}
             needPleaseChose={false}
           />

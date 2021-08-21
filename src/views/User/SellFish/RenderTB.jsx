@@ -23,7 +23,7 @@ const RenderTB = ({
 
   async function calculateData(arr) {
     let arrFish = await getFTByTrader(param);
-
+    debugger;
     // eslint-disable-next-line array-callback-return
     arrFish.map((ele) => {
       if (!ele.totalWeight || !ele.totalAmount) {
@@ -44,6 +44,7 @@ const RenderTB = ({
     });
     setTotal({ totalAmount, totalWeight });
     let fishInPurchase = arrFish.filter((fi) => fi.totalWeight > 0);
+
     setCurrentTransaction((pre) => ({
       ...pre,
       fishInPurchase,
@@ -56,8 +57,6 @@ const RenderTB = ({
         let remainF = rs.data.filter(
           (el) => el.remainWeight && el.remainWeight !== 0
         );
-        // debugger;
-        // console.log(transaction);
         if (transaction.status !== "Completed") {
           remainF.map((el) =>
             el.remainWeight >= 0
@@ -65,13 +64,6 @@ const RenderTB = ({
               : (el.realWeight = 0)
           );
         }
-        //         else{
-        //  remainF.map((el) =>
-        //    el.remainWeight >= 0
-        //      ? (el.realWeight = el.remainWeight)
-        //      : (el.realWeight = 0)
-        //  );
-        //         }
 
         if (param) {
           setCurrentTransaction((pre) => ({
@@ -101,7 +93,6 @@ const RenderTB = ({
       }));
       handleRemain(newDatas);
     }
-    // this.setData({ ...dataS[0], maxWeight: value }),
   };
   useEffect(() => {
     if (param) {
@@ -151,6 +142,7 @@ const RenderTB = ({
   ];
   return (
     <>
+      {/* FOR REMAIN FISH, DONT REMOVE  */}
       {isLast && !traderId && (
         <Col md="12" className="mb-4">
           <b>Số cá còn lại</b>
@@ -194,27 +186,6 @@ const RenderTB = ({
               );
             }}
           />
-
-          {/* <Widgets.Checkbox
-            value={!currentTransaction.buyLater}
-            onChange={() =>
-              setCurrentTransaction((pre) => ({
-                ...pre,
-                buyLater: !currentTransaction.buyLater,
-              }))
-            }
-            lblCheckbox={i18n.t("Bỏ đi")}
-          />
-          <Widgets.Checkbox
-            lblCheckbox={i18n.t("Chuyển sang hôm sau")}
-            value={currentTransaction.buyLater}
-            onChange={(val) =>
-              setCurrentTransaction((pre) => ({
-                ...pre,
-                buyLater: val,
-              }))
-            }
-          /> */}
         </Col>
       )}
       {transaction.weightRecorder &&
