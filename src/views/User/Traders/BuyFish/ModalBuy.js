@@ -30,7 +30,6 @@ const ModalBuy = ({
         tem.idx = purchase.length + 1;
         createPurchaseDetail(tem);
       }
-      //setIsShowBuy(false);
     } else if (mode === "edit") {
       updatePurchaseDetail(transaction);
     }
@@ -41,13 +40,6 @@ const ModalBuy = ({
   };
 
   const handleChangeTran = async (name, value) => {
-    // if(name === "drum"){
-    //   let drums =purchase.drum
-    //   drums
-    // }
-    // if (name === "weight") {
-    //   value = parseInt(value);
-    // } else
     if (name === "truck" && value !== transaction.truck) {
       // neu khac xe thi call api lấy lại list drum và set lại listDrumId
       let rs = await fetchDrumByTruck(value);
@@ -57,7 +49,6 @@ const ModalBuy = ({
       }));
       setLoading(rs);
     } else if (name === "listDrumId" && value.length > 0) {
-      //value = value.map((el) => (el = parseInt(el)));
       value = value.map((el) => (el = "" + el));
     }
     setTransaction((prevState) => ({
@@ -90,12 +81,6 @@ const ModalBuy = ({
     }
   };
 
-  // function changeKey(arr) {
-  //   arr.forEach((el) => {
-  //     helper.renameKey(el, "number", "name");
-  //   });
-  //   return arr;
-  // }
   async function convertDataInEditMode() {
     if (mode === "create") {
       if (suggestionPurchase) {
@@ -111,11 +96,11 @@ const ModalBuy = ({
           basketId,
           truck,
           listDrumId,
+          weight: 0,
         }));
         // fetch Drum By Truck
         let rs = await fetchDrumByTruck(truck);
         setLoading(rs);
-        //setLoading(true);
       } else {
         setTransaction((prevState) => ({
           ...prevState,
@@ -141,7 +126,6 @@ const ModalBuy = ({
       // // fetch Drum By Truck
       let rs = await fetchDrumByTruck(truck);
       setLoading(rs);
-      //setLoading(true);
     }
   }
   useEffect(() => {

@@ -36,8 +36,6 @@ const ModalCloseSell = ({
           let check = validate();
           if (!check) {
             let { commissionUnit, tranId } = currentTransaction;
-
-            remain.map((e) => alert(e.realWeight));
             if (handleCloseTrans) {
               handleCloseTrans({
                 commissionUnit,
@@ -134,6 +132,15 @@ const ModalCloseSell = ({
       handleChangeTran("traderId", traderId || user.userID, transId);
     }
 
+    return () => {
+      setCurrentTransaction({
+        fishInPurchase: [],
+      });
+      setRemain([]);
+      setTotal({});
+      setParam("");
+    };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [traderId]);
 
@@ -155,17 +162,6 @@ const ModalCloseSell = ({
           titleBtnOk={i18n.t("closeTransaction")}
           component={() => (
             <Row>
-              {/* 
-              <Col md="12">
-                <label className="mr-2">
-                  <b>{i18n.t("date")}:</b>
-                  <Moment format="DD/MM/YYYY" className="ml-2">
-                    {currentTransaction && currentTransaction.date}
-                  </Moment>
-                </label>
-              </Col> 
-              */}
-
               {/* FOR WEIGHT RECORDER: choose trader & input commison*/}
               {user && user.roleName !== "Trader" && (
                 <>
@@ -196,9 +192,25 @@ const ModalCloseSell = ({
                 </>
               )}
 
+              {/* FOR Trader */}
+              {user.roleName === "Trader" && !traderId && (
+                <RenderTB
+                  transaction={listTransaction[listTransaction.length - 1]}
+                  param={param}
+                  isLast={true}
+                  handleRemain={(ele) => {
+                    setRemain(ele);
+                  }}
+                  traderId={traderId}
+                  disabledBtn={currentTransaction.status === "Completed"}
+                />
+              )}
+
               {/* FOR BOTH ROLE */}
               {currentTransaction.fishInPurchase.length > 0 && (
                 <Col md="12" className="mb-3">
+                  {user.roleName === "Trader" &&
+                    !currentTransaction.weightRecorder && <b>Cá tự bán:</b>}
                   <Table
                     rowKey="id"
                     columns={columns}
@@ -222,7 +234,7 @@ const ModalCloseSell = ({
                             </Table.Summary.Cell>
                             <Table.Summary.Cell key="3" className="bold">
                               <NumberFormat
-                                value={total.totalAmount}
+                                value={total.totalAmount.toFixed(0)}
                                 displayType={"text"}
                                 thousandSeparator={true}
                                 suffix=" VND"
@@ -237,14 +249,14 @@ const ModalCloseSell = ({
               )}
 
               {/* FOR Trader */}
-              {user && user.roleName === "Trader" && (
+              {user.roleName === "Trader" && !traderId && (
                 <>
                   {listTransaction.map((el, idx) => (
                     <RenderTB
                       key={idx}
                       transaction={el}
                       param={param}
-                      isLast={idx === listTransaction.length - 1}
+                      // isLast={idx === listTransaction.length - 1}
                       handleRemain={(ele) => {
                         setRemain(ele);
                       }}
@@ -313,7 +325,7 @@ const columns = [
     dataIndex: "totalWeight",
     key: "totalWeight",
     render: (weight) => (
-      <Widgets.NumberFormat needSuffix={false} value={weight} />
+      <Widgets.NumberFormat needSuffix={false} value={weight.toFixed(1)} />
     ),
   },
   {
@@ -325,7 +337,7 @@ const columns = [
     dataIndex: "totalAmount",
     key: "totalAmount",
     render: (totalAmount) => (
-      <Widgets.NumberFormat needSuffix={false} value={totalAmount} />
+      <Widgets.NumberFormat needSuffix={false} value={totalAmount.toFixed(0)} />
     ),
   },
 ];

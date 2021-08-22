@@ -31,8 +31,9 @@ _ReSharper*/
 #Nuget packages folder
 packages/
 node_modules
-*.orig
+*.origs
 .DS_Store
 .idea/*
 src/services/config.js
 build
+*.lock

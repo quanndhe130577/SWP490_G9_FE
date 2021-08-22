@@ -29,10 +29,7 @@ export default class CostIncurred extends Component {
   async fetchCostIncurred() {
     try {
       let user = await session.get("user");
-
       let rs = await apis.getCostIncurred({}, "GET");
-
-      // let rs = await apis.getPondOwnerByTraderId({}, "GET", user.userID);
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         this.setState({ data: rs.data, user, total: rs.data.length });
@@ -118,15 +115,14 @@ export default class CostIncurred extends Component {
     let { currentCostInc } = this.state;
 
     if (modeBtn === "edit") {
-      //currentCostInc = data.find((el) => el.id === costIncID);
       let rs = await apis.getDetailCostIncurred({}, "GET", costIncID);
       if (rs && rs.statusCode === 200) {
         currentCostInc = rs.data;
       }
       this.setState({ currentCostInc, mode: "edit", isShowModal: true });
     } else if (modeBtn === "delete") {
-      helper.confirm(i18n.t("confirmDelete")).then(async (rs) => {
-        if (rs) {
+      helper.confirm(i18n.t("confirmDelete")).then(async (res) => {
+        if (res) {
           try {
             let rs = await apis.deleteCostIncurred({}, "POST", costIncID);
 
@@ -216,29 +212,18 @@ export default class CostIncurred extends Component {
       } else {
         return record[dataIndex]
           ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+              .toString()
+              .toLowerCase()
+              .includes(value.toLowerCase())
           : "";
       }
     },
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
-        // setTimeout(() => this.searchInput.select(), 100);
       }
     },
     render: (text) =>
-      this.state.searchedColumn === dataIndex ? (
-        //   <Highlighter
-        //     highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
-        //     searchWords={[this.state.searchText]}
-        //     autoEscape
-        //     textToHighlight={text ? text.toString() : ""}
-        //   />
-        <div>{text}</div>
-      ) : (
-        text
-      ),
+      this.state.searchedColumn === dataIndex ? <div>{text}</div> : text,
   });
   columns = [
     {
@@ -265,8 +250,8 @@ export default class CostIncurred extends Component {
         a.typeOfCost
           ? a.typeOfCost.length
           : 0 - b.typeOfCost
-            ? b.typeOfCost.length
-            : 0,
+          ? b.typeOfCost.length
+          : 0,
       sortDirections: ["descend", "ascend"],
       render: (text) => <label>{i18n.t(text)}</label>,
     },
@@ -328,7 +313,6 @@ export default class CostIncurred extends Component {
             mode={mode}
             closeModal={this.closeModal}
             currentCostInc={currentCostInc || {}}
-          // handleChangePondOwner={handleChangePondOwner}
           />
         )}
         <Row>

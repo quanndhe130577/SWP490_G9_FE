@@ -27,15 +27,14 @@ const SellFish = (props) => {
   const [listTransaction, setListTransaction] = useState([]);
   const [listTransDetail, setListTransDetail] = useState([]);
   const [date, setDate] = useState("");
-  // const [realDate, setRealDate] = useState("");
 
   const [currentTransaction, setCurrentTrans] = useState({});
   const [mode, setMode] = useState("create");
   const [user, setUser] = useState({});
-  // const [traderInDate, setTraderInDate] = useState([]);
   const [dataFetched, setDtFetched] = useState({}); // include trader by WR
   const [currentTraderId, setCurrentTraderId] = useState("");
   const [currentTransId, setCurrentTransId] = useState("");
+
   const handleBtnAction = (action, id) => {
     if (action === "delete") {
       deleteTransDetail({ transactionDetailId: id });
@@ -158,7 +157,7 @@ const SellFish = (props) => {
     try {
       let rs = await apis.createTranDetail(data);
       if (rs && rs.statusCode === 200) {
-        getAllTransByDate(date);
+        getAllTransByDate(date, user);
         setShowSell(false);
         helper.toast("success", i18n.t(rs.message || "success"));
       }
@@ -171,7 +170,7 @@ const SellFish = (props) => {
     try {
       let rs = await apis.updateTransDetail(data);
       if (rs && rs.statusCode === 200) {
-        getAllTransByDate(date);
+        getAllTransByDate(date, user);
         setShowSell(false);
         helper.toast("success", i18n.t(rs.message || "success"));
       }
@@ -202,7 +201,6 @@ const SellFish = (props) => {
       setLoading(true);
       let user = session.get("user");
       setUser(user);
-      // setDtFetched((preProps) => ({ ...preProps, currentWR: user }));
 
       if (user.roleName !== "Trader") {
         await getTraderByWR();
@@ -262,20 +260,24 @@ const SellFish = (props) => {
         } else {
           let tem = [],
             temTransDetail = [],
-            listTraderId = [];
+            listTraderId = [],
+            tranTuBan = "";
           for (const trans of rs.data) {
             trans.transactionDetails.map((el) => (el.trader = trans.trader));
             temTransDetail = temTransDetail.concat(trans.transactionDetails);
             trans.trader.transId = trans.id;
             tem.push(trans.trader);
             listTraderId.push(trans.trader.id);
+            if (user.roleName === "Trader" && !trans.weightRecorder) {
+              tranTuBan = trans.id;
+            }
           }
           handleChangeCurrentTrans("listTraderId", listTraderId);
           setListTransDetail(temTransDetail);
           setListTransaction(rs.data);
           // setRealDate(rs.data[0].date);
 
-          setDtFetched((pro) => ({ ...pro, tradersSelected: tem }));
+          setDtFetched((pro) => ({ ...pro, tradersSelected: tem, tranTuBan }));
         }
       }
     } catch (error) {
@@ -312,7 +314,8 @@ const SellFish = (props) => {
               <Button
                 color="danger"
                 onClick={(e) =>
-                  deleteTrans({ transactionId: trans.trader.transId })
+                  // deleteTrans({ transactionId: trans.trader.transId })
+                  deleteTrans({ transactionId: trans.id })
                 }
               >
                 <i className="fa fa-trash mr-1" />
@@ -323,7 +326,7 @@ const SellFish = (props) => {
                 <Button
                   color="info"
                   onClick={() => {
-                    setCurrentTransId(trans.trader.transId);
+                    setCurrentTransId(trans.id);
                     setCurrentTraderId(trans.trader.id);
                     setShowCloseTrans(true);
                   }}
@@ -464,6 +467,8 @@ const SellFish = (props) => {
             handleCloseModal={() => {
               setShowCloseTrans(false);
               setCurrentTraderId("");
+              setCurrentTransId("");
+              setCurrentTrans({});
             }}
             handleCloseTrans={handleCloseTrans}
             traderId={currentTraderId}
@@ -471,7 +476,7 @@ const SellFish = (props) => {
               setCurrentTraderId("");
               setCurrentTransId("");
             }}
-            transId={currentTransId}
+            transId={currentTransId || ""}
           />
         )}
         {isShowChooseTraders && user.roleName !== "Trader" && (
@@ -519,7 +524,10 @@ const SellFish = (props) => {
                   <Col md="2" xs="6" className="p-0 pr-2">
                     <Button
                       color="info"
-                      onClick={() => setShowCloseTrans(true)}
+                      onClick={() => {
+                        setShowCloseTrans(true);
+                        setCurrentTransId(dataFetched.tranTuBan);
+                      }}
                       className="w-100 p-0 h-100"
                     >
                       <i className="fa fa-check-square-o mr-1" />

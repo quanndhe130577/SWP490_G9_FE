@@ -102,3 +102,19 @@
   border-radius: 4px;
   min-height: 80vh;
 }
+
+/* custom bg-color disabled input */
+input:disabled,
+.ant-input[disabled] {
+  background-color: rgb(241, 241, 241) !important;
+  color: #000000;
+}
+.ant-btn[disabled],
+.ant-btn[disabled]:hover,
+.ant-btn[disabled]:focus,
+.ant-btn[disabled]:active {
+  opacity: 0.4 !important;
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
