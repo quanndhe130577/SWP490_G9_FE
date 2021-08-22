@@ -5,63 +5,45 @@ import Widgets from "../../../schema/Widgets";
 import helper from "../../../services/helper";
 import i18n from "i18next";
 
-const ModalEdit = ({
-  isShow,
-  closeModal,
-  mode,
-  currentDebt,
-  testHanldeEdit,
-}) => {
-  const [debt, setDebt] = useState(currentDebt);
-
-  const handleChangeDebt = (val, name) => {
-    setDebt((prevState) => ({
-      ...prevState,
-      [name]: val,
-    }));
-  };
+const ModalEdit = ({ isShow, closeModal, currentDebt, updateDebt }) => {
+  const [debtAmount, setDebtAmount] = useState(0);
 
   const handleOk = async () => {
     try {
-      let rs;
-      if (mode === "create") {
-        // rs = await apis.createDebt({
-        //   ...debt,
-        // });
-      } else if (mode === "edit") {
-        // rs = await apis.updateDebt(debt);
-        testHanldeEdit(debt);
-      }
-
-      if (rs && rs.statusCode === 200) {
-        closeModal(true);
-        helper.toast("success", i18n.t(rs.message || "success"));
-      }
+      updateDebt(currentDebt.id, debtAmount);
     } catch (error) {
-      console.log(error);
       helper.toast("error", i18n.t("systemError"));
     }
   };
-  useEffect(() => {
-    handleChangeDebt(new Date(), "date");
-  }, []);
+  // useEffect(() => {
+  //   handleChangeDebt(new Date(), "date");
+  // }, []);
 
   return (
     <Modal
-      title={mode === "edit" ? i18n.t("edit") : i18n.t("create")}
+      title={"Chau len ba"}
       visible={isShow}
       onOk={handleOk}
       onCancel={closeModal}
       component={() => (
         <Row>
           <Col md="6" xs="12">
-            <Widgets.Text
-              label={i18n.t("Debtor Name")}
-              value={debt.debtorname || ""}
-              onChange={(e) => handleChangeDebt(e, "debtorname")}
+            <Widgets.MoneyInput
+              label={"Số tiền trả thêm: "}
+              value={debtAmount || ""}
+              onChange={(e) => {
+                setDebtAmount(e);
+              }}
             />
           </Col>
           <Col md="6" xs="12">
+            <Widgets.MoneyInput
+              label={"Cần phải trả: "}
+              value={currentDebt.amount || ""}
+              disabled={true}
+            />
+          </Col>
+          {/* <Col md="6" xs="12">
             <Widgets.Text
               label={i18n.t("Note")}
               value={debt.note || ""}
@@ -102,7 +84,7 @@ const ModalEdit = ({
               value={debt.isPaid || false}
               onChange={(val) => handleChangeDebt(val, "isPaid")}
             />
-          </Col>
+          </Col> */}
         </Row>
       )}
     />
