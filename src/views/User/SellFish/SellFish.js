@@ -185,7 +185,7 @@ const SellFish = (props) => {
         if (rs) {
           let rs = await apis.deleteTransDetail(transactionDetailId);
           if (rs && rs.statusCode === 200) {
-            getAllTransByDate(date);
+            getAllTransByDate(date, user);
             helper.toast("success", i18n.t(rs.message || "success"));
           }
         }
@@ -361,7 +361,7 @@ const SellFish = (props) => {
         if (res) {
           let rs = await apis.deleteTrans(transactionId);
           if (rs && rs.statusCode === 200) {
-            getAllTransByDate(date, {}, true);
+            getAllTransByDate(date, user, true);
             helper.toast("success", i18n.t(rs.message || "success"));
           }
         }
@@ -386,7 +386,7 @@ const SellFish = (props) => {
       if (rs && rs.statusCode === 200) {
         helper.toast("success", i18n.t(rs.message || "success"));
         setShowCloseTrans(false);
-        getAllTransByDate(date);
+        getAllTransByDate(date, user);
       }
     } catch (error) {
       console.log(error);
@@ -507,7 +507,7 @@ const SellFish = (props) => {
             isShowBuyer={isShowBuyer}
             setShowBuyer={(state) => setShowBuyer(state)}
             date={date}
-            getAllTransByDate={(date) => getAllTransByDate(date)}
+            getAllTransByDate={(date) => getAllTransByDate(date, user)}
           />
         )}
         {!isShowChooseTraders && (
