@@ -99,7 +99,7 @@
   "payStatus": "Trạng thái thanh toán",
   "paid": "Đã thanh toán",
   "isNotPaid": "Chưa thanh toán",
-  "isNotDone": "Chưa hoàn tất",
+  "isNotDone": "Chưa trả hết",
   "(suffix)": " (VND)",
   "sellGood": "Bán hàng",
   "trader": "Thương lái",
