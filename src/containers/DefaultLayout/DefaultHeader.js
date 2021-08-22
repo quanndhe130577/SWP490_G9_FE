@@ -45,8 +45,8 @@ class DefaultHeader extends Component {
           style={{ paddingTop: 64 }}
           breakpoint="lg"
           collapsedWidth="0"
-          onBreakpoint={(broken) => {}}
-          onCollapse={(collapsed, type) => {}}
+          onBreakpoint={(broken) => { }}
+          onCollapse={(collapsed, type) => { }}
         >
           <Menu mode="inline">
             {/* auto generate menu, define menu in MENU */}
@@ -57,15 +57,16 @@ class DefaultHeader extends Component {
                 if (!mn.role || mn.role === user.roleDisplayName)
                   return (
                     <SubMenu
-                      key={idx + title}
+                      key={title + idx}
                       icon={icon}
                       title={i18n.t(title)}
                     >
                       {/* eslint-disable-next-line array-callback-return */}
                       {menu.map((me, i) => {
                         if (!me.role || me.role === user.roleDisplayName)
+                          // console.log()
                           return (
-                            <Menu.Item key={me + i + idx}>
+                            <Menu.Item key={me.title + idx}>
                               <Link to={me.link}>{i18n.t(me.title)}</Link>
                             </Menu.Item>
                           );
@@ -75,7 +76,7 @@ class DefaultHeader extends Component {
               } else {
                 if (!mn.role || mn.role === user.roleDisplayName)
                   return (
-                    <Menu.Item key={mn + idx} icon={mn.icon}>
+                    <Menu.Item key={mn.title + idx} icon={mn.icon}>
                       <Link to={mn.link}>{i18n.t(mn.title)}</Link>
                     </Menu.Item>
                   );
