@@ -256,5 +256,8 @@
   "cfOverWeightSellFish": "Số lượng cá bạn muốn bán lớn hơn số lượng còn lại, bạn có chắc chắn không?",
   "profit": "Lợi nhuận",
   "buyPirce": "Giá mua",
-  "time": "Thời gian"
+  "time": "Thời gian",
+  "cfOverSentMoney": "Bạn đang trả nhiều tiền hơn số với số tiền cần trả, bạn có chắc không?",
+  "tienPhaiTra": "TIỀN PHẢI TRẢ",
+  "tienPhaiThu": "TIỀN PHẢI THU"
 }

@@ -12,10 +12,15 @@ export default function Number({
   submitted,
   onKeyDown,
   placeholder,
+  className,
 }) {
   return (
     <div
-      className={"form-group" + (submitted && !value ? " has-error" : "")}
+      className={
+        "form-group " +
+        ` ${className}` +
+        (submitted && !value ? " has-error" : "")
+      }
       style={{ margin: "auto" }}
     >
       {label && (
