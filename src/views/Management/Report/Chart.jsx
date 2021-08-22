@@ -72,10 +72,14 @@ const DemoLine = ({ dailyData, data }) => {
             label={i18n.t("summaryDailyCost") + ": "}
             value={data.summaryDailyCost}
           />
-          {/* <Widgets.NumberFormat
-              label={i18n.t("summaryDebt") + ": "}
-              value={data.summaryDebt}
-            /> */}
+          <Widgets.NumberFormat
+            label={i18n.t("tienPhaiThu") + ": "}
+            value={data.tienPhaiThu}
+          />
+          <Widgets.NumberFormat
+            label={i18n.t("tienPhaiTra") + ": "}
+            value={data.tienPhaiTra}
+          />
         </div>
       </Col>
     </Row>

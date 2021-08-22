@@ -161,7 +161,11 @@ const ReportDaily = () => {
           <Row>
             <Col md="6">
               <h4 className="mt-4 mb-0 d-flex">
-                <span>{i18n.t("profit") + ": "}</span>
+                <span>
+                  {i18n.t(
+                    user.roleName === "Trader" ? "profit" : "wcReceiver"
+                  ) + ": "}
+                </span>
                 <span
                   className={handleStyleProfit(data.tongThu - data.tongChi)}
                 >
