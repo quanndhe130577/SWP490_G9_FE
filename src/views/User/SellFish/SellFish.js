@@ -327,7 +327,8 @@ const SellFish = (props) => {
                   color="info"
                   onClick={() => {
                     setCurrentTransId(trans.id);
-                    setCurrentTraderId(trans.trader.id);
+                    if (trans.weightRecorder)
+                      setCurrentTraderId(trans.trader.id);
                     setShowCloseTrans(true);
                   }}
                 >

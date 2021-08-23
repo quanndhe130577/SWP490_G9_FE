@@ -238,7 +238,7 @@ const fTTable = (listSummaryPurchaseDetail) => {
         {listSummaryPurchaseDetail.map((el) => (
           <div className="mb-3">
             <h6>
-              <b>{i18n.t("pondOwner")}: </b>
+              <b>{el.pondOwner.id ? i18n.t("pondOwner") + ": " : ""}</b>
               {el.pondOwner ? el.pondOwner.name : i18n.t("noInfo")}
             </h6>
             <Table

@@ -27,18 +27,18 @@ const ModalEdit = ({ isShow, closeModal, currentDebt, updateDebt }) => {
         <Row>
           <Col md="6" xs="12">
             <Widgets.MoneyInput
-              label={"Số tiền trả thực: "}
-              value={debtAmount || 0}
-              onChange={(e) => {
-                setDebtAmount(e);
-              }}
+              label={"Cần phải trả: "}
+              value={currentDebt.amount || ""}
+              disabled={true}
             />
           </Col>
           <Col md="6" xs="12">
             <Widgets.MoneyInput
-              label={"Cần phải trả: "}
-              value={currentDebt.amount || ""}
-              disabled={true}
+              label={"Số tiền trả thêm: "}
+              value={debtAmount || 0}
+              onChange={(e) => {
+                setDebtAmount(e);
+              }}
             />
           </Col>
         </Row>

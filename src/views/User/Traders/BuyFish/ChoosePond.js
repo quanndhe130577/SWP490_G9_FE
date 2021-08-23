@@ -30,9 +30,14 @@ const ChoosePond = ({
         let rs = await updateFishType(purchase, dataChange, false);
         if (rs) {
           helper.toast("success", "Tạo đơn mua thành công");
+          local.set("historyPurchase", purchase);
+          history.push("buyFish?id=" + purchase.id);
+        } else {
+          setCurrentPurchase((prevState) => ({
+            ...prevState,
+            id: undefined,
+          }));
         }
-        local.set("historyPurchase", purchase);
-        history.push("buyFish?id=" + purchase.id);
       }
       // update fishtype khi ở trong page purchase detail
     } else if (currentPurchase.id) {
