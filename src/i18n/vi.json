@@ -241,7 +241,7 @@
   "Reset": "Đặt lại",
   "Purchase Debt": "Nợ phải trả",
   "Transaction Debt": "Nợ phải thu",
-  "comfirmUpdate": "Bạn có chắc đã thanh toán",
+  "comfirmPaidDebt": "Bạn có chắc sẽ thanh toán",
   "PurchaseIsPaid": "Đã trả",
   "TransactionIsPaid": "Đã thu",
   "Remain": "Tồn kho",
