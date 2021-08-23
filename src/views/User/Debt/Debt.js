@@ -28,7 +28,8 @@ export default class Debt extends Component {
     };
   }
   componentDidMount() {
-    this.fetchDebt();
+    // this.fetchDebt();
+    this.fetchDebtByMode(this.state.mode);
   }
   async fetchDebt() {
     try {
@@ -164,7 +165,8 @@ export default class Debt extends Component {
         if (rs) {
           helper.toast("success", rs.message);
         }
-        await this.fetchDebt();
+        // await this.fetchDebt();
+        await this.fetchDebtByMode(this.state.mode);
 
         this.setState({ isShowModal: false });
       }
@@ -361,9 +363,10 @@ export default class Debt extends Component {
       <Card title={this.renderTitle()} className="body-minH">
         <ModalDebt
           isShow={this.state.isShowModal}
-          closeModal={() => {
+          closeModal={async () => {
             this.setState({ isShowModal: false });
-            this.fetchDebt();
+            // this.fetchDebt();
+            await this.fetchDebtByMode(this.state.mode);
           }}
           currentDebt={this.state.currentDebt}
           updateDebt={this.onClick}
