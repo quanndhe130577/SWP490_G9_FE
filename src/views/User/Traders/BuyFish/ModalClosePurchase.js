@@ -27,13 +27,20 @@ const ModalClosePurchase = ({
   const [loading, setLoading] = useState(false);
 
   const handleOk = () => {
-    let { pondOwnerName, totalAmount, totalWeight, sentMoney } =
-      currentPurchase;
+    let {
+      pondOwnerName,
+      totalAmount,
+      totalWeight,
+      sentMoney,
+      commissionPercent,
+    } = currentPurchase;
     const doAction = () => {
       helper
         .confirm(
           `<div class="row"><div class="col-md-12 mb-4" style = { textAlign: "center" }>Thông tin đơn mua</div><div class="col-md-5 t-left">Chủ ao:</div> <div class="col-md-7 t-left">${pondOwnerName}</div><div class="col-md-5 t-left">Khối lượng:</div><div class="col-md-7 t-left"> ${totalWeight} Kg</div><div class="col-md-5 t-left">Số tiền: </div><div class="col-md-7 t-left">${new Intl.NumberFormat().format(
-            totalAmount
+            totalAmount * ((100 - commissionPercent) / 100)
+          )} VND</div><div class="col-md-5 t-left">Số tiền đã trả: </div><div class="col-md-7 t-left">${new Intl.NumberFormat().format(
+            sentMoney
           )} VND</div></div>`
         )
         .then((cf) => {
@@ -65,12 +72,12 @@ const ModalClosePurchase = ({
     if (name === "commissionPercent") {
       val = parseInt(val);
 
-      let sentMoney = 0;
-      if (val) {
-        let percent = (100 - val) / 100;
-        sentMoney = currentPurchase.totalAmount * percent;
-      }
-      setCurrentPurchase((pre) => ({ ...pre, sentMoney }));
+      // let sentMoney = 0;
+      // if (val) {
+      //   let percent = (100 - val) / 100;
+      //   sentMoney = currentPurchase.totalAmount * percent;
+      // }
+      // setCurrentPurchase((pre) => ({ ...pre, sentMoney }));
     } else if (name === "isPaid") {
       let { totalAmount, commissionPercent } = currentPurchase,
         sentMoney = 0;

@@ -169,6 +169,18 @@ export default class Debt extends Component {
           <Button
             color="info"
             className="mr-2 w-100"
+            onClick={() => this.onClick(id, cell.amount)}
+          >
+            <i className="fa fa-pencil-square-o mr-1" />
+            {this.state.mode === "purchase"
+              ? i18n.t("PurchaseIsPaid")
+              : i18n.t("TransactionIsPaid")}
+          </Button>
+        </Menu.Item>
+        <Menu.Item key="2">
+          <Button
+            color="danger"
+            className="mr-2 w-100"
             onClick={() => {
               this.setState({
                 isShowModal: true,
@@ -178,18 +190,6 @@ export default class Debt extends Component {
           >
             <i className="fa fa-pencil-square-o mr-1" />
             {"Trả một phần"}
-          </Button>
-        </Menu.Item>
-        <Menu.Item key="2">
-          <Button
-            color="danger"
-            className="mr-2 w-100"
-            onClick={() => this.onClick(id, cell.amount)}
-          >
-            <i className="fa fa-pencil-square-o mr-1" />
-            {this.state.mode === "purchase"
-              ? i18n.t("PurchaseIsPaid")
-              : i18n.t("TransactionIsPaid")}
           </Button>
         </Menu.Item>
       </Menu>
