@@ -1,6 +1,6 @@
 import "./Debt.css";
 import { SearchOutlined } from "@ant-design/icons";
-import { Card, Input, Space, Table, Tabs } from "antd";
+import { Card, Input, Space, Table, Tabs, Menu, Dropdown } from "antd";
 import i18n from "i18next";
 import React, { Component } from "react";
 import NumberFormat from "react-number-format";
@@ -8,6 +8,8 @@ import { Button, Col, Row } from "reactstrap";
 import { apis, helper, session } from "../../../services";
 import Moment from "react-moment";
 import moment from "moment";
+import ModalDebt from "./ModalDebt";
+
 const { TabPane } = Tabs;
 
 export default class Debt extends Component {
@@ -22,6 +24,7 @@ export default class Debt extends Component {
       columns: [],
       loading: true,
       user: session.get("user"),
+      currentDebt: {},
     };
   }
   componentDidMount() {
@@ -139,13 +142,13 @@ export default class Debt extends Component {
     clearFilters();
     this.setState({ searchText: "" });
   };
-  onClick = async (id) => {
-    helper.confirm(i18n.t("comfirmUpdate")).then(async (rs) => {
+
+  onClick = async (id, amount = 0) => {
+    helper.confirm(i18n.t("comfirmPaidDebt") + "?").then(async (rs) => {
       if (rs) {
         let rs;
         if (this.state.mode === "purchase") {
-          console.log("purchase");
-          rs = await apis.updateDebtPurchase({}, "GET", id);
+          rs = await apis.updateDebtPurchase({}, "GET", id + "/" + amount);
         } else {
           rs = await apis.updateDebtTransaction({}, "GET", id);
         }
@@ -154,10 +157,44 @@ export default class Debt extends Component {
           helper.toast("success", rs.message);
         }
         await this.fetchDebt();
+
+        this.setState({ isShowModal: false });
       }
     });
   };
-
+  renderBtnAction(id, cell) {
+    return (
+      <Menu>
+        <Menu.Item key="1">
+          <Button
+            color="info"
+            className="mr-2 w-100"
+            onClick={() => {
+              this.setState({
+                isShowModal: true,
+                currentDebt: cell,
+              });
+            }}
+          >
+            <i className="fa fa-pencil-square-o mr-1" />
+            {"Trả một phần"}
+          </Button>
+        </Menu.Item>
+        <Menu.Item key="2">
+          <Button
+            color="info"
+            className="mr-2 w-100"
+            onClick={() => this.onClick(id, cell.amount)}
+          >
+            <i className="fa fa-pencil-square-o mr-1" />
+            {this.state.mode === "purchase"
+              ? i18n.t("PurchaseIsPaid")
+              : i18n.t("TransactionIsPaid")}
+          </Button>
+        </Menu.Item>
+      </Menu>
+    );
+  }
   renderTitle = () => {
     let { total } = this.state || 0;
     return (
@@ -220,17 +257,13 @@ export default class Debt extends Component {
             title: i18n.t("action"),
             dataIndex: "id",
             key: "id",
-            render: (id) => (
-              <Button
-                color="info"
-                className="mr-2"
-                onClick={() => this.onClick(id)}
-              >
-                <i className="fa fa-pencil-square-o mr-1" />
-                {this.state.mode === "purchase"
-                  ? i18n.t("PurchaseIsPaid")
-                  : i18n.t("TransactionIsPaid")}
-              </Button>
+            render: (id, cell) => (
+              <Dropdown overlay={this.renderBtnAction(id, cell)}>
+                <Button>
+                  <i className="fa fa-cog mr-1" />
+                  <label className="tb-lb-action">{i18n.t("action")}</label>
+                </Button>
+              </Dropdown>
             ),
           },
         ]
@@ -295,17 +328,19 @@ export default class Debt extends Component {
             title: i18n.t("action"),
             dataIndex: "id",
             key: "id",
-            render: (id) => (
-              <Button
-                color="info"
-                className="mr-2"
-                onClick={() => this.onClick(id)}
-              >
-                <i className="fa fa-pencil-square-o mr-1" />
-                {this.state.mode === "purchase"
-                  ? i18n.t("PurchaseIsPaid")
-                  : i18n.t("TransactionIsPaid")}
-              </Button>
+            render: (id, cell) => (
+              <div>
+                <Button
+                  color="info"
+                  className="mr-2"
+                  onClick={() => this.onClick(id)}
+                >
+                  <i className="fa fa-pencil-square-o mr-1" />
+                  {this.state.mode === "purchase"
+                    ? i18n.t("PurchaseIsPaid")
+                    : i18n.t("TransactionIsPaid")}
+                </Button>
+              </div>
             ),
           },
         ];
@@ -314,6 +349,15 @@ export default class Debt extends Component {
     const { data, loading } = this.state;
     return (
       <Card title={this.renderTitle()} className="body-minH">
+        <ModalDebt
+          isShow={this.state.isShowModal}
+          closeModal={() => {
+            this.setState({ isShowModal: false });
+            this.fetchDebt();
+          }}
+          currentDebt={this.state.currentDebt}
+          updateDebt={this.onClick}
+        />
         <Row>
           <Col style={{ overflowX: "auto" }}>
             <div className="debt-container">
