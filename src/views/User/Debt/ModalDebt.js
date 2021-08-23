@@ -15,9 +15,6 @@ const ModalEdit = ({ isShow, closeModal, currentDebt, updateDebt }) => {
       helper.toast("error", i18n.t("systemError"));
     }
   };
-  // useEffect(() => {
-  //   handleChangeDebt(new Date(), "date");
-  // }, []);
 
   return (
     <Modal
