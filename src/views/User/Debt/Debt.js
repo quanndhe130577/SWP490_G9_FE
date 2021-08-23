@@ -28,32 +28,8 @@ export default class Debt extends Component {
     };
   }
   componentDidMount() {
-    // this.fetchDebt();
     this.fetchDebtByMode(this.state.mode);
   }
-  // async fetchDebt() {
-  //   try {
-  //     this.setState({ loading: true });
-  //     let rs;
-  //     if (this.state.mode === "purchase") {
-  //       if (this.state.user.roleName === "Trader") {
-  //         rs = await apis.getAllDebtPurchase({}, "GET");
-  //       } else {
-  //         rs = await apis.debtWithTrader({}, "GET");
-  //       }
-  //     } else {
-  //       rs = await apis.getAllDebtTransaction({}, "GET");
-  //     }
-  //     if (rs && rs.statusCode === 200) {
-  //       rs.data.map((el, idx) => (el.idx = idx + 1));
-  //       this.setState({ data: rs.data, total: rs.data.length });
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     this.setState({ loading: false });
-  //   }
-  // }
   async fetchDebtByMode(mode) {
     try {
       this.setState({ loading: true });
@@ -161,7 +137,7 @@ export default class Debt extends Component {
           if (user.roleName === "Trader") {
             rs = await apis.updateDebtPurchase({}, "GET", id + "/" + amount);
           } else {
-            rs = await apis.wrUpdateDebtWithTrader({ transId: id, amount });
+            rs = await apis.wrUpdateDebtWithTrader({ id, amount });
           }
         } else {
           rs = await apis.updateDebtTransaction({}, "GET", id);
