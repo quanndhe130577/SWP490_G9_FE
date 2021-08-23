@@ -182,7 +182,7 @@ export default class Debt extends Component {
         </Menu.Item>
         <Menu.Item key="2">
           <Button
-            color="info"
+            color="danger"
             className="mr-2 w-100"
             onClick={() => this.onClick(id, cell.amount)}
           >
