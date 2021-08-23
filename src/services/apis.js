@@ -161,6 +161,7 @@ let path = {
 
   //tra mot phan
   debtWithTrader: "/api/debt/wr/debtWithTrader",
+  wrUpdateDebtWithTrader: "/api/debt/wr/update/debtWithTrader",
 };
 
 Object.keys(path).forEach(function (key) {

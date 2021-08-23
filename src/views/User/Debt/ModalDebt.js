@@ -10,7 +10,7 @@ const ModalEdit = ({ isShow, closeModal, currentDebt, updateDebt }) => {
 
   const handleOk = async () => {
     try {
-      updateDebt(currentDebt.id, debtAmount);
+      updateDebt(currentDebt.id || currentDebt.transID, debtAmount);
       setDebtAmount(0);
     } catch (error) {
       helper.toast("error", i18n.t("systemError"));

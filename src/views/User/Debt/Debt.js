@@ -31,29 +31,29 @@ export default class Debt extends Component {
     // this.fetchDebt();
     this.fetchDebtByMode(this.state.mode);
   }
-  async fetchDebt() {
-    try {
-      this.setState({ loading: true });
-      let rs;
-      if (this.state.mode === "purchase") {
-        if (this.state.user.roleName === "Trader") {
-          rs = await apis.getAllDebtPurchase({}, "GET");
-        } else {
-          rs = await apis.debtWithTrader({}, "GET");
-        }
-      } else {
-        rs = await apis.getAllDebtTransaction({}, "GET");
-      }
-      if (rs && rs.statusCode === 200) {
-        rs.data.map((el, idx) => (el.idx = idx + 1));
-        this.setState({ data: rs.data, total: rs.data.length });
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      this.setState({ loading: false });
-    }
-  }
+  // async fetchDebt() {
+  //   try {
+  //     this.setState({ loading: true });
+  //     let rs;
+  //     if (this.state.mode === "purchase") {
+  //       if (this.state.user.roleName === "Trader") {
+  //         rs = await apis.getAllDebtPurchase({}, "GET");
+  //       } else {
+  //         rs = await apis.debtWithTrader({}, "GET");
+  //       }
+  //     } else {
+  //       rs = await apis.getAllDebtTransaction({}, "GET");
+  //     }
+  //     if (rs && rs.statusCode === 200) {
+  //       rs.data.map((el, idx) => (el.idx = idx + 1));
+  //       this.setState({ data: rs.data, total: rs.data.length });
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     this.setState({ loading: false });
+  //   }
+  // }
   async fetchDebtByMode(mode) {
     try {
       this.setState({ loading: true });
@@ -153,20 +153,23 @@ export default class Debt extends Component {
   };
 
   onClick = async (id, amount = 0) => {
-    helper.confirm(i18n.t("comfirmPaidDebt") + "?").then(async (rs) => {
-      if (rs) {
-        let rs;
-        if (this.state.mode === "purchase") {
-          rs = await apis.updateDebtPurchase({}, "GET", id + "/" + amount);
+    helper.confirm(i18n.t("comfirmPaidDebt") + "?").then(async (res) => {
+      if (res) {
+        let rs,
+          { user, mode } = this.state;
+        if (mode === "purchase") {
+          if (user.roleName === "Trader") {
+            rs = await apis.updateDebtPurchase({}, "GET", id + "/" + amount);
+          } else {
+            rs = await apis.wrUpdateDebtWithTrader({ transId: id, amount });
+          }
         } else {
           rs = await apis.updateDebtTransaction({}, "GET", id);
         }
-        console.log(rs);
-        if (rs) {
+        if (rs && rs.statusCode === 200) {
           helper.toast("success", rs.message);
+          await this.fetchDebtByMode(this.state.mode);
         }
-        // await this.fetchDebt();
-        await this.fetchDebtByMode(this.state.mode);
 
         this.setState({ isShowModal: false });
       }
