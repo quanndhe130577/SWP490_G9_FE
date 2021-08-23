@@ -231,7 +231,9 @@ export default class Debt extends Component {
             render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
           },
           {
-            title: i18n.t("pondOwner"),
+            title: i18n.t(
+              this.state.user.roleName === "Trader" ? "pondOwner" : "trader"
+            ),
             dataIndex: "partner",
             key: "partner",
             ...this.getColumnSearchProps("debtor"),
@@ -361,41 +363,41 @@ export default class Debt extends Component {
         <Row>
           <Col style={{ overflowX: "auto" }}>
             <div className="debt-container">
-              {this.state.user.roleName === "Trader" ? (
-                <Tabs
-                  defaultActiveKey={this.state.mode}
-                  onChange={this.setMode}
-                  centered
+              {/* {this.state.user.roleName === "Trader" ? ( */}
+              <Tabs
+                defaultActiveKey={this.state.mode}
+                onChange={this.setMode}
+                centered
+              >
+                <TabPane
+                  tab={i18n.t("Transaction Debt")}
+                  key="transaction"
+                  size="large"
                 >
-                  <TabPane
-                    tab={i18n.t("Transaction Debt")}
-                    key="transaction"
-                    size="large"
-                  >
-                    <Table
-                      bordered
-                      columns={this.getColum()}
-                      dataSource={data}
-                      pagination={{ pageSize: 10 }}
-                      scroll={{ y: 600 }}
-                      loading={loading}
-                      rowKey="id"
-                    />
-                  </TabPane>
-                  <TabPane tab={i18n.t("Purchase Debt")} key="purchase">
-                    <Table
-                      bordered
-                      columns={this.getColum()}
-                      dataSource={data}
-                      pagination={{ pageSize: 10 }}
-                      scroll={{ y: 600 }}
-                      loading={loading}
-                      rowKey="id"
-                    />
-                  </TabPane>
-                </Tabs>
-              ) : (
-                <Table
+                  <Table
+                    bordered
+                    columns={this.getColum()}
+                    dataSource={data}
+                    pagination={{ pageSize: 10 }}
+                    scroll={{ y: 600 }}
+                    loading={loading}
+                    rowKey="id"
+                  />
+                </TabPane>
+                <TabPane tab={i18n.t("Purchase Debt")} key="purchase">
+                  <Table
+                    bordered
+                    columns={this.getColum()}
+                    dataSource={data}
+                    pagination={{ pageSize: 10 }}
+                    scroll={{ y: 600 }}
+                    loading={loading}
+                    rowKey="id"
+                  />
+                </TabPane>
+              </Tabs>
+              {/* ) : ( */}
+              {/* <Table
                   bordered
                   columns={this.getColum()}
                   dataSource={data}
@@ -403,8 +405,8 @@ export default class Debt extends Component {
                   scroll={{ y: 600 }}
                   loading={loading}
                   rowKey="id"
-                />
-              )}
+                /> */}
+              {/* )} */}
             </div>
           </Col>
         </Row>

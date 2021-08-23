@@ -35,11 +35,14 @@ const ModalCloseSell = ({
           setLoading(true);
           let check = validate();
           if (!check) {
-            let { commissionUnit, tranId } = currentTransaction;
+            let { commissionUnit, tranId, sentMoney, isPaid } =
+              currentTransaction;
             if (handleCloseTrans) {
               handleCloseTrans({
                 commissionUnit,
                 tranId,
+                sentMoney,
+                isPaid,
                 listRemainFish: remain,
                 date: helper.correctDate(moment(date, "DDMMYYYY")),
               });
@@ -68,7 +71,18 @@ const ModalCloseSell = ({
     handleCloseModal(!isShowCloseTransaction);
   };
   const handleChangeTran = async (name, val, transId) => {
-    if (name === "traderId") {
+    if (name === "isPaid") {
+      // let { commissionUnit, tranId } = currentTransaction;
+      let sentMoney = 0;
+      if (val)
+        sentMoney =
+          total.totalAmount -
+          total.totalWeight * currentTransaction.commissionUnit;
+      setCurrentTransaction((pre) => ({
+        ...pre,
+        sentMoney,
+      }));
+    } else if (name === "traderId") {
       let trader = dataDf.tradersSelected.find((el) => el.id === val);
       if (transId) {
         trader.transId = transId;
@@ -286,8 +300,18 @@ const ModalCloseSell = ({
                             currentTransaction.commissionUnit || ""
                         }
                       />
-                      {/* </Col>
-                    <Col md="6"> */}
+                      <Widgets.Checkbox
+                        label={i18n.t("payStatus")}
+                        value={currentTransaction.isPaid}
+                        onChange={(val) => handleChangeTran("isPaid", val)}
+                        lblCheckbox={i18n.t("paid")}
+                        disabled={
+                          traderId || currentTransaction.status === "Completed"
+                        }
+                        className=" mt-1 "
+                      />
+                    </Col>
+                    <Col md="6">
                       <Widgets.NumberFormat
                         label={
                           i18n.t(
@@ -301,6 +325,12 @@ const ModalCloseSell = ({
                             total.totalWeight *
                               currentTransaction.commissionUnit || ""
                         }
+                      />
+                      <Widgets.MoneyInput
+                        disabled={traderId || currentTransaction.isPaid}
+                        label={i18n.t("realMoney")}
+                        value={currentTransaction.sentMoney || ""}
+                        onChange={(val) => handleChangeTran("sentMoney", val)}
                       />
                     </Col>
                   </>
