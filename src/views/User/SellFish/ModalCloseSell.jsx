@@ -302,7 +302,13 @@ const ModalCloseSell = ({
                       />
                       <Widgets.Checkbox
                         label={i18n.t("payStatus") + ": "}
-                        value={currentTransaction.isPaid}
+                        value={
+                          currentTransaction.isPaid ||
+                          currentTransaction.sentMoney ===
+                            total.totalAmount -
+                              total.totalWeight *
+                                currentTransaction.commissionUnit
+                        }
                         onChange={(val) => handleChangeTran("isPaid", val)}
                         lblCheckbox={i18n.t("paid")}
                         disabled={
