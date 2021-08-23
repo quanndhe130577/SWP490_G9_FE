@@ -158,6 +158,9 @@ let path = {
   // Weight recoreder
   getWr: "/api/trader/get-wr",
   updateWr: "/api/trader/edit-wr",
+
+  //tra mot phan
+  debtWithTrader: "/api/debt/wr/debtWithTrader",
 };
 
 Object.keys(path).forEach(function (key) {

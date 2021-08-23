@@ -37,7 +37,11 @@ export default class Debt extends Component {
       if (this.state.mode === "purchase") {
         rs = await apis.getAllDebtPurchase({}, "GET");
       } else {
-        rs = await apis.getAllDebtTransaction({}, "GET");
+        if (this.state.user.roleName === "Trader") {
+          rs = await apis.getAllDebtTransaction({}, "GET");
+        } else {
+          rs = await apis.debtWithTrader({}, "GET");
+        }
       }
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));

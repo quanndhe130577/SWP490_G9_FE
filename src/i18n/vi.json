@@ -260,5 +260,6 @@
   "cfOverSentMoney": "Bạn đang trả nhiều tiền hơn số với số tiền cần trả, bạn có chắc không?",
   "tienPhaiTra": "TIỀN PHẢI TRẢ",
   "tienPhaiThu": "TIỀN PHẢI THU",
-  "realMoney": "Số tiền trả trước"
+  "realMoney": "Số tiền trả trước",
+  "realMoneyReci": "Số tiền đã nhận"
 }

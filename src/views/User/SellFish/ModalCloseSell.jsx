@@ -301,7 +301,7 @@ const ModalCloseSell = ({
                         }
                       />
                       <Widgets.Checkbox
-                        label={i18n.t("payStatus")}
+                        label={i18n.t("payStatus") + ": "}
                         value={currentTransaction.isPaid}
                         onChange={(val) => handleChangeTran("isPaid", val)}
                         lblCheckbox={i18n.t("paid")}
@@ -328,7 +328,13 @@ const ModalCloseSell = ({
                       />
                       <Widgets.MoneyInput
                         disabled={traderId || currentTransaction.isPaid}
-                        label={i18n.t("realMoney")}
+                        label={
+                          i18n.t(
+                            user.roleName === "Trader"
+                              ? "realMoneyReci"
+                              : "realMoney"
+                          ) + ": "
+                        }
                         value={currentTransaction.sentMoney || ""}
                         onChange={(val) => handleChangeTran("sentMoney", val)}
                       />
