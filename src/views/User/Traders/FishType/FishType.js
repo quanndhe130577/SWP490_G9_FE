@@ -115,9 +115,9 @@ export default class FishType extends Component {
       } else {
         return record[dataIndex]
           ? record[dataIndex]
-              .toString()
-              .toLowerCase()
-              .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
           : "";
       }
     },
@@ -158,22 +158,10 @@ export default class FishType extends Component {
     return (
       <Row>
         <Col md="6" className="d-flex">
-          <h3 className="">{i18n.t("fishTypeManagement")}</h3>
+          <h3 className="">{i18n.t("historyPurchaseFishtype")}</h3>
           <label className="hd-total">{total ? "(" + total + ")" : ""}</label>
         </Col>
 
-        {/* <Col md="6">
-          <Button
-            color="info"
-            className="pull-right"
-            onClick={() => {
-              this.setState({ isShowModal: true, mode: "create" });
-            }}
-          >
-            <i className="fa fa-plus mr-1" />
-            {i18n.t("create")}
-          </Button>
-        </Col> */}
       </Row>
     );
   };
@@ -375,7 +363,7 @@ export default class FishType extends Component {
         // sortDirections: ["descend", "ascend"],
         render: (price) => (
           <NumberFormat
-            value={price}
+            value={price && price.toFixed(1)}
             displayType={"text"}
             thousandSeparator={true}
           />
@@ -390,7 +378,7 @@ export default class FishType extends Component {
         // sortDirections: ["descend", "ascend"],
         render: (price) => (
           <NumberFormat
-            value={price}
+            value={price && price.toFixed(0)}
             displayType={"text"}
             thousandSeparator={true}
           />
@@ -416,19 +404,7 @@ export default class FishType extends Component {
           />
         ),
       },
-      // {
-      //   title: i18n.t("action"),
-      //   dataIndex: "id",
-      //   key: "id",
-      //   render: (id) => (
-      //     <Dropdown overlay={this.renderBtnAction(id)}>
-      //       <Button>
-      //         <i className="fa fa-cog mr-1" />
-      //         <label className="tb-lb-action">{i18n.t("action")}</label>
-      //       </Button>
-      //     </Dropdown>
-      //   ),
-      // },
+
     ];
     return (
       <Card title={this.renderTitle()} className="body-minH">
@@ -439,7 +415,6 @@ export default class FishType extends Component {
             closeModal={this.closeModal}
             currentFT={currentFT || {}}
             loading={loading}
-            // handleChangeFishType={handleChangeFishType}
           />
         )}
         <Row>

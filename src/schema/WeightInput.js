@@ -32,7 +32,7 @@ export default function Number({
       <Input
         disabled={isDisable}
         placeholder={placeholder}
-        value={value && value.toFixed(1)}
+        value={value}
         onChange={(e) => {
           if (onChange) {
             let v = e.target.value.replace(/[^0-9.]/, "");
