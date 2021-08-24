@@ -53,7 +53,7 @@ const SellFish = (props) => {
   };
   const calculateIntoMoney = ({ sellPrice, weight }) => (
     <NumberFormat
-      value={sellPrice * weight}
+      value={(sellPrice * weight || 0).toFixed(0)}
       displayType={"text"}
       thousandSeparator={true}
     />
@@ -111,7 +111,7 @@ const SellFish = (props) => {
       key: "sellPrice",
       render: (sellPrice) => (
         <NumberFormat
-          value={sellPrice}
+          value={sellPrice.toFixed(0)}
           displayType={"text"}
           thousandSeparator={true}
         />
@@ -641,7 +641,7 @@ const SellFish = (props) => {
                               </Table.Summary.Cell>
                               <Table.Summary.Cell key="4" className="bold">
                                 <NumberFormat
-                                  value={totalAmount}
+                                  value={totalAmount.toFixed(0)}
                                   displayType={"text"}
                                   thousandSeparator={true}
                                 />

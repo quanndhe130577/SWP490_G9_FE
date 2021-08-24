@@ -127,6 +127,14 @@ const ModalCloseSell = ({
     return arrFish.filter((fi) => fi.totalWeight > 0);
   }
 
+  function checkDisableBtn() {
+    if (user && user.roleName === "Trader") {
+      if (remain && remain.length > 0) return false;
+      else return currentTransaction.status === "Completed";
+    } else {
+      return currentTransaction.status === "Completed";
+    }
+  }
   useEffect(() => {
     if (traderId || user.roleName === "Trader") {
       handleChangeTran("traderId", traderId || user.userID, transId);
@@ -158,7 +166,7 @@ const ModalCloseSell = ({
           onCancel={handleCancel}
           loading={loading}
           width={700}
-          disabledOk={traderId || currentTransaction.status === "Completed"}
+          disabledOk={traderId || checkDisableBtn()}
           titleBtnOk={i18n.t("closeTransaction")}
           component={() => (
             <Row>
@@ -178,9 +186,7 @@ const ModalCloseSell = ({
                   <Col md="6">
                     <Widgets.MoneyInput
                       placeholder="700"
-                      disabled={
-                        traderId || currentTransaction.status === "Completed"
-                      }
+                      disabled={traderId || checkDisableBtn()}
                       required={true}
                       label={i18n.t("commissionWR")}
                       value={currentTransaction.commissionUnit || ""}
@@ -202,7 +208,7 @@ const ModalCloseSell = ({
                     setRemain(ele);
                   }}
                   traderId={traderId}
-                  disabledBtn={currentTransaction.status === "Completed"}
+                  disabledBtn={checkDisableBtn()}
                 />
               )}
 
@@ -261,7 +267,7 @@ const ModalCloseSell = ({
                         setRemain(ele);
                       }}
                       traderId={traderId}
-                      disabledBtn={currentTransaction.status === "Completed"}
+                      disabledBtn={checkDisableBtn()}
                     />
                   ))}
                 </>
@@ -281,10 +287,10 @@ const ModalCloseSell = ({
                               : "wcReceiver"
                           ) + ": "
                         }
-                        value={
+                        value={(
                           total.totalWeight *
                             currentTransaction.commissionUnit || ""
-                        }
+                        ).toFixed(0)}
                       />
                       {/* </Col>
                     <Col md="6"> */}
