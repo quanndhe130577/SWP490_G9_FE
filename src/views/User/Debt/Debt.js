@@ -28,33 +28,18 @@ export default class Debt extends Component {
     };
   }
   componentDidMount() {
-    this.fetchDebt();
-  }
-  async fetchDebt() {
-    try {
-      this.setState({ loading: true });
-      let rs;
-      if (this.state.mode === "purchase") {
-        rs = await apis.getAllDebtPurchase({}, "GET");
-      } else {
-        rs = await apis.getAllDebtTransaction({}, "GET");
-      }
-      if (rs && rs.statusCode === 200) {
-        rs.data.map((el, idx) => (el.idx = idx + 1));
-        this.setState({ data: rs.data, total: rs.data.length });
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      this.setState({ loading: false });
-    }
+    this.fetchDebtByMode(this.state.mode);
   }
   async fetchDebtByMode(mode) {
     try {
       this.setState({ loading: true });
       let rs;
       if (mode === "purchase") {
-        rs = await apis.getAllDebtPurchase({}, "GET");
+        if (this.state.user.roleName === "Trader") {
+          rs = await apis.getAllDebtPurchase({}, "GET");
+        } else {
+          rs = await apis.debtWithTrader({}, "GET");
+        }
       } else {
         rs = await apis.getAllDebtTransaction({}, "GET");
       }
@@ -144,19 +129,23 @@ export default class Debt extends Component {
   };
 
   onClick = async (id, amount = 0) => {
-    helper.confirm(i18n.t("comfirmPaidDebt") + "?").then(async (rs) => {
-      if (rs) {
-        let rs;
-        if (this.state.mode === "purchase") {
-          rs = await apis.updateDebtPurchase({}, "GET", id + "/" + amount);
+    helper.confirm(i18n.t("comfirmPaidDebt") + "?").then(async (res) => {
+      if (res) {
+        let rs,
+          { user, mode } = this.state;
+        if (mode === "purchase") {
+          if (user.roleName === "Trader") {
+            rs = await apis.updateDebtPurchase({}, "GET", id + "/" + amount);
+          } else {
+            rs = await apis.wrUpdateDebtWithTrader({ id, amount });
+          }
         } else {
           rs = await apis.updateDebtTransaction({}, "GET", id);
         }
-        console.log(rs);
-        if (rs) {
+        if (rs && rs.statusCode === 200) {
           helper.toast("success", rs.message);
+          await this.fetchDebtByMode(this.state.mode);
         }
-        await this.fetchDebt();
 
         this.setState({ isShowModal: false });
       }
@@ -231,7 +220,9 @@ export default class Debt extends Component {
             render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
           },
           {
-            title: i18n.t("pondOwner"),
+            title: i18n.t(
+              this.state.user.roleName === "Trader" ? "pondOwner" : "trader"
+            ),
             dataIndex: "partner",
             key: "partner",
             ...this.getColumnSearchProps("debtor"),
@@ -351,9 +342,10 @@ export default class Debt extends Component {
       <Card title={this.renderTitle()} className="body-minH">
         <ModalDebt
           isShow={this.state.isShowModal}
-          closeModal={() => {
+          closeModal={async () => {
             this.setState({ isShowModal: false });
-            this.fetchDebt();
+            // this.fetchDebt();
+            await this.fetchDebtByMode(this.state.mode);
           }}
           currentDebt={this.state.currentDebt}
           updateDebt={this.onClick}
@@ -361,41 +353,41 @@ export default class Debt extends Component {
         <Row>
           <Col style={{ overflowX: "auto" }}>
             <div className="debt-container">
-              {this.state.user.roleName === "Trader" ? (
-                <Tabs
-                  defaultActiveKey={this.state.mode}
-                  onChange={this.setMode}
-                  centered
+              {/* {this.state.user.roleName === "Trader" ? ( */}
+              <Tabs
+                defaultActiveKey={this.state.mode}
+                onChange={this.setMode}
+                centered
+              >
+                <TabPane
+                  tab={i18n.t("Transaction Debt")}
+                  key="transaction"
+                  size="large"
                 >
-                  <TabPane
-                    tab={i18n.t("Transaction Debt")}
-                    key="transaction"
-                    size="large"
-                  >
-                    <Table
-                      bordered
-                      columns={this.getColum()}
-                      dataSource={data}
-                      pagination={{ pageSize: 10 }}
-                      scroll={{ y: 600 }}
-                      loading={loading}
-                      rowKey="id"
-                    />
-                  </TabPane>
-                  <TabPane tab={i18n.t("Purchase Debt")} key="purchase">
-                    <Table
-                      bordered
-                      columns={this.getColum()}
-                      dataSource={data}
-                      pagination={{ pageSize: 10 }}
-                      scroll={{ y: 600 }}
-                      loading={loading}
-                      rowKey="id"
-                    />
-                  </TabPane>
-                </Tabs>
-              ) : (
-                <Table
+                  <Table
+                    bordered
+                    columns={this.getColum()}
+                    dataSource={data}
+                    pagination={{ pageSize: 10 }}
+                    scroll={{ y: 600 }}
+                    loading={loading}
+                    rowKey="id"
+                  />
+                </TabPane>
+                <TabPane tab={i18n.t("Purchase Debt")} key="purchase">
+                  <Table
+                    bordered
+                    columns={this.getColum()}
+                    dataSource={data}
+                    pagination={{ pageSize: 10 }}
+                    scroll={{ y: 600 }}
+                    loading={loading}
+                    rowKey="id"
+                  />
+                </TabPane>
+              </Tabs>
+              {/* ) : ( */}
+              {/* <Table
                   bordered
                   columns={this.getColum()}
                   dataSource={data}
@@ -403,8 +395,8 @@ export default class Debt extends Component {
                   scroll={{ y: 600 }}
                   loading={loading}
                   rowKey="id"
-                />
-              )}
+                /> */}
+              {/* )} */}
             </div>
           </Col>
         </Row>
