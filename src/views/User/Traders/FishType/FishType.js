@@ -115,9 +115,9 @@ export default class FishType extends Component {
       } else {
         return record[dataIndex]
           ? record[dataIndex]
-              .toString()
-              .toLowerCase()
-              .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
           : "";
       }
     },
@@ -375,7 +375,7 @@ export default class FishType extends Component {
         // sortDirections: ["descend", "ascend"],
         render: (price) => (
           <NumberFormat
-            value={price}
+            value={price && price.toFixed(1)}
             displayType={"text"}
             thousandSeparator={true}
           />
@@ -390,7 +390,7 @@ export default class FishType extends Component {
         // sortDirections: ["descend", "ascend"],
         render: (price) => (
           <NumberFormat
-            value={price}
+            value={price && price.toFixed(0)}
             displayType={"text"}
             thousandSeparator={true}
           />
@@ -439,7 +439,7 @@ export default class FishType extends Component {
             closeModal={this.closeModal}
             currentFT={currentFT || {}}
             loading={loading}
-            // handleChangeFishType={handleChangeFishType}
+          // handleChangeFishType={handleChangeFishType}
           />
         )}
         <Row>
