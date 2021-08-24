@@ -149,7 +149,7 @@ const ReportDaily = () => {
               label={i18n.t("moneyCommission") + ": "}
               value={transactionTotal.summaryCommission}
             />
-            {user.roleName !== "Trader" && (
+            {user && user.roleName !== "Trader" && (
               <Widgets.NumberFormat
                 label={i18n.t("CostIncurredManagement") + ": "}
                 value={CostIncurred.totalCost}
@@ -169,7 +169,7 @@ const ReportDaily = () => {
               <h4 className="mt-4 mb-0 d-flex">
                 <span>
                   {i18n.t(
-                    user.roleName === "Trader" ? "profit" : "wcReceiver"
+                    user && user.roleName === "Trader" ? "profit" : "wcReceiver"
                   ) + ": "}
                 </span>
                 <span
