@@ -79,13 +79,14 @@ const RenderTB = ({
     }
   }
   const onChangeWeight = (value, id, name) => {
+    debugger
     let { remainF } = currentTransaction;
     const newDatas = [...remainF];
     const index = remainF.findIndex(
       (x) => x && parseInt(x.id) === parseInt(id)
     );
     if (index !== -1) {
-      const newItem = { ...newDatas[index], [name]: parseInt(value || 0) };
+      const newItem = { ...newDatas[index], [name]: value || 0 };
       newDatas.splice(index, 1, newItem);
       setCurrentTransaction((pre) => ({
         ...pre,
@@ -156,8 +157,8 @@ const RenderTB = ({
               let totalRemain = 0;
               let realRemain = 0;
               pageData.forEach(({ remainWeight, realWeight }) => {
-                if (remainWeight > 0) totalRemain += remainWeight;
-                if (realWeight > 0) realRemain += realWeight;
+                if (remainWeight > 0) totalRemain += parseFloat(remainWeight);
+                if (realWeight > 0) realRemain += parseFloat(realWeight);
               });
               return (
                 <Table.Summary fixed>
@@ -175,7 +176,7 @@ const RenderTB = ({
                     </Table.Summary.Cell>
                     <Table.Summary.Cell key="3" className="bold" colSpan="2">
                       <NumberFormat
-                        value={realRemain.toFixed(1)}
+                        value={realRemain && realRemain.toFixed(1)}
                         displayType={"text"}
                         thousandSeparator={true}
                         suffix=" Kg"
