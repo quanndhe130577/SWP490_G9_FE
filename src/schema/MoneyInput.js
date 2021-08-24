@@ -3,7 +3,7 @@ import { InputNumber } from "antd";
 import i18next from "i18next";
 export default function Money({
   defaultValue = 0,
-  value = null,
+  value = 0,
   label,
   error,
   disabled = false,
@@ -36,7 +36,7 @@ export default function Money({
         defaultValue={defaultValue.toFixed(0)}
         step={step}
         //value={inputValue}
-        value={value.toFixed(0)}
+        value={value && value.toFixed(0)}
         formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
         required={required}
         min={min}
