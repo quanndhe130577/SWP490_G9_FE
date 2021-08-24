@@ -4,7 +4,7 @@ import { Row, Col } from "reactstrap";
 import i18n from "i18next";
 import Widgets from "../../../../schema/Widgets";
 import PriceFishToday from "./PriceFishToday";
-import { local, helper } from "../../../../services";
+import { local, helper, apis } from "../../../../services";
 import { useHistory } from "react-router-dom";
 
 const ChoosePond = ({
@@ -25,7 +25,6 @@ const ChoosePond = ({
     // neu ko co id purchase thì tạo purchase mới
     if (createPurchase && !currentPurchase.id) {
       let purchase = await createPurchase();
-
       if (purchase !== undefined) {
         let rs = await updateFishType(purchase, dataChange, false);
         if (rs) {
@@ -33,6 +32,7 @@ const ChoosePond = ({
           local.set("historyPurchase", purchase);
           history.push("buyFish?id=" + purchase.id);
         } else {
+          let rsDelete = await apis.deletePurchase({ purchaseId: purchase.id });
           setCurrentPurchase((prevState) => ({
             ...prevState,
             id: undefined,

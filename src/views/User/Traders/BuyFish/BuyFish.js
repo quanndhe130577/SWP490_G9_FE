@@ -352,8 +352,10 @@ const BuyFish = (props) => {
 
       let rs = await apis.createPurchase({ traderId, pondOwnerID, date });
       if (rs && rs.statusCode === 200) {
+        let id = rs.data.id;
         let tem = rs.data;
         tem = Object.assign(tem, currentPurchase);
+        tem.id = id;
         setCurrentPurchase(tem);
         local.set("currentPurchase", tem);
         return tem;
