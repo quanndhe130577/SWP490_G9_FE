@@ -149,6 +149,12 @@ const ReportDaily = () => {
               label={i18n.t("moneyCommission") + ": "}
               value={transactionTotal.summaryCommission}
             />
+            {user.roleName !== "Trader" && (
+              <Widgets.NumberFormat
+                label={i18n.t("CostIncurredManagement") + ": "}
+                value={CostIncurred.totalCost}
+              />
+            )}
           </Col>
           {user &&
             user.roleName === "Trader" &&
