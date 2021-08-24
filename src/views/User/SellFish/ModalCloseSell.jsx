@@ -281,10 +281,10 @@ const ModalCloseSell = ({
                               : "wcReceiver"
                           ) + ": "
                         }
-                        value={
+                        value={(
                           total.totalWeight *
                             currentTransaction.commissionUnit || ""
-                        }
+                        ).toFixed(0)}
                       />
                       {/* </Col>
                     <Col md="6"> */}
