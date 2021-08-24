@@ -263,7 +263,7 @@ const fTTable = (listSummaryPurchaseDetail) => {
                     </Table.Summary.Cell>
                     <Table.Summary.Cell key="3" className="bold">
                       <NumberFormat
-                        value={el.totalMoney}
+                        value={el.totalMoney && el.totalMoney.toFixed(0)}
                         displayType={"text"}
                         thousandSeparator={true}
                         suffix=" VND"
@@ -323,7 +323,7 @@ const fTTable2 = (listSummaryPurchaseDetail, user) => {
                       </Table.Summary.Cell>
                       <Table.Summary.Cell key="3" className="bold">
                         <NumberFormat
-                          value={el.totalMoney}
+                          value={el.totalMoney && el.totalMoney.toFixed(0)}
                           displayType={"text"}
                           thousandSeparator={true}
                           suffix=" VND"
@@ -349,7 +349,10 @@ const columns = [
   {
     title: i18n.t("buyPirce"),
     render: (cell, row) => (
-      <Widgets.NumberFormat needSuffix={false} value={row.price / row.weight} />
+      <Widgets.NumberFormat
+        needSuffix={false}
+        value={row.price / row.weight && (row.price / row.weight).toFixed(0)}
+      />
     ),
   },
   {
@@ -365,7 +368,10 @@ const columns = [
     dataIndex: "price",
     key: "price",
     render: (price) => (
-      <Widgets.NumberFormat needSuffix={false} value={price} />
+      <Widgets.NumberFormat
+        needSuffix={false}
+        value={price && price.toFixed(0)}
+      />
     ),
   },
 ];
@@ -389,7 +395,10 @@ const columns2 = [
     dataIndex: "sellPrice",
     key: "sellPrice",
     render: (sellPrice) => (
-      <Widgets.NumberFormat needSuffix={false} value={sellPrice} />
+      <Widgets.NumberFormat
+        needSuffix={false}
+        value={sellPrice && sellPrice.toFixed(0)}
+      />
     ),
   },
 ];
