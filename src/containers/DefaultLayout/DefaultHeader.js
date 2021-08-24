@@ -45,8 +45,8 @@ class DefaultHeader extends Component {
           style={{ paddingTop: 64 }}
           breakpoint="lg"
           collapsedWidth="0"
-          onBreakpoint={(broken) => {}}
-          onCollapse={(collapsed, type) => {}}
+          onBreakpoint={(broken) => { }}
+          onCollapse={(collapsed, type) => { }}
         >
           <Menu mode="inline">
             {/* auto generate menu, define menu in MENU */}
@@ -65,7 +65,7 @@ class DefaultHeader extends Component {
                       {menu.map((me, i) => {
                         if (!me.role || me.role === user.roleDisplayName)
                           return (
-                            <Menu.Item key={me + i + idx}>
+                            <Menu.Item key={me.link + i + idx}>
                               <Link to={me.link}>{i18n.t(me.title)}</Link>
                             </Menu.Item>
                           );
