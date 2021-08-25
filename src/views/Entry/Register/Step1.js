@@ -15,16 +15,14 @@ export default class Step1 extends Component {
         <Col md="12">
           <Widgets.Text
             required={true}
-            // label={i18n.t("OTP")}
             value={value}
             onChange={onChange}
-            // submitted={submitted}
           />
         </Col>
-        <Col md="6">
-          <label>
+        <Col md="12">
+          <label onClick={() => this.props.getOTP("reset")}>
             {i18n.t("Bạn không nhận được mã?")}
-            <span> Gửi lại OPT</span>
+            <span className="pointer resetOTP"> Gửi lại OTP</span>
           </label>
         </Col>
       </Row>
