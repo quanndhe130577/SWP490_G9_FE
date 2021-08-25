@@ -261,5 +261,6 @@
   "tienPhaiTra": "TIỀN PHẢI TRẢ",
   "tienPhaiThu": "TIỀN PHẢI THU",
   "realMoney": "Số tiền trả trước",
-  "realMoneyReci": "Số tiền đã nhận"
+  "realMoneyReci": "Số tiền đã nhận",
+  "cfOLowPriceFish": "Giá cá bạn bán đang thấp hơi giá đề nghị, bạn có chắc không?"
 }
