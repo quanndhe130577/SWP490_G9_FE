@@ -8,11 +8,11 @@ import helper from "../../../services/helper";
 
 const Login = (props) => {
   const [user, setUser] = useState({
-    code: "123456",
-    OTPID: 3,
-    DOB: "1999-10-21",
-    Avatar: null,
-    roleNormalizedName: "TRADER",
+    // code: "123456",
+    // OTPID: 3,
+    // DOB: "1999-10-21",
+    // Avatar: null,
+    // roleNormalizedName: "TRADER",
   });
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
@@ -27,6 +27,19 @@ const Login = (props) => {
     }));
   };
 
+  const getOTP = async (type = "") => {
+    try {
+      let rs = await apis.getOtp({}, "GET", user.phoneNumber);
+      if (rs && rs.statusCode === 200)
+        if (type === "reset") {
+          helper.toast("success", i18n.t(rs.message || "systemError"));
+
+        }
+      return rs
+    } catch (error) {
+      console.log(error)
+    }
+  }
   const handleSubmit = async () => {
     let rs;
     try {
@@ -34,7 +47,7 @@ const Login = (props) => {
       if (!user.phoneNumber) {
         return helper.toast("error", i18n.t("Vui lòng điền số điện thoại"));
       } else if (step === 0) {
-        rs = await apis.getOtp({}, "GET", user.phoneNumber);
+        rs = await getOTP()
         if (rs && rs.statusCode === 200) {
           setStep(1);
           setSubmitted(false);
@@ -61,7 +74,6 @@ const Login = (props) => {
         }
       }
     } catch (error) {
-      // console.log(error);
       helper.toast("error", i18n.t(rs.message || "systemError"));
     }
   };
@@ -97,7 +109,7 @@ const Login = (props) => {
     return i18n.t(msg);
   };
   const _handleKeyDown = (e) => {
-    console.log(e.key);
+    // console.log(e.key);
     if (e.key === "Enter") {
       handleSubmit();
     }
@@ -129,6 +141,7 @@ const Login = (props) => {
                   <Step1
                     phoneNumber={user.phoneNumber}
                     onChange={(e) => handleChange(e, "code")}
+                    getOTP={getOTP}
                   />
                 )}
 
@@ -156,6 +169,7 @@ const Login = (props) => {
                   <button
                     className="btn btn-info block mr-2"
                     onClick={handleSubmit}
+                    disabled={submitted}
                   >
                     {step === 0 || step === 1
                       ? i18n.t("next")
@@ -169,9 +183,7 @@ const Login = (props) => {
                     {i18n.t("cancel")}
                   </button>
 
-                  {/* <Link to="/login" className="btn btn-link btn-warning">
-                    {i18n.t("cancel")}
-                  </Link> */}
+
                 </div>
               </div>
             </div>
