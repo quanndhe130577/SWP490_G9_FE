@@ -143,6 +143,10 @@ const ModalCloseSell = ({
 
   function checkDisableBtn() {
     if (user && user.roleName === "Trader") {
+      let checkTran = listTransaction.find(el => el.status !== "Completed")
+      if (!checkTran) {
+        return true
+      }
       if (remain && remain.length > 0) return false;
       else return currentTransaction.status === "Completed";
     } else {
@@ -303,7 +307,7 @@ const ModalCloseSell = ({
                         }
                         value={(
                           total.totalWeight *
-                            currentTransaction.commissionUnit || ""
+                          currentTransaction.commissionUnit || ""
                         ).toFixed(0)}
                       />
                       <Widgets.Checkbox
@@ -311,9 +315,9 @@ const ModalCloseSell = ({
                         value={
                           currentTransaction.isPaid ||
                           currentTransaction.sentMoney ===
-                            total.totalAmount -
-                              total.totalWeight *
-                                currentTransaction.commissionUnit
+                          total.totalAmount -
+                          total.totalWeight *
+                          currentTransaction.commissionUnit
                         }
                         onChange={(val) => handleChangeTran("isPaid", val)}
                         lblCheckbox={i18n.t("paid")}
@@ -334,8 +338,8 @@ const ModalCloseSell = ({
                         }
                         value={
                           total.totalAmount -
-                            total.totalWeight *
-                              currentTransaction.commissionUnit || ""
+                          total.totalWeight *
+                          currentTransaction.commissionUnit || ""
                         }
                       />
                       <Widgets.MoneyInput
