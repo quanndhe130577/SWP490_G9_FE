@@ -133,6 +133,6 @@ button {
 .pointer {
   cursor: pointer !important;
 }
-.resetOTP:hover {
+.resetOTP {
   color: rgb(36, 121, 169);
 }

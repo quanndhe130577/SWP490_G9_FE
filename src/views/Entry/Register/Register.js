@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Button } from "antd";
 import i18n from "i18next";
 import apis from "../../../services/apis";
 import Step0 from "./Step0";
@@ -45,7 +46,9 @@ const Login = (props) => {
     try {
       setSubmitted(true);
       if (!user.phoneNumber) {
+        setSubmitted(false);
         return helper.toast("error", i18n.t("Vui lòng điền số điện thoại"));
+
       } else if (step === 0) {
         rs = await getOTP()
         if (rs && rs.statusCode === 200) {
@@ -142,6 +145,8 @@ const Login = (props) => {
                     phoneNumber={user.phoneNumber}
                     onChange={(e) => handleChange(e, "code")}
                     getOTP={getOTP}
+                    submitted={submitted}
+
                   />
                 )}
 
@@ -158,30 +163,35 @@ const Login = (props) => {
 
                 <div className="form-group d-flex justify-content-center">
                   {step === 1 && (
-                    <button
-                      className="btn btn-info mr-2"
+                    <Button
+                      className="mr-2 btn"
+                      type="primary"
                       onClick={() => setStep(0)}
                     >
                       {i18n.t("previous")}
-                    </button>
+                    </Button>
                   )}
+                  <Button
+                    className="btn mr-2"
+                    type="danger"
+                    onClick={() => props.history.push("/login")}
 
-                  <button
-                    className="btn btn-info block mr-2"
+                  >
+                    {i18n.t("cancel")}
+                  </Button>
+                  <Button
+                    className="mr-2 btn"
+                    type="primary"
                     onClick={handleSubmit}
                     disabled={submitted}
+                    loading={submitted}
                   >
                     {step === 0 || step === 1
                       ? i18n.t("next")
                       : i18n.t("Register")}
-                  </button>
+                  </Button>
 
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => props.history.push("/login")}
-                  >
-                    {i18n.t("cancel")}
-                  </button>
+
 
 
                 </div>

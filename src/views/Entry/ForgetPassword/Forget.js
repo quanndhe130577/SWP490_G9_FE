@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Row, Col } from "reactstrap";
+import { Button } from "antd";
 import Widgets from "../../../schema/Widgets";
 import i18n from "i18next";
 import { apis, helper } from "../../../services";
@@ -72,18 +73,22 @@ export default function Forgot() {
                 </Row>
                 <div style={{ display: "flex", justifyContent: "center" }}>
 
-                  <button className="btn btn-danger block mr-2" onClick={onPrev}
+                  <Button className="btn block mr-2" onClick={onPrev}
+                    type="danger"
                     disabled={loading}
                   >
                     {i18n.t("previous")}
-                  </button>
-                  <button
-                    className="btn btn-info block mr-2"
+                  </Button>
+                  <Button
+                    className="btn block mr-2"
+                    type="primary"
                     onClick={sendOTPtoPhone}
-                    disabled={loading}
+                    // disabled={loading}
+                    loading={loading}
                   >
-                    {i18n.t(!loading ? "SendOTP" : "...")}
-                  </button>
+                    {i18n.t("Gửi OTP")}
+                    {/* {i18n.t(!loading ? "SendOTP" : "...")} */}
+                  </Button>
                 </div>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Button } from "antd";
 import i18n from "i18next";
 import Widgets from "../../schema/Widgets";
 import { useDispatch } from "react-redux";
@@ -89,7 +90,11 @@ const Login = (props) => {
                 />
 
                 <div className="form-group d-flex justify-content-center">
-                  <button className="btn btn-info p-1">
+                  <Button
+                    className="btn p-1"
+                    onClick={handleSubmit}
+                    type="primary"
+                  >
                     {loggingIn ? (
                       <>
                         {i18n.t("Login")}
@@ -98,15 +103,8 @@ const Login = (props) => {
                     ) : (
                       <span>{i18n.t("Login")}</span>
                     )}
-                  </button>
-                  {/* <button
-                    onClick={(e) => {
-                      setPhoneNumber("0357708915");
-                      // handleSubmit(e);
-                    }}
-                  >
-                    trader
-                  </button> */}
+                  </Button>
+
                   <div className="ml-3 d-flex align-items-base">
                     <label className="pb-0">{i18n.t("or")}</label>
                     <Link to="/register" className="btn btn-link p-1">
@@ -115,11 +113,7 @@ const Login = (props) => {
                   </div>
                 </div>
                 <div className="text-center">
-                  <Link
-                    to="/forgetPassword"
-                    // style={{ color: "blue" }}
-                    className="primary"
-                  >
+                  <Link to="/forgetPassword" className="primary">
                     Bạn quên mật khẩu?
                   </Link>
                 </div>

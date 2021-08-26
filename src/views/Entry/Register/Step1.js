@@ -4,7 +4,7 @@ import Widgets from "../../../schema/Widgets";
 import i18n from "i18next";
 export default class Step1 extends Component {
   render() {
-    let { value, onChange, phoneNumber } = this.props;
+    let { value, onChange, phoneNumber, submitted = false } = this.props;
     return (
       <Row>
         <Col md="12">
@@ -17,6 +17,7 @@ export default class Step1 extends Component {
             required={true}
             value={value}
             onChange={onChange}
+            isDisable={submitted}
           />
         </Col>
         <Col md="12">
