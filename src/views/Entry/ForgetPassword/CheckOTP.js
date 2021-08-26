@@ -1,5 +1,6 @@
 import i18n from "i18next";
 import React, { useState } from "react";
+import { Button } from "antd";
 import { useLocation, useHistory } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import Widgets from "../../../schema/Widgets";
@@ -29,7 +30,7 @@ export default function CheckOTP() {
 
   const sendOTP = async () => {
     let rs;
-    setLoading(true)
+    setLoading(true);
     try {
       rs = await apis.resetPassword(
         {
@@ -49,7 +50,7 @@ export default function CheckOTP() {
     } catch (error) {
       helper.toast("error", i18n.t(rs.Message || "systemError"));
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
@@ -101,15 +102,22 @@ export default function CheckOTP() {
                   </Col>
                 </Row>
                 <div style={{ display: "flex", justifyContent: "center" }}>
-
-
-                  <button className="btn btn-info block mr-2" onClick={sendOTP}
-                    disabled={loading}>
-                    {i18n.t("Confirm")}
-                  </button>
-                  <button className="btn btn-danger block mr-2" onClick={onPrev} disabled={loading}>
+                  <Button
+                    className="btn block mr-2"
+                    type="danger"
+                    onClick={onPrev}
+                    loading={loading}
+                  >
                     {i18n.t("previous")}
-                  </button>
+                  </Button>
+                  <Button
+                    type="primary"
+                    className="btn block mr-2"
+                    onClick={sendOTP}
+                    loading={loading}
+                  >
+                    {i18n.t("Confirm")}
+                  </Button>
                 </div>
               </div>
             </div>

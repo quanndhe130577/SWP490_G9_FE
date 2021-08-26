@@ -111,7 +111,10 @@ const RenderTB = ({
       dataIndex: "remainWeight",
       key: "remainWeight",
       render: (weight) => (
-        <Widgets.NumberFormat needSuffix={false} value={weight} />
+        <Widgets.NumberFormat
+          needSuffix={false}
+          value={weight && weight.toFixed(1)}
+        />
       ),
     },
     {
@@ -253,7 +256,10 @@ const columns = [
     dataIndex: "totalWeight",
     key: "totalWeight",
     render: (weight) => (
-      <Widgets.NumberFormat needSuffix={false} value={weight} />
+      <Widgets.NumberFormat
+        needSuffix={false}
+        value={weight && weight.toFixed(1)}
+      />
     ),
   },
   {
@@ -265,7 +271,10 @@ const columns = [
     dataIndex: "totalAmount",
     key: "totalAmount",
     render: (totalAmount) => (
-      <Widgets.NumberFormat needSuffix={false} value={totalAmount} />
+      <Widgets.NumberFormat
+        needSuffix={false}
+        value={totalAmount && totalAmount.toFixed(1)}
+      />
     ),
   },
 ];
