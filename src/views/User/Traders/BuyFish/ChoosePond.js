@@ -23,6 +23,10 @@ const ChoosePond = ({
   const handleOk = async () => {
     //updateAllFishType
     // neu ko co id purchase thì tạo purchase mới
+    let checkFT = dataChange.find(ft => !ft.fishName || !ft.minWeight || !ft.price || !ft.transactionPrice)
+    if (checkFT) {
+      return helper.toast("error", "Vui lòng điền đầy đủ các trường dữ liệu")
+    }
     if (createPurchase && !currentPurchase.id) {
       let purchase = await createPurchase();
 
