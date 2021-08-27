@@ -245,7 +245,7 @@ const ModalClosePurchase = ({
               label={i18n.t("percent") + ":"}
               value={
                 (objPurchase.totalAmount * currentPurchase.commissionPercent) /
-                  100 ||
+                100 ||
                 currentPurchase.commission ||
                 ""
               }
@@ -254,10 +254,8 @@ const ModalClosePurchase = ({
             <Widgets.NumberFormat
               label={i18n.t("payForPondOwner") + ":  "}
               value={
-                (objPurchase.totalAmount *
-                  (100 - currentPurchase.commissionPercent)) /
-                  100 ||
-                currentPurchase.totalAmount - currentPurchase.commission ||
+                ((objPurchase.totalAmount * (100 - currentPurchase.commissionPercent)) / 100).toFixed(0) ||
+                (currentPurchase.totalAmount - currentPurchase.commission).toFixed(0) ||
                 ""
               }
             />
