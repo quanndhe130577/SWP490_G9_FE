@@ -33,7 +33,7 @@ export default function Money({
       <InputNumber
         style={{ width: "100%" }}
         disabled={disabled}
-        defaultValue={defaultValue.toFixed(0)}
+        defaultValue={defaultValue && defaultValue.toFixed(0)}
         step={step}
         //value={inputValue}
         value={value && value.toFixed(0)}
