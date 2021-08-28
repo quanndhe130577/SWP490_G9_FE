@@ -1,6 +1,6 @@
 import React from "react";
 import { Line } from "@ant-design/charts";
-import { helper } from "../../../services";
+import { helper, session } from "../../../services";
 import i18n from "i18next";
 import moment from "moment";
 import { Row, Col } from "reactstrap";
@@ -45,6 +45,7 @@ const DemoLine = ({ dailyData, data }) => {
       }
     },
   };
+  const USER = session.get("user") || {};
 
   return (
     <Row>
@@ -64,6 +65,31 @@ const DemoLine = ({ dailyData, data }) => {
             label={i18n.t("summaryOutcome") + ": "}
             value={data.summaryOutcome}
           />
+
+          <label className="bold">
+            <span>
+              {i18n.t(USER.roleName === "Trader" ? "PROFIT" : "WCREICEVER") +
+                ": "}
+            </span>
+            <span
+              className={
+                " ml-0" +
+                helper.handleStyleProfit(
+                  data.summaryIncome -
+                    data.summaryOutcome -
+                    data.summaryEmpSalary -
+                    data.summaryDailyCost
+                )
+              }
+            >
+              {new Intl.NumberFormat().format(
+                data.summaryIncome -
+                  data.summaryOutcome -
+                  data.summaryEmpSalary -
+                  data.summaryDailyCost
+              ) + " VND"}
+            </span>
+          </label>
         </div>
       </Col>
       <Col md="6">
@@ -72,6 +98,16 @@ const DemoLine = ({ dailyData, data }) => {
             label={i18n.t("summaryDailyCost") + ": "}
             value={data.summaryDailyCost}
           />
+          {USER.roleName === "Trader" && (
+            <Widgets.NumberFormat
+              label={i18n.t("summaryEmpSalary") + ": "}
+              value={data.summaryEmpSalary}
+            />
+          )}
+        </div>
+      </Col>
+      <Col md="6">
+        <div style={{ marginLeft: "10%" }}>
           <Widgets.NumberFormat
             label={i18n.t("tienPhaiThu") + ": "}
             value={data.tienPhaiThu}

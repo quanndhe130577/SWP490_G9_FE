@@ -44,7 +44,7 @@ const ModalHistorySalaries = ({
         bordered
         columns={columns}
         dataSource={historySalaries}
-        pagination={{ pageSize: 10 }}
+        pagination={false}
         scroll={{ y: 600 }}
       />
     </Modal>

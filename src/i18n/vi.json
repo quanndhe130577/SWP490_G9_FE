@@ -258,9 +258,12 @@
   "buyPirce": "Giá mua",
   "time": "Thời gian",
   "cfOverSentMoney": "Bạn đang trả nhiều tiền hơn số với số tiền cần trả, bạn có chắc không?",
-  "tienPhaiTra": "TIỀN PHẢI TRẢ",
-  "tienPhaiThu": "TIỀN PHẢI THU",
+  "tienPhaiTra": "NỢ PHẢI TRẢ",
+  "tienPhaiThu": "NỢ PHẢI THU",
   "realMoney": "Số tiền trả trước",
   "realMoneyReci": "Số tiền đã nhận",
-  "cfOLowPriceFish": "Giá cá bạn bán đang thấp hơi giá đề nghị, bạn có chắc không?"
+  "cfOLowPriceFish": "Giá cá bạn bán đang thấp hơi giá đề nghị, bạn có chắc không?",
+  "summaryEmpSalary": "LƯƠNG NHÂN VIÊN",
+  "PROFIT": "LỢI NHUẬN",
+  "WCREICEVER": "SỐ TIỀN NHẬN ĐƯỢC"
 }

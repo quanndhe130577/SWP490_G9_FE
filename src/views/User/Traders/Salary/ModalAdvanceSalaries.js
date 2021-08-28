@@ -89,7 +89,7 @@ const ModalAdvanceSalaries = ({ isShow, closeModal, employeeId, name }) => {
       onCancel={() => closeModal(true)}
     >
       <Row className="pb-2">
-        <Col md="6" xs="12">
+        <Col md="5" xs="12">
           <Widgets.MoneyInput
             label="Số tiền"
             defaultValue={advanceSalary.amount}
@@ -97,15 +97,15 @@ const ModalAdvanceSalaries = ({ isShow, closeModal, employeeId, name }) => {
             onChange={(value) => handleChange(value, "amount")}
           />
         </Col>
-        <Col md="6" xs="12">
+        <Col md="5" xs="12">
           <Widgets.DateTimePicker
             label="Ngày"
             value={advanceSalary.date}
             onChange={(value) => handleChange(new Date(value), "date")}
           />
         </Col>
-        <Col md="12" xs="12" className="d-flex justify-content-center">
-          <Button type="primary" onClick={submit}>
+        <Col md="2" xs="12" className="d-flex justify-content-center">
+          <Button type="primary" className="mt-4" onClick={submit}>
             Tạo mới
           </Button>
         </Col>

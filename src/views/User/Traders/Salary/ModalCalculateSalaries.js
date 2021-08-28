@@ -138,7 +138,7 @@ const ModalCalculateSalaries = ({ isShow, closeModal, date = moment() }) => {
         bordered
         columns={columns}
         dataSource={calculate}
-        pagination={{ pageSize: 10 }}
+        pagination={false}
         scroll={{ y: 600 }}
       />
     </Modal>

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Table, Modal, Radio } from "antd";
+import { Table, Radio } from "antd";
 import Widgets from "../../../../schema/Widgets";
 import { helper, apis } from "../../../../services";
+import ModalCustom from "../../../../containers/Antd/ModalCustom";
 
 export default class CurrentEmps extends Component {
   constructor(props) {
@@ -20,10 +21,13 @@ export default class CurrentEmps extends Component {
     this.setState({
       employees: this.props.employees.filter((emp) => {
         let dateStart = new Date(emp.startDate);
-        let dateEnd = emp.endDate ? new Date(emp.endDate) : null
-        return this.props.currentDate > dateStart && (dateEnd === null || this.props.currentDate < dateEnd);
-      })
-    })
+        let dateEnd = emp.endDate ? new Date(emp.endDate) : null;
+        return (
+          this.props.currentDate > dateStart &&
+          (dateEnd === null || this.props.currentDate < dateEnd)
+        );
+      }),
+    });
   }
   componentDidUpdate(props) {
     if (this.props.currentDate !== props.currentDate) {
@@ -33,9 +37,12 @@ export default class CurrentEmps extends Component {
         employees: this.props.employees.filter((emp) => {
           let dateStart = new Date(emp.startDate);
           let dateEnd = emp.endDate ? new Date(emp.endDate) : null;
-          return this.props.currentDate > dateStart && (dateEnd === null || this.props.currentDate < dateEnd);
-        })
-      })
+          return (
+            this.props.currentDate > dateStart &&
+            (dateEnd === null || this.props.currentDate < dateEnd)
+          );
+        }),
+      });
     }
   }
 
@@ -141,46 +148,49 @@ export default class CurrentEmps extends Component {
     date = date.length === 1 ? `0${date}` : date;
     month = month.length === 1 ? `0${month}` : month;
     return (
-      <Modal
-        width="70%"
+      <ModalCustom
+        width="600px"
         // eslint-disable-next-line no-useless-escape
         title={`Chấm công trong ngày ${date}\/${month}\/${year}`}
-        okText="Lưu"
+        titleBtnOk="Lưu"
         visible={this.props.visible}
         onCancel={this.props.cancel}
         onOk={this.submit}
-      >
-        <Table
-          dataSource={this.state.currentTimes}
-          columns={[
-            {
-              title: "Tên nhân viên",
-              dataIndex: "empName",
-              key: "empName",
-            },
-            {
-              title: "Số công",
-              key: "status",
-              render: (item) => (
-                <Widgets.Custom
-                  component={
-                    <Radio.Group
-                      value={item.status}
-                      onChange={(event) =>
-                        this.handleChangeStatus(event.target.value, item)
-                      }
-                    >
-                      <Radio value={0}>Không đi làm</Radio>
-                      <Radio value={0.5}>Nửa công</Radio>
-                      <Radio value={1}>Một công</Radio>
-                    </Radio.Group>
-                  }
-                />
-              ),
-            },
-          ]}
-        />
-      </Modal>
+        component={() => (
+          <Table
+            dataSource={this.state.currentTimes}
+            pagination={false}
+            rowKey={"empName"}
+            columns={[
+              {
+                title: "Tên nhân viên",
+                dataIndex: "empName",
+                key: "empName",
+              },
+              {
+                title: "Số công",
+                key: "status",
+                render: (item) => (
+                  <Widgets.Custom
+                    component={
+                      <Radio.Group
+                        value={item.status}
+                        onChange={(event) =>
+                          this.handleChangeStatus(event.target.value, item)
+                        }
+                      >
+                        <Radio value={0}>Không đi làm</Radio>
+                        <Radio value={0.5}>Nửa công</Radio>
+                        <Radio value={1}>Một công</Radio>
+                      </Radio.Group>
+                    }
+                  />
+                ),
+              },
+            ]}
+          />
+        )}
+      />
     );
   }
 }

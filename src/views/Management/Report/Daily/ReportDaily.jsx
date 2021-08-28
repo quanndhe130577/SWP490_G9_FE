@@ -65,15 +65,7 @@ const ReportDaily = () => {
       setLoading(false);
     }
   }
-  function handleStyleProfit(profit) {
-    let style = "ml-2 ";
-    if (profit > 0) {
-      style += " primary";
-    } else {
-      style += " danger";
-    }
-    return style;
-  }
+
   useEffect(() => {
     fetchData(new Date());
     setUser(session.get("user"));
@@ -173,7 +165,9 @@ const ReportDaily = () => {
                   ) + ": "}
                 </span>
                 <span
-                  className={handleStyleProfit(data.tongThu - data.tongChi)}
+                  className={helper.handleStyleProfit(
+                    data.tongThu - data.tongChi
+                  )}
                 >
                   {new Intl.NumberFormat().format(data.tongThu - data.tongChi) +
                     " VND"}
@@ -239,7 +233,7 @@ export default ReportDaily;
 
 const fTTable = (listSummaryPurchaseDetail) => {
   if (listSummaryPurchaseDetail.length > 0) {
-    listSummaryPurchaseDetail.map((el, idx) => el.idx = idx)
+    listSummaryPurchaseDetail.map((el, idx) => (el.idx = idx));
     return (
       <div>
         {listSummaryPurchaseDetail.map((el, key) => (
@@ -283,14 +277,12 @@ const fTTable = (listSummaryPurchaseDetail) => {
           </div>
         ))}
       </div>
-    )
+    );
   }
-
 };
 const fTTable2 = (listSummaryPurchaseDetail, user) => {
   if (listSummaryPurchaseDetail.length > 0) {
-
-    listSummaryPurchaseDetail.map((el, idx) => el.idx = idx)
+    listSummaryPurchaseDetail.map((el, idx) => (el.idx = idx));
 
     return (
       <div>

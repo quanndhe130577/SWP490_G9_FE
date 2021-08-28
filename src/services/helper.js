@@ -101,4 +101,13 @@ helper.tag = (status, className = "") => {
     </Tag>
   );
 };
+helper.handleStyleProfit = (profit) => {
+  let style = "ml-2 ";
+  if (profit > 0) {
+    style += " primary";
+  } else {
+    style += " danger";
+  }
+  return style;
+};
 export default helper;
