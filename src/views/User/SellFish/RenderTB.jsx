@@ -147,7 +147,7 @@ const RenderTB = ({
     <>
       {/* FOR REMAIN FISH, DONT REMOVE  */}
       {isLast && !traderId ? (
-        <Col md="12" className="mb-4">
+        <>{currentTransaction.remainF && currentTransaction.remainF.length > 0 && <Col md="12" className="mb-4">
           <b>Số cá còn lại</b>
           <Table
             rowKey="id"
@@ -190,6 +190,7 @@ const RenderTB = ({
             }}
           />
         </Col>
+        }</>
       ) : (
         <>
           {transaction.weightRecorder &&
@@ -273,7 +274,7 @@ const columns = [
     render: (totalAmount) => (
       <Widgets.NumberFormat
         needSuffix={false}
-        value={totalAmount && totalAmount.toFixed(1)}
+        value={totalAmount && totalAmount.toFixed(0)}
       />
     ),
   },

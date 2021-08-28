@@ -15,20 +15,32 @@ const ModalBuyer = ({ isShowBuyer, date, setShowBuyer, getAllTransByDate }) => {
   const [listTransDetail, setListTransDetail] = useState([]);
   const [currentDetail, setCurrentDetail] = useState({});
 
-  const handleOk = async () => {
-    try {
-      let rs = await apis.paymentForBuyer({
-        buyerId: currentDetail.buyerId,
-        date: currentDetail.date,
+  const handleOk = () => {
+    let buyer = buyers.find((b) => b.id === currentDetail.buyerId);
+    helper
+      .confirm(
+        `Bạn có chắc chắc người mua: ${buyer.name}  
+    đã thanh toán hết số tiền ${new Intl.NumberFormat().format(
+      currentDetail.moneyNotPaid
+    )} VND?`
+      )
+      .then(async (res) => {
+        if (res) {
+          try {
+            let rs = await apis.paymentForBuyer({
+              buyerId: currentDetail.buyerId,
+              date: currentDetail.date,
+            });
+            if (rs && rs.statusCode === 200) {
+              helper.toast("success", i18n.t(rs.message || "success"));
+              setShowBuyer(false);
+              getAllTransByDate(date);
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        }
       });
-      if (rs && rs.statusCode === 200) {
-        helper.toast("success", i18n.t(rs.message || "success"));
-        setShowBuyer(false);
-        getAllTransByDate(date);
-      }
-    } catch (error) {
-      console.log(error);
-    }
   };
   const handleCancel = () => {
     setShowBuyer(false);
@@ -69,14 +81,19 @@ const ModalBuyer = ({ isShowBuyer, date, setShowBuyer, getAllTransByDate }) => {
           </Table.Summary.Cell>
           <Table.Summary.Cell key="2" className="bold" colSpan="2">
             <NumberFormat
-              value={currentDetail.totalWeight && currentDetail.totalWeight.toFixed(1)}
+              value={
+                currentDetail.totalWeight &&
+                currentDetail.totalWeight.toFixed(1)
+              }
               displayType={"text"}
               thousandSeparator={true}
             />
           </Table.Summary.Cell>
           <Table.Summary.Cell key="3" className="bold" colSpan="4">
             <NumberFormat
-              value={currentDetail.totalMoney && currentDetail.totalMoney.toFixed(0)}
+              value={
+                currentDetail.totalMoney && currentDetail.totalMoney.toFixed(0)
+              }
               displayType={"text"}
               thousandSeparator={true}
             />
@@ -100,8 +117,8 @@ const ModalBuyer = ({ isShowBuyer, date, setShowBuyer, getAllTransByDate }) => {
       onCancel={handleCancel}
       width={
         currentDetail.transactionDetails &&
-          currentDetail.transactionDetails.length > 0
-          ? 1000
+        currentDetail.transactionDetails.length > 0
+          ? 1100
           : 800
       }
       loading={loading}
@@ -144,13 +161,21 @@ const ModalBuyer = ({ isShowBuyer, date, setShowBuyer, getAllTransByDate }) => {
               <Col md="6">
                 <Widgets.NumberFormat
                   label={i18n.t("moneyPaid") + ": "}
-                  value={(currentDetail.moneyPaid && currentDetail.moneyPaid.toFixed(0)) || ""}
+                  value={
+                    (currentDetail.moneyPaid &&
+                      currentDetail.moneyPaid.toFixed(0)) ||
+                    ""
+                  }
                 />
               </Col>
               <Col md="6">
                 <Widgets.NumberFormat
                   label={i18n.t("moneyNotPaid") + ": "}
-                  value={(currentDetail.moneyNotPaid && currentDetail.moneyNotPaid.toFixed(0)) || ""}
+                  value={
+                    (currentDetail.moneyNotPaid &&
+                      currentDetail.moneyNotPaid.toFixed(0)) ||
+                    ""
+                  }
                 />
               </Col>
             </>
@@ -214,7 +239,7 @@ const columns = [
 ];
 const calculateIntoMoney = ({ sellPrice, weight }) => (
   <NumberFormat
-    value={(sellPrice * weight) && (sellPrice * weight).toFixed(0)}
+    value={sellPrice * weight && (sellPrice * weight).toFixed(0)}
     displayType={"text"}
     thousandSeparator={true}
   />

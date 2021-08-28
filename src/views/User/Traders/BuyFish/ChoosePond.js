@@ -36,7 +36,8 @@ const ChoosePond = ({
           local.set("historyPurchase", purchase);
           history.push("buyFish?id=" + purchase.id);
         } else {
-          let rsDelete = await apis.deletePurchase({ purchaseId: purchase.id });
+          // let rsDelete = await apis.deletePurchase({ purchaseId: purchase.id });
+          await apis.deletePurchase({ purchaseId: purchase.id });
           setCurrentPurchase((prevState) => ({
             ...prevState,
             id: undefined,

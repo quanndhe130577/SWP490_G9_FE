@@ -12,14 +12,16 @@ const ModalEdit = ({ isShow, closeModal, mode, currentCostInc }) => {
   const [loading, setLoading] = useState(false);
   const [userClient, setUserClient] = useState("weightRecorder");
   useEffect(() => {
-    handleChangeCostIncurred(new Date(), "date");
     if (mode === "create") {
+      handleChangeCostIncurred(new Date(), "date");
       handleChangeCostIncurred("day", "day");
     }
     if (session.get("user").roleName === "Trader") {
       setUserClient("trader");
     }
-
+    return () => {
+      setUserClient();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const handleChangeCostIncurred = (val, name) => {

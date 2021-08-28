@@ -242,6 +242,31 @@ export default class CostIncurred extends Component {
       sortDirections: ["descend", "ascend"],
     },
     {
+      title: i18n.t("date"),
+      dataIndex: "date",
+      key: "date",
+      ...this.getColumnSearchProps("date", true),
+      sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
+      sortDirections: ["descend", "ascend"],
+      render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
+    },
+
+    {
+      title: i18n.t("cost") + i18n.t("(suffix)"),
+      dataIndex: "cost",
+      key: "cost",
+      ...this.getColumnSearchProps("cost"),
+      sorter: (a, b) => a.cost - b.cost,
+      sortDirections: ["descend", "ascend"],
+      render: (cost) => (
+        <NumberFormat
+          value={cost}
+          displayType={"text"}
+          thousandSeparator={true}
+        />
+      ),
+    },
+    {
       title: i18n.t("typeOfCost"),
       dataIndex: "typeOfCost",
       key: "typeOfCost",
@@ -264,30 +289,7 @@ export default class CostIncurred extends Component {
         a.note ? a.note.length : 0 - b.note ? b.note.length : 0,
       sortDirections: ["descend", "ascend"],
     },
-    {
-      title: i18n.t("cost") + i18n.t("(suffix)"),
-      dataIndex: "cost",
-      key: "cost",
-      ...this.getColumnSearchProps("cost"),
-      sorter: (a, b) => a.cost - b.cost,
-      sortDirections: ["descend", "ascend"],
-      render: (cost) => (
-        <NumberFormat
-          value={cost}
-          displayType={"text"}
-          thousandSeparator={true}
-        />
-      ),
-    },
-    {
-      title: i18n.t("date"),
-      dataIndex: "date",
-      key: "date",
-      ...this.getColumnSearchProps("date", true),
-      sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
-      sortDirections: ["descend", "ascend"],
-      render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
-    },
+
     {
       title: i18n.t("action"),
       dataIndex: "id",
@@ -319,6 +321,7 @@ export default class CostIncurred extends Component {
           <Col style={{ overflowX: "auto" }}>
             <Table
               bordered
+              rowKey="idx"
               columns={this.columns}
               dataSource={data}
               pagination={{ pageSize: 10 }}
