@@ -149,6 +149,12 @@ const ReportDaily = () => {
               label={i18n.t("moneyCommission") + ": "}
               value={transactionTotal.summaryCommission}
             />
+            {user && user.roleName !== "Trader" && (
+              <Widgets.NumberFormat
+                label={i18n.t("CostIncurredManagement") + ": "}
+                value={CostIncurred.totalCost}
+              />
+            )}
           </Col>
           {user &&
             user.roleName === "Trader" &&
@@ -161,7 +167,11 @@ const ReportDaily = () => {
           <Row>
             <Col md="6">
               <h4 className="mt-4 mb-0 d-flex">
-                <span>{i18n.t("profit") + ": "}</span>
+                <span>
+                  {i18n.t(
+                    user && user.roleName === "Trader" ? "profit" : "wcReceiver"
+                  ) + ": "}
+                </span>
                 <span
                   className={handleStyleProfit(data.tongThu - data.tongChi)}
                 >
@@ -228,13 +238,14 @@ const ReportDaily = () => {
 export default ReportDaily;
 
 const fTTable = (listSummaryPurchaseDetail) => {
-  if (listSummaryPurchaseDetail.length > 0)
+  if (listSummaryPurchaseDetail.length > 0) {
+    listSummaryPurchaseDetail.map((el, idx) => el.idx = idx)
     return (
       <div>
-        {listSummaryPurchaseDetail.map((el) => (
-          <div className="mb-3">
+        {listSummaryPurchaseDetail.map((el, key) => (
+          <div className="mb-3" key={key}>
             <h6>
-              <b>{i18n.t("pondOwner")}: </b>
+              <b>{el.pondOwner.id ? i18n.t("pondOwner") + ": " : ""}</b>
               {el.pondOwner ? el.pondOwner.name : i18n.t("noInfo")}
             </h6>
             <Table
@@ -259,7 +270,7 @@ const fTTable = (listSummaryPurchaseDetail) => {
                     </Table.Summary.Cell>
                     <Table.Summary.Cell key="3" className="bold">
                       <NumberFormat
-                        value={el.totalMoney}
+                        value={el.totalMoney && el.totalMoney.toFixed(0)}
                         displayType={"text"}
                         thousandSeparator={true}
                         suffix=" VND"
@@ -272,14 +283,19 @@ const fTTable = (listSummaryPurchaseDetail) => {
           </div>
         ))}
       </div>
-    );
+    )
+  }
+
 };
 const fTTable2 = (listSummaryPurchaseDetail, user) => {
-  if (listSummaryPurchaseDetail.length > 0)
+  if (listSummaryPurchaseDetail.length > 0) {
+
+    listSummaryPurchaseDetail.map((el, idx) => el.idx = idx)
+
     return (
       <div>
-        {listSummaryPurchaseDetail.map((el) => (
-          <div className="mb-3">
+        {listSummaryPurchaseDetail.map((el, index) => (
+          <div className="mb-3" key={index}>
             {user.roleName === "WeightRecorder" ? (
               <h6>
                 <b>{i18n.t("trader")}: </b>
@@ -319,7 +335,7 @@ const fTTable2 = (listSummaryPurchaseDetail, user) => {
                       </Table.Summary.Cell>
                       <Table.Summary.Cell key="3" className="bold">
                         <NumberFormat
-                          value={el.totalMoney}
+                          value={el.totalMoney && el.totalMoney.toFixed(0)}
                           displayType={"text"}
                           thousandSeparator={true}
                           suffix=" VND"
@@ -334,6 +350,7 @@ const fTTable2 = (listSummaryPurchaseDetail, user) => {
         ))}
       </div>
     );
+  }
 };
 const columns = [
   {
@@ -345,7 +362,10 @@ const columns = [
   {
     title: i18n.t("buyPirce"),
     render: (cell, row) => (
-      <Widgets.NumberFormat needSuffix={false} value={row.price / row.weight} />
+      <Widgets.NumberFormat
+        needSuffix={false}
+        value={row.price / row.weight && (row.price / row.weight).toFixed(0)}
+      />
     ),
   },
   {
@@ -361,7 +381,10 @@ const columns = [
     dataIndex: "price",
     key: "price",
     render: (price) => (
-      <Widgets.NumberFormat needSuffix={false} value={price} />
+      <Widgets.NumberFormat
+        needSuffix={false}
+        value={price && price.toFixed(0)}
+      />
     ),
   },
 ];
@@ -385,7 +408,10 @@ const columns2 = [
     dataIndex: "sellPrice",
     key: "sellPrice",
     render: (sellPrice) => (
-      <Widgets.NumberFormat needSuffix={false} value={sellPrice} />
+      <Widgets.NumberFormat
+        needSuffix={false}
+        value={sellPrice && sellPrice.toFixed(0)}
+      />
     ),
   },
 ];

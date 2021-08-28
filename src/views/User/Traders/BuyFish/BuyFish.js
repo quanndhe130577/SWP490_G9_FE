@@ -97,7 +97,7 @@ const BuyFish = (props) => {
           value={value.toFixed(0)}
           displayType={"text"}
           thousandSeparator={true}
-          // suffix={i18n.t("suffix")}
+        // suffix={i18n.t("suffix")}
         />
       );
     }
@@ -348,12 +348,14 @@ const BuyFish = (props) => {
     try {
       let traderId = session.get("user").userID;
       let pondOwnerID = currentPurchase.pondOwner;
-      let date = helper.correctDate(new Date());
+      let date = new Date()
 
-      let rs = await apis.createPurchase({ traderId, pondOwnerID, date });
+      let rs = await apis.createPurchase({ traderId, pondOwnerID, date: helper.correctDate(date) });
       if (rs && rs.statusCode === 200) {
+        let id = rs.data.id;
         let tem = rs.data;
         tem = Object.assign(tem, currentPurchase);
+        tem.id = id;
         setCurrentPurchase(tem);
         local.set("currentPurchase", tem);
         return tem;

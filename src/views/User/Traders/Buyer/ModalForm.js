@@ -12,7 +12,6 @@ const ModalEdit = ({ isShow, closeModal, mode, currentBuyer }) => {
   const [loading, setLoading] = useState(false)
 
   const handleChangeBuyer = (val, name) => {
-    console.log(buyer)
     // set state buyer by name and value
     setPO((prevState) => ({
       ...prevState,
@@ -102,7 +101,7 @@ const ModalEdit = ({ isShow, closeModal, mode, currentBuyer }) => {
               label={i18n.t("phone")}
               value={buyer.phoneNumber || ""}
               onChange={(e) => {
-             
+
                 handleChangeBuyer(e, "phoneNumber")
               }}
             />

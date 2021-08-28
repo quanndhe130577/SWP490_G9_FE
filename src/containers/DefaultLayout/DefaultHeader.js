@@ -66,7 +66,7 @@ class DefaultHeader extends Component {
                         if (!me.role || me.role === user.roleDisplayName)
                           // console.log()
                           return (
-                            <Menu.Item key={me.title + idx}>
+                            <Menu.Item key={me.link + i + idx}>
                               <Link to={me.link}>{i18n.t(me.title)}</Link>
                             </Menu.Item>
                           );

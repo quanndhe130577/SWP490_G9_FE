@@ -74,7 +74,6 @@ const ModalBaseSalaries = ({
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => getBaseSalaries(), []);
-  console.log(currentEmp)
   return (
     <Modal
       title={"Lương của " + name}

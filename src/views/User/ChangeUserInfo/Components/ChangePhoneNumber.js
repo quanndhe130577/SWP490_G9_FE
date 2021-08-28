@@ -45,7 +45,6 @@ class ChangePhoneNumber extends Component {
     e.preventDefault();
     this.setState({ loading: true });
     if (this.state.confirm) {
-      console.log(1)
       let rs = await apis.checkChangePhonenumber(
         {
           newPhoneNumber: this.state.newPhoneNumber,

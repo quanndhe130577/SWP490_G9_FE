@@ -7,10 +7,6 @@ export default class Step1 extends Component {
     let { value, onChange, onKeyDown } = this.props;
     return (
       <Row>
-        {/* <Col md="2"></Col>
-        <Col md="8" style={{ textAlign: "center" }} className="mb-4">
-          <img src="assets/image/bannerVn.png" className="image" />
-        </Col> */}
         <Col md="12">
           <Widgets.Text
             required={true}
@@ -18,7 +14,6 @@ export default class Step1 extends Component {
             value={value}
             onChange={onChange}
             onKeyDown={onKeyDown}
-          // submitted={submitted}
           />
         </Col>
       </Row>

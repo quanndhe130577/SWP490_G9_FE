@@ -35,11 +35,14 @@ const ModalCloseSell = ({
           setLoading(true);
           let check = validate();
           if (!check) {
-            let { commissionUnit, tranId } = currentTransaction;
+            let { commissionUnit, tranId, sentMoney, isPaid } =
+              currentTransaction;
             if (handleCloseTrans) {
               handleCloseTrans({
                 commissionUnit,
                 tranId,
+                sentMoney,
+                isPaid,
                 listRemainFish: remain,
                 date: helper.correctDate(moment(date, "DDMMYYYY")),
               });
@@ -68,7 +71,18 @@ const ModalCloseSell = ({
     handleCloseModal(!isShowCloseTransaction);
   };
   const handleChangeTran = async (name, val, transId) => {
-    if (name === "traderId") {
+    if (name === "isPaid") {
+      // let { commissionUnit, tranId } = currentTransaction;
+      let sentMoney = 0;
+      if (val)
+        sentMoney =
+          total.totalAmount -
+          total.totalWeight * currentTransaction.commissionUnit;
+      setCurrentTransaction((pre) => ({
+        ...pre,
+        sentMoney,
+      }));
+    } else if (name === "traderId") {
       let trader = dataDf.tradersSelected.find((el) => el.id === val);
       if (transId) {
         trader.transId = transId;
@@ -127,6 +141,18 @@ const ModalCloseSell = ({
     return arrFish.filter((fi) => fi.totalWeight > 0);
   }
 
+  function checkDisableBtn() {
+    if (user && user.roleName === "Trader") {
+      let checkTran = listTransaction.find(el => el.status !== "Completed")
+      if (!checkTran) {
+        return true
+      }
+      if (remain && remain.length > 0) return false;
+      else return currentTransaction.status === "Completed";
+    } else {
+      return currentTransaction.status === "Completed";
+    }
+  }
   useEffect(() => {
     if (traderId || user.roleName === "Trader") {
       handleChangeTran("traderId", traderId || user.userID, transId);
@@ -158,7 +184,7 @@ const ModalCloseSell = ({
           onCancel={handleCancel}
           loading={loading}
           width={700}
-          disabledOk={traderId || currentTransaction.status === "Completed"}
+          disabledOk={traderId || checkDisableBtn()}
           titleBtnOk={i18n.t("closeTransaction")}
           component={() => (
             <Row>
@@ -178,9 +204,7 @@ const ModalCloseSell = ({
                   <Col md="6">
                     <Widgets.MoneyInput
                       placeholder="700"
-                      disabled={
-                        traderId || currentTransaction.status === "Completed"
-                      }
+                      disabled={traderId || checkDisableBtn()}
                       required={true}
                       label={i18n.t("commissionWR")}
                       value={currentTransaction.commissionUnit || ""}
@@ -202,7 +226,7 @@ const ModalCloseSell = ({
                     setRemain(ele);
                   }}
                   traderId={traderId}
-                  disabledBtn={currentTransaction.status === "Completed"}
+                  disabledBtn={checkDisableBtn()}
                 />
               )}
 
@@ -261,7 +285,7 @@ const ModalCloseSell = ({
                         setRemain(ele);
                       }}
                       traderId={traderId}
-                      disabledBtn={currentTransaction.status === "Completed"}
+                      disabledBtn={checkDisableBtn()}
                     />
                   ))}
                 </>
@@ -281,13 +305,29 @@ const ModalCloseSell = ({
                               : "wcReceiver"
                           ) + ": "
                         }
-                        value={
+                        value={(
                           total.totalWeight *
-                            currentTransaction.commissionUnit || ""
-                        }
+                          currentTransaction.commissionUnit || ""
+                        ).toFixed(0)}
                       />
-                      {/* </Col>
-                    <Col md="6"> */}
+                      <Widgets.Checkbox
+                        label={i18n.t("payStatus") + ": "}
+                        value={
+                          currentTransaction.isPaid ||
+                          currentTransaction.sentMoney ===
+                          total.totalAmount -
+                          total.totalWeight *
+                          currentTransaction.commissionUnit
+                        }
+                        onChange={(val) => handleChangeTran("isPaid", val)}
+                        lblCheckbox={i18n.t("paid")}
+                        disabled={
+                          traderId || currentTransaction.status === "Completed"
+                        }
+                        className=" mt-1 "
+                      />
+                    </Col>
+                    <Col md="6">
                       <Widgets.NumberFormat
                         label={
                           i18n.t(
@@ -298,9 +338,21 @@ const ModalCloseSell = ({
                         }
                         value={
                           total.totalAmount -
-                            total.totalWeight *
-                              currentTransaction.commissionUnit || ""
+                          total.totalWeight *
+                          currentTransaction.commissionUnit || ""
                         }
+                      />
+                      <Widgets.MoneyInput
+                        disabled={traderId || currentTransaction.isPaid}
+                        label={
+                          i18n.t(
+                            user.roleName === "Trader"
+                              ? "realMoneyReci"
+                              : "realMoney"
+                          ) + ": "
+                        }
+                        value={currentTransaction.sentMoney || ""}
+                        onChange={(val) => handleChangeTran("sentMoney", val)}
                       />
                     </Col>
                   </>

@@ -99,7 +99,7 @@
   "payStatus": "Trạng thái thanh toán",
   "paid": "Đã thanh toán",
   "isNotPaid": "Chưa thanh toán",
-  "isNotDone": "Chưa hoàn tất",
+  "isNotDone": "Chưa trả hết",
   "(suffix)": " (VND)",
   "sellGood": "Bán hàng",
   "trader": "Thương lái",
@@ -241,8 +241,8 @@
   "Reset": "Đặt lại",
   "Purchase Debt": "Nợ phải trả",
   "Transaction Debt": "Nợ phải thu",
-  "comfirmUpdate": "Bạn có chắc đã thanh toán",
-  "PurchaseIsPaid": "Đã trả",
+  "comfirmPaidDebt": "Bạn có chắc sẽ thanh toán",
+  "PurchaseIsPaid": "Đã trả hết",
   "TransactionIsPaid": "Đã thu",
   "Remain": "Tồn kho",
   "noInfo": "Không có thông tin",
@@ -257,5 +257,10 @@
   "profit": "Lợi nhuận",
   "buyPirce": "Giá mua",
   "time": "Thời gian",
-  "cfOverSentMoney": "Bạn đang trả nhiều tiền hơn số với số tiền cần trả, bạn có chắc không?"
+  "cfOverSentMoney": "Bạn đang trả nhiều tiền hơn số với số tiền cần trả, bạn có chắc không?",
+  "tienPhaiTra": "TIỀN PHẢI TRẢ",
+  "tienPhaiThu": "TIỀN PHẢI THU",
+  "realMoney": "Số tiền trả trước",
+  "realMoneyReci": "Số tiền đã nhận",
+  "cfOLowPriceFish": "Giá cá bạn bán đang thấp hơi giá đề nghị, bạn có chắc không?"
 }

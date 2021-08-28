@@ -53,7 +53,7 @@ const SellFish = (props) => {
   };
   const calculateIntoMoney = ({ sellPrice, weight }) => (
     <NumberFormat
-      value={sellPrice * weight}
+      value={(sellPrice * weight || 0).toFixed(0)}
       displayType={"text"}
       thousandSeparator={true}
     />
@@ -111,7 +111,7 @@ const SellFish = (props) => {
       key: "sellPrice",
       render: (sellPrice) => (
         <NumberFormat
-          value={sellPrice}
+          value={sellPrice.toFixed(0)}
           displayType={"text"}
           thousandSeparator={true}
         />
@@ -185,7 +185,7 @@ const SellFish = (props) => {
         if (rs) {
           let rs = await apis.deleteTransDetail(transactionDetailId);
           if (rs && rs.statusCode === 200) {
-            getAllTransByDate(date);
+            getAllTransByDate(date, user);
             helper.toast("success", i18n.t(rs.message || "success"));
           }
         }
@@ -327,7 +327,8 @@ const SellFish = (props) => {
                   color="info"
                   onClick={() => {
                     setCurrentTransId(trans.id);
-                    setCurrentTraderId(trans.trader.id);
+                    if (trans.weightRecorder)
+                      setCurrentTraderId(trans.trader.id);
                     setShowCloseTrans(true);
                   }}
                 >
@@ -361,7 +362,7 @@ const SellFish = (props) => {
         if (res) {
           let rs = await apis.deleteTrans(transactionId);
           if (rs && rs.statusCode === 200) {
-            getAllTransByDate(date, {}, true);
+            getAllTransByDate(date, user, true);
             helper.toast("success", i18n.t(rs.message || "success"));
           }
         }
@@ -386,7 +387,7 @@ const SellFish = (props) => {
       if (rs && rs.statusCode === 200) {
         helper.toast("success", i18n.t(rs.message || "success"));
         setShowCloseTrans(false);
-        getAllTransByDate(date);
+        getAllTransByDate(date, user);
       }
     } catch (error) {
       console.log(error);
@@ -507,7 +508,7 @@ const SellFish = (props) => {
             isShowBuyer={isShowBuyer}
             setShowBuyer={(state) => setShowBuyer(state)}
             date={date}
-            getAllTransByDate={(date) => getAllTransByDate(date)}
+            getAllTransByDate={(date) => getAllTransByDate(date, user)}
           />
         )}
         {!isShowChooseTraders && (
@@ -640,7 +641,7 @@ const SellFish = (props) => {
                               </Table.Summary.Cell>
                               <Table.Summary.Cell key="4" className="bold">
                                 <NumberFormat
-                                  value={totalAmount}
+                                  value={totalAmount.toFixed(0)}
                                   displayType={"text"}
                                   thousandSeparator={true}
                                 />

@@ -9,7 +9,7 @@ export default function OtoComponent(props) {
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
-    console.log(values);
+    // console.log(values);
   };
 
   useEffect(() => {
@@ -37,7 +37,6 @@ export default function OtoComponent(props) {
       newData.splice(indexItemDel, 1);
       setData(newData);
     }
-    console.log("acb" + id);
   };
   return (
     <Col span={span}>

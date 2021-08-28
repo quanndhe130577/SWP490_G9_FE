@@ -251,26 +251,26 @@ const ManaSell = () => {
       sortDirections: ["descend", "ascend"],
       render: (totalAmount) => (
         <NumberFormat
-          value={totalAmount}
+          value={totalAmount.toFixed(0)}
           displayType={"text"}
           thousandSeparator={true}
         />
       ),
     },
-    {
-      title: i18n.t("debt") + " (VND)",
-      dataIndex: "totalDebt",
-      key: "totalDebt",
-      sorter: (a, b) => a.totalAmount - b.totalAmount,
-      sortDirections: ["descend", "ascend"],
-      render: (totalDebt) => (
-        <NumberFormat
-          value={totalDebt}
-          displayType={"text"}
-          thousandSeparator={true}
-        />
-      ),
-    },
+    // {
+    //   title: i18n.t("debt") + " (VND)",
+    //   dataIndex: "totalDebt",
+    //   key: "totalDebt",
+    //   sorter: (a, b) => a.totalAmount - b.totalAmount,
+    //   sortDirections: ["descend", "ascend"],
+    //   render: (totalDebt) => (
+    //     <NumberFormat
+    //       value={totalDebt}
+    //       displayType={"text"}
+    //       thousandSeparator={true}
+    //     />
+    //   ),
+    // },
     {
       title: i18n.t("action"),
       dataIndex: "id",

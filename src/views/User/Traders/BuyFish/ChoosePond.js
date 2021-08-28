@@ -4,7 +4,7 @@ import { Row, Col } from "reactstrap";
 import i18n from "i18next";
 import Widgets from "../../../../schema/Widgets";
 import PriceFishToday from "./PriceFishToday";
-import { local, helper } from "../../../../services";
+import { local, helper, apis } from "../../../../services";
 import { useHistory } from "react-router-dom";
 
 const ChoosePond = ({
@@ -23,16 +23,25 @@ const ChoosePond = ({
   const handleOk = async () => {
     //updateAllFishType
     // neu ko co id purchase thì tạo purchase mới
+    let checkFT = dataChange.find(ft => !ft.fishName || !ft.minWeight || !ft.price || !ft.transactionPrice)
+    if (checkFT) {
+      return helper.toast("error", "Vui lòng điền đầy đủ các trường dữ liệu")
+    }
     if (createPurchase && !currentPurchase.id) {
       let purchase = await createPurchase();
-
       if (purchase !== undefined) {
         let rs = await updateFishType(purchase, dataChange, false);
         if (rs) {
           helper.toast("success", "Tạo đơn mua thành công");
+          local.set("historyPurchase", purchase);
+          history.push("buyFish?id=" + purchase.id);
+        } else {
+          let rsDelete = await apis.deletePurchase({ purchaseId: purchase.id });
+          setCurrentPurchase((prevState) => ({
+            ...prevState,
+            id: undefined,
+          }));
         }
-        local.set("historyPurchase", purchase);
-        history.push("buyFish?id=" + purchase.id);
       }
       // update fishtype khi ở trong page purchase detail
     } else if (currentPurchase.id) {

@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Row, Col } from "reactstrap";
+import { Button } from "antd";
 import Widgets from "../../../schema/Widgets";
 import i18n from "i18next";
-import { apis } from "../../../services";
+import { apis, helper } from "../../../services";
 import { useHistory } from "react-router-dom";
 
 export default function Forgot() {
   const history = useHistory();
   const [phone, setPhone] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const onChange = (e) => {
     setPhone(e);
@@ -16,6 +18,10 @@ export default function Forgot() {
   const sendOTPtoPhone = async () => {
     let rs;
     try {
+      setLoading(true)
+      if (!phone) {
+        return helper.toast("error", "Vui lòng điền số điện thoại")
+      }
       rs = await apis.getResetPassword({}, "GET", phone);
       if (rs && rs.statusCode === 200) {
         history.push({
@@ -28,7 +34,10 @@ export default function Forgot() {
         });
       }
     } catch (error) {
-      // helper.toast("error", i18n.t(rs.Message || "systemError"));
+      console.log(error)
+    }
+    finally {
+      setLoading(false)
     }
   };
 
@@ -50,36 +59,36 @@ export default function Forgot() {
 
           <div className="con-login  border container">
             <div className="col-sm-6 col-md-6 ">
-              <h2 style={{ textAlign: "center" }}> Quên mật khẩu</h2>
+              <h2 style={{ textAlign: "center" }}>Quên mật khẩu</h2>
               <div name="form">
                 <Row>
-                  {/* <Col md="2"></Col>
-        <Col md="8" style={{ textAlign: "center" }} className="mb-4">
-          <img src="assets/image/bannerVn.png" className="image" />
-        </Col> */}
                   <Col md="12">
                     <Widgets.Phone
                       required={true}
                       value={phone}
                       label={i18n.t("phoneNumber")}
                       onChange={onChange}
-                      // onKeyDown={onKeyDown}
-                      //  submitted={submitted}
                     />
                   </Col>
                 </Row>
                 <div style={{ display: "flex", justifyContent: "center" }}>
-                  <button
-                    className="btn btn-info block mr-2"
-                    onClick={sendOTPtoPhone}
+
+                  <Button className="btn block mr-2" onClick={onPrev}
+                    type="danger"
+                    disabled={loading}
                   >
-                    {" "}
-                    {i18n.t("SendOTP")}
-                  </button>
-                  <button className="btn btn-info block mr-2" onClick={onPrev}>
-                    {" "}
                     {i18n.t("previous")}
-                  </button>
+                  </Button>
+                  <Button
+                    className="btn block mr-2"
+                    type="primary"
+                    onClick={sendOTPtoPhone}
+                    // disabled={loading}
+                    loading={loading}
+                  >
+                    {i18n.t("Gửi OTP")}
+                    {/* {i18n.t(!loading ? "SendOTP" : "...")} */}
+                  </Button>
                 </div>
               </div>
             </div>

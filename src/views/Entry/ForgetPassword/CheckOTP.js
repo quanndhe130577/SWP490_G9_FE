@@ -1,10 +1,10 @@
 import i18n from "i18next";
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Button } from "antd";
+import { useLocation, useHistory } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import Widgets from "../../../schema/Widgets";
 import { apis, helper } from "../../../services";
-import { useHistory } from "react-router-dom";
 
 export default function CheckOTP() {
   const history = useHistory();
@@ -12,8 +12,7 @@ export default function CheckOTP() {
   const [OTP, setOTP] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  // const [resetToken, setResetToken] = useState('');
-  // const [phone, setPhone] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const location = useLocation();
 
@@ -31,6 +30,7 @@ export default function CheckOTP() {
 
   const sendOTP = async () => {
     let rs;
+    setLoading(true);
     try {
       rs = await apis.resetPassword(
         {
@@ -49,6 +49,8 @@ export default function CheckOTP() {
       }
     } catch (error) {
       helper.toast("error", i18n.t(rs.Message || "systemError"));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -73,13 +75,11 @@ export default function CheckOTP() {
               <div name="form">
                 <Row>
                   <Col md="12">
-                    <Widgets.OTP
+                    <Widgets.Text
                       required={true}
                       label={i18n.t("OTP")}
                       value={OTP}
                       onChange={onChangeOTP}
-                      // onKeyDown={onKeyDown}
-                      // submitted={submitted}
                     />
                   </Col>
                   <Col md="12">
@@ -89,8 +89,6 @@ export default function CheckOTP() {
                       label={i18n.t("NewPassword")}
                       value={password}
                       onChange={onChangePassword}
-                      // onKeyDown={onKeyDown}
-                      // submitted={submitted}
                     />
                   </Col>
                   <Col md="12">
@@ -100,20 +98,26 @@ export default function CheckOTP() {
                       label={i18n.t("Re-NewPassword")}
                       value={newPassword}
                       onChange={onChangeNewPassword}
-                      // onKeyDown={onKeyDown}
-                      // submitted={submitted}
                     />
                   </Col>
                 </Row>
                 <div style={{ display: "flex", justifyContent: "center" }}>
-                  <button className="btn btn-info block mr-2" onClick={sendOTP}>
-                    {" "}
-                    {i18n.t("Confirm")}
-                  </button>
-                  <button className="btn btn-info block mr-2" onClick={onPrev}>
-                    {" "}
+                  <Button
+                    className="btn block mr-2"
+                    type="danger"
+                    onClick={onPrev}
+                    loading={loading}
+                  >
                     {i18n.t("previous")}
-                  </button>
+                  </Button>
+                  <Button
+                    type="primary"
+                    className="btn block mr-2"
+                    onClick={sendOTP}
+                    loading={loading}
+                  >
+                    {i18n.t("Confirm")}
+                  </Button>
                 </div>
               </div>
             </div>

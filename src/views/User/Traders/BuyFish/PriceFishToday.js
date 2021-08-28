@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Input, Table } from "antd";
 import i18n from "i18next";
 import { Button } from "reactstrap";
-import { apis } from "../../../../services";
+import { apis, helper } from "../../../../services";
 import Widgets from "../../../../schema/Widgets";
 
 const PriceFishToday = ({
@@ -28,24 +28,32 @@ const PriceFishToday = ({
   };
 
   const onAddFish = async () => {
-    let today = new Date(dateTime || new Date());
-    let dd = String(today.getDate()).padStart(2, "0");
-    let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-    let yyyy = today.getFullYear();
-
-    today = dd + mm + yyyy;
-
-    let rs = await apis.getNewFishType({}, "POST", today);
-
     const newDatas = [...dataS];
-    const index = dataS.findIndex((x) => x.id === rs.data.id);
-    if (index === -1) {
-      rs.data.idx = newDatas.length + 1;
-      newDatas.push(rs.data);
-      setData([...newDatas]);
-      dataChange(newDatas);
-      updateOnlyFe(newDatas);
+
+    let checkFT = newDatas.find(ft => !ft.fishName || !ft.minWeight || !ft.price || !ft.transactionPrice)
+    if (checkFT) {
+      return helper.toast("error", "Vui lòng điền đầy đủ các trường dữ liệu")
+    } else {
+      let today = new Date(dateTime || new Date());
+      let dd = String(today.getDate()).padStart(2, "0");
+      let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+      let yyyy = today.getFullYear();
+
+      today = dd + mm + yyyy;
+
+      let rs = await apis.getNewFishType({}, "POST", today);
+
+      // const newDatas = [...dataS];
+      const index = dataS.findIndex((x) => x.id === rs.data.id);
+      if (index === -1) {
+        rs.data.idx = newDatas.length + 1;
+        newDatas.push(rs.data);
+        setData([...newDatas]);
+        dataChange(newDatas);
+        updateOnlyFe(newDatas);
+      }
     }
+
   };
 
   const onRemoveFish = (id) => {

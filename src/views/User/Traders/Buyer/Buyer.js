@@ -209,7 +209,6 @@ export default class Buyer extends Component {
 
   render() {
     const { isShowModal, mode, currentBuyer, data, loading } = this.state;
-    console.log(currentBuyer);
     const columns = [
       {
         title: i18n.t("INDEX"),

@@ -1,6 +1,9 @@
 {
   "name": "SWP490_G9_FE",
   "version": "2.0.6",
+  "engines": {
+    "node": "14.17.0"
+  },
   "description": "Fish Trader & Weight Recorder Support System",
   "author": "SWP490_G9",
   "homepage": "",

@@ -69,14 +69,14 @@ const ModalBuyer = ({ isShowBuyer, date, setShowBuyer, getAllTransByDate }) => {
           </Table.Summary.Cell>
           <Table.Summary.Cell key="2" className="bold" colSpan="2">
             <NumberFormat
-              value={currentDetail.totalWeight.toFixed(1)}
+              value={currentDetail.totalWeight && currentDetail.totalWeight.toFixed(1)}
               displayType={"text"}
               thousandSeparator={true}
             />
           </Table.Summary.Cell>
           <Table.Summary.Cell key="3" className="bold" colSpan="4">
             <NumberFormat
-              value={currentDetail.totalMoney}
+              value={currentDetail.totalMoney && currentDetail.totalMoney.toFixed(0)}
               displayType={"text"}
               thousandSeparator={true}
             />
@@ -100,7 +100,7 @@ const ModalBuyer = ({ isShowBuyer, date, setShowBuyer, getAllTransByDate }) => {
       onCancel={handleCancel}
       width={
         currentDetail.transactionDetails &&
-        currentDetail.transactionDetails.length > 0
+          currentDetail.transactionDetails.length > 0
           ? 1000
           : 800
       }
@@ -144,13 +144,13 @@ const ModalBuyer = ({ isShowBuyer, date, setShowBuyer, getAllTransByDate }) => {
               <Col md="6">
                 <Widgets.NumberFormat
                   label={i18n.t("moneyPaid") + ": "}
-                  value={currentDetail.moneyPaid || ""}
+                  value={(currentDetail.moneyPaid && currentDetail.moneyPaid.toFixed(0)) || ""}
                 />
               </Col>
               <Col md="6">
                 <Widgets.NumberFormat
                   label={i18n.t("moneyNotPaid") + ": "}
-                  value={currentDetail.moneyNotPaid || ""}
+                  value={(currentDetail.moneyNotPaid && currentDetail.moneyNotPaid.toFixed(0)) || ""}
                 />
               </Col>
             </>
@@ -187,7 +187,7 @@ const columns = [
     key: "sellPrice",
     render: (sellPrice) => (
       <NumberFormat
-        value={sellPrice}
+        value={sellPrice && sellPrice.toFixed(0)}
         displayType={"text"}
         thousandSeparator={true}
       />
@@ -214,7 +214,7 @@ const columns = [
 ];
 const calculateIntoMoney = ({ sellPrice, weight }) => (
   <NumberFormat
-    value={sellPrice * weight}
+    value={(sellPrice * weight) && (sellPrice * weight).toFixed(0)}
     displayType={"text"}
     thousandSeparator={true}
   />

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Button } from "antd";
 import i18n from "i18next";
 import apis from "../../../services/apis";
 import Step0 from "./Step0";
@@ -8,11 +9,11 @@ import helper from "../../../services/helper";
 
 const Login = (props) => {
   const [user, setUser] = useState({
-    code: "123456",
-    OTPID: 3,
-    DOB: "1999-10-21",
-    Avatar: null,
-    roleNormalizedName: "TRADER",
+    // code: "123456",
+    // OTPID: 3,
+    // DOB: "1999-10-21",
+    // Avatar: null,
+    // roleNormalizedName: "TRADER",
   });
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
@@ -27,14 +28,29 @@ const Login = (props) => {
     }));
   };
 
+  const getOTP = async (type = "") => {
+    try {
+      let rs = await apis.getOtp({}, "GET", user.phoneNumber);
+      if (rs && rs.statusCode === 200)
+        if (type === "reset") {
+          helper.toast("success", i18n.t(rs.message || "systemError"));
+
+        }
+      return rs
+    } catch (error) {
+      console.log(error)
+    }
+  }
   const handleSubmit = async () => {
     let rs;
     try {
       setSubmitted(true);
       if (!user.phoneNumber) {
+        setSubmitted(false);
         return helper.toast("error", i18n.t("Vui lòng điền số điện thoại"));
+
       } else if (step === 0) {
-        rs = await apis.getOtp({}, "GET", user.phoneNumber);
+        rs = await getOTP()
         if (rs && rs.statusCode === 200) {
           setStep(1);
           setSubmitted(false);
@@ -61,7 +77,6 @@ const Login = (props) => {
         }
       }
     } catch (error) {
-      // console.log(error);
       helper.toast("error", i18n.t(rs.message || "systemError"));
     }
   };
@@ -97,7 +112,7 @@ const Login = (props) => {
     return i18n.t(msg);
   };
   const _handleKeyDown = (e) => {
-    console.log(e.key);
+    // console.log(e.key);
     if (e.key === "Enter") {
       handleSubmit();
     }
@@ -129,6 +144,9 @@ const Login = (props) => {
                   <Step1
                     phoneNumber={user.phoneNumber}
                     onChange={(e) => handleChange(e, "code")}
+                    getOTP={getOTP}
+                    submitted={submitted}
+
                   />
                 )}
 
@@ -145,33 +163,37 @@ const Login = (props) => {
 
                 <div className="form-group d-flex justify-content-center">
                   {step === 1 && (
-                    <button
-                      className="btn btn-info mr-2"
+                    <Button
+                      className="mr-2 btn"
+                      type="primary"
                       onClick={() => setStep(0)}
                     >
                       {i18n.t("previous")}
-                    </button>
+                    </Button>
                   )}
+                  <Button
+                    className="btn mr-2"
+                    type="danger"
+                    onClick={() => props.history.push("/login")}
 
-                  <button
-                    className="btn btn-info block mr-2"
+                  >
+                    {i18n.t("cancel")}
+                  </Button>
+                  <Button
+                    className="mr-2 btn"
+                    type="primary"
                     onClick={handleSubmit}
+                    disabled={submitted}
+                    loading={submitted}
                   >
                     {step === 0 || step === 1
                       ? i18n.t("next")
                       : i18n.t("Register")}
-                  </button>
+                  </Button>
 
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => props.history.push("/login")}
-                  >
-                    {i18n.t("cancel")}
-                  </button>
 
-                  {/* <Link to="/login" className="btn btn-link btn-warning">
-                    {i18n.t("cancel")}
-                  </Link> */}
+
+
                 </div>
               </div>
             </div>
