@@ -253,7 +253,8 @@ export default class PondOwner extends Component {
         <Row>
           <Col style={{ overflowX: "auto" }}>
             <Table
-              bordered
+              borderedr
+              rowKey="idx"
               columns={columns}
               dataSource={data}
               pagination={{ pageSize: 10 }}

@@ -238,11 +238,12 @@ const ReportDaily = () => {
 export default ReportDaily;
 
 const fTTable = (listSummaryPurchaseDetail) => {
-  if (listSummaryPurchaseDetail.length > 0)
+  if (listSummaryPurchaseDetail.length > 0) {
+    listSummaryPurchaseDetail.map((el, idx) => el.idx = idx)
     return (
       <div>
-        {listSummaryPurchaseDetail.map((el) => (
-          <div className="mb-3">
+        {listSummaryPurchaseDetail.map((el, key) => (
+          <div className="mb-3" key={key}>
             <h6>
               <b>{el.pondOwner.id ? i18n.t("pondOwner") + ": " : ""}</b>
               {el.pondOwner ? el.pondOwner.name : i18n.t("noInfo")}
@@ -282,14 +283,19 @@ const fTTable = (listSummaryPurchaseDetail) => {
           </div>
         ))}
       </div>
-    );
+    )
+  }
+
 };
 const fTTable2 = (listSummaryPurchaseDetail, user) => {
-  if (listSummaryPurchaseDetail.length > 0)
+  if (listSummaryPurchaseDetail.length > 0) {
+
+    listSummaryPurchaseDetail.map((el, idx) => el.idx = idx)
+
     return (
       <div>
-        {listSummaryPurchaseDetail.map((el) => (
-          <div className="mb-3">
+        {listSummaryPurchaseDetail.map((el, index) => (
+          <div className="mb-3" key={index}>
             {user.roleName === "WeightRecorder" ? (
               <h6>
                 <b>{i18n.t("trader")}: </b>
@@ -344,6 +350,7 @@ const fTTable2 = (listSummaryPurchaseDetail, user) => {
         ))}
       </div>
     );
+  }
 };
 const columns = [
   {

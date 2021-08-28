@@ -94,10 +94,8 @@ export default class TimeKeeping extends Component {
         let employees = this.state.employees.filter((emp) => {
           let dateStart = new Date(emp.startDate);
           let dateEnd = emp.endDate ? new Date(emp.endDate) : null
-          console.log(dateStart, dateEnd, value._d, value._d > dateStart && (dateEnd === null || value._d < dateEnd))
           return value._d > dateStart && (dateEnd === null || value._d < dateEnd);
         })
-        console.log(employees)
         return (
           <div className="tnrss-bg mb-2">
             <ul className="events">
