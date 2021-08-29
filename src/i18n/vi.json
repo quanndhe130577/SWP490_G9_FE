@@ -51,7 +51,7 @@
   "logout": "Đăng xuất",
   "changeInfo": "Đổi thông tin",
   "urlNotFound": "URL không hợp lệ",
-  "weight": "Cân nặng",
+  "weight": "Khối lượng",
   "fishType": "Phân loại cá",
   "logging": "Đang đăng nhập",
   "fillAll*": "Vui lòng điền tất cả các trường có dấu *",
@@ -262,5 +262,7 @@
   "tienPhaiThu": "TIỀN PHẢI THU",
   "realMoney": "Số tiền trả trước",
   "realMoneyReci": "Số tiền đã nhận",
-  "cfOLowPriceFish": "Giá cá bạn bán đang thấp hơi giá đề nghị, bạn có chắc không?"
+  "cfOLowPriceFish": "Giá cá bạn bán đang thấp hơi giá đề nghị, bạn có chắc không?",
+  "table_header_debtor": "Người nợ",
+  "information": "Thông tin"
 }

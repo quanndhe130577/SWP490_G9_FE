@@ -43,6 +43,7 @@ export default class Debt extends Component {
       } else {
         rs = await apis.getAllDebtTransaction({}, "GET");
       }
+      debugger;
       if (rs && rs.statusCode === 200) {
         rs.data.map((el, idx) => (el.idx = idx + 1));
         this.setState({ data: rs.data, total: rs.data.length });
@@ -277,7 +278,7 @@ export default class Debt extends Component {
             render: (date) => <Moment format="DD/MM/YYYY">{date}</Moment>,
           },
           {
-            title: i18n.t("buyer"),
+            title: i18n.t("table_header_debtor"),
             dataIndex: "partner",
             key: "partner",
             ...this.getColumnSearchProps("debtor"),
@@ -285,7 +286,7 @@ export default class Debt extends Component {
             sortDirections: ["descend", "ascend"],
           },
           {
-            title: i18n.t("fishName"),
+            title: i18n.t("information"),
             dataIndex: "fishName",
             key: "fishName",
             ...this.getColumnSearchProps("fishName"),
@@ -319,11 +320,14 @@ export default class Debt extends Component {
             title: i18n.t("action"),
             dataIndex: "id",
             key: "id",
-            render: (id, cell) => (
-              <div>
+            render: (id, cell) =>
+              this.state.user.roleName === "Trader" &&
+              !cell.partner.startsWith("Người mua") ? (
+                ""
+              ) : (
                 <Button
                   color="info"
-                  className="mr-2"
+                  className="mr-2 w-75"
                   onClick={() => this.onClick(id)}
                 >
                   <i className="fa fa-pencil-square-o mr-1" />
@@ -331,8 +335,35 @@ export default class Debt extends Component {
                     ? i18n.t("PurchaseIsPaid")
                     : i18n.t("TransactionIsPaid")}
                 </Button>
-              </div>
-            ),
+              ),
+
+            // <Button
+            //   color={
+            //     this.state.user.roleName === "Trader" &&
+            //     !cell.partner.startsWith("Người mua")
+            //       ? "danger"
+            //       : "info"
+            //   }
+            //   className="mr-2 w-75"
+            //   onClick={() =>
+            //     this.state.user.roleName === "Trader" &&
+            //     cell.partner.startsWith("Người mua")
+            //       ? {}
+            //       : this.onClick(id)
+            //   }
+            //   disabled={
+            //     this.state.user.roleName === "Trader" &&
+            //     !cell.partner.startsWith("Người mua")
+            //   }
+            // >
+            //   <i className="fa fa-pencil-square-o mr-1" />
+            //   {this.state.mode === "purchase"
+            //     ? i18n.t("PurchaseIsPaid")
+            //     : this.state.user.roleName === "Trader" &&
+            //       !cell.partner.startsWith("Người mua")
+            //     ? "Chưa thu"
+            //     : i18n.t("TransactionIsPaid")}
+            // </Button>
           },
         ];
   }
